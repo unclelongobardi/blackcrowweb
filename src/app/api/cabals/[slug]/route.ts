@@ -1,27 +1,32 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
+import { isDbConfigured, query, queryOne } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
-  if (!isSupabaseConfigured()) return NextResponse.json({ error: "Not configured" }, { status: 503 });
+  if (!isDbConfigured()) return NextResponse.json({ error: "Not configured" }, { status: 503 });
   const { slug } = await params;
-  const supabase = getSupabaseAdmin();
 
-  const { data: cabal, error } = await supabase
-    .from("cabals")
-    .select("*, cabal_members(role, profile:profiles(*))")
-    .eq("slug", slug)
-    .maybeSingle();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const cabal = await queryOne(
+    `select c.*,
+       coalesce(
+         (select json_agg(json_build_object('role', m.role, 'profile', row_to_json(p)))
+            from cabal_members m join profiles p on p.id = m.profile_id
+            where m.cabal_id = c.id),
+         '[]'
+       ) as members
+     from cabals c where c.slug = $1`,
+    [slug],
+  );
   if (!cabal) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const { data: operations } = await supabase
-    .from("operations")
-    .select("*, market:markets(*)")
-    .eq("cabal_id", cabal.id)
-    .order("created_at", { ascending: false });
+  const operations = await query(
+    `select o.*, case when m.id is not null then row_to_json(m) else null end as market
+       from operations o left join markets m on m.id = o.market_id
+       where o.cabal_id = $1 order by o.created_at desc`,
+    [cabal.id],
+  );
 
-  return NextResponse.json({ cabal, operations: operations ?? [] });
+  return NextResponse.json({ cabal, operations });
 }

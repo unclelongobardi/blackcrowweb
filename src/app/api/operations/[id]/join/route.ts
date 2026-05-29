@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
+import { query, queryOne } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,31 +13,25 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const body = await request.json().catch(() => ({}));
   const conviction = Math.min(100, Math.max(1, Number(body.conviction ?? 50) || 50));
 
-  const { data: existing } = await ctx.supabase
-    .from("operation_joins")
-    .select("operation_id")
-    .eq("operation_id", id)
-    .eq("profile_id", ctx.profile.id)
-    .maybeSingle();
+  const existing = await queryOne(
+    "select 1 from operation_joins where operation_id = $1 and profile_id = $2",
+    [id, ctx.profile.id],
+  );
 
   if (existing) {
-    await ctx.supabase
-      .from("operation_joins")
-      .delete()
-      .eq("operation_id", id)
-      .eq("profile_id", ctx.profile.id);
+    await query("delete from operation_joins where operation_id = $1 and profile_id = $2", [
+      id,
+      ctx.profile.id,
+    ]);
     return NextResponse.json({ joined: false });
   }
 
-  await ctx.supabase
-    .from("operation_joins")
-    .insert({ operation_id: id, profile_id: ctx.profile.id, conviction });
-
-  // Reward: enlisting in an operation grants +1 influence.
-  await ctx.supabase
-    .from("profiles")
-    .update({ influence: ctx.profile.influence + 1 })
-    .eq("id", ctx.profile.id);
+  await query(
+    "insert into operation_joins (operation_id, profile_id, conviction) values ($1, $2, $3)",
+    [id, ctx.profile.id, conviction],
+  );
+  // Reward: enlisting grants +1 influence.
+  await query("update profiles set influence = influence + 1 where id = $1", [ctx.profile.id]);
 
   return NextResponse.json({ joined: true });
 }

@@ -1,33 +1,24 @@
 import { NextResponse } from "next/server";
-import { verifyDid } from "@/lib/auth";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
+import { getProfileId } from "@/lib/auth";
+import { isDbConfigured, query } from "@/lib/db";
+import type { Bounty } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!isSupabaseConfigured()) return NextResponse.json({ bounties: [] });
-  const supabase = getSupabaseAdmin();
+  if (!isDbConfigured()) return NextResponse.json({ bounties: [] });
+  const myId = await getProfileId(request);
 
-  const { data, error } = await supabase
-    .from("bounties")
-    .select("*")
-    .order("reward_influence", { ascending: false });
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const bounties = await query<Bounty>(
+    `select b.*,
+        case when $1::uuid is not null
+          and exists (select 1 from bounty_claims bc where bc.bounty_id = b.id and bc.profile_id = $1)
+          then true else false end as claimed
+      from bounties b
+      order by b.reward_influence desc`,
+    [myId],
+  );
 
-  const did = await verifyDid(request);
-  let claimedIds = new Set<string>();
-  if (did) {
-    const { data: me } = await supabase.from("profiles").select("id").eq("privy_did", did).maybeSingle();
-    if (me) {
-      const { data: claims } = await supabase
-        .from("bounty_claims")
-        .select("bounty_id")
-        .eq("profile_id", me.id);
-      claimedIds = new Set((claims ?? []).map((c) => c.bounty_id));
-    }
-  }
-
-  const bounties = (data ?? []).map((b) => ({ ...b, claimed: claimedIds.has(b.id) }));
   return NextResponse.json({ bounties });
 }

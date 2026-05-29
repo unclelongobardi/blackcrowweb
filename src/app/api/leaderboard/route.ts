@@ -1,30 +1,24 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
+import { isDbConfigured, query } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  if (!isSupabaseConfigured()) return NextResponse.json({ operatives: [], cabals: [] });
-  const supabase = getSupabaseAdmin();
+  if (!isDbConfigured()) return NextResponse.json({ operatives: [], cabals: [] });
 
-  const { data: operatives } = await supabase
-    .from("profiles")
-    .select("id, codename, display_name, avatar_seed, influence")
-    .order("influence", { ascending: false })
-    .limit(25);
+  const operatives = await query(
+    `select id, codename, display_name, avatar_seed, influence
+       from profiles order by influence desc limit 25`,
+  );
 
-  const { data: cabals } = await supabase
-    .from("cabals")
-    .select("id, slug, name, motto, emblem_seed, cabal_members(profile_id)")
-    .limit(25);
+  const cabals = await query(
+    `select c.id, c.slug, c.name, c.motto, c.emblem_seed,
+        (select count(*) from cabal_members m where m.cabal_id = c.id)::int as member_count
+       from cabals c
+       order by member_count desc, c.created_at asc
+       limit 25`,
+  );
 
-  const rankedCabals = (cabals ?? [])
-    .map((c) => {
-      const { cabal_members, ...rest } = c;
-      return { ...rest, member_count: (cabal_members as unknown[] | null)?.length ?? 0 };
-    })
-    .sort((a, b) => b.member_count - a.member_count);
-
-  return NextResponse.json({ operatives: operatives ?? [], cabals: rankedCabals });
+  return NextResponse.json({ operatives, cabals });
 }

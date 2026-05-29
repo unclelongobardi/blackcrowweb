@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
+import { queryOne } from "@/lib/db";
+import type { Profile } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,9 +14,9 @@ export async function POST(request: Request) {
 
   const body = await request.json().catch(() => ({}));
   const codename = String(body.codename ?? "").trim();
-  const display_name = body.display_name ? String(body.display_name).trim().slice(0, 60) : null;
+  const displayName = body.display_name ? String(body.display_name).trim().slice(0, 60) : null;
   const bio = body.bio ? String(body.bio).trim().slice(0, 240) : null;
-  const wallet_address = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
+  const walletAddress = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
 
   if (!CODENAME_RE.test(codename)) {
     return NextResponse.json(
@@ -23,31 +25,20 @@ export async function POST(request: Request) {
     );
   }
 
-  // Ensure codename is unique (excluding self).
-  const { data: taken } = await ctx.supabase
-    .from("profiles")
-    .select("id")
-    .eq("codename", codename)
-    .neq("id", ctx.profile.id)
-    .maybeSingle();
-  if (taken) {
-    return NextResponse.json({ error: "Codename already taken." }, { status: 409 });
-  }
+  const taken = await queryOne<{ id: string }>(
+    "select id from profiles where codename = $1 and id <> $2",
+    [codename, ctx.profile.id],
+  );
+  if (taken) return NextResponse.json({ error: "Codename already taken." }, { status: 409 });
 
-  const { data, error } = await ctx.supabase
-    .from("profiles")
-    .update({
-      codename,
-      display_name,
-      bio,
-      wallet_address,
-      avatar_seed: ctx.profile.avatar_seed ?? codename,
-      is_onboarded: true,
-    })
-    .eq("id", ctx.profile.id)
-    .select("*")
-    .single();
+  const profile = await queryOne<Profile>(
+    `update profiles
+       set codename = $1, display_name = $2, bio = $3, wallet_address = $4,
+           avatar_seed = coalesce(avatar_seed, $1), is_onboarded = true
+     where id = $5
+     returning *`,
+    [codename, displayName, bio, walletAddress, ctx.profile.id],
+  );
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ profile: data });
+  return NextResponse.json({ profile });
 }

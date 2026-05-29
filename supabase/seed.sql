@@ -35,22 +35,22 @@ on conflict (id) do nothing;
 
 -- ── Operations (coordinated raids) ────────────────────────────────────────
 insert into operations (id, market_id, cabal_id, created_by, title, thesis, target_side, status) values
-  ('0p000001-0000-0000-0000-000000000001','seed-btc-100k','aaaaaaa1-0000-0000-0000-000000000001','11111111-1111-1111-1111-111111111111','Push BTC YES past 70%','Coordinated buys + bullish threads before the monthly close. Flood the timeline.','YES','active'),
-  ('0p000002-0000-0000-0000-000000000002','seed-fed-cut','aaaaaaa2-0000-0000-0000-000000000002','44444444-4444-4444-4444-444444444444','Fade the rate-cut hopium','Overnight NO accumulation. Seed doubt with macro takes.','NO','active'),
-  ('0p000003-0000-0000-0000-000000000003','seed-etf','aaaaaaa3-0000-0000-0000-000000000003','33333333-3333-3333-3333-333333333333','ETF YES narrative farm','Manufacture inevitability. Every reply is a brick.','YES','planning')
+  ('0e000001-0000-0000-0000-000000000001','seed-btc-100k','aaaaaaa1-0000-0000-0000-000000000001','11111111-1111-1111-1111-111111111111','Push BTC YES past 70%','Coordinated buys + bullish threads before the monthly close. Flood the timeline.','YES','active'),
+  ('0e000002-0000-0000-0000-000000000002','seed-fed-cut','aaaaaaa2-0000-0000-0000-000000000002','44444444-4444-4444-4444-444444444444','Fade the rate-cut hopium','Overnight NO accumulation. Seed doubt with macro takes.','NO','active'),
+  ('0e000003-0000-0000-0000-000000000003','seed-etf','aaaaaaa3-0000-0000-0000-000000000003','33333333-3333-3333-3333-333333333333','ETF YES narrative farm','Manufacture inevitability. Every reply is a brick.','YES','planning')
 on conflict (id) do nothing;
 
 insert into operation_joins (operation_id, profile_id, conviction) values
-  ('0p000001-0000-0000-0000-000000000001','22222222-2222-2222-2222-222222222222',85),
-  ('0p000001-0000-0000-0000-000000000001','55555555-5555-5555-5555-555555555555',70),
-  ('0p000002-0000-0000-0000-000000000002','66666666-6666-6666-6666-666666666666',60)
+  ('0e000001-0000-0000-0000-000000000001','22222222-2222-2222-2222-222222222222',85),
+  ('0e000001-0000-0000-0000-000000000001','55555555-5555-5555-5555-555555555555',70),
+  ('0e000002-0000-0000-0000-000000000002','66666666-6666-6666-6666-666666666666',60)
 on conflict do nothing;
 
 -- ── War-room posts (debates / feed) ───────────────────────────────────────
 insert into posts (id, author_id, market_id, operation_id, content, sentiment) values
-  ('b0000001-0000-0000-0000-000000000001','11111111-1111-1111-1111-111111111111','seed-btc-100k','0p000001-0000-0000-0000-000000000001','Heard something big about the monthly close. We move at the open. Load up or fade.','bullish'),
-  ('b0000002-0000-0000-0000-000000000002','22222222-2222-2222-2222-222222222222','seed-fed-cut','0p000002-0000-0000-0000-000000000002','Rate cut is priced on pure hopium. Overnight we seed doubt. Lock it in.','bearish'),
-  ('b0000003-0000-0000-0000-000000000003','33333333-3333-3333-3333-333333333333','seed-etf','0p000003-0000-0000-0000-000000000003','Altseason is a narrative. But narratives move millions. Brick by brick.','bullish'),
+  ('b0000001-0000-0000-0000-000000000001','11111111-1111-1111-1111-111111111111','seed-btc-100k','0e000001-0000-0000-0000-000000000001','Heard something big about the monthly close. We move at the open. Load up or fade.','bullish'),
+  ('b0000002-0000-0000-0000-000000000002','22222222-2222-2222-2222-222222222222','seed-fed-cut','0e000002-0000-0000-0000-000000000002','Rate cut is priced on pure hopium. Overnight we seed doubt. Lock it in.','bearish'),
+  ('b0000003-0000-0000-0000-000000000003','33333333-3333-3333-3333-333333333333','seed-etf','0e000003-0000-0000-0000-000000000003','Altseason is a narrative. But narratives move millions. Brick by brick.','bullish'),
   ('b0000004-0000-0000-0000-000000000004','44444444-4444-4444-4444-444444444444',null,null,'Reminder: attention is liquidity. If the timeline is loud, the book follows.','neutral')
 on conflict (id) do nothing;
 

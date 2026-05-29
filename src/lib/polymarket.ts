@@ -46,19 +46,28 @@ function mapMarket(m: GammaMarket): Market | null {
   };
 }
 
+async function tryFetch(url: string): Promise<Market[] | null> {
+  try {
+    const res = await fetch(url, { next: { revalidate: 300 } });
+    if (!res.ok) return null;
+    const data = (await res.json()) as GammaMarket[];
+    if (!Array.isArray(data)) return null;
+    return data.map(mapMarket).filter((m): m is Market => m !== null);
+  } catch {
+    return null;
+  }
+}
+
 /** Fetch the most active Polymarket markets (read-only, public Gamma API). */
 export async function fetchPolymarketMarkets(limit = 24): Promise<Market[]> {
-  try {
-    const res = await fetch(
-      `${GAMMA}/markets?active=true&closed=false&archived=false&order=volumeNum&ascending=false&limit=${limit}`,
-      { next: { revalidate: 300 } },
-    );
-    if (!res.ok) return [];
-    const data = (await res.json()) as GammaMarket[];
-    return (Array.isArray(data) ? data : [])
-      .map(mapMarket)
-      .filter((m): m is Market => m !== null);
-  } catch {
-    return [];
+  const urls = [
+    `${GAMMA}/markets?active=true&closed=false&archived=false&order=volumeNum&ascending=false&limit=${limit}`,
+    `${GAMMA}/markets?closed=false&limit=${limit}`,
+    `${GAMMA}/markets?limit=${limit}`,
+  ];
+  for (const url of urls) {
+    const markets = await tryFetch(url);
+    if (markets && markets.length) return markets;
   }
+  return [];
 }

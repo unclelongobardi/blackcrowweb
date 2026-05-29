@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
+import { isDbConfigured, query, queryOne } from "@/lib/db";
+import type { Cabal } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,18 +16,12 @@ function slugify(name: string): string {
 }
 
 export async function GET() {
-  if (!isSupabaseConfigured()) return NextResponse.json({ cabals: [] });
-  const supabase = getSupabaseAdmin();
-  const { data, error } = await supabase
-    .from("cabals")
-    .select("*, cabal_members(profile_id)")
-    .order("created_at", { ascending: true });
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  const cabals = (data ?? []).map((c) => {
-    const { cabal_members, ...rest } = c;
-    return { ...rest, member_count: (cabal_members as unknown[] | null)?.length ?? 0 };
-  });
+  if (!isDbConfigured()) return NextResponse.json({ cabals: [] });
+  const cabals = await query<Cabal>(
+    `select c.*, (select count(*) from cabal_members m where m.cabal_id = c.id)::int as member_count
+       from cabals c
+       order by c.created_at asc`,
+  );
   return NextResponse.json({ cabals });
 }
 
@@ -39,32 +34,27 @@ export async function POST(request: Request) {
   if (name.length < 3) return NextResponse.json({ error: "Name too short." }, { status: 400 });
   const slug = slugify(name);
 
-  const { data: exists } = await ctx.supabase.from("cabals").select("id").eq("slug", slug).maybeSingle();
+  const exists = await queryOne<{ id: string }>("select id from cabals where slug = $1", [slug]);
   if (exists) return NextResponse.json({ error: "A cabal with that name exists." }, { status: 409 });
 
-  const { data: cabal, error } = await ctx.supabase
-    .from("cabals")
-    .insert({
+  const cabal = await queryOne<Cabal>(
+    `insert into cabals (slug, name, motto, description, emblem_seed, created_by)
+     values ($1, $2, $3, $4, $1, $5) returning *`,
+    [
       slug,
       name,
-      motto: body.motto ? String(body.motto).slice(0, 80) : null,
-      description: body.description ? String(body.description).slice(0, 280) : null,
-      emblem_seed: slug,
-      created_by: ctx.profile.id,
-    })
-    .select("*")
-    .single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+      body.motto ? String(body.motto).slice(0, 80) : null,
+      body.description ? String(body.description).slice(0, 280) : null,
+      ctx.profile.id,
+    ],
+  );
 
-  await ctx.supabase
-    .from("cabal_members")
-    .insert({ cabal_id: cabal.id, profile_id: ctx.profile.id, role: "leader" });
-
+  await query(
+    "insert into cabal_members (cabal_id, profile_id, role) values ($1, $2, 'leader')",
+    [cabal!.id, ctx.profile.id],
+  );
   // Reward: founding a cabal grants +20 influence.
-  await ctx.supabase
-    .from("profiles")
-    .update({ influence: ctx.profile.influence + 20 })
-    .eq("id", ctx.profile.id);
+  await query("update profiles set influence = influence + 20 where id = $1", [ctx.profile.id]);
 
   return NextResponse.json({ cabal: { ...cabal, member_count: 1 } });
 }

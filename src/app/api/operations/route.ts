@@ -1,29 +1,37 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
-import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
+import { isDbConfigured, query, queryOne } from "@/lib/db";
+import type { Operation } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!isSupabaseConfigured()) return NextResponse.json({ operations: [] });
-  const supabase = getSupabaseAdmin();
+  if (!isDbConfigured()) return NextResponse.json({ operations: [] });
   const status = new URL(request.url).searchParams.get("status");
 
-  let query = supabase
-    .from("operations")
-    .select("*, market:markets(*), cabal:cabals(*), author:profiles(*), operation_joins(profile_id)")
-    .order("created_at", { ascending: false })
-    .limit(50);
-  if (status) query = query.eq("status", status);
+  const params: unknown[] = [];
+  let where = "";
+  if (status) {
+    params.push(status);
+    where = `where o.status = $${params.length}`;
+  }
 
-  const { data, error } = await query;
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  const operations = (data ?? []).map((o) => {
-    const { operation_joins, ...rest } = o;
-    return { ...rest, member_count: (operation_joins as unknown[] | null)?.length ?? 0 };
-  });
+  const operations = await query<Operation>(
+    `select o.*,
+        case when m.id is not null then row_to_json(m) else null end as market,
+        case when c.id is not null then row_to_json(c) else null end as cabal,
+        case when a.id is not null then row_to_json(a) else null end as author,
+        (select count(*) from operation_joins j where j.operation_id = o.id)::int as member_count
+      from operations o
+      left join markets m on m.id = o.market_id
+      left join cabals c on c.id = o.cabal_id
+      left join profiles a on a.id = o.created_by
+      ${where}
+      order by o.created_at desc
+      limit 50`,
+    params,
+  );
   return NextResponse.json({ operations });
 }
 
@@ -34,58 +42,55 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
   const title = String(body.title ?? "").trim().slice(0, 80);
   if (title.length < 4) return NextResponse.json({ error: "Title too short." }, { status: 400 });
-  const target_side = body.target_side === "NO" ? "NO" : "YES";
+  const targetSide = body.target_side === "NO" ? "NO" : "YES";
 
-  let market_id: string | null = body.market_id ?? null;
+  let marketId: string | null = body.market_id ?? null;
 
-  // If a full Polymarket market object is provided, cache it first.
+  // Cache the Polymarket market so the operation can reference it.
   if (body.market?.id) {
     const m = body.market;
-    market_id = String(m.id);
-    await ctx.supabase.from("markets").upsert(
-      {
-        id: market_id,
-        slug: m.slug ?? null,
-        question: m.question ?? title,
-        category: m.category ?? null,
-        image: m.image ?? null,
-        yes_price: m.yes_price ?? null,
-        no_price: m.no_price ?? null,
-        volume: m.volume ?? null,
-        end_date: m.end_date ?? null,
-        url: m.url ?? null,
-        last_synced: new Date().toISOString(),
-      },
-      { onConflict: "id" },
+    marketId = String(m.id);
+    await query(
+      `insert into markets (id, slug, question, category, image, yes_price, no_price, volume, end_date, url, last_synced)
+       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, now())
+       on conflict (id) do update set
+         yes_price = excluded.yes_price, no_price = excluded.no_price,
+         volume = excluded.volume, last_synced = now()`,
+      [
+        marketId,
+        m.slug ?? null,
+        m.question ?? title,
+        m.category ?? null,
+        m.image ?? null,
+        m.yes_price ?? null,
+        m.no_price ?? null,
+        m.volume ?? null,
+        m.end_date ?? null,
+        m.url ?? null,
+      ],
     );
   }
 
-  const { data: op, error } = await ctx.supabase
-    .from("operations")
-    .insert({
+  const op = await queryOne<Operation>(
+    `insert into operations (title, thesis, target_side, market_id, cabal_id, created_by, status)
+     values ($1,$2,$3,$4,$5,$6,'active')
+     returning *`,
+    [
       title,
-      thesis: body.thesis ? String(body.thesis).slice(0, 400) : null,
-      target_side,
-      market_id,
-      cabal_id: body.cabal_id ?? null,
-      created_by: ctx.profile.id,
-      status: "active",
-    })
-    .select("*, market:markets(*), cabal:cabals(*), author:profiles(*)")
-    .single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+      body.thesis ? String(body.thesis).slice(0, 400) : null,
+      targetSide,
+      marketId,
+      body.cabal_id ?? null,
+      ctx.profile.id,
+    ],
+  );
 
-  await ctx.supabase.from("operation_joins").insert({
-    operation_id: op.id,
-    profile_id: ctx.profile.id,
-    conviction: 100,
-  });
-
+  await query(
+    "insert into operation_joins (operation_id, profile_id, conviction) values ($1, $2, 100)",
+    [op!.id, ctx.profile.id],
+  );
   // Reward: launching an operation grants +10 influence.
-  await ctx.supabase
-    .from("profiles")
-    .update({ influence: ctx.profile.influence + 10 })
-    .eq("id", ctx.profile.id);
+  await query("update profiles set influence = influence + 10 where id = $1", [ctx.profile.id]);
 
-  return NextResponse.json({ operation: { ...op, member_count: 1 } });
+  return NextResponse.json({ operation: { ...op, member_count: 1, author: ctx.profile } });
 }

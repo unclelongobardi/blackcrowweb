@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
+import { query, queryOne } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,27 +13,27 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const body = await request.json().catch(() => ({}));
   const value = body.value === 1 || body.value === -1 ? body.value : 0;
 
-  const { supabase, profile } = ctx;
+  const existing = await queryOne<{ value: number }>(
+    "select value from post_votes where post_id = $1 and profile_id = $2",
+    [id, ctx.profile.id],
+  );
 
-  const { data: existing } = await supabase
-    .from("post_votes")
-    .select("value")
-    .eq("post_id", id)
-    .eq("profile_id", profile.id)
-    .maybeSingle();
-
+  let myVote = 0;
   if (value === 0 || (existing && existing.value === value)) {
-    // Toggle off.
-    await supabase.from("post_votes").delete().eq("post_id", id).eq("profile_id", profile.id);
+    await query("delete from post_votes where post_id = $1 and profile_id = $2", [id, ctx.profile.id]);
   } else {
-    await supabase
-      .from("post_votes")
-      .upsert({ post_id: id, profile_id: profile.id, value }, { onConflict: "post_id,profile_id" });
+    await query(
+      `insert into post_votes (post_id, profile_id, value) values ($1, $2, $3)
+       on conflict (post_id, profile_id) do update set value = excluded.value`,
+      [id, ctx.profile.id, value],
+    );
+    myVote = value;
   }
 
-  const { data: votes } = await supabase.from("post_votes").select("value").eq("post_id", id);
-  const score = (votes ?? []).reduce((acc, v) => acc + (v.value ?? 0), 0);
-  const myVote = value === 0 || (existing && existing.value === value) ? 0 : value;
+  const row = await queryOne<{ score: string }>(
+    "select coalesce(sum(value), 0) as score from post_votes where post_id = $1",
+    [id],
+  );
 
-  return NextResponse.json({ score, my_vote: myVote });
+  return NextResponse.json({ score: Number(row?.score ?? 0), my_vote: myVote });
 }
