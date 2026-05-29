@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #050506;
+  --color-surface: #0a0a0c;
+  --color-surface-2: #101013;
+  --color-foreground: #ededed;
+  --color-muted: #8a8a92;
+  --color-faint: #56565c;
+  --color-line: #1c1c20;
+  --color-accent: #2bd576;
+  --color-bull: #2bd576;
+  --color-bear: #f0506e;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+}
+
+:root {
+  --background: #050506;
+  --foreground: #ededed;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+  background: rgba(43, 213, 118, 0.25);
+  color: #fff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050506;
+}
+::-webkit-scrollbar-thumb {
+  background: #1c1c20;
+  border-radius: 999px;
+  border: 2px solid #050506;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a30;
+}
+
+/* Display heading utility */
+.font-display {
+  font-family: var(--font-display), var(--font-geist-sans), sans-serif;
+  letter-spacing: -0.03em;
+}
+
+/* Animated background grid */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.bg-grid-fade {
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
+}
+
+/* Glass card */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+}
+
+.glass-hover {
+  transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s ease;
+}
+.glass-hover:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+/* Glow */
+.glow-accent {
+  box-shadow: 0 0 0 1px rgba(43, 213, 118, 0.0), 0 0 40px -8px rgba(43, 213, 118, 0.35);
+}
+
+.text-glow {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 9s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
