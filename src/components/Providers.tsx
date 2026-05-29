@@ -1,11 +1,14 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
+import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 import type { ReactNode } from "react";
 
 const APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 const CLIENT_ID = process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID;
 const WC_PROJECT_ID = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+
+const solanaConnectors = toSolanaWalletConnectors();
 
 export default function Providers({ children }: { children: ReactNode }) {
   // Fail open during local dev if env is missing, so the marketing page still renders.
@@ -21,9 +24,19 @@ export default function Providers({ children }: { children: ReactNode }) {
       appId={APP_ID}
       clientId={CLIENT_ID}
       config={{
-        // Appearance, login methods and embedded-wallet behavior are managed
-        // from the Privy dashboard (single source of truth). We only pass the
-        // WalletConnect Cloud project id, which is an integration key.
+        // Login is restricted to Solana wallets — only Phantom and Solflare.
+        loginMethods: ["wallet"],
+        appearance: {
+          // Theme/colors/logo are still managed from the Privy dashboard.
+          walletChainType: "solana-only",
+          walletList: ["phantom", "solflare"],
+        },
+        externalWallets: {
+          solana: { connectors: solanaConnectors },
+        },
+        embeddedWallets: {
+          solana: { createOnLogin: "off" },
+        },
         walletConnectCloudProjectId: WC_PROJECT_ID,
       }}
     >

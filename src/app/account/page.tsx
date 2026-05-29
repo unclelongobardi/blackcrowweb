@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
+import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import Navbar from "@/components/Navbar";
 import CopyButton from "@/components/CopyButton";
 import { getUserHandle, getUserInitials, truncateAddress } from "@/lib/user";
@@ -66,11 +67,8 @@ export default function AccountPage() {
     unlinkGoogle,
     unlinkTwitter,
     unlinkDiscord,
-    exportWallet,
-    createWallet,
-    connectWallet,
   } = usePrivy();
-  const { wallets } = useWallets();
+  const { wallets } = useSolanaWallets();
   const [session, setSession] = useState<SessionState>({ status: "loading" });
 
   const verifySession = useCallback(async () => {
@@ -100,8 +98,6 @@ export default function AccountPage() {
     if (ready && authenticated) verifySession();
   }, [ready, authenticated, verifySession]);
 
-  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy");
-  const externalWallets = wallets.filter((w) => w.walletClientType !== "privy");
   const linkedCount = (user?.linkedAccounts?.length ?? 0);
   const canUnlink = linkedCount > 1;
 
@@ -270,78 +266,56 @@ export default function AccountPage() {
           </Card>
 
           {/* Wallet */}
-          <Card id="wallet" title="WALLET" icon={IconWallet}>
-            {embeddedWallet ? (
-              <div className="rounded-xl border border-line bg-surface/40 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-faint">
-                  Embedded wallet
-                </p>
-                <div className="mt-2 flex items-center justify-between gap-3">
-                  <code className="font-mono text-[13px] text-foreground">
-                    {truncateAddress(embeddedWallet.address, 6)}
-                  </code>
-                  <CopyButton value={embeddedWallet.address} />
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
+          <Card id="wallet" title="SOLANA WALLETS" icon={IconWallet}>
+            <div className="flex items-center justify-between">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-faint">
+                Connected ({wallets.length})
+              </p>
+              <button
+                onClick={() => linkWallet()}
+                className="text-[11px] font-medium text-muted transition-colors hover:text-foreground"
+              >
+                + Connect Phantom / Solflare
+              </button>
+            </div>
+            <div className="mt-3 space-y-2">
+              {wallets.length === 0 && (
+                <div className="rounded-xl border border-dashed border-line bg-surface/30 px-4 py-6 text-center">
+                  <p className="text-[13px] text-muted">No Solana wallet connected.</p>
                   <button
-                    onClick={() => exportWallet({ address: embeddedWallet.address })}
-                    className="rounded-lg bg-foreground px-3 py-2 text-[12px] font-bold text-black transition-transform hover:scale-[1.03]"
+                    onClick={() => linkWallet()}
+                    className="mt-3 rounded-lg bg-foreground px-3 py-2 text-[12px] font-bold text-black transition-transform hover:scale-[1.03]"
                   >
-                    Export wallet
+                    Connect wallet
                   </button>
                 </div>
-              </div>
-            ) : (
-              <div className="rounded-xl border border-line bg-surface/40 p-4">
-                <p className="text-[13px] text-muted">You don&apos;t have an embedded wallet yet.</p>
-                <button
-                  onClick={() => createWallet()}
-                  className="mt-3 rounded-lg bg-foreground px-3 py-2 text-[12px] font-bold text-black transition-transform hover:scale-[1.03]"
+              )}
+              {wallets.map((w) => (
+                <div
+                  key={w.address}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface/40 px-4 py-3"
                 >
-                  Create wallet
-                </button>
-              </div>
-            )}
-
-            <div className="mt-4">
-              <div className="flex items-center justify-between">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-faint">
-                  External wallets ({externalWallets.length})
-                </p>
-                <button
-                  onClick={() => (externalWallets.length ? linkWallet() : connectWallet())}
-                  className="text-[11px] font-medium text-muted transition-colors hover:text-foreground"
-                >
-                  + Connect
-                </button>
-              </div>
-              <div className="mt-2.5 space-y-2">
-                {externalWallets.length === 0 && (
-                  <p className="text-[12px] text-faint">No external wallets connected.</p>
-                )}
-                {externalWallets.map((w) => (
-                  <div
-                    key={w.address}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-line bg-surface/40 px-3 py-2.5"
-                  >
-                    <div className="min-w-0">
-                      <code className="font-mono text-[12px] text-foreground">
-                        {truncateAddress(w.address, 6)}
-                      </code>
-                      <span className="ml-2 text-[10px] uppercase tracking-wide text-faint">
-                        {w.walletClientType}
-                      </span>
-                    </div>
+                  <div className="min-w-0">
+                    <p className="text-[12px] font-semibold capitalize text-foreground">
+                      {w.standardWallet?.name ?? "Solana wallet"}
+                    </p>
+                    <code className="font-mono text-[12px] text-faint">
+                      {truncateAddress(w.address, 6)}
+                    </code>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CopyButton value={w.address} />
                     <button
                       onClick={() => canUnlink && unlinkWallet(w.address)}
                       disabled={!canUnlink}
-                      className="rounded-md border border-line px-2.5 py-1 text-[11px] text-muted transition-colors hover:border-bear/40 hover:text-bear disabled:opacity-40"
+                      title={canUnlink ? "Unlink" : "You must keep at least one login method"}
+                      className="rounded-md border border-line px-2.5 py-1 text-[11px] text-muted transition-colors hover:border-bear/40 hover:text-bear disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       Unlink
                     </button>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </Card>
 
