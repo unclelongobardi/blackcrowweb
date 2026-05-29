@@ -21,18 +21,9 @@ export default function Providers({ children }: { children: ReactNode }) {
       appId={APP_ID}
       clientId={CLIENT_ID}
       config={{
-        appearance: {
-          theme: "dark",
-          accentColor: "#2BD576",
-          showWalletLoginFirst: false,
-          walletChainType: "ethereum-only",
-          landingHeader: "Enter the network",
-          loginMessage: "Predict chaos. Move markets. Stay anonymous.",
-        },
-        loginMethods: ["email", "wallet", "google", "twitter", "discord"],
-        embeddedWallets: {
-          ethereum: { createOnLogin: "users-without-wallets" },
-        },
+        // Appearance, login methods and embedded-wallet behavior are managed
+        // from the Privy dashboard (single source of truth). We only pass the
+        // WalletConnect Cloud project id, which is an integration key.
         walletConnectCloudProjectId: WC_PROJECT_ID,
       }}
     >
