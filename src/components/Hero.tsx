@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import { usePrivy } from "@privy-io/react-auth";
 import { IconArrow } from "./icons";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -59,6 +61,8 @@ const AVATAR_COLORS = [
 ];
 
 export default function Hero() {
+  const { ready, authenticated, login } = usePrivy();
+
   return (
     <section id="home" className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-40">
       {/* Animated background grid */}
@@ -126,13 +130,24 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.45, ease }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <a
-              href="#join"
-              className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
-            >
-              JOIN THE NETWORK
-              <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
+            {authenticated ? (
+              <Link
+                href="/account"
+                className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
+              >
+                ENTER THE NETWORK
+                <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            ) : (
+              <button
+                onClick={() => login()}
+                disabled={!ready}
+                className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03] disabled:opacity-60"
+              >
+                JOIN THE NETWORK
+                <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            )}
             <a
               href="#markets"
               className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-white/25 hover:bg-surface"

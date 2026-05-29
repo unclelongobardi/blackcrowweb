@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
-import { IconArrow } from "./icons";
+import AuthControls from "./AuthControls";
 
 const LINKS = [
   { label: "HOME", href: "#home" },
@@ -58,19 +58,7 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3">
-            <a
-              href="#login"
-              className="hidden rounded-lg border border-line px-4 py-2 text-[12px] font-semibold tracking-[0.12em] text-muted transition-colors hover:border-white/25 hover:text-foreground sm:block"
-            >
-              LOGIN
-            </a>
-            <a
-              href="#join"
-              className="group inline-flex items-center gap-2 rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold tracking-[0.1em] text-black transition-transform hover:scale-[1.03]"
-            >
-              JOIN THE NETWORK
-              <IconArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-            </a>
+            <AuthControls />
 
             <button
               aria-label="Toggle menu"
