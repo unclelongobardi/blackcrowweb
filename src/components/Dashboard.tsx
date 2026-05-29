@@ -10,6 +10,7 @@ import {
   IconBell,
   IconChart2,
   IconUser,
+  IconUsers,
   IconSettings,
   IconComment,
   IconRepeat,
@@ -20,12 +21,13 @@ import {
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const NAV = [
-  { label: "Feed", icon: IconFeed, active: true },
+  { label: "War Room", icon: IconFeed, active: true },
   { label: "Markets", icon: IconGrid },
-  { label: "Create Market", icon: IconPlus },
-  { label: "Portfolio", icon: IconChart2 },
+  { label: "Operations", icon: IconPlus },
+  { label: "Cabals", icon: IconUsers },
+  { label: "The Roost", icon: IconChart2 },
+  { label: "Bounties", icon: IconWallet },
   { label: "Notifications", icon: IconBell },
-  { label: "Leaderboard", icon: IconWallet },
   { label: "Profile", icon: IconUser },
   { label: "Settings", icon: IconSettings },
 ];
@@ -115,7 +117,7 @@ export default function Dashboard() {
             {/* Feed */}
             <div className="border-line lg:border-r">
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">FEED</h3>
+                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">WAR ROOM</h3>
                 <button className="flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1 text-[11px] font-medium text-muted transition-colors hover:text-foreground">
                   Trending
                   <span className="text-faint">▾</span>
@@ -174,7 +176,7 @@ export default function Dashboard() {
             {/* Trending markets */}
             <div>
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">TRENDING MARKETS</h3>
+                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">TARGET MARKETS</h3>
                 <a href="#markets" className="text-[11px] font-medium text-muted transition-colors hover:text-foreground">
                   View all
                 </a>

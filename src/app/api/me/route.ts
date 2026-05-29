@@ -1,54 +1,38 @@
 import { NextResponse } from "next/server";
-import { PrivyClient } from "@privy-io/server-auth";
+import { getAuthedProfile } from "@/lib/auth";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const APP_ID = process.env.PRIVY_APP_ID;
-const APP_SECRET = process.env.PRIVY_APP_SECRET;
-
-function getClient(): PrivyClient | null {
-  if (!APP_ID || !APP_SECRET) return null;
-  return new PrivyClient(APP_ID, APP_SECRET);
-}
-
 export async function GET(request: Request) {
-  const client = getClient();
-  if (!client) {
-    return NextResponse.json(
-      { authenticated: false, error: "Server auth is not configured." },
-      { status: 500 },
-    );
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ authenticated: false, error: "Backend not configured." }, { status: 503 });
   }
+  const ctx = await getAuthedProfile(request);
+  if (!ctx) return NextResponse.json({ authenticated: false }, { status: 401 });
 
-  // Accept the Privy access token via Authorization header or the privy-token cookie.
-  const authHeader = request.headers.get("authorization");
-  const bearer = authHeader?.toLowerCase().startsWith("bearer ")
-    ? authHeader.slice(7).trim()
-    : undefined;
-  const cookieToken = request.headers
-    .get("cookie")
-    ?.split(";")
-    .map((c) => c.trim())
-    .find((c) => c.startsWith("privy-token="))
-    ?.split("=")[1];
+  const { supabase, profile } = ctx;
+  const [{ count: cabals }, { count: operations }, { count: posts }] = await Promise.all([
+    supabase.from("cabal_members").select("*", { count: "exact", head: true }).eq("profile_id", profile.id),
+    supabase.from("operation_joins").select("*", { count: "exact", head: true }).eq("profile_id", profile.id),
+    supabase.from("posts").select("*", { count: "exact", head: true }).eq("author_id", profile.id),
+  ]);
 
-  const token = bearer || cookieToken;
-  if (!token) {
-    return NextResponse.json({ authenticated: false }, { status: 401 });
-  }
+  // Rank by influence.
+  const { count: higher } = await supabase
+    .from("profiles")
+    .select("*", { count: "exact", head: true })
+    .gt("influence", profile.influence);
 
-  try {
-    const claims = await client.verifyAuthToken(token);
-    return NextResponse.json({
-      authenticated: true,
-      userId: claims.userId,
-      appId: claims.appId,
-      issuedAt: claims.issuedAt,
-      expiration: claims.expiration,
-      sessionId: claims.sessionId,
-    });
-  } catch {
-    return NextResponse.json({ authenticated: false, error: "Invalid or expired token." }, { status: 401 });
-  }
+  return NextResponse.json({
+    authenticated: true,
+    profile,
+    stats: {
+      cabals: cabals ?? 0,
+      operations: operations ?? 0,
+      posts: posts ?? 0,
+      rank: (higher ?? 0) + 1,
+    },
+  });
 }

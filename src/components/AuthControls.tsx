@@ -65,21 +65,21 @@ export default function AuthControls() {
             <p className="mt-0.5 truncate text-[13px] font-medium text-foreground">{getUserHandle(user)}</p>
           </div>
           <Link
+            href="/app"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
+          >
+            <IconChart2 className="h-4 w-4" /> War Room
+          </Link>
+          <Link
+            href="/app/profile"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
+          >
+            <IconUser className="h-4 w-4" /> Profile
+          </Link>
+          <Link
             href="/account"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
-          >
-            <IconUser className="h-4 w-4" /> My account
-          </Link>
-          <Link
-            href="/account#portfolio"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
-          >
-            <IconChart2 className="h-4 w-4" /> Portfolio
-          </Link>
-          <Link
-            href="/account#wallet"
             onClick={() => setOpen(false)}
             className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
           >

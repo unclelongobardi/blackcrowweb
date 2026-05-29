@@ -15,27 +15,27 @@ const FEATURES = [
   {
     icon: IconSkull,
     title: "ANONYMOUS BY DESIGN",
-    desc: "No KYC. No identity. Just you, your brain and the market.",
-  },
-  {
-    icon: IconChart,
-    title: "PREDICT ANYTHING",
-    desc: "From crypto to politics. If it can move markets, create a market.",
+    desc: "No KYC. No real names. A Solana wallet and a codename are all you bring.",
   },
   {
     icon: IconUsers,
-    title: "SOCIAL INTELLIGENCE",
-    desc: "See what the crowd is thinking. Follow the smart money or fade it.",
+    title: "FORM CABALS",
+    desc: "Band into squads that move as one shadow. Pool conviction and influence.",
   },
   {
     icon: IconBolt,
-    title: "MOVE MARKETS",
-    desc: "Narratives move prices. Attention is liquidity. Be the catalyst.",
+    title: "RUN OPERATIONS",
+    desc: "Coordinate raids on live Polymarket markets. Pick a side and move the line.",
+  },
+  {
+    icon: IconChart,
+    title: "DEBATE & INFLUENCE",
+    desc: "The war room is where narratives are forged. Attention is liquidity.",
   },
   {
     icon: IconTrophy,
-    title: "EARN & CLIMB",
-    desc: "Top predictors earn. Climb the leaderboard. Become a legend.",
+    title: "EARN FEATHERS",
+    desc: "Complete bounties, win operations, climb the Roost. Influence is the only currency.",
   },
 ];
 

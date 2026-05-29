@@ -82,7 +82,7 @@ export default function Hero() {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-bull animate-pulse-dot" />
             <span className="text-[11px] font-medium tracking-[0.14em] text-muted">
-              LIVE PREDICTION MARKETS
+              COORDINATED MARKET WARFARE · LIVE
             </span>
           </motion.div>
 
@@ -119,9 +119,9 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.35, ease }}
             className="mt-6 max-w-md border-l border-line pl-4 text-sm leading-relaxed tracking-wide text-muted"
           >
-            THE FIRST SOCIAL NETWORK FOR
+THE SOCIAL NETWORK FOR COORDINATED MARKET MANIPULATORS.
             <br />
-            COMPLETELY UNQUALIFIED MARKET MANIPULATORS.
+            FORM CABALS. RUN OPERATIONS. MOVE POLYMARKET.
           </motion.p>
 
           <motion.div
@@ -132,10 +132,10 @@ export default function Hero() {
           >
             {authenticated ? (
               <Link
-                href="/account"
+                href="/app"
                 className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
               >
-                ENTER THE NETWORK
+                ENTER THE WAR ROOM
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             ) : (
@@ -148,12 +148,12 @@ export default function Hero() {
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
             )}
-            <a
-              href="#markets"
+            <Link
+              href="/app/markets"
               className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-white/25 hover:bg-surface"
             >
               EXPLORE MARKETS
-            </a>
+            </Link>
           </motion.div>
 
           {/* Avatars + counter */}
