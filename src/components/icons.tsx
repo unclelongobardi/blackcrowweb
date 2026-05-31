@@ -226,3 +226,106 @@ export function IconGlobe(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function IconHome(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 10.5 12 4l8 6.5" />
+      <path d="M6 9.5V20h12V9.5" />
+      <path d="M10 20v-5h4v5" />
+    </svg>
+  );
+}
+
+export function IconSearch(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </svg>
+  );
+}
+
+export function IconMail(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3.5 6.5 8.5 6 8.5-6" />
+    </svg>
+  );
+}
+
+export function IconBookmark(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 4h12v16l-6-4-6 4Z" />
+    </svg>
+  );
+}
+
+export function IconImage(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="8.5" cy="9.5" r="1.5" />
+      <path d="m4 18 5-5 4 4 3-3 4 4" />
+    </svg>
+  );
+}
+
+export function IconPoll(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M5 20V10" />
+      <path d="M12 20V4" />
+      <path d="M19 20v-7" />
+    </svg>
+  );
+}
+
+export function IconThread(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 6h16" />
+      <path d="M4 12h10" />
+      <path d="M4 18h7" />
+    </svg>
+  );
+}
+
+export function IconFilter(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 5h16l-6 7v6l-4 2v-8Z" />
+    </svg>
+  );
+}
+
+export function IconViews(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 20V6" />
+      <path d="M9 20V12" />
+      <path d="M14 20V9" />
+      <path d="M19 20V4" />
+    </svg>
+  );
+}
+
+export function IconChevronDown(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+export function IconShare(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3v12" />
+      <path d="m8 7 4-4 4 4" />
+      <path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7" />
+    </svg>
+  );
+}
