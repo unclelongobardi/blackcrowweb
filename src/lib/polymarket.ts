@@ -60,8 +60,9 @@ async function tryFetch(url: string): Promise<Market[] | null> {
 
 /** Fetch the most active Polymarket markets (read-only, public Gamma API). */
 export async function fetchPolymarketMarkets(limit = 24): Promise<Market[]> {
-  // Fetch a wider pool so we can drop already-resolved markets and still fill `limit`.
-  const pool = Math.max(limit, Math.min(80, limit * 3));
+  // Fetch a wide pool so we can drop resolved markets and surface on-brand
+  // (crypto/economy/politics) ones that may sit below the very top by volume.
+  const pool = Math.min(150, Math.max(limit, limit * 4));
   const urls = [
     `${GAMMA}/markets?active=true&closed=false&archived=false&order=volumeNum&ascending=false&limit=${pool}`,
     `${GAMMA}/markets?closed=false&limit=${pool}`,

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const limit = Math.min(48, Number(new URL(request.url).searchParams.get("limit") ?? 24) || 24);
-  const markets = pickInteresting(await fetchPolymarketMarkets(limit * 3), limit);
+  const markets = pickInteresting(await fetchPolymarketMarkets(120), limit);
 
   // Best-effort cache so operations can reference live markets.
   if (markets.length && isDbConfigured()) {

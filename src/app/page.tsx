@@ -10,7 +10,7 @@ import { fetchPolymarketMarkets, pickInteresting } from "@/lib/polymarket";
 export const revalidate = 180;
 
 export default async function Home() {
-  const markets = pickInteresting(await fetchPolymarketMarkets(40), 14);
+  const markets = pickInteresting(await fetchPolymarketMarkets(120), 14);
 
   return (
     <main className="relative">
