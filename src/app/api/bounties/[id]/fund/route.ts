@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
+import { creatorPostInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { query } from "@/lib/db";
-import { notify } from "@/lib/notifications";
 import { verifyDepositTx } from "@/lib/solana";
 
 export const runtime = "nodejs";
@@ -34,11 +34,19 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   );
   if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
 
+  const creatorFeathers = creatorPostInfluenceFromLamports(bounty.reward_sol_lamports);
+
   await query(
-    `update bounties set status = 'open', deposit_tx = $2, funded_at = now(), creator_wallet = $3
+    `update bounties set status = 'open', deposit_tx = $2, funded_at = now(), creator_wallet = $3,
+       creator_base_lamports = reward_sol_lamports
      where id = $1`,
     [id, txSignature, ctx.profile.wallet_address],
   );
 
-  return NextResponse.json({ funded: true, status: "open" });
+  await query("update profiles set influence = influence + $2 where id = $1", [
+    ctx.profile.id,
+    creatorFeathers,
+  ]);
+
+  return NextResponse.json({ funded: true, status: "open", creator_feathers: creatorFeathers });
 }

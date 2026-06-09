@@ -136,6 +136,20 @@ export type Bounty = {
   market?: Market | null;
   my_role?: "creator" | "helper" | null;
   is_official?: boolean;
+  creator_base_lamports?: number | null;
+  contribution_count?: number;
+  contributions_lamports?: number;
+  contributions?: BountyContribution[];
+};
+
+export type BountyContribution = {
+  id: string;
+  bounty_id: string;
+  profile_id: string | null;
+  lamports: number;
+  tx_signature: string;
+  created_at: string;
+  contributor?: Profile | null;
 };
 
 export type Notification = {

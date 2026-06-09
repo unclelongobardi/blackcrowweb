@@ -128,8 +128,20 @@ create table if not exists bounties (
   assigned_at         timestamptz,
   submitted_at        timestamptz,
   paid_at             timestamptz,
-  is_official         boolean not null default false
+  is_official         boolean not null default false,
+  creator_base_lamports bigint
 );
+
+create table if not exists bounty_contributions (
+  id           uuid primary key default gen_random_uuid(),
+  bounty_id    uuid not null references bounties(id) on delete cascade,
+  profile_id   uuid references profiles(id) on delete set null,
+  lamports     bigint not null,
+  tx_signature text not null unique,
+  created_at   timestamptz not null default now()
+);
+
+create index if not exists idx_bounty_contributions_bounty on bounty_contributions(bounty_id, created_at desc);
 
 -- Bounty indexes applied in supabase/migrations/002_bounty_escrow.sql
 

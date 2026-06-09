@@ -4,10 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { useApi } from "@/lib/useApi";
+import { canContributeToPool } from "@/lib/bountyRules";
+import { creatorPostInfluenceFromLamports, helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { lamportsToSol } from "@/lib/solanaFormat";
 import { useSolanaDeposit } from "@/lib/solanaClient";
 import { pct } from "@/lib/format";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 import Avatar from "./Avatar";
+import { IconFeather } from "@/components/icons";
 import type { Bounty } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -38,6 +42,7 @@ export default function BountyCard({
   const wallet = wallets[0];
   const [busy, setBusy] = useState(false);
   const [proof, setProof] = useState("");
+  const [contribAmount, setContribAmount] = useState("0.1");
   const [error, setError] = useState<string | null>(null);
 
   const sol = lamportsToSol(bounty.reward_sol_lamports);
@@ -46,8 +51,13 @@ export default function BountyCard({
     bounty.is_official ||
     bounty.creator?.codename === "blackcrow_official" ||
     bounty.creator?.codename === "blackcrow";
-  const canApprove =
-    bounty.status === "submitted" && (role === "creator" || isOfficial);
+  const canApprove = bounty.status === "submitted" && role === "creator";
+  const poolOpen = canContributeToPool(bounty.status, bounty.is_official);
+  const helperFeathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
+  const othersSol =
+    bounty.contributions_lamports && bounty.contributions_lamports > 0
+      ? lamportsToSol(bounty.contributions_lamports)
+      : null;
 
   async function run<T>(fn: () => Promise<T>): Promise<T | null> {
     setBusy(true);
@@ -73,13 +83,48 @@ export default function BountyCard({
     if (!built) return;
     const sig = await run(() => sendDeposit(wallet, built.transaction));
     if (!sig) return;
-    await run(() =>
-      api(`/api/bounties/${bounty.id}/fund`, {
+    const res = await run(() =>
+      api<{ creator_feathers?: number }>(`/api/bounties/${bounty.id}/fund`, {
         method: "POST",
         body: JSON.stringify({ tx_signature: sig }),
       }),
     );
-    onUpdate({ ...bounty, status: "open", deposit_tx: sig });
+    if (res) {
+      onUpdate({
+        ...bounty,
+        status: "open",
+        deposit_tx: sig,
+        reward_influence: helperFeathers,
+      });
+    }
+  }
+
+  async function contribute() {
+    if (!wallet) {
+      setError("Connect your Solana wallet first.");
+      return;
+    }
+    const amount = Number(contribAmount);
+    if (!Number.isFinite(amount) || amount < 0.01) {
+      setError("Minimum contribution is 0.01 SOL.");
+      return;
+    }
+    const built = await run(() =>
+      api<{ transaction: string }>(`/api/bounties/${bounty.id}/contribute/deposit-tx`, {
+        method: "POST",
+        body: JSON.stringify({ amount_sol: amount }),
+      }),
+    );
+    if (!built) return;
+    const sig = await run(() => sendDeposit(wallet, built.transaction));
+    if (!sig) return;
+    const res = await run(() =>
+      api<{ bounty: Bounty }>(`/api/bounties/${bounty.id}/contribute`, {
+        method: "POST",
+        body: JSON.stringify({ tx_signature: sig, amount_sol: amount }),
+      }),
+    );
+    if (res?.bounty) onUpdate(res.bounty);
   }
 
   async function accept() {
@@ -142,11 +187,26 @@ export default function BountyCard({
         </div>
         <div className="text-right">
           <p className="font-mono text-lg font-bold text-bull">{sol} SOL</p>
-          <p className="text-[10px] text-faint">
-            {isOfficial ? "In escrow" : `+${bounty.reward_influence} ⚑`}
+          <p className="flex items-center justify-end gap-1 text-[10px] text-faint">
+            {isOfficial ? (
+              "In escrow"
+            ) : (
+              <>
+                +{helperFeathers}
+                <IconFeather className="h-3 w-3 text-bull" /> helper
+              </>
+            )}
           </p>
         </div>
       </div>
+
+      {!isOfficial && bounty.status !== "funding" && (
+        <p className="mt-2 text-[11px] text-faint">
+          Pool
+          {othersSol ? ` · +${othersSol} SOL from ${bounty.contribution_count ?? 0} contributor(s)` : ""}
+          {role === "creator" && bounty.status === "submitted" && " · You decide approve/reject"}
+        </p>
+      )}
 
       <h2 className="mt-3 text-[15px] font-bold tracking-tight text-foreground">{bounty.title}</h2>
       {bounty.description && (
@@ -155,7 +215,7 @@ export default function BountyCard({
 
       {bounty.task && (
         <div className="mt-3 rounded-lg border border-line bg-surface/40 px-3 py-2.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-faint">The job</p>
+          <p className="section-label">The job</p>
           <p className="mt-1 text-[12px] leading-relaxed text-foreground">{bounty.task}</p>
         </div>
       )}
@@ -171,9 +231,29 @@ export default function BountyCard({
         </div>
       )}
 
+      {bounty.contributions && bounty.contributions.length > 0 && (
+        <div className="mt-3 rounded-lg border border-line bg-surface/30 px-3 py-2">
+          <p className="section-label">Pool contributions</p>
+          <div className="mt-2 space-y-1.5">
+            {bounty.contributions.slice(0, 4).map((c) => (
+              <div key={c.id} className="flex items-center justify-between text-[11px]">
+                {c.contributor ? (
+                  <Link href={`/app/u/${c.contributor.codename}`} className="text-muted hover:text-foreground">
+                    @{c.contributor.codename}
+                  </Link>
+                ) : (
+                  <span className="text-faint">anon</span>
+                )}
+                <span className="font-mono text-bull">+{lamportsToSol(c.lamports)} SOL</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {bounty.proof && bounty.status !== "assigned" && (
         <div className="mt-3 rounded-lg border border-bull/20 bg-bull/5 px-3 py-2">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-faint">Proof</p>
+          <p className="section-label">Proof</p>
           <p className="mt-1 whitespace-pre-wrap text-[12px] text-foreground">{bounty.proof}</p>
         </div>
       )}
@@ -203,20 +283,60 @@ export default function BountyCard({
 
       <div className="mt-4 flex flex-col gap-2">
         {bounty.status === "funding" && role === "creator" && (
-          <button
-            onClick={fund}
-            disabled={busy}
-            className="rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-black disabled:opacity-60"
-          >
-            {busy ? "…" : `DEPOSIT ${sol} SOL TO ESCROW`}
-          </button>
+          <>
+            <p className="text-[11px] text-faint">
+              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} Feathers
+            </p>
+            <button
+              type="button"
+              onClick={fund}
+              disabled={busy}
+              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
+            >
+              {busy ? "…" : `DEPOSIT ${sol} SOL TO ESCROW`}
+            </button>
+          </>
+        )}
+
+        {poolOpen && role !== "creator" && (
+          <div className="rounded-xl border border-line bg-surface/30 p-3">
+            <p className="text-[11px] font-semibold text-muted">Boost the pool</p>
+            <p className="mt-1 text-[10px] leading-relaxed text-faint">
+              Add SOL to increase the reward. Only {bounty.creator?.codename ?? "the creator"} approves proof.
+            </p>
+            <div className="mt-2 flex gap-2">
+              <input
+                type="number"
+                min="0.01"
+                step="0.01"
+                value={contribAmount}
+                onChange={(e) => setContribAmount(e.target.value)}
+                className="w-24 rounded-lg border border-line bg-surface/60 px-2 py-2 font-mono text-[12px] outline-none"
+              />
+              <button
+                type="button"
+                onClick={contribute}
+                disabled={busy}
+                className={`${uiBtnPrimary} flex-1 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold text-black disabled:opacity-60`}
+              >
+                {busy ? "…" : "ADD SOL TO POOL"}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {poolOpen && role === "creator" && (
+          <div className="rounded-xl border border-dashed border-line px-3 py-2 text-[10px] text-faint">
+            Others can add SOL to your pool while this is open. You keep final approve/reject power.
+          </div>
         )}
 
         {bounty.status === "open" && !role && (
           <button
+            type="button"
             onClick={accept}
             disabled={busy}
-            className="rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-black disabled:opacity-60"
+            className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
           >
             {busy ? "…" : "I'LL DO IT — ACCEPT BOUNTY"}
           </button>
@@ -232,9 +352,10 @@ export default function BountyCard({
               className="w-full resize-none rounded-xl border border-line bg-surface/60 px-3 py-2 text-[12px] text-foreground placeholder:text-faint outline-none focus:border-white/25"
             />
             <button
+              type="button"
               onClick={submitProof}
               disabled={busy || proof.length < 10}
-              className="rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-black disabled:opacity-60"
+              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
               {busy ? "…" : "SUBMIT PROOF"}
             </button>
@@ -244,16 +365,18 @@ export default function BountyCard({
         {canApprove && (
           <div className="flex gap-2">
             <button
+              type="button"
               onClick={approve}
               disabled={busy}
-              className="flex-1 rounded-lg bg-bull px-4 py-2.5 text-[12px] font-bold tracking-wide text-black disabled:opacity-60"
+              className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
-              {busy ? "…" : isOfficial ? "APPROVE & RELEASE SOL" : "APPROVE & PAY"}
+              {busy ? "…" : isOfficial ? "APPROVE & RELEASE SOL" : "APPROVE & PAY POOL"}
             </button>
             <button
+              type="button"
               onClick={reject}
               disabled={busy}
-              className="flex-1 rounded-lg border border-line px-4 py-2.5 text-[12px] font-semibold text-muted disabled:opacity-60"
+              className="ui-btn flex-1 rounded-lg border border-line px-4 py-2.5 text-[12px] font-semibold text-muted disabled:opacity-60"
             >
               REJECT
             </button>

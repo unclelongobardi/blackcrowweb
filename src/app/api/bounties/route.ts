@@ -3,7 +3,8 @@ import { getAuthedProfile, getProfileId } from "@/lib/auth";
 import { listBounties } from "@/lib/bounties";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
-import { solToLamports } from "@/lib/solana";
+import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
+import { solToLamports } from "@/lib/solanaFormat";
 import type { Bounty } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
       description,
       task,
       lamports.toString(),
-      Math.min(500, Math.round(rewardSol * 10)),
+      helperInfluenceFromLamports(lamports),
       kind,
       wallet,
     ],

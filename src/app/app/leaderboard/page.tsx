@@ -30,14 +30,19 @@ const EARN_RULES = [
     detail: "One-time bonus when you create a public or private group.",
   },
   {
-    action: "Complete a bounty",
+    action: "Post a bounty (goes live)",
     feathers: "Variable",
-    detail: "When the poster approves your proof, you earn Feathers on top of SOL. Amount = reward SOL × 10 (max 500 per bounty).",
+    detail: "When you deposit SOL and the bounty opens: initial SOL × 5 Feathers (max 300). Example: 2 SOL posted → up to 10 Feathers.",
   },
   {
-    action: "Post a bounty",
+    action: "Complete a bounty",
+    feathers: "Variable",
+    detail: "When the creator approves your proof: total pool SOL × 10 Feathers (max 500). Pool includes contributions from others.",
+  },
+  {
+    action: "Add SOL to someone's pool",
     feathers: "0",
-    detail: "Creators pay SOL to helpers — no Feathers for posting, but you build reputation when people take your jobs.",
+    detail: "You can boost a bounty's reward pool with SOL. Only the original creator approves or rejects proof — you don't control the payout decision.",
   },
 ];
 
@@ -100,8 +105,14 @@ export default function LeaderboardPage() {
             Feathers. Higher rank = more visible on The Roost and in search.
           </p>
           <p>
-            <span className="font-semibold text-foreground">Bounty math example:</span> a 1.25 SOL bounty pays the
-            helper 1.25 SOL <em>and</em> up to 12 Feathers (1.25 × 10). A 50 SOL bounty caps at 500 Feathers.
+            <span className="font-semibold text-foreground">Bounty pool:</span> anyone can add SOL while a bounty is
+            open or in progress. The total pool grows — helper payout and helper Feathers scale with the full amount.
+            Only the creator who posted the bounty decides if proof is good enough.
+          </p>
+          <p>
+            <span className="font-semibold text-foreground">Bounty math example:</span> you post 1 SOL → up to 5
+            Feathers when it goes live. Others add 0.5 SOL → pool is 1.5 SOL. Helper gets 1.5 SOL + up to 15 Feathers
+            on approval.
           </p>
           <p>
             <span className="font-semibold text-foreground">Cabals below</span> are ranked by member count — not

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
+import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 import { sendPayout } from "@/lib/solana";
@@ -42,9 +43,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   );
 
   if (bounty.helper_id) {
+    const feathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
     await query(
       "update profiles set influence = influence + $2 where id = $1",
-      [bounty.helper_id, bounty.reward_influence],
+      [bounty.helper_id, feathers],
     );
     await notify(
       bounty.helper_id,
