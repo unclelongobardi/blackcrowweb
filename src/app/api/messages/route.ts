@@ -21,7 +21,9 @@ export async function GET(request: Request) {
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!isDbConfigured()) return NextResponse.json({ conversations: [] });
 
-  const conversations = await query<ConversationRow>(
+  let conversations: ConversationRow[] = [];
+  try {
+    conversations = await query<ConversationRow>(
     `select c.id, c.updated_at,
         row_to_json(p.*) as other,
         (select body from dm_messages m where m.conversation_id = c.id order by m.created_at desc limit 1) as last_body,
@@ -39,7 +41,10 @@ export async function GET(request: Request) {
       order by c.updated_at desc
       limit 40`,
     [ctx.profile.id],
-  );
+    );
+  } catch {
+    return NextResponse.json({ conversations: [] });
+  }
 
   return NextResponse.json({ conversations });
 }

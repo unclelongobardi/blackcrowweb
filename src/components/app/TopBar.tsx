@@ -58,8 +58,10 @@ export default function TopBar() {
       </form>
 
       <div className="ml-auto flex items-center gap-1.5">
-        <Link
-          href="/app/notifications"
+        <button
+          type="button"
+          aria-label="Notifications"
+          onClick={() => router.push("/app/notifications")}
           className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted transition-colors hover:border-white/20 hover:text-foreground"
         >
           <IconBell className="h-[18px] w-[18px]" />
@@ -68,13 +70,15 @@ export default function TopBar() {
               {unread > 9 ? "9+" : unread}
             </span>
           )}
-        </Link>
-        <Link
-          href="/app/messages"
+        </button>
+        <button
+          type="button"
+          aria-label="Messages"
+          onClick={() => router.push("/app/messages")}
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted transition-colors hover:border-white/20 hover:text-foreground"
         >
           <IconMail className="h-[18px] w-[18px]" />
-        </Link>
+        </button>
 
         <div className="relative ml-1" ref={ref}>
           <button

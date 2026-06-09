@@ -10,13 +10,20 @@ export default function NotificationsPage() {
   const api = useApi();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
         const data = await api<{ notifications: Notification[] }>("/api/notifications");
-        setNotifications(data.notifications);
-        await api("/api/notifications", { method: "PATCH" });
+        setNotifications(data.notifications ?? []);
+        try {
+          await api("/api/notifications", { method: "PATCH" });
+        } catch {
+          /* mark-read is best-effort */
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Could not load notifications.");
       } finally {
         setLoading(false);
       }
@@ -32,6 +39,8 @@ export default function NotificationsPage() {
         <div className="flex justify-center py-20">
           <div className="h-7 w-7 animate-spin rounded-full border-2 border-line border-t-foreground" />
         </div>
+      ) : error ? (
+        <p className="py-16 text-center text-[13px] text-bear">{error}</p>
       ) : notifications.length === 0 ? (
         <p className="py-16 text-center text-[13px] text-faint">Nothing yet. Post or accept a bounty.</p>
       ) : (

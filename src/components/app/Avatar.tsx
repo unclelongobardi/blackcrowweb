@@ -7,7 +7,7 @@ const NFTS = [
   "/images/avatars/av6.png",
 ];
 
-const RAVEN = "/images/raven-hero-cutout.png";
+const OFFICIAL = "/images/blackcrow-official.png";
 
 function hash(seed: string): number {
   let h = 0;
@@ -15,8 +15,12 @@ function hash(seed: string): number {
   return Math.abs(h);
 }
 
+function isOfficial(seed: string): boolean {
+  return seed === "blackcrow_official" || seed === "blackcrow";
+}
+
 function avatarSrc(seed: string): string {
-  if (seed === "blackcrow_official" || seed === "blackcrow") return RAVEN;
+  if (isOfficial(seed)) return OFFICIAL;
   return NFTS[hash(seed) % NFTS.length];
 }
 
@@ -35,7 +39,7 @@ export default function Avatar({
 }) {
   const s = seed || label || "crow";
   const src = avatarSrc(s);
-  const isRaven = src === RAVEN;
+  const official = isOfficial(s);
 
   return (
     <span className="relative inline-flex shrink-0">
@@ -47,8 +51,8 @@ export default function Avatar({
         width={size}
         height={size}
         style={{ width: size, height: size }}
-        className={`rounded-full bg-surface object-cover ring-1 ring-white/10 ${
-          isRaven ? "object-contain bg-black/40 p-0.5" : ""
+        className={`rounded-full ring-1 ring-white/10 ${
+          official ? "bg-white object-contain p-1" : "bg-surface object-cover"
         } ${className}`}
       />
       {verified && (

@@ -3,12 +3,14 @@
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
+import { useAppContext } from "@/components/app/appContext";
 import Avatar from "@/components/app/Avatar";
 import { timeAgo } from "@/lib/format";
 import type { DmConversation, DmMessage, Profile } from "@/lib/types";
 
 function MessagesContent() {
   const api = useApi();
+  const { me } = useAppContext();
   const searchParams = useSearchParams();
   const activeId = searchParams.get("c");
   const toCodename = searchParams.get("to");
@@ -20,6 +22,7 @@ function MessagesContent() {
   const [newTo, setNewTo] = useState(toCodename ?? "");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const loadConversations = useCallback(async () => {
     const data = await api<{ conversations: DmConversation[] }>("/api/messages");
@@ -35,8 +38,11 @@ function MessagesContent() {
   useEffect(() => {
     (async () => {
       try {
+        setError(null);
         await loadConversations();
         if (activeId) await loadThread(activeId);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Could not load messages.");
       } finally {
         setLoading(false);
       }
@@ -94,9 +100,14 @@ function MessagesContent() {
                   activeId === c.id ? "bg-white/[0.04]" : ""
                 }`}
               >
-                <Avatar seed={c.other.avatar_seed} label={c.other.codename} size={36} verified={c.other.is_verified} />
+                <Avatar
+                  seed={c.other?.avatar_seed}
+                  label={c.other?.codename}
+                  size={36}
+                  verified={c.other?.is_verified || c.other?.codename === "blackcrow_official"}
+                />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[13px] font-semibold">{c.other.codename}</p>
+                  <p className="truncate text-[13px] font-semibold">{c.other?.codename ?? "…"}</p>
                   <p className="truncate text-[11px] text-faint">{c.last_body ?? "…"}</p>
                 </div>
                 {c.unread && <span className="h-2 w-2 rounded-full bg-bull" />}
@@ -107,6 +118,9 @@ function MessagesContent() {
       </aside>
 
       <section className="glass flex min-w-0 flex-1 flex-col rounded-2xl border border-line">
+        {error && (
+          <p className="border-b border-line px-4 py-3 text-[12px] text-bear">{error}</p>
+        )}
         {activeId || toCodename ? (
           <>
             <div className="border-b border-line px-4 py-3">
@@ -126,9 +140,9 @@ function MessagesContent() {
                 <div
                   key={m.id}
                   className={`max-w-[80%] rounded-xl px-3 py-2 text-[13px] ${
-                    m.sender_id === other?.id
-                      ? "bg-surface/60 text-foreground"
-                      : "ml-auto bg-bull/15 text-foreground"
+                    m.sender_id === me?.profile.id
+                      ? "ml-auto bg-bull/15 text-foreground"
+                      : "bg-surface/60 text-foreground"
                   }`}
                 >
                   {m.body}

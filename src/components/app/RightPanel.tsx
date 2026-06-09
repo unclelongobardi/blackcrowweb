@@ -112,15 +112,6 @@ export default function RightPanel({
         </div>
       </Section>
 
-      <div className="rounded-2xl border border-line bg-surface/40 p-4">
-        <p className="text-[10px] font-bold tracking-[0.16em] text-muted">QUICK START</p>
-        <ol className="mt-3 space-y-2 text-[11px] leading-relaxed text-muted">
-          <li><span className="font-mono text-bull">1.</span> Pick a thin market</li>
-          <li><span className="font-mono text-bull">2.</span> Post bounty + deposit SOL</li>
-          <li><span className="font-mono text-bull">3.</span> Someone accepts &amp; executes</li>
-          <li><span className="font-mono text-bull">4.</span> You approve → they get paid</li>
-        </ol>
-      </div>
     </aside>
   );
 }

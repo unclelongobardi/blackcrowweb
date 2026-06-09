@@ -133,6 +133,31 @@ create table if not exists bounties (
 
 -- Bounty indexes applied in supabase/migrations/002_bounty_escrow.sql
 
+-- ───────────────────────────── DIRECT MESSAGES ──────────────────────────────
+create table if not exists dm_conversations (
+  id         uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists dm_participants (
+  conversation_id uuid references dm_conversations(id) on delete cascade,
+  profile_id      uuid references profiles(id) on delete cascade,
+  last_read_at    timestamptz,
+  primary key (conversation_id, profile_id)
+);
+
+create table if not exists dm_messages (
+  id              uuid primary key default gen_random_uuid(),
+  conversation_id uuid references dm_conversations(id) on delete cascade,
+  sender_id       uuid references profiles(id) on delete set null,
+  body            text not null,
+  created_at      timestamptz not null default now()
+);
+
+create index if not exists idx_dm_messages_conv on dm_messages(conversation_id, created_at desc);
+create index if not exists idx_dm_participants_profile on dm_participants(profile_id);
+
 -- ───────────────────────────── NOTIFICATIONS ────────────────────────────────
 create table if not exists notifications (
   id         uuid primary key default gen_random_uuid(),

@@ -11,13 +11,13 @@ import TopBar from "./TopBar";
 import Onboarding from "./Onboarding";
 import { AppContext, type Me } from "./appContext";
 import { useApi } from "@/lib/useApi";
-import { IconArrow, IconHome, IconGrid, IconTrophy, IconUser } from "@/components/icons";
+import { IconArrow, IconHome, IconGrid, IconTrophy, IconUser, IconBell, IconMail } from "@/components/icons";
 
 const MOBILE_NAV = [
   { label: "Bounties", href: "/app", icon: IconHome },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
-  { label: "Cabals", href: "/app/cabals", icon: IconTrophy },
-  { label: "Msgs", href: "/app/messages", icon: IconGrid },
+  { label: "Msgs", href: "/app/messages", icon: IconMail },
+  { label: "Alerts", href: "/app/notifications", icon: IconBell },
   { label: "Profile", href: "/app/profile", icon: IconUser },
 ];
 
