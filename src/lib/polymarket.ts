@@ -85,7 +85,14 @@ export async function fetchPolymarketMarkets(limit = 24): Promise<Market[]> {
  * lively instead of showing near-certain outcomes. Falls back to the rest.
  */
 export function pickInteresting(markets: Market[], n = 14): Market[] {
-  const balanced = markets.filter((m) => m.yes_price != null && m.yes_price >= 0.1 && m.yes_price <= 0.9);
+  const balanced = markets.filter(
+    (m) => m.yes_price != null && m.yes_price >= 0.1 && m.yes_price <= 0.9,
+  );
+  // Sort balanced toward 50/50 first (most "contested" = most interesting).
+  balanced.sort((a, b) => Math.abs(0.5 - (a.yes_price ?? 0)) - Math.abs(0.5 - (b.yes_price ?? 0)));
+
+  // Only backfill with extremes if we genuinely don't have enough balanced ones.
+  if (balanced.length >= Math.min(n, 5)) return balanced.slice(0, n);
   const rest = markets.filter((m) => !balanced.includes(m));
   return [...balanced, ...rest].slice(0, n);
 }
