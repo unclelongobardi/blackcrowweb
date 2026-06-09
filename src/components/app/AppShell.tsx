@@ -14,10 +14,9 @@ import { useApi } from "@/lib/useApi";
 import { IconArrow, IconHome, IconGrid, IconTrophy, IconUser } from "@/components/icons";
 
 const MOBILE_NAV = [
-  { label: "Home", href: "/app", icon: IconHome },
+  { label: "Bounties", href: "/app", icon: IconHome },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
-  { label: "Bounties", href: "/app/rewards", icon: IconTrophy },
-  { label: "Ops", href: "/app/operations", icon: IconGrid },
+  { label: "Ops", href: "/app/operations", icon: IconTrophy },
   { label: "Profile", href: "/app/profile", icon: IconUser },
 ];
 

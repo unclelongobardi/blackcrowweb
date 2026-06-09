@@ -37,10 +37,10 @@ export default function MarketsPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-6">
       <header className="mb-6">
-        <h1 className="font-display text-2xl font-extrabold tracking-tight">TARGET MARKETS</h1>
+        <h1 className="font-display text-2xl font-extrabold tracking-tight">THIN MARKETS</h1>
         <p className="mt-1 max-w-xl text-[13px] text-faint">
-          Find thin books you can actually move. Hair dryer on a thermometer? That&apos;s an action bounty.
-          You don&apos;t bet here — you find the play, rally people, bet on Polymarket yourself.
+          Low-volume books you can nudge. Pick one → <strong className="text-muted">POST BOUNTY</strong> to pay
+          someone in SOL to execute the play. You bet on Polymarket yourself — we coordinate here.
         </p>
       </header>
 

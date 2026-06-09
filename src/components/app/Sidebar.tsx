@@ -15,9 +15,8 @@ import {
 } from "@/components/icons";
 
 const NAV = [
-  { label: "Home", href: "/app", icon: IconHome },
+  { label: "Bounties", href: "/app", icon: IconHome, primary: true },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
-  { label: "Bounties", href: "/app/rewards", icon: IconTrophy },
   { label: "Operations", href: "/app/operations", icon: IconGrid },
   { label: "Cabals", href: "/app/cabals", icon: IconUsers },
   { label: "Leaderboard", href: "/app/leaderboard", icon: IconTrophy },
@@ -53,16 +52,25 @@ export default function Sidebar() {
             >
               <item.icon className={`h-[18px] w-[18px] ${active ? "text-foreground" : "text-faint group-hover:text-muted"}`} />
               <span className="flex-1">{item.label}</span>
+              {item.primary && (
+                <span className="rounded bg-bull/15 px-1.5 py-0.5 text-[9px] font-bold text-bull">SOL</span>
+              )}
             </Link>
           );
         })}
       </nav>
 
-      <div className="mx-3 mb-3 rounded-xl border border-line bg-surface/60 p-4">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-faint">How it works</p>
+      <div className="mx-3 mb-3 rounded-xl border border-bull/20 bg-bull/5 p-4">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-bull">The loop</p>
         <p className="mt-2 text-[11px] leading-relaxed text-muted">
-          Find thin markets. Post a bounty in SOL. Someone does the job. You approve → they get paid.
+          Thin market → post bounty → deposit SOL → someone executes → you approve → payout.
         </p>
+        <Link
+          href="/app/markets"
+          className="mt-3 inline-block text-[11px] font-semibold text-bull hover:underline"
+        >
+          Browse thin books →
+        </Link>
       </div>
 
       <div className="px-3 pb-4">
