@@ -1,11 +1,10 @@
-const GRADIENTS = [
-  "from-emerald-500/60 to-teal-700/60",
-  "from-fuchsia-500/60 to-purple-700/60",
-  "from-sky-500/60 to-blue-700/60",
-  "from-amber-500/60 to-orange-700/60",
-  "from-rose-500/60 to-red-700/60",
-  "from-lime-500/60 to-green-700/60",
-  "from-indigo-500/60 to-violet-700/60",
+const NFTS = [
+  "/images/avatars/av1.png",
+  "/images/avatars/av2.png",
+  "/images/avatars/av3.png",
+  "/images/avatars/av4.png",
+  "/images/avatars/av5.png",
+  "/images/avatars/av6.png",
 ];
 
 function hash(seed: string): number {
@@ -26,14 +25,17 @@ export default function Avatar({
   className?: string;
 }) {
   const s = seed || label || "crow";
-  const gradient = GRADIENTS[hash(s) % GRADIENTS.length];
-  const initials = (label || s).replace(/[^a-zA-Z0-9]/g, "").slice(0, 2).toUpperCase() || "BC";
+  const src = NFTS[hash(s) % NFTS.length];
   return (
-    <span
-      className={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${gradient} font-bold text-white ring-1 ring-white/10 ${className}`}
-      style={{ width: size, height: size, fontSize: size * 0.36 }}
-    >
-      {initials}
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={label ?? ""}
+      loading="lazy"
+      width={size}
+      height={size}
+      style={{ width: size, height: size }}
+      className={`shrink-0 rounded-full bg-surface object-cover ring-1 ring-white/10 ${className}`}
+    />
   );
 }

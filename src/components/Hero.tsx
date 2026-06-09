@@ -53,9 +53,14 @@ function StatCard({
   );
 }
 
-const AVATAR_SEEDS = ["Nyx", "Vega", "Karma", "Ghost", "Loki", "Onyx"];
-const avatarUrl = (seed: string) =>
-  `https://api.dicebear.com/9.x/bottts/png?seed=${seed}&size=80&radius=50`;
+const AVATAR_IMAGES = [
+  "/images/avatars/av1.png",
+  "/images/avatars/av2.png",
+  "/images/avatars/av3.png",
+  "/images/avatars/av4.png",
+  "/images/avatars/av5.png",
+  "/images/avatars/av6.png",
+];
 
 export default function Hero() {
   const { ready, authenticated, login } = usePrivy();
@@ -161,11 +166,11 @@ It&apos;s a social network. You meet people, post spicy takes, and
             className="mt-9 flex items-center gap-4"
           >
             <div className="flex -space-x-2.5">
-              {AVATAR_SEEDS.map((seed) => (
+              {AVATAR_IMAGES.map((src) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  key={seed}
-                  src={avatarUrl(seed)}
+                  key={src}
+                  src={src}
                   alt=""
                   loading="lazy"
                   className="h-9 w-9 rounded-full border-2 border-background bg-surface object-cover ring-1 ring-white/10"
