@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Logo from "./Logo";
+import { shortLabel } from "@/lib/format";
+import type { Market } from "@/lib/types";
 import {
   IconFeed,
   IconGrid,
@@ -68,15 +70,29 @@ const FEED = [
   },
 ];
 
-const MARKETS = [
-  { name: "BTC above $100K", sub: "This week?", val: "63%", up: true },
-  { name: "Ethereum above $4K", sub: "May 2025?", val: "41%", up: false },
-  { name: "Solana above $200", sub: "June 2025?", val: "28%", up: false },
-  { name: "BlackRock launches", sub: "BTC ETF this year?", val: "72%", up: true },
-  { name: "US in recession", sub: "by Q4 2025?", val: "66%", up: true },
+const FALLBACK_MARKETS = [
+  { name: "BTC above $100K", sub: "This month?", val: "63%", up: true },
+  { name: "Ethereum above $4K", sub: "2026?", val: "41%", up: false },
+  { name: "Solana above $200", sub: "2026?", val: "28%", up: false },
+  { name: "BlackRock launches", sub: "new ETF this year?", val: "72%", up: true },
+  { name: "US in recession", sub: "by Q4 2026?", val: "66%", up: true },
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
+  const live = markets.filter((m) => m.yes_price != null);
+  const marketList =
+    live.length >= 5
+      ? live.slice(0, 5).map((m) => {
+          const yes = Math.round((m.yes_price ?? 0) * 100);
+          return {
+            name: shortLabel(m.question, 30),
+            sub: m.category || "Live on Polymarket",
+            val: `${yes}%`,
+            up: yes >= 50,
+          };
+        })
+      : FALLBACK_MARKETS;
+
   return (
     <section id="feed" className="relative scroll-mt-24 px-6 py-20 lg:py-28">
       <div className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -182,7 +198,7 @@ export default function Dashboard() {
                 </a>
               </div>
               <div className="flex flex-col">
-                {MARKETS.map((m, i) => (
+                {marketList.map((m, i) => (
                   <motion.button
                     key={m.name}
                     initial={{ opacity: 0, x: 12 }}

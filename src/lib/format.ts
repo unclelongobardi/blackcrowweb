@@ -20,3 +20,8 @@ export function pct(price: number | null | undefined): string {
   if (price == null || Number.isNaN(price)) return "—";
   return `${Math.round(price * 100)}%`;
 }
+
+export function shortLabel(q: string, max = 26): string {
+  const clean = q.replace(/\?+$/, "?").trim();
+  return clean.length > max ? clean.slice(0, max).trimEnd() + "…" : clean;
+}

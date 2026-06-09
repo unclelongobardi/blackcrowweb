@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { usePrivy } from "@privy-io/react-auth";
 import { IconArrow } from "./icons";
 import OnlineCounter from "./OnlineCounter";
+import { pct, shortLabel } from "@/lib/format";
+import type { Market } from "@/lib/types";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -62,8 +64,30 @@ const AVATAR_IMAGES = [
   "/images/avatars/av6.png",
 ];
 
-export default function Hero() {
+const FALLBACK_CARDS = [
+  { label: "Fed rate cut · 2026?", yes: "42%", no: "58%" },
+  { label: "BTC new ATH this month?", yes: "78%", no: "22%" },
+  { label: "Bitcoin above $150K in 2026?", yes: "63%", no: "37%" },
+];
+
+const CARD_POS = [
+  { className: "left-0 top-8 sm:left-2", delay: 0.7, float: "animate-float" },
+  { className: "right-[14%] top-2 sm:top-4", delay: 0.85, float: "animate-float-slow" },
+  { className: "bottom-8 right-[12%] sm:right-[14%]", delay: 1, float: "animate-float" },
+];
+
+export default function Hero({ markets = [] }: { markets?: Market[] }) {
   const { ready, authenticated, login } = usePrivy();
+
+  const live = markets.filter((m) => m.yes_price != null).slice(0, 3);
+  const cards =
+    live.length === 3
+      ? live.map((m) => ({
+          label: shortLabel(m.question, 30),
+          yes: pct(m.yes_price),
+          no: pct(m.no_price ?? (m.yes_price != null ? 1 - m.yes_price : null)),
+        }))
+      : FALLBACK_CARDS;
 
   return (
     <section id="home" className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-40">
@@ -205,27 +229,17 @@ It&apos;s a social network. You meet people, post spicy takes, and
             <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(5,5,6,0.55)_100%)]" />
           </motion.div>
 
-          <StatCard
-            className="left-0 top-8 sm:left-2"
-            label="Fed rate cut · May 2025?"
-            yes="42%"
-            no="58%"
-            delay={0.7}
-          />
-          <StatCard
-            className="right-[14%] top-2 sm:top-4"
-            label="Smelldown"
-            yes="78%"
-            delay={0.85}
-            float="animate-float-slow"
-          />
-          <StatCard
-            className="bottom-8 right-[12%] sm:right-[14%]"
-            label="Bitcoin ATH this week?"
-            yes="63%"
-            no="37%"
-            delay={1}
-          />
+          {cards.map((c, i) => (
+            <StatCard
+              key={i}
+              className={CARD_POS[i].className}
+              label={c.label}
+              yes={c.yes}
+              no={c.no}
+              delay={CARD_POS[i].delay}
+              float={CARD_POS[i].float}
+            />
+          ))}
         </div>
       </div>
     </section>
