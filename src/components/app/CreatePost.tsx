@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
+import { uiBtnPrimary, uiPress } from "@/lib/uiClasses";
 import { IconGrid, IconImage, IconPoll, IconThread, IconChevronDown } from "@/components/icons";
 
 type Sentiment = "bullish" | "bearish" | "neutral";
@@ -75,9 +76,10 @@ export default function CreatePost({
                 {SENTIMENTS.map((s) => (
                   <button
                     key={s.id}
+                    type="button"
                     onClick={() => setSentiment(s.id)}
                     title={s.label}
-                    className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
+                    className={`${uiPress} flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium ${
                       sentiment === s.id ? "bg-white/[0.06] text-foreground" : "text-faint hover:text-muted"
                     }`}
                   >
@@ -92,9 +94,10 @@ export default function CreatePost({
                 <IconChevronDown className="h-3.5 w-3.5 text-faint" />
               </button>
               <button
+                type="button"
                 onClick={submit}
                 disabled={!content.trim() || loading}
-                className="rounded-lg bg-foreground px-5 py-2 text-[13px] font-bold text-black transition-transform hover:scale-[1.03] disabled:opacity-40"
+                className={`${uiBtnPrimary} rounded-lg bg-foreground px-5 py-2 text-[13px] font-bold text-black disabled:opacity-40`}
               >
                 {loading ? "…" : "Post"}
               </button>

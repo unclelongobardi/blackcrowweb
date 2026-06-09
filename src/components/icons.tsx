@@ -3,7 +3,7 @@ import type { SVGProps } from "react";
 const base = {
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.6,
+  strokeWidth: 1.75,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
   viewBox: "0 0 24 24",
@@ -157,8 +157,8 @@ export function IconWallet(props: SVGProps<SVGSVGElement>) {
 export function IconBell(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
-      <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" />
-      <path d="M10 19a2 2 0 0 0 4 0" />
+      <path d="M7 9a5 5 0 0 1 10 0c0 4.5 2 5.5 2 5.5H5S7 13.5 7 9Z" />
+      <path d="M10.5 18.5a1.8 1.8 0 0 0 3 0" />
     </svg>
   );
 }
@@ -230,9 +230,8 @@ export function IconGlobe(props: SVGProps<SVGSVGElement>) {
 export function IconHome(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
-      <path d="M4 10.5 12 4l8 6.5" />
-      <path d="M6 9.5V20h12V9.5" />
-      <path d="M10 20v-5h4v5" />
+      <path d="M5 11.5 12 5l7 6.5" />
+      <path d="M7.5 10.5V19h9v-8.5" />
     </svg>
   );
 }
@@ -249,8 +248,9 @@ export function IconSearch(props: SVGProps<SVGSVGElement>) {
 export function IconMail(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m3.5 6.5 8.5 6 8.5-6" />
+      <rect x="3" y="6" width="18" height="13" rx="2" />
+      <path d="m3 8 9 6 9-6" />
+      <path d="M3 19l6.5-5M21 19l-6.5-5" />
     </svg>
   );
 }
@@ -326,6 +326,48 @@ export function IconShare(props: SVGProps<SVGSVGElement>) {
       <path d="M12 3v12" />
       <path d="m8 7 4-4 4 4" />
       <path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7" />
+    </svg>
+  );
+}
+
+/** Reputation / feathers */
+export function IconFeather(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 20 20 4" />
+      <path d="M4 20l5-1.5L4 13l7-1.5L4 6l8 2" />
+    </svg>
+  );
+}
+
+/** Cabal / group shield */
+export function IconCabal(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3 20 7v6c0 4-3.5 7-8 8-4.5-1-8-4-8-8V7l8-4Z" />
+      <path d="M9 12h6M12 9v6" />
+    </svg>
+  );
+}
+
+/** Leaderboard roost */
+export function IconRoost(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 20V10l6-4 6 4v10" />
+      <path d="M9 20v-5h6v5" />
+      <path d="M12 6v3" />
+    </svg>
+  );
+}
+
+/** Target / bounty hub */
+export function IconTarget(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
     </svg>
   );
 }

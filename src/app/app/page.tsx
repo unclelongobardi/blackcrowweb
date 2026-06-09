@@ -9,6 +9,7 @@ import CreatePost from "@/components/app/CreatePost";
 import PostCard from "@/components/app/PostCard";
 import BountyCard from "@/components/app/BountyCard";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 import RightPanel from "@/components/app/RightPanel";
 import type { Bounty, Market, Post } from "@/lib/types";
 
@@ -84,14 +85,15 @@ export default function HomePage() {
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <button
+              type="button"
               onClick={() => setShowCreate(true)}
-              className="rounded-xl bg-foreground px-5 py-2.5 text-[12px] font-bold tracking-wide text-black transition-transform hover:scale-[1.02]"
+              className={`${uiBtnPrimary} rounded-xl bg-foreground px-5 py-2.5 text-[12px] font-bold text-black`}
             >
               + POST A BOUNTY
             </button>
             <Link
               href="/app/markets"
-              className="rounded-xl border border-line px-5 py-2.5 text-[12px] font-semibold text-foreground transition-colors hover:border-white/25"
+              className="ui-nav rounded-xl border border-line px-5 py-2.5 text-[12px] font-semibold text-foreground hover:border-white/25"
             >
               FIND THIN MARKETS
             </Link>
@@ -115,8 +117,9 @@ export default function HomePage() {
             ).map(([id, label]) => (
               <button
                 key={id}
+                type="button"
                 onClick={() => setTab(id)}
-                className={`relative px-5 py-3.5 text-[13.5px] font-medium transition-colors ${
+                className={`ui-press relative px-5 py-3.5 text-[13.5px] font-medium ${
                   tab === id ? "text-foreground" : "text-faint hover:text-muted"
                 }`}
               >
@@ -145,8 +148,9 @@ export default function HomePage() {
                   Be the first. Pick a thin market, describe the job, lock SOL in escrow.
                 </p>
                 <button
+                  type="button"
                   onClick={() => setShowCreate(true)}
-                  className="mt-5 rounded-xl bg-foreground px-6 py-3 text-[12px] font-bold text-black"
+                  className={`${uiBtnPrimary} mt-5 rounded-xl bg-foreground px-6 py-3 text-[12px] font-bold text-black`}
                 >
                   POST THE FIRST BOUNTY
                 </button>

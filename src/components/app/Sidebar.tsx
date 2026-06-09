@@ -6,24 +6,26 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import Logo from "@/components/Logo";
 import { truncateAddress } from "@/lib/user";
+import { uiNav, uiBtn } from "@/lib/uiClasses";
 import {
-  IconHome,
+  IconTarget,
   IconGrid,
-  IconTrophy,
-  IconUsers,
-  IconWallet,
-  IconBell,
+  IconCabal,
   IconMail,
+  IconBell,
+  IconRoost,
+  IconUser,
+  IconWallet,
 } from "@/components/icons";
 
 const NAV = [
-  { label: "Bounties", href: "/app", icon: IconHome, primary: true },
+  { label: "Bounties", href: "/app", icon: IconTarget, primary: true },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
-  { label: "Cabals", href: "/app/cabals", icon: IconUsers },
+  { label: "Cabals", href: "/app/cabals", icon: IconCabal },
   { label: "Messages", href: "/app/messages", icon: IconMail },
   { label: "Notifications", href: "/app/notifications", icon: IconBell },
-  { label: "Leaderboard", href: "/app/leaderboard", icon: IconTrophy },
-  { label: "Profile", href: "/app/profile", icon: IconUsers },
+  { label: "Leaderboard", href: "/app/leaderboard", icon: IconRoost },
+  { label: "Profile", href: "/app/profile", icon: IconUser },
 ];
 
 export default function Sidebar() {
@@ -47,7 +49,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium transition-colors ${
+              className={`${uiNav} group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium ${
                 active
                   ? "bg-white/[0.06] text-foreground"
                   : "text-muted hover:bg-white/[0.03] hover:text-foreground"
@@ -65,8 +67,9 @@ export default function Sidebar() {
 
       <div className="px-3 pb-4">
         <button
+          type="button"
           onClick={() => connectWallet()}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-3 py-3 text-[12.5px] font-semibold tracking-wide text-foreground transition-colors hover:border-white/25"
+          className={`${uiBtn} flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-3 py-3 text-[12.5px] font-semibold text-foreground hover:border-white/25`}
         >
           <IconWallet className="h-4 w-4" />
           {wallet ? truncateAddress(wallet, 4) : "Connect Wallet"}

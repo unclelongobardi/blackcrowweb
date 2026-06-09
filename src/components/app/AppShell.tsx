@@ -11,10 +11,11 @@ import TopBar from "./TopBar";
 import Onboarding from "./Onboarding";
 import { AppContext, type Me } from "./appContext";
 import { useApi } from "@/lib/useApi";
-import { IconArrow, IconHome, IconGrid, IconTrophy, IconUser, IconBell, IconMail } from "@/components/icons";
+import { uiNav, uiBtnPrimary } from "@/lib/uiClasses";
+import { IconArrow, IconTarget, IconGrid, IconMail, IconBell, IconUser } from "@/components/icons";
 
 const MOBILE_NAV = [
-  { label: "Bounties", href: "/app", icon: IconHome },
+  { label: "Bounties", href: "/app", icon: IconTarget },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
   { label: "Msgs", href: "/app/messages", icon: IconMail },
   { label: "Alerts", href: "/app/notifications", icon: IconBell },
@@ -63,8 +64,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </p>
         <div className="mt-7 flex gap-3">
           <button
+            type="button"
             onClick={login}
-            className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
+            className={`${uiBtnPrimary} group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold text-black`}
           >
             CONNECT WALLET
             <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -101,7 +103,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center gap-1 rounded-lg px-3 py-1 text-[10px] ${
+              className={`${uiNav} flex flex-col items-center gap-1 rounded-lg px-3 py-1 text-[10px] ${
                 active ? "text-foreground" : "text-faint"
               }`}
             >

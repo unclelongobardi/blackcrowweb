@@ -7,6 +7,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
 import { useApi } from "@/lib/useApi";
+import { uiPress } from "@/lib/uiClasses";
 import { IconSearch, IconBell, IconMail, IconChevronDown } from "@/components/icons";
 
 export default function TopBar() {
@@ -62,7 +63,7 @@ export default function TopBar() {
           type="button"
           aria-label="Notifications"
           onClick={() => router.push("/app/notifications")}
-          className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted transition-colors hover:border-white/20 hover:text-foreground"
+          className={`${uiPress} relative flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground`}
         >
           <IconBell className="h-[18px] w-[18px]" />
           {unread > 0 && (
@@ -75,15 +76,16 @@ export default function TopBar() {
           type="button"
           aria-label="Messages"
           onClick={() => router.push("/app/messages")}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted transition-colors hover:border-white/20 hover:text-foreground"
+          className={`${uiPress} flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground`}
         >
           <IconMail className="h-[18px] w-[18px]" />
         </button>
 
         <div className="relative ml-1" ref={ref}>
           <button
+            type="button"
             onClick={() => setOpen((v) => !v)}
-            className="flex items-center gap-2 rounded-xl border border-line py-1.5 pl-1.5 pr-2.5 transition-colors hover:border-white/20"
+            className={`${uiPress} flex items-center gap-2 rounded-xl border border-line py-1.5 pl-1.5 pr-2.5 hover:border-white/20`}
           >
             <Avatar
               seed={me?.profile.avatar_seed}

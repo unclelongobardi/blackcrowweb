@@ -19,7 +19,7 @@ function Section({
   return (
     <div className="glass rounded-2xl">
       <div className="flex items-center justify-between px-4 py-3">
-        <h2 className="text-[11px] font-bold tracking-[0.16em] text-muted">{title}</h2>
+        <h2 className="section-label">{title}</h2>
         {href && (
           <Link href={href} className="text-[11px] font-medium text-faint transition-colors hover:text-foreground">
             View all
