@@ -35,9 +35,9 @@ export default function Footer() {
           <div>
             <Logo className="text-foreground" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-              Markets are chaos.
+              A social network where you make friends
               <br />
-              We just give it a voice.
+              and move markets together. What could go wrong?
             </p>
           </div>
 

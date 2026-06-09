@@ -20,12 +20,12 @@ const display = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "BLACKCROW — Predict Chaos. Move Markets. Stay Anonymous.",
+  title: "BLACKCROW — Make friends. Move markets. Together.",
   description:
-    "The first social network for completely unqualified market manipulators. Anonymous prediction markets for degens.",
+    "A social network with a gambling problem. Meet people, post your takes, and move prediction markets together. Anonymous, on Solana.",
   openGraph: {
     title: "BLACKCROW",
-    description: "Predict Chaos. Move Markets. Stay Anonymous.",
+    description: "A social network where you make friends and move markets together.",
     type: "website",
   },
 };

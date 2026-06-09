@@ -82,7 +82,7 @@ export default function Hero() {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-bull animate-pulse-dot" />
             <span className="text-[11px] font-medium tracking-[0.14em] text-muted">
-              COORDINATED MARKET WARFARE · LIVE
+              MAKE FRIENDS · MOVE MARKETS · LIVE
             </span>
           </motion.div>
 
@@ -119,9 +119,9 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.35, ease }}
             className="mt-6 max-w-md border-l border-line pl-4 text-sm leading-relaxed tracking-wide text-muted"
           >
-THE SOCIAL NETWORK FOR COORDINATED MARKET MANIPULATORS.
-            <br />
-            FORM CABALS. RUN OPERATIONS. MOVE POLYMARKET.
+It&apos;s a social network. You meet people, post spicy takes, and
+            move prediction markets together. Like a group chat — except the
+            group chat moves the odds.
           </motion.p>
 
           <motion.div

@@ -55,9 +55,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return (
       <div className="bg-grid bg-grid-fade flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <Logo />
-        <h1 className="mt-8 font-display text-4xl font-extrabold tracking-tight">THE NETWORK IS PRIVATE</h1>
+        <h1 className="mt-8 font-display text-4xl font-extrabold tracking-tight">MEMBERS ONLY (KIND OF)</h1>
         <p className="mt-3 max-w-sm text-sm text-muted">
-          Connect a Solana wallet (Phantom or Solflare) to enter the intelligence terminal.
+          Connect a Solana wallet (Phantom or Solflare) to get in. No email, no
+          name, no awkward small talk.
         </p>
         <div className="mt-7 flex gap-3">
           <button

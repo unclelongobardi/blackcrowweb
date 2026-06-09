@@ -49,10 +49,11 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
         className="glass w-full max-w-md rounded-2xl p-7"
       >
         <Logo />
-        <p className="mt-6 text-[11px] font-semibold tracking-[0.2em] text-faint">INITIATION</p>
-        <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight">Choose your codename</h2>
+        <p className="mt-6 text-[11px] font-semibold tracking-[0.2em] text-faint">ALMOST IN</p>
+        <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight">Pick a codename</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted">
-          Inside the network nobody uses real names. Pick the handle the other crows will know you by.
+          No real names here. Choose the handle everyone will @ when your call
+          prints (or when it very much doesn&apos;t).
         </p>
 
         <form onSubmit={submit} className="mt-6 space-y-3">

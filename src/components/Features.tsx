@@ -14,28 +14,28 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const FEATURES = [
   {
     icon: IconSkull,
-    title: "ANONYMOUS BY DESIGN",
-    desc: "No KYC. No real names. A Solana wallet and a codename are all you bring.",
+    title: "STAY ANONYMOUS",
+    desc: "No real name, no selfie, no LinkedIn. Just a codename and your worst ideas.",
   },
   {
     icon: IconUsers,
-    title: "FORM CABALS",
-    desc: "Band into squads that move as one shadow. Pool conviction and influence.",
+    title: "FIND YOUR PEOPLE",
+    desc: "Meet strangers who are confidently wrong about the exact same things you are.",
   },
   {
     icon: IconBolt,
-    title: "RUN OPERATIONS",
-    desc: "Coordinate raids on live Polymarket markets. Pick a side and move the line.",
+    title: "MOVE MARKETS TOGETHER",
+    desc: "Pick a market, rally the group chat, and nudge the odds. Strength in numbers (and copium).",
   },
   {
     icon: IconChart,
-    title: "DEBATE & INFLUENCE",
-    desc: "The war room is where narratives are forged. Attention is liquidity.",
+    title: "POST YOUR TAKES",
+    desc: "Share predictions, start fights, talk your book. On here, loud counts as research.",
   },
   {
     icon: IconTrophy,
-    title: "EARN FEATHERS",
-    desc: "Complete bounties, win operations, climb the Roost. Influence is the only currency.",
+    title: "GET CLOUT",
+    desc: "Call it right, climb the leaderboard, and become genuinely insufferable about it.",
   },
 ];
 
@@ -51,16 +51,21 @@ export default function Features() {
           transition={{ duration: 0.7, ease }}
           className="mx-auto max-w-3xl text-center"
         >
-          <p className="text-[12px] font-semibold tracking-[0.22em] text-faint">WHY JOIN BLACKCROW</p>
+          <p className="text-[12px] font-semibold tracking-[0.22em] text-faint">WHAT IS THIS, EXACTLY?</p>
           <h2 className="mt-4 font-display text-[clamp(1.9rem,4.5vw,3.2rem)] font-extrabold leading-[1.02] tracking-tight">
-            <span className="block text-foreground">INFORMATION IS POWER.</span>
+            <span className="block text-foreground">A SOCIAL NETWORK</span>
             <span className="block">
-              <span className="text-foreground">MANIPULATION IS </span>
+              <span className="text-foreground">WITH A GAMBLING </span>
               <span className="bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent">
-                AN ART.
+                PROBLEM.
               </span>
             </span>
           </h2>
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted">
+            You follow people. They post predictions. You all pile into the same
+            markets and try to move the odds. Sometimes it works. Either way, you
+            made friends.
+          </p>
         </motion.div>
 
         <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
