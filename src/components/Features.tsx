@@ -77,7 +77,7 @@ export default function Features() {
               transition={{ duration: 0.6, delay: i * 0.08, ease }}
               className="glass glass-hover group relative overflow-hidden rounded-2xl p-6"
             >
-              <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/[0.03] blur-2xl transition-opacity duration-500 group-hover:bg-emerald-500/10" />
+              <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/[0.03] blur-2xl transition-opacity duration-500 group-hover:bg-sky-500/10" />
               <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface-2 text-foreground transition-colors group-hover:border-white/20 group-hover:text-bull">
                 <f.icon className="h-5 w-5" />
               </div>

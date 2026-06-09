@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { lamportsToSol } from "@/lib/solanaFormat";
+import SolAmount from "./SolAmount";
 import { uiBtnPrimary, uiRow } from "@/lib/uiClasses";
 import Avatar from "./Avatar";
 import type { Bounty } from "@/lib/types";
@@ -95,9 +96,11 @@ export default function OpenBountiesSidebar({
                     <p className="line-clamp-2 text-[12.5px] font-semibold leading-snug text-foreground">
                       {b.title}
                     </p>
-                    <p className="mt-1.5 font-mono text-[11px] font-bold text-muted">
-                      {lamportsToSol(b.reward_sol_lamports)} SOL
-                    </p>
+                    <SolAmount
+                      amount={lamportsToSol(b.reward_sol_lamports)}
+                      className="mt-1.5 font-mono text-[11px] font-bold text-muted"
+                      iconClassName="h-3 w-3"
+                    />
                   </a>
                 </li>
               );

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useApi } from "@/lib/useApi";
+import { IconSolana } from "@/components/icons";
 import type { Bounty, Market } from "@/lib/types";
 
 export default function CreateBountyModal({
@@ -49,7 +50,7 @@ export default function CreateBountyModal({
       <div className="glass max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6">
         <p className="text-[11px] font-semibold tracking-[0.18em] text-faint">POST A BOUNTY</p>
         <p className="mt-1 text-[13px] text-muted">
-          Put SOL in escrow. Someone does the job. You approve → they get paid.
+          Put <IconSolana className="inline h-3.5 w-3.5 align-[-2px]" /> in escrow. Someone does the job. You approve → they get paid.
         </p>
 
         {market && (
@@ -89,7 +90,9 @@ export default function CreateBountyModal({
               onChange={(e) => setRewardSol(e.target.value)}
               className="flex-1 rounded-xl border border-line bg-surface/60 px-4 py-3 font-mono text-sm text-foreground outline-none focus:border-white/25"
             />
-            <span className="flex items-center text-[13px] font-semibold text-muted">SOL</span>
+            <span className="flex items-center px-3">
+              <IconSolana className="h-5 w-5" aria-label="Solana" />
+            </span>
           </div>
           <div className="flex gap-2">
             {(["action", "intel", "coord"] as const).map((k) => (

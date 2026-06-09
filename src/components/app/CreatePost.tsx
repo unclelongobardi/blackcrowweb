@@ -5,6 +5,7 @@ import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
 import { uiBtnPrimary, uiPress } from "@/lib/uiClasses";
 import { lamportsToSol } from "@/lib/solanaFormat";
+import SolAmount from "./SolAmount";
 import { IconGrid, IconImage, IconPoll, IconThread, IconChevronDown } from "@/components/icons";
 import type { Bounty } from "@/lib/types";
 
@@ -69,9 +70,14 @@ export default function CreatePost({
                 <p className="mt-0.5 truncate text-[13px] font-semibold text-foreground">
                   {attachedBounty.title}
                 </p>
-                <p className="mt-0.5 font-mono text-[11px] text-muted">
-                  {lamportsToSol(attachedBounty.reward_sol_lamports)} SOL · {attachedBounty.status}
-                </p>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[11px] text-muted">
+                  <SolAmount
+                    amount={lamportsToSol(attachedBounty.reward_sol_lamports)}
+                    className="font-mono"
+                    iconClassName="h-3 w-3"
+                  />
+                  <span>· {attachedBounty.status}</span>
+                </div>
               </div>
               {onClearBounty && (
                 <button

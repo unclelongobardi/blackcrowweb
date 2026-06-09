@@ -7,6 +7,7 @@ import UserName from "./UserName";
 import { useApi } from "@/lib/useApi";
 import { timeAgo, compactNumber, pct } from "@/lib/format";
 import { lamportsToSol } from "@/lib/solanaFormat";
+import SolAmount from "./SolAmount";
 import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots } from "@/components/icons";
 import type { Post } from "@/lib/types";
 
@@ -126,9 +127,11 @@ export default function PostCard({ post }: { post: Post }) {
               <p className="text-[10px] font-bold uppercase tracking-wide text-bull">Bounty</p>
               <p className="mt-0.5 text-[13px] font-semibold text-foreground">{post.bounty.title}</p>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] text-muted">
-                <span className="font-mono font-bold text-bull">
-                  {lamportsToSol(post.bounty.reward_sol_lamports)} SOL
-                </span>
+                <SolAmount
+                  amount={lamportsToSol(post.bounty.reward_sol_lamports)}
+                  className="font-mono font-bold text-bull"
+                  iconClassName="h-3 w-3"
+                />
                 {post.bounty.market?.yes_price != null && (
                   <span>Market YES {pct(post.bounty.market.yes_price)}</span>
                 )}

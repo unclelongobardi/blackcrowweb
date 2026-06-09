@@ -2,6 +2,7 @@
 
 import Avatar from "./Avatar";
 import Sparkline from "./Sparkline";
+import { BULL_COLOR } from "@/lib/colors";
 import { genSpark } from "@/lib/spark";
 import { compactNumber } from "@/lib/format";
 import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconFlame } from "@/components/icons";
@@ -47,7 +48,7 @@ export default function MarketPostCard({
 
         <div className="mt-3 flex items-center gap-4">
           <div className="min-w-0 flex-1">
-            <Sparkline data={spark} width={360} height={92} color="#22c55e" fill strokeWidth={2} />
+            <Sparkline data={spark} width={360} height={92} color={BULL_COLOR} fill strokeWidth={2} />
           </div>
           <div className="shrink-0 text-right">
             <p className="font-mono text-[28px] font-bold leading-none text-bull">{yes}%</p>

@@ -49,7 +49,7 @@ export default function AuthControls() {
         onClick={() => setOpen((v) => !v)}
         className="group flex items-center gap-2 rounded-lg border border-line bg-surface/60 py-1.5 pl-1.5 pr-3 transition-colors hover:border-white/25"
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500/50 to-teal-700/50 text-[11px] font-bold text-white ring-1 ring-white/10">
+        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-sky-400/50 to-cyan-600/50 text-[11px] font-bold text-white ring-1 ring-white/10">
           {getUserInitials(user)}
         </span>
         <span className="max-w-[120px] truncate text-[12px] font-medium text-foreground">

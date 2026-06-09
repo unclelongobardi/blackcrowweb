@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Sparkline from "./Sparkline";
 import { genSpark } from "@/lib/spark";
+import { BULL_COLOR, BEAR_COLOR } from "@/lib/colors";
 import { compactNumber, pct } from "@/lib/format";
 import { IconFlame } from "@/components/icons";
 import type { Market } from "@/lib/types";
@@ -94,7 +95,7 @@ export default function RightPanel({ markets }: { markets: Market[] }) {
                     data={genSpark(m.id, 20, up ? 0.05 : -0.05)}
                     width={52}
                     height={24}
-                    color={up ? "#22c55e" : "#f0506e"}
+                    color={up ? BULL_COLOR : BEAR_COLOR}
                   />
                   <span className={`font-mono text-[12px] font-bold ${up ? "text-bull" : "text-bear"}`}>{yes}%</span>
                 </div>

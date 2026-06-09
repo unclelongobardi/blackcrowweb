@@ -16,6 +16,7 @@ import {
   IconRoost,
   IconUser,
   IconWallet,
+  IconSolana,
 } from "@/components/icons";
 
 const NAV = [
@@ -58,7 +59,7 @@ export default function Sidebar() {
               <item.icon className={`h-[18px] w-[18px] ${active ? "text-foreground" : "text-faint group-hover:text-muted"}`} />
               <span className="flex-1">{item.label}</span>
               {item.primary && (
-                <span className="rounded bg-bull/15 px-1.5 py-0.5 text-[9px] font-bold text-bull">SOL</span>
+                <IconSolana className="h-3.5 w-3.5 text-bull" aria-label="Solana" />
               )}
             </Link>
           );

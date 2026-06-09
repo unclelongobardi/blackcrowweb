@@ -1,6 +1,8 @@
+import { BULL_COLOR } from "@/lib/colors";
+
 export default function Sparkline({
   data,
-  color = "#22c55e",
+  color = BULL_COLOR,
   width = 72,
   height = 28,
   strokeWidth = 1.5,

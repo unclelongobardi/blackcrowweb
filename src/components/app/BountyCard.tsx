@@ -10,8 +10,9 @@ import { lamportsToSol } from "@/lib/solanaFormat";
 import { useSolanaDeposit } from "@/lib/solanaClient";
 import { pct } from "@/lib/format";
 import { uiBtnPrimary } from "@/lib/uiClasses";
+import SolAmount from "./SolAmount";
 import Avatar from "./Avatar";
-import { IconFeather } from "@/components/icons";
+import { IconFeather, IconSolana } from "@/components/icons";
 import type { Bounty } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -208,7 +209,7 @@ export default function BountyCard({
           </span>
         </div>
         <div className="text-right">
-          <p className="font-mono text-lg font-bold text-bull">{sol} SOL</p>
+          <SolAmount amount={sol} className="font-mono text-lg font-bold text-bull" iconClassName="h-4 w-4" />
           <p className="flex items-center justify-end gap-1 text-[10px] text-faint">
             {isOfficial ? (
               "In escrow"
@@ -225,7 +226,15 @@ export default function BountyCard({
       {!isOfficial && bounty.status !== "funding" && (
         <p className="mt-2 text-[11px] text-faint">
           Pool
-          {othersSol ? ` · +${othersSol} SOL from ${bounty.contribution_count ?? 0} contributor(s)` : ""}
+          {othersSol ? (
+            <>
+              {" · +"}
+              <SolAmount amount={othersSol} className="font-mono text-faint" iconClassName="h-3 w-3" />
+              {` from ${bounty.contribution_count ?? 0} contributor(s)`}
+            </>
+          ) : (
+            ""
+          )}
           {role === "creator" && bounty.status === "submitted" && " · You decide approve/reject"}
         </p>
       )}
@@ -266,7 +275,7 @@ export default function BountyCard({
                 ) : (
                   <span className="text-faint">anon</span>
                 )}
-                <span className="font-mono text-bull">+{lamportsToSol(c.lamports)} SOL</span>
+                <SolAmount amount={`+${lamportsToSol(c.lamports)}`} className="font-mono text-bull" iconClassName="h-3 w-3" />
               </div>
             ))}
           </div>
@@ -331,7 +340,11 @@ export default function BountyCard({
               disabled={busy}
               className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
-              {busy ? "…" : `DEPOSIT ${sol} SOL TO ESCROW`}
+              {busy ? "…" : (
+                <>
+                  DEPOSIT <SolAmount amount={sol} className="font-mono" iconClassName="h-3.5 w-3.5" /> TO ESCROW
+                </>
+              )}
             </button>
           </>
         )}
@@ -340,7 +353,7 @@ export default function BountyCard({
           <div className="rounded-xl border border-line bg-surface/30 p-3">
             <p className="text-[11px] font-semibold text-muted">Boost the pool</p>
             <p className="mt-1 text-[10px] leading-relaxed text-faint">
-              Add SOL to increase the reward. Only {bounty.creator?.codename ?? "the creator"} approves proof.
+              Add to increase the reward. Only {bounty.creator?.codename ?? "the creator"} approves proof.
             </p>
             <div className="mt-2 flex gap-2">
               <input
@@ -361,7 +374,11 @@ export default function BountyCard({
                 disabled={busy}
                 className={`${uiBtnPrimary} flex-1 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold text-black disabled:opacity-60`}
               >
-                {busy ? "…" : "ADD SOL TO POOL"}
+                {busy ? "…" : (
+                  <span className="inline-flex items-center justify-center gap-1">
+                    ADD <IconSolana className="h-3.5 w-3.5" /> TO POOL
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -369,7 +386,8 @@ export default function BountyCard({
 
         {poolOpen && role === "creator" && (
           <div className="rounded-xl border border-dashed border-line px-3 py-2 text-[10px] text-faint">
-            Others can add SOL to your pool while this is open. You keep final approve/reject power.
+            Others can add <IconSolana className="inline h-3 w-3 align-[-2px]" /> to your pool while this is open. You keep
+            final approve/reject power.
           </div>
         )}
 
@@ -422,7 +440,13 @@ export default function BountyCard({
               disabled={busy}
               className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
-              {busy ? "…" : isOfficial ? "APPROVE & RELEASE SOL" : "APPROVE & PAY POOL"}
+              {busy ? "…" : isOfficial ? (
+                <span className="inline-flex items-center justify-center gap-1">
+                  APPROVE & RELEASE <IconSolana className="h-3.5 w-3.5" />
+                </span>
+              ) : (
+                "APPROVE & PAY POOL"
+              )}
             </button>
             <button
               type="button"

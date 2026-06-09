@@ -94,7 +94,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
       {/* Animated background grid */}
       <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-70" />
       {/* Ambient glows */}
-      <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-emerald-500/5 blur-[120px]" />
+      <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-sky-500/5 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.03] blur-[120px]" />
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:h-[calc(100svh-3rem)] lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-4 lg:pb-0 lg:pt-16">

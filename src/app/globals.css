@@ -8,8 +8,8 @@
   --color-muted: #8a8a92;
   --color-faint: #56565c;
   --color-line: #1c1c20;
-  --color-accent: #2bd576;
-  --color-bull: #2bd576;
+  --color-accent: #00b4ff;
+  --color-bull: #00b4ff;
   --color-bear: #f0506e;
   --font-sans: var(--font-dm-sans);
   --font-mono: var(--font-jetbrains);
@@ -96,7 +96,7 @@ button:disabled,
 .ui-nav:focus-visible,
 .ui-row:focus-visible,
 .ui-press:focus-visible {
-  outline: 2px solid rgba(43, 213, 118, 0.45);
+  outline: 2px solid rgba(0, 180, 255, 0.45);
   outline-offset: 2px;
 }
 
@@ -110,7 +110,7 @@ button:disabled,
 
 /* Selection */
 ::selection {
-  background: rgba(43, 213, 118, 0.25);
+  background: rgba(0, 180, 255, 0.22);
   color: #fff;
 }
 
@@ -172,7 +172,7 @@ button:disabled,
 
 /* Glow */
 .glow-accent {
-  box-shadow: 0 0 0 1px rgba(43, 213, 118, 0.0), 0 0 40px -8px rgba(43, 213, 118, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 180, 255, 0), 0 0 40px -8px rgba(0, 180, 255, 0.35);
 }
 
 .text-glow {

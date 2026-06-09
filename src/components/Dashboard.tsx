@@ -41,7 +41,7 @@ const FEED = [
     time: "2m",
     sentiment: "Bullish",
     bull: true,
-    color: "from-emerald-500/40 to-teal-700/40",
+    color: "from-sky-400/40 to-cyan-600/40",
     text: "Heard something big about $NVDA earnings.",
     sub: "Load up or fade?",
     stats: { c: 24, r: 87, l: 312 },

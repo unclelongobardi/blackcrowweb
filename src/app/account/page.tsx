@@ -183,13 +183,13 @@ export default function AccountPage() {
     <main className="relative min-h-screen pb-24">
       <Navbar />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-grid bg-grid-fade opacity-50" />
-      <div className="pointer-events-none absolute -top-20 right-1/4 h-[360px] w-[360px] rounded-full bg-emerald-500/5 blur-[120px]" />
+      <div className="pointer-events-none absolute -top-20 right-1/4 h-[360px] w-[360px] rounded-full bg-sky-500/5 blur-[120px]" />
 
       <div className="relative mx-auto max-w-5xl px-6 pt-32">
         {/* Header */}
         <div className="flex flex-col gap-5 border-b border-line pb-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/50 to-teal-700/50 text-lg font-bold text-white ring-1 ring-white/10">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400/50 to-cyan-600/50 text-lg font-bold text-white ring-1 ring-white/10">
               {getUserInitials(user)}
             </span>
             <div>

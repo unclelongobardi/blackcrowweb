@@ -22,7 +22,7 @@ export default function Footer() {
     <footer id="join" className="relative scroll-mt-24 overflow-hidden border-t border-line">
       {/* decorative wave dots */}
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.18] [mask-image:radial-gradient(ellipse_60%_120%_at_10%_100%,#000_10%,transparent_70%)]" />
-      <div className="pointer-events-none absolute -bottom-32 left-0 h-72 w-72 rounded-full bg-emerald-500/[0.04] blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 left-0 h-72 w-72 rounded-full bg-sky-500/[0.04] blur-[120px]" />
 
       <div className="relative mx-auto max-w-7xl px-6 py-16">
         <motion.div
