@@ -49,13 +49,14 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease }}
-          className="mx-auto max-w-3xl text-center"
+          className="mx-auto max-w-4xl text-center"
         >
           <p className="text-[12px] font-semibold tracking-[0.22em] text-faint">WHAT IS THIS, EXACTLY?</p>
-          <h2 className="mt-4 font-display text-[clamp(1.7rem,4vw,2.9rem)] font-extrabold leading-[1.05] tracking-tight">
-            <span className="block text-foreground">A SOCIAL NETWORK FOR PEOPLE WHO</span>
-            <span className="block text-foreground">DON&apos;T WANT TO PLAY THE GAME —</span>
-            <span className="block bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent">
+          <h2 className="mx-auto mt-4 max-w-3xl font-display text-[clamp(1.6rem,3.4vw,2.6rem)] font-extrabold leading-[1.12] tracking-tight">
+            <span className="block text-balance text-foreground">
+              A SOCIAL NETWORK FOR PEOPLE WHO DON&apos;T WANT TO PLAY THE GAME.
+            </span>
+            <span className="mt-1 block bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent">
               THEY WANT TO OWN IT.
             </span>
           </h2>
