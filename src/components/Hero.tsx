@@ -181,24 +181,28 @@ It&apos;s a social network. You meet people, post spicy takes, and
           </motion.div>
         </div>
 
-        {/* RIGHT — raven + floating cards */}
-        <div className="relative">
+        {/* RIGHT — raven + floating cards (anchored to the bottom ticker) */}
+        <div className="relative mx-auto mt-10 w-full max-w-[640px] lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:w-[56vw] lg:max-w-[1000px] xl:-right-8">
           <motion.div
             initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease }}
-            className="relative mx-auto aspect-[3/2] w-full max-w-[720px] lg:mx-0 lg:ml-auto lg:-mr-10 lg:-mt-12 lg:w-[60vw] lg:max-w-[1040px] xl:-mr-24"
+            className="relative aspect-[3/2] w-full"
           >
             {/* Soft glow behind the crow for depth */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.06] blur-[120px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.05] blur-[120px]" />
             <Image
               src="/images/raven-hero-cutout.png"
               alt="BLACKCROW raven"
               fill
               priority
-              sizes="(max-width: 1024px) 92vw, 64vw"
-              className="object-contain object-center drop-shadow-[0_50px_90px_rgba(0,0,0,0.9)]"
+              sizes="(max-width: 1024px) 92vw, 56vw"
+              className="object-contain object-bottom brightness-95 contrast-[1.08] saturate-[0.92] drop-shadow-[0_40px_80px_rgba(0,0,0,0.95)]"
             />
+            {/* Grounding fade so the crow melts into the page / ticker */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/4 bg-gradient-to-t from-background via-background/70 to-transparent" />
+            {/* Subtle side vignette to blend edges into the dark UI */}
+            <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(5,5,6,0.55)_100%)]" />
           </motion.div>
 
           <StatCard
