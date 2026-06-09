@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthedProfile } from "@/lib/auth";
+import { getAuthedProfile, getProfileId } from "@/lib/auth";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
 import type { Operation } from "@/lib/types";
 
@@ -9,20 +9,25 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   if (!isDbConfigured()) return NextResponse.json({ operations: [] });
   const status = new URL(request.url).searchParams.get("status");
+  const myId = await getProfileId(request);
 
-  const params: unknown[] = [];
+  const params: unknown[] = [myId];
   let where = "";
   if (status) {
     params.push(status);
     where = `where o.status = $${params.length}`;
   }
 
-  const operations = await query<Operation>(
+  const operations = await query<Operation & { my_joined: boolean }>(
     `select o.*,
         case when m.id is not null then row_to_json(m) else null end as market,
         case when c.id is not null then row_to_json(c) else null end as cabal,
         case when a.id is not null then row_to_json(a) else null end as author,
-        (select count(*) from operation_joins j where j.operation_id = o.id)::int as member_count
+        (select count(*) from operation_joins j where j.operation_id = o.id)::int as member_count,
+        exists (
+          select 1 from operation_joins j
+          where j.operation_id = o.id and j.profile_id = $1
+        ) as my_joined
       from operations o
       left join markets m on m.id = o.market_id
       left join cabals c on c.id = o.cabal_id

@@ -34,7 +34,7 @@ export default function HomePage() {
       try {
         await loadFeed();
         const [m, lb] = await Promise.all([
-          api<{ markets: Market[] }>("/api/markets?limit=8"),
+          api<{ markets: Market[] }>("/api/markets?limit=8&mode=exploitable"),
           api<{ operatives: Operative[] }>("/api/leaderboard"),
         ]);
         setMarkets(m.markets);

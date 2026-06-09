@@ -61,10 +61,36 @@ insert into post_votes (post_id, profile_id, value) values
   ('b0000003-0000-0000-0000-000000000003','11111111-1111-1111-1111-111111111111',1)
 on conflict do nothing;
 
--- ── Bounties (rewards) ─────────────────────────────────────────────────────
-insert into bounties (id, title, description, reward_influence, kind, status) values
-  ('c0000001-0000-0000-0000-000000000001','Recruit 3 operatives','Bring three new crows into the network. Their first operation counts.',500,'referral','open'),
-  ('c0000002-0000-0000-0000-000000000002','Author a viral thesis','Post a debate thread that earns 100+ upvotes in 24h.',750,'debate','open'),
-  ('c0000003-0000-0000-0000-000000000003','Lead a winning operation','Run an operation that moves its market 5%+ in your direction.',1500,'operation','open'),
-  ('c0000004-0000-0000-0000-000000000004','Drop verified intel','Share market-moving intel that the council verifies.',1000,'intel','open')
+-- ── Bounties (SOL escrow — demo, awaiting real deposits) ───────────────────
+insert into bounties (
+  id, created_by, market_id, title, description, task,
+  reward_sol_lamports, reward_influence, kind, status, creator_wallet
+) values
+  (
+    'c0000001-0000-0000-0000-000000000001',
+    '11111111-1111-1111-1111-111111111111',
+    'seed-btc-100k',
+    'Heat the NYC thermometer',
+    'Someone needs to push the Central Park daily high market. Hair dryer optional.',
+    'Go to the official NYC weather station thermometer. Use a heat source to bump the reading. Post photo proof + timestamp.',
+    500000000, 100, 'action', 'open', null
+  ),
+  (
+    'c0000002-0000-0000-0000-000000000002',
+    '44444444-4444-4444-4444-444444444444',
+    'seed-fed-cut',
+    'Seed doubt on rate-cut market',
+    'We need bearish macro takes flooding the timeline before the Fed meeting.',
+    'Post 5 original bearish threads in the war room tagging this market. Include links/screenshots.',
+    250000000, 75, 'coord', 'open', null
+  ),
+  (
+    'c0000003-0000-0000-0000-000000000003',
+    '33333333-3333-3333-3333-333333333333',
+    'seed-etf',
+    'Drop ETF approval intel',
+    'Rumor mill needs fuel. Real or plausible — your call.',
+    'Share a credible intel drop (source link required) that moves ETF YES sentiment.',
+    1000000000, 150, 'intel', 'open', null
+  )
 on conflict (id) do nothing;

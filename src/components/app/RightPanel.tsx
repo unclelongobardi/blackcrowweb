@@ -50,7 +50,7 @@ export default function RightPanel({
   return (
     <aside className="hidden w-[332px] shrink-0 flex-col gap-4 p-4 xl:flex">
       {/* Watchlist */}
-      <Section title="MARKET WATCHLIST">
+      <Section title="THIN BOOKS">
         <div className="divide-y divide-line">
           {watch.map((m) => {
             const yes = m.yes_price != null ? Math.round(m.yes_price * 100) : 50;

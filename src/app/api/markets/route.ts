@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
-import { fetchPolymarketMarkets, pickInteresting } from "@/lib/polymarket";
+import { fetchPolymarketMarkets, pickExploitable, pickInteresting } from "@/lib/polymarket";
 import { getPool, isDbConfigured } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const limit = Math.min(48, Number(new URL(request.url).searchParams.get("limit") ?? 24) || 24);
-  const markets = pickInteresting(await fetchPolymarketMarkets(120), limit);
+  const url = new URL(request.url);
+  const limit = Math.min(48, Number(url.searchParams.get("limit") ?? 24) || 24);
+  const mode = url.searchParams.get("mode");
+  const pool = await fetchPolymarketMarkets(150);
+  const markets =
+    mode === "exploitable" ? pickExploitable(pool, limit) : pickInteresting(pool, limit);
 
   // Best-effort cache so operations can reference live markets.
   if (markets.length && isDbConfigured()) {

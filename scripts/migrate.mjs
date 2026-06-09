@@ -36,6 +36,12 @@ const run = async () => {
   await client.connect();
   console.log("Connected. Applying schema…");
   await client.query(readFileSync("supabase/schema.sql", "utf8"));
+  console.log("Applying migrations…");
+  try {
+    await client.query(readFileSync("supabase/migrations/002_bounty_escrow.sql", "utf8"));
+  } catch (err) {
+    console.warn("Migration note:", err.message);
+  }
   console.log("Schema applied. Seeding…");
   await client.query(readFileSync("supabase/seed.sql", "utf8"));
   console.log("Seed applied.");

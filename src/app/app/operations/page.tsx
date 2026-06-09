@@ -34,7 +34,13 @@ export default function OperationsPage() {
       });
       setOperations((prev) =>
         prev.map((o) =>
-          o.id === op.id ? { ...o, member_count: (o.member_count ?? 0) + (res.joined ? 1 : -1) } : o,
+          o.id === op.id
+            ? {
+                ...o,
+                my_joined: res.joined,
+                member_count: (o.member_count ?? 0) + (res.joined ? 1 : -1),
+              }
+            : o,
         ),
       );
       await refreshMe();
@@ -115,9 +121,13 @@ export default function OperationsPage() {
                 <button
                   onClick={() => join(op)}
                   disabled={joining === op.id}
-                  className="rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold tracking-wide text-black transition-transform hover:scale-[1.03] disabled:opacity-60"
+                  className={`rounded-lg px-4 py-2 text-[12px] font-bold tracking-wide transition-transform hover:scale-[1.03] disabled:opacity-60 ${
+                    op.my_joined
+                      ? "border border-line text-muted"
+                      : "bg-foreground text-black"
+                  }`}
                 >
-                  {joining === op.id ? "…" : "ENLIST"}
+                  {joining === op.id ? "…" : op.my_joined ? "LEAVE" : "ENLIST"}
                 </button>
               </div>
             </div>

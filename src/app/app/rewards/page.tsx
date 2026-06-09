@@ -1,82 +1,116 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useApi } from "@/lib/useApi";
+import BountyCard from "@/components/app/BountyCard";
+import CreateBountyModal from "@/components/app/CreateBountyModal";
 import type { Bounty } from "@/lib/types";
 
-const KIND_LABEL: Record<string, string> = {
-  debate: "Debate",
-  operation: "Operation",
-  referral: "Recruit",
-  intel: "Intel",
-};
+type Tab = "browse" | "mine" | "create";
 
 export default function RewardsPage() {
   const api = useApi();
+  const [tab, setTab] = useState<Tab>("browse");
   const [bounties, setBounties] = useState<Bounty[]>([]);
   const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState<string | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const path = tab === "mine" ? "/api/bounties?mine=1" : "/api/bounties";
+      const data = await api<{ bounties: Bounty[] }>(path);
+      setBounties(data.bounties);
+    } finally {
+      setLoading(false);
+    }
+  }, [api, tab]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await api<{ bounties: Bounty[] }>("/api/bounties");
-        setBounties(data.bounties);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [api]);
+    if (tab !== "create") load();
+  }, [tab, load]);
 
-  async function claim(b: Bounty) {
-    setBusy(b.id);
-    try {
-      await api(`/api/bounties/${b.id}/claim`, { method: "POST", body: JSON.stringify({}) });
-      setBounties((prev) => prev.map((x) => (x.id === b.id ? { ...x, claimed: true } : x)));
-    } finally {
-      setBusy(null);
-    }
+  function handleCreated(b: Bounty) {
+    setShowCreate(false);
+    setTab("mine");
+    setBounties((prev) => [b, ...prev]);
+  }
+
+  function handleUpdate(updated: Bounty) {
+    setBounties((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
   }
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-6">
       <header className="mb-6">
         <h1 className="font-display text-2xl font-extrabold tracking-tight">BOUNTIES</h1>
-        <p className="text-[13px] text-faint">
-          Earn Feathers (⚑) for moving the network forward. Claims are reviewed by the council.
+        <p className="mt-1 max-w-lg text-[13px] leading-relaxed text-faint">
+          Pay someone in SOL to do the dirty work. Money sits in escrow until you approve their proof.
+          No betting here — you coordinate, they execute, Polymarket is where the bets live.
         </p>
       </header>
+
+      <div className="mb-6 flex gap-2">
+        {(["browse", "mine", "create"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => (t === "create" ? setShowCreate(true) : setTab(t))}
+            className={`rounded-lg px-4 py-2 text-[12px] font-bold tracking-wide transition-colors ${
+              tab === t
+                ? "bg-foreground text-black"
+                : "border border-line text-muted hover:text-foreground"
+            }`}
+          >
+            {t === "browse" ? "OPEN BOUNTIES" : t === "mine" ? "MY BOUNTIES" : "+ POST BOUNTY"}
+          </button>
+        ))}
+      </div>
+
+      {/* How it works */}
+      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-4">
+        {[
+          ["1", "Post", "Set the job + SOL reward"],
+          ["2", "Deposit", "SOL locked in escrow"],
+          ["3", "Execute", "Someone accepts & does it"],
+          ["4", "Approve", "You confirm → they get paid"],
+        ].map(([n, title, desc]) => (
+          <div key={n} className="rounded-xl border border-line bg-surface/40 px-3 py-3">
+            <p className="font-mono text-[11px] font-bold text-bull">{n}</p>
+            <p className="text-[12px] font-bold text-foreground">{title}</p>
+            <p className="text-[11px] text-faint">{desc}</p>
+          </div>
+        ))}
+      </div>
 
       {loading ? (
         <div className="flex justify-center py-20">
           <div className="h-7 w-7 animate-spin rounded-full border-2 border-line border-t-foreground" />
         </div>
+      ) : bounties.length === 0 ? (
+        <div className="py-16 text-center">
+          <p className="text-[13px] text-faint">
+            {tab === "mine" ? "You haven't posted or accepted any bounties yet." : "No open bounties right now."}
+          </p>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="mt-4 rounded-lg bg-foreground px-5 py-2.5 text-[12px] font-bold text-black"
+          >
+            POST THE FIRST ONE
+          </button>
+        </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {bounties.map((b) => (
-            <div key={b.id} className="glass glass-hover flex flex-col rounded-2xl p-5">
-              <div className="flex items-center justify-between">
-                <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
-                  {KIND_LABEL[b.kind] ?? b.kind}
-                </span>
-                <span className="font-mono text-sm font-bold text-bull">
-                  +{b.reward_influence.toLocaleString()} ⚑
-                </span>
-              </div>
-              <h2 className="mt-3 text-[15px] font-bold tracking-tight text-foreground">{b.title}</h2>
-              {b.description && (
-                <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-muted">{b.description}</p>
-              )}
-              <button
-                onClick={() => claim(b)}
-                disabled={busy === b.id || b.claimed}
-                className="mt-4 rounded-lg border border-line px-3 py-2 text-[12px] font-semibold tracking-wide text-foreground transition-colors hover:border-white/25 disabled:opacity-50"
-              >
-                {b.claimed ? "CLAIM SUBMITTED" : busy === b.id ? "…" : "CLAIM BOUNTY"}
-              </button>
-            </div>
+            <BountyCard key={b.id} bounty={b} onUpdate={handleUpdate} />
           ))}
         </div>
+      )}
+
+      {showCreate && (
+        <CreateBountyModal
+          onClose={() => setShowCreate(false)}
+          onCreated={handleCreated}
+        />
       )}
     </div>
   );

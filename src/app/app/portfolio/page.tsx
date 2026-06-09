@@ -1,12 +1,5 @@
-import Placeholder from "@/components/app/Placeholder";
-import { IconChart2 } from "@/components/icons";
+import { redirect } from "next/navigation";
 
-export default function PortfolioPage() {
-  return (
-    <Placeholder
-      title="Portfolio"
-      subtitle="Track your positions, realized PnL and open exposure across every market you trade."
-      icon={<IconChart2 className="h-6 w-6" />}
-    />
-  );
+export default function PortfolioRedirect() {
+  redirect("/app/markets");
 }

@@ -104,26 +104,33 @@ create table if not exists follows (
   primary key (follower_id, following_id)
 );
 
--- ───────────────────────────── BOUNTIES (rewards) ───────────────────────────
+-- ───────────────────────────── BOUNTIES (SOL escrow rewards) ────────────────
 create table if not exists bounties (
-  id               uuid primary key default gen_random_uuid(),
-  title            text not null,
-  description      text,
-  reward_influence integer not null default 0,
-  kind             text not null default 'operation', -- debate | operation | referral | intel
-  status           text not null default 'open',      -- open | closed
-  created_at       timestamptz not null default now()
+  id                  uuid primary key default gen_random_uuid(),
+  created_by          uuid references profiles(id) on delete set null,
+  market_id           text references markets(id) on delete set null,
+  title               text not null,
+  description         text,
+  task                text,                    -- what the helper must do
+  reward_sol_lamports bigint not null default 0,
+  reward_influence    integer not null default 50,
+  kind                text not null default 'action', -- action | intel | coord
+  status              text not null default 'funding',
+  -- funding → open → assigned → submitted → paid | cancelled
+  helper_id           uuid references profiles(id) on delete set null,
+  proof               text,
+  deposit_tx          text,
+  payout_tx           text,
+  creator_wallet      text,
+  helper_wallet       text,
+  created_at          timestamptz not null default now(),
+  funded_at           timestamptz,
+  assigned_at         timestamptz,
+  submitted_at        timestamptz,
+  paid_at             timestamptz
 );
 
-create table if not exists bounty_claims (
-  id         uuid primary key default gen_random_uuid(),
-  bounty_id  uuid references bounties(id) on delete cascade,
-  profile_id uuid references profiles(id) on delete cascade,
-  proof      text,
-  status     text not null default 'pending',  -- pending | approved | rejected
-  created_at timestamptz not null default now(),
-  unique (bounty_id, profile_id)
-);
+-- Bounty indexes applied in supabase/migrations/002_bounty_escrow.sql
 
 -- ───────────────────────────── NOTIFICATIONS ────────────────────────────────
 create table if not exists notifications (

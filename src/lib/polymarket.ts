@@ -128,3 +128,53 @@ export function pickInteresting(markets: Market[], n = 14): Market[] {
   const rest = markets.filter((m) => !balanced.includes(m));
   return [...balanced, ...rest].slice(0, n);
 }
+
+/** Keywords for markets that are physically/local manipulable (weather, temps, etc.) */
+const EXPLOIT_KEYWORDS = [
+  "temperature", "temp", "weather", "rain", "snow", "hurricane", "storm", "heat",
+  "fahrenheit", "celsius", "high in", "low in", "above", "below", "degrees",
+  "city", "london", "nyc", "new york", "chicago", "miami", "paris", "tokyo",
+  "population", "count", "number of", "will there be", "daily", "weekly",
+];
+
+function exploitKeywordBonus(m: Market): number {
+  const text = m.question.toLowerCase();
+  return EXPLOIT_KEYWORDS.some((k) => text.includes(k)) ? -15 : 0;
+}
+
+function liquidityTier(volume: number): Market["liquidity_tier"] {
+  if (volume < 25_000) return "thin";
+  if (volume < 150_000) return "medium";
+  return "thick";
+}
+
+/** Score lower = more exploitable (thin book + contested + manipulable topic). */
+export function exploitScore(m: Market): number {
+  const vol = m.volume ?? 0;
+  const contested = Math.abs(0.5 - (m.yes_price ?? 0.5));
+  const volScore = Math.log10(Math.max(vol, 500)); // low volume → low score
+  return volScore * 20 + contested * 30 + exploitKeywordBonus(m) + topicScore(m) * 5;
+}
+
+export function annotateExploitability(markets: Market[]): Market[] {
+  return markets.map((m) => ({
+    ...m,
+    exploit_score: exploitScore(m),
+    liquidity_tier: liquidityTier(m.volume ?? 0),
+  }));
+}
+
+/**
+ * Markets with thin books — low volume, still open, easy to nudge.
+ * Perfect for "hair dryer on the thermometer" style plays.
+ */
+export function pickExploitable(markets: Market[], n = 18): Market[] {
+  const live = markets.filter(
+    (m) => m.yes_price != null && m.yes_price > 0.05 && m.yes_price < 0.95,
+  );
+  const thin = live.filter((m) => (m.volume ?? 0) < 200_000);
+  const pool = thin.length >= 6 ? thin : live;
+  const ranked = annotateExploitability([...pool]);
+  ranked.sort((a, b) => (a.exploit_score ?? 0) - (b.exploit_score ?? 0));
+  return ranked.slice(0, n);
+}
