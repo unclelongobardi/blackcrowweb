@@ -10,6 +10,7 @@ import PostCard from "@/components/app/PostCard";
 import BountyCard from "@/components/app/BountyCard";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
 import { uiBtnPrimary } from "@/lib/uiClasses";
+import OpenBountiesSidebar from "@/components/app/OpenBountiesSidebar";
 import RightPanel from "@/components/app/RightPanel";
 import type { Bounty, Market, Post } from "@/lib/types";
 
@@ -71,17 +72,16 @@ export default function HomePage() {
   const openCount = bounties.filter((b) => b.status === "open").length;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1180px]">
-      <section className="min-h-screen min-w-0 flex-1 border-x border-line lg:max-w-[636px]">
-        {/* Hero */}
-        <div className="border-b border-line px-5 py-6">
-          <p className="text-[11px] font-semibold tracking-[0.2em] text-bull">GET PAID IN SOL</p>
-          <h1 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-foreground">
-            Open bounties
+    <div className="mx-auto flex w-full max-w-[1280px]">
+      <OpenBountiesSidebar bounties={bounties} />
+
+      <section className="min-h-screen min-w-0 flex-1 border-x border-line lg:max-w-[640px]">
+        <div className="border-b border-line px-5 py-5">
+          <h1 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+            Bounties
           </h1>
-          <p className="mt-2 max-w-md text-[13px] leading-relaxed text-muted">
-            BlackCrow posts official jobs on real Polymarket markets — SOL in escrow.
-            Accept one, do the work, get paid when approved.
+          <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-muted">
+            Pick a job from the sidebar, accept it, submit proof — get paid in SOL when the poster approves.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <button
@@ -100,8 +100,10 @@ export default function HomePage() {
           </div>
           {openCount > 0 && (
             <p className="mt-3 text-[12px] text-faint">
-              <span className="font-mono font-bold text-bull">{openCount}</span> bounty
-              {openCount === 1 ? "" : "ies"} open right now
+              <span className="font-mono font-semibold text-foreground">{openCount}</span> open now
+              {openCount > 0 && (
+                <span className="hidden lg:inline"> — use the left menu to jump</span>
+              )}
             </p>
           )}
         </div>
@@ -111,7 +113,7 @@ export default function HomePage() {
           <div className="flex">
             {(
               [
-                ["bounties", "Open Bounties"],
+                ["bounties", "All bounties"],
                 ["feed", "War Room"],
               ] as const
             ).map(([id, label]) => (
@@ -157,7 +159,9 @@ export default function HomePage() {
               </div>
             ) : (
               bounties.map((b) => (
-                <BountyCard key={b.id} bounty={b} onUpdate={handleBountyUpdate} />
+                <div key={b.id} id={`bounty-${b.id}`} className="scroll-mt-36">
+                  <BountyCard bounty={b} onUpdate={handleBountyUpdate} />
+                </div>
               ))
             )}
           </motion.div>
@@ -178,7 +182,7 @@ export default function HomePage() {
         )}
       </section>
 
-      <RightPanel markets={markets} bounties={bounties} />
+      <RightPanel markets={markets} />
       {showCreate && (
         <CreateBountyModal onClose={() => setShowCreate(false)} onCreated={handleBountyCreated} />
       )}
