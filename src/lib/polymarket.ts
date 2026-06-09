@@ -84,12 +84,43 @@ export async function fetchPolymarketMarkets(limit = 24): Promise<Market[]> {
  * Prefer balanced, still-open markets (10%–90%) for previews so the UI looks
  * lively instead of showing near-certain outcomes. Falls back to the rest.
  */
+const TOPIC_KEYWORDS: Record<number, string[]> = {
+  // 0 = most on-brand (crypto / markets / economy)
+  0: [
+    "bitcoin", "btc", "ethereum", "eth", "solana", "sol", "crypto", "etf", "coinbase",
+    "binance", "stablecoin", "xrp", "doge", "token", "altcoin", "memecoin", "nasdaq",
+    "s&p", "stock", "fed", "rate", "inflation", "recession", "gdp", "cpi", "powell",
+    "interest", "treasury", "jobs", "unemployment", "market", "price",
+  ],
+  // 1 = politics / geopolitics
+  1: [
+    "election", "president", "trump", "biden", "senate", "congress", "government",
+    "shutdown", "war", "invade", "nuclear", "ceasefire", "nato", "iran", "ukraine",
+    "israel", "putin", "china", "tariff", "supreme court", "nominee", "vote",
+  ],
+  // 3 = sports (deprioritized)
+  3: [
+    "fifa", "world cup", "nba", "nfl", "super bowl", "champions league", "premier league",
+    "la liga", "finals", "playoff", "match", "win the", "ballon", "uefa", "mlb", "nhl",
+    "f1", "grand prix", "olympic", "tournament",
+  ],
+};
+
+function topicScore(m: Market): number {
+  const text = `${m.question} ${m.category ?? ""}`.toLowerCase();
+  if (TOPIC_KEYWORDS[3].some((k) => text.includes(k))) return 3; // sports last
+  if (TOPIC_KEYWORDS[0].some((k) => text.includes(k))) return 0;
+  if (TOPIC_KEYWORDS[1].some((k) => text.includes(k))) return 1;
+  return 2;
+}
+
 export function pickInteresting(markets: Market[], n = 14): Market[] {
   const balanced = markets.filter(
     (m) => m.yes_price != null && m.yes_price >= 0.1 && m.yes_price <= 0.9,
   );
-  // Sort balanced toward 50/50 first (most "contested" = most interesting).
-  balanced.sort((a, b) => Math.abs(0.5 - (a.yes_price ?? 0)) - Math.abs(0.5 - (b.yes_price ?? 0)));
+  // Sort: on-brand topics first, then most contested (closest to 50/50).
+  const rank = (m: Market) => topicScore(m) * 10 + Math.abs(0.5 - (m.yes_price ?? 0));
+  balanced.sort((a, b) => rank(a) - rank(b));
 
   // Only backfill with extremes if we genuinely don't have enough balanced ones.
   if (balanced.length >= Math.min(n, 5)) return balanced.slice(0, n);
