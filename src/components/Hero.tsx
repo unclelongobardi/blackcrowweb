@@ -71,9 +71,9 @@ const FALLBACK_CARDS = [
 ];
 
 const CARD_POS = [
-  { className: "left-[-2%] top-[20%]", delay: 0.7, float: "animate-float" },
-  { className: "right-[1%] top-[2%]", delay: 0.85, float: "animate-float-slow" },
-  { className: "bottom-[6%] right-[18%]", delay: 1, float: "animate-float" },
+  { className: "left-[-1%] bottom-[42%]", delay: 0.7, float: "animate-float" },
+  { className: "right-[1%] bottom-[52%]", delay: 0.85, float: "animate-float-slow" },
+  { className: "right-[15%] bottom-[10%]", delay: 1, float: "animate-float" },
 ];
 
 export default function Hero({ markets = [] }: { markets?: Market[] }) {
@@ -90,14 +90,14 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
       : FALLBACK_CARDS;
 
   return (
-    <section id="home" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-32">
+    <section id="home" className="relative overflow-hidden pt-24 sm:pt-28 lg:pt-0">
       {/* Animated background grid */}
       <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-70" />
       {/* Ambient glows */}
       <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-emerald-500/5 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.03] blur-[120px]" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:min-h-[600px] lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-4 lg:pb-0">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:h-[calc(100svh-3rem)] lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-4 lg:pb-0 lg:pt-16">
         {/* LEFT */}
         <div className="lg:self-center">
           <motion.div
@@ -206,12 +206,12 @@ It&apos;s a social network. You meet people, post spicy takes, and
         </div>
 
         {/* RIGHT — raven + floating cards (in-flow, bottom-anchored to the ticker) */}
-        <div className="relative mx-auto mt-6 w-full max-w-[560px] self-end lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none lg:-mr-4 xl:-mr-16">
+        <div className="relative mx-auto mt-6 w-full max-w-[560px] self-end lg:mx-0 lg:mt-0 lg:h-full lg:w-full lg:max-w-none lg:self-stretch lg:-mr-4 xl:-mr-16">
           <motion.div
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease }}
-            className="relative aspect-[3/2] w-full"
+            className="relative aspect-[3/2] w-full lg:aspect-auto lg:h-full"
           >
             {/* Soft glow behind the crow for depth */}
             <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.05] blur-[120px]" />
