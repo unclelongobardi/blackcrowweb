@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchPolymarketMarkets } from "@/lib/polymarket";
+import { fetchPolymarketMarkets, pickInteresting } from "@/lib/polymarket";
 import { getPool, isDbConfigured } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const limit = Math.min(48, Number(new URL(request.url).searchParams.get("limit") ?? 24) || 24);
-  const markets = await fetchPolymarketMarkets(limit);
+  const markets = pickInteresting(await fetchPolymarketMarkets(limit * 3), limit);
 
   // Best-effort cache so operations can reference live markets.
   if (markets.length && isDbConfigured()) {

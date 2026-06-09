@@ -4,13 +4,13 @@ import SocialProof from "@/components/SocialProof";
 import Dashboard from "@/components/Dashboard";
 import Features from "@/components/Features";
 import Footer from "@/components/Footer";
-import { fetchPolymarketMarkets } from "@/lib/polymarket";
+import { fetchPolymarketMarkets, pickInteresting } from "@/lib/polymarket";
 
 // Refresh the live Polymarket data shown in the previews every few minutes.
 export const revalidate = 180;
 
 export default async function Home() {
-  const markets = await fetchPolymarketMarkets(14);
+  const markets = pickInteresting(await fetchPolymarketMarkets(40), 14);
 
   return (
     <main className="relative">

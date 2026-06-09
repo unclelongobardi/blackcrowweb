@@ -60,14 +60,32 @@ async function tryFetch(url: string): Promise<Market[] | null> {
 
 /** Fetch the most active Polymarket markets (read-only, public Gamma API). */
 export async function fetchPolymarketMarkets(limit = 24): Promise<Market[]> {
+  // Fetch a wider pool so we can drop already-resolved markets and still fill `limit`.
+  const pool = Math.max(limit, Math.min(80, limit * 3));
   const urls = [
-    `${GAMMA}/markets?active=true&closed=false&archived=false&order=volumeNum&ascending=false&limit=${limit}`,
-    `${GAMMA}/markets?closed=false&limit=${limit}`,
-    `${GAMMA}/markets?limit=${limit}`,
+    `${GAMMA}/markets?active=true&closed=false&archived=false&order=volumeNum&ascending=false&limit=${pool}`,
+    `${GAMMA}/markets?closed=false&limit=${pool}`,
+    `${GAMMA}/markets?limit=${pool}`,
   ];
   for (const url of urls) {
     const markets = await tryFetch(url);
-    if (markets && markets.length) return markets;
+    if (markets && markets.length) {
+      // Drop effectively-resolved markets (price pinned at the extremes).
+      const live = markets.filter(
+        (m) => m.yes_price != null && m.yes_price > 0.02 && m.yes_price < 0.98,
+      );
+      return (live.length ? live : markets).slice(0, limit);
+    }
   }
   return [];
+}
+
+/**
+ * Prefer balanced, still-open markets (10%–90%) for previews so the UI looks
+ * lively instead of showing near-certain outcomes. Falls back to the rest.
+ */
+export function pickInteresting(markets: Market[], n = 14): Market[] {
+  const balanced = markets.filter((m) => m.yes_price != null && m.yes_price >= 0.1 && m.yes_price <= 0.9);
+  const rest = markets.filter((m) => !balanced.includes(m));
+  return [...balanced, ...rest].slice(0, n);
 }
