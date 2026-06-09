@@ -82,6 +82,7 @@ create table if not exists posts (
   author_id    uuid references profiles(id) on delete cascade,
   market_id    text references markets(id) on delete set null,
   operation_id uuid references operations(id) on delete set null,
+  bounty_id    uuid references bounties(id) on delete set null,
   parent_id    uuid references posts(id) on delete cascade,
   content      text not null,
   sentiment    text default 'neutral',  -- bullish | bearish | neutral

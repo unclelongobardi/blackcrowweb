@@ -28,6 +28,17 @@ export async function GET(request: Request) {
     `select p.*,
         row_to_json(a) as author,
         case when m.id is not null then row_to_json(m) else null end as market,
+        case when p.bounty_id is not null then (
+          select row_to_json(sub) from (
+            select bw.*,
+              row_to_json(cr) as creator,
+              case when mk.id is not null then row_to_json(mk) else null end as market
+            from bounties bw
+            left join profiles cr on cr.id = bw.created_by
+            left join markets mk on mk.id = bw.market_id
+            where bw.id = p.bounty_id
+          ) sub
+        ) else null end as bounty,
         coalesce((select sum(value) from post_votes v where v.post_id = p.id), 0)::int as score,
         (select count(*) from posts c where c.parent_id = p.id)::int as reply_count,
         coalesce((select value from post_votes v where v.post_id = p.id and v.profile_id = $1), 0)::int as my_vote
@@ -55,8 +66,8 @@ export async function POST(request: Request) {
   const sentiment = ["bullish", "bearish", "neutral"].includes(body.sentiment) ? body.sentiment : "neutral";
 
   const post = await queryOne<Post>(
-    `insert into posts (author_id, content, sentiment, market_id, operation_id, parent_id)
-     values ($1, $2, $3, $4, $5, $6)
+    `insert into posts (author_id, content, sentiment, market_id, operation_id, bounty_id, parent_id)
+     values ($1, $2, $3, $4, $5, $6, $7)
      returning *`,
     [
       ctx.profile.id,
@@ -64,6 +75,7 @@ export async function POST(request: Request) {
       sentiment,
       body.market_id ?? null,
       body.operation_id ?? null,
+      body.bounty_id ?? null,
       body.parent_id ?? null,
     ],
   );

@@ -9,7 +9,7 @@ import type { Cabal, CabalKind, CabalVisibility } from "@/lib/types";
 
 const KIND_LABEL: Record<CabalKind, string> = {
   tipsters: "Tipsters",
-  manipulation: "Market ops",
+  manipulation: "MARKET OPS",
   discussion: "Discussion",
 };
 
@@ -75,7 +75,7 @@ export default function CabalsPage() {
       </header>
 
       <div className="mb-6 flex flex-wrap gap-2">
-        {(["all", "tipsters", "manipulation", "discussion"] as const).map((k) => (
+        {(["all", "manipulation", "tipsters", "discussion"] as const).map((k) => (
           <button
             key={k}
             onClick={() => setKindFilter(k)}

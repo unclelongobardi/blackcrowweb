@@ -43,6 +43,7 @@ const run = async () => {
     "004_official_bounties.sql",
     "005_social_upgrade.sql",
     "006_bounty_pool.sql",
+    "007_post_bounty.sql",
   ]) {
     try {
       await client.query(readFileSync(`supabase/migrations/${file}`, "utf8"));

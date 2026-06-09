@@ -32,9 +32,17 @@ const KIND_LABEL: Record<string, string> = {
 export default function BountyCard({
   bounty,
   onUpdate,
+  compact,
+  selected,
+  onSelect,
+  onShareToWarRoom,
 }: {
   bounty: Bounty;
   onUpdate: (b: Bounty) => void;
+  compact?: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
+  onShareToWarRoom?: () => void;
 }) {
   const api = useApi();
   const { sendDeposit } = useSolanaDeposit();
@@ -162,7 +170,21 @@ export default function BountyCard({
   }
 
   return (
-    <div className="glass glass-hover flex flex-col rounded-2xl p-5">
+    <div
+      className={`glass glass-hover flex flex-col rounded-2xl ${compact ? "p-4 cursor-pointer" : "p-5"} ${
+        selected ? "border border-bull/30" : ""
+      }`}
+      onClick={compact && onSelect ? onSelect : undefined}
+      onKeyDown={
+        compact && onSelect
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") onSelect();
+            }
+          : undefined
+      }
+      role={compact && onSelect ? "button" : undefined}
+      tabIndex={compact && onSelect ? 0 : undefined}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {isOfficial && (
@@ -281,6 +303,19 @@ export default function BountyCard({
 
       {error && <p className="mt-3 text-[12px] text-bear">{error}</p>}
 
+      {onShareToWarRoom && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onShareToWarRoom();
+          }}
+          className="ui-btn mt-3 w-full rounded-lg border border-bull/30 bg-bull/5 px-3 py-2 text-[11px] font-bold text-bull hover:bg-bull/10"
+        >
+          SHARE TO WAR ROOM
+        </button>
+      )}
+
       <div className="mt-4 flex flex-col gap-2">
         {bounty.status === "funding" && role === "creator" && (
           <>
@@ -289,7 +324,10 @@ export default function BountyCard({
             </p>
             <button
               type="button"
-              onClick={fund}
+              onClick={(e) => {
+                e.stopPropagation();
+                fund();
+              }}
               disabled={busy}
               className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
@@ -311,11 +349,15 @@ export default function BountyCard({
                 step="0.01"
                 value={contribAmount}
                 onChange={(e) => setContribAmount(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
                 className="w-24 rounded-lg border border-line bg-surface/60 px-2 py-2 font-mono text-[12px] outline-none"
               />
               <button
                 type="button"
-                onClick={contribute}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  contribute();
+                }}
                 disabled={busy}
                 className={`${uiBtnPrimary} flex-1 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold text-black disabled:opacity-60`}
               >
@@ -334,7 +376,10 @@ export default function BountyCard({
         {bounty.status === "open" && !role && (
           <button
             type="button"
-            onClick={accept}
+            onClick={(e) => {
+              e.stopPropagation();
+              accept();
+            }}
             disabled={busy}
             className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
           >
@@ -347,13 +392,17 @@ export default function BountyCard({
             <textarea
               value={proof}
               onChange={(e) => setProof(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="Proof: links, photos, what you did…"
               rows={3}
               className="w-full resize-none rounded-xl border border-line bg-surface/60 px-3 py-2 text-[12px] text-foreground placeholder:text-faint outline-none focus:border-white/25"
             />
             <button
               type="button"
-              onClick={submitProof}
+              onClick={(e) => {
+                e.stopPropagation();
+                submitProof();
+              }}
               disabled={busy || proof.length < 10}
               className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
@@ -366,7 +415,10 @@ export default function BountyCard({
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={approve}
+              onClick={(e) => {
+                e.stopPropagation();
+                approve();
+              }}
               disabled={busy}
               className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
@@ -374,7 +426,10 @@ export default function BountyCard({
             </button>
             <button
               type="button"
-              onClick={reject}
+              onClick={(e) => {
+                e.stopPropagation();
+                reject();
+              }}
               disabled={busy}
               className="ui-btn flex-1 rounded-lg border border-line px-4 py-2.5 text-[12px] font-semibold text-muted disabled:opacity-60"
             >

@@ -90,12 +90,14 @@ export type Post = {
   author_id: string | null;
   market_id: string | null;
   operation_id: string | null;
+  bounty_id: string | null;
   parent_id: string | null;
   content: string;
   sentiment: "bullish" | "bearish" | "neutral";
   created_at: string;
   author?: Profile | null;
   market?: Market | null;
+  bounty?: Bounty | null;
   score?: number;
   reply_count?: number;
   my_vote?: number;

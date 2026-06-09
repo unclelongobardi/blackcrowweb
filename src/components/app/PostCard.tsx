@@ -5,7 +5,8 @@ import { useState } from "react";
 import Avatar from "./Avatar";
 import UserName from "./UserName";
 import { useApi } from "@/lib/useApi";
-import { timeAgo, compactNumber } from "@/lib/format";
+import { timeAgo, compactNumber, pct } from "@/lib/format";
+import { lamportsToSol } from "@/lib/solanaFormat";
 import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots } from "@/components/icons";
 import type { Post } from "@/lib/types";
 
@@ -115,6 +116,25 @@ export default function PostCard({ post }: { post: Post }) {
                 </span>
               )}
             </div>
+          )}
+
+          {post.bounty && (
+            <a
+              href={`#bounty-${post.bounty.id}`}
+              className="mt-2.5 block rounded-xl border border-bull/20 bg-bull/5 px-3.5 py-2.5 transition-colors hover:bg-bull/10"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-wide text-bull">Bounty</p>
+              <p className="mt-0.5 text-[13px] font-semibold text-foreground">{post.bounty.title}</p>
+              <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] text-muted">
+                <span className="font-mono font-bold text-bull">
+                  {lamportsToSol(post.bounty.reward_sol_lamports)} SOL
+                </span>
+                {post.bounty.market?.yes_price != null && (
+                  <span>Market YES {pct(post.bounty.market.yes_price)}</span>
+                )}
+                <span className="capitalize">{post.bounty.status}</span>
+              </div>
+            </a>
           )}
 
           <div className="mt-3 flex items-center justify-between pr-1 text-faint">

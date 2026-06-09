@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
 import { uiBtnPrimary, uiPress } from "@/lib/uiClasses";
+import { lamportsToSol } from "@/lib/solanaFormat";
 import { IconGrid, IconImage, IconPoll, IconThread, IconChevronDown } from "@/components/icons";
+import type { Bounty } from "@/lib/types";
 
 type Sentiment = "bullish" | "bearish" | "neutral";
 
@@ -23,19 +25,29 @@ const SENTIMENTS: { id: Sentiment; label: string; dot: string }[] = [
 
 export default function CreatePost({
   onSubmit,
+  attachedBounty,
+  onClearBounty,
 }: {
-  onSubmit: (content: string, sentiment: Sentiment) => Promise<void>;
+  onSubmit: (content: string, sentiment: Sentiment, bountyId?: string | null) => Promise<void>;
+  attachedBounty?: Bounty | null;
+  onClearBounty?: () => void;
 }) {
   const { me } = useAppContext();
   const [content, setContent] = useState("");
   const [sentiment, setSentiment] = useState<Sentiment>("neutral");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (attachedBounty && !content.trim()) {
+      setContent(`Bounty: ${attachedBounty.title} — `);
+    }
+  }, [attachedBounty]); // eslint-disable-line react-hooks/exhaustive-deps
+
   async function submit() {
     if (!content.trim() || loading) return;
     setLoading(true);
     try {
-      await onSubmit(content.trim(), sentiment);
+      await onSubmit(content.trim(), sentiment, attachedBounty?.id ?? null);
       setContent("");
       setSentiment("neutral");
     } finally {
@@ -50,6 +62,29 @@ export default function CreatePost({
       <div className="flex gap-3">
         <Avatar seed={me?.profile.avatar_seed} label={me?.profile.codename} size={42} />
         <div className="min-w-0 flex-1">
+          {attachedBounty && (
+            <div className="mb-2 flex items-start justify-between gap-2 rounded-xl border border-bull/25 bg-bull/5 px-3 py-2">
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-bull">Attached bounty</p>
+                <p className="mt-0.5 truncate text-[13px] font-semibold text-foreground">
+                  {attachedBounty.title}
+                </p>
+                <p className="mt-0.5 font-mono text-[11px] text-muted">
+                  {lamportsToSol(attachedBounty.reward_sol_lamports)} SOL · {attachedBounty.status}
+                </p>
+              </div>
+              {onClearBounty && (
+                <button
+                  type="button"
+                  onClick={onClearBounty}
+                  className="shrink-0 text-[11px] font-semibold text-faint hover:text-foreground"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          )}
+
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -71,7 +106,6 @@ export default function CreatePost({
             ))}
 
             <div className="ml-auto flex items-center gap-2">
-              {/* Sentiment selector */}
               <div className="hidden items-center gap-1 rounded-lg border border-line p-0.5 sm:flex">
                 {SENTIMENTS.map((s) => (
                   <button

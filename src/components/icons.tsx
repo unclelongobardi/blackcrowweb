@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { CSSProperties, SVGProps } from "react";
 
 const base = {
   fill: "none",
@@ -330,12 +330,24 @@ export function IconShare(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Reputation / feathers */
+/** Reputation / feathers — brand asset tinted via currentColor */
 export function IconFeather(props: SVGProps<SVGSVGElement>) {
+  const { className, style, ...rest } = props;
+  const maskStyle = {
+    WebkitMaskImage: "url(/images/feather-icon.png)",
+    maskImage: "url(/images/feather-icon.png)",
+    WebkitMaskSize: "contain",
+    maskSize: "contain",
+    WebkitMaskRepeat: "no-repeat",
+    maskRepeat: "no-repeat",
+    WebkitMaskPosition: "center",
+    maskPosition: "center",
+    ...style,
+  } as CSSProperties;
+
   return (
-    <svg {...base} {...props}>
-      <path d="M4 20 20 4" />
-      <path d="M4 20l5-1.5L4 13l7-1.5L4 6l8 2" />
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden {...rest}>
+      <rect width="24" height="24" fill="currentColor" style={maskStyle} />
     </svg>
   );
 }
