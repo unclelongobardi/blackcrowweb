@@ -52,13 +52,11 @@ export default function Features() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="text-[12px] font-semibold tracking-[0.22em] text-faint">WHAT IS THIS, EXACTLY?</p>
-          <h2 className="mt-4 font-display text-[clamp(1.9rem,4.5vw,3.2rem)] font-extrabold leading-[1.02] tracking-tight">
-            <span className="block text-foreground">A SOCIAL NETWORK</span>
-            <span className="block">
-              <span className="text-foreground">WITH A GAMBLING </span>
-              <span className="bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent">
-                PROBLEM.
-              </span>
+          <h2 className="mt-4 font-display text-[clamp(1.7rem,4vw,2.9rem)] font-extrabold leading-[1.05] tracking-tight">
+            <span className="block text-foreground">A SOCIAL NETWORK FOR PEOPLE WHO</span>
+            <span className="block text-foreground">DON&apos;T WANT TO PLAY THE GAME —</span>
+            <span className="block bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent">
+              THEY WANT TO OWN IT.
             </span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted">

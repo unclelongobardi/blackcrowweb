@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePrivy } from "@privy-io/react-auth";
 import { IconArrow } from "./icons";
+import OnlineCounter from "./OnlineCounter";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -86,14 +87,14 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="font-display text-[clamp(2.6rem,7vw,5.2rem)] font-extrabold leading-[0.92] tracking-tight">
+          <h1 className="font-display text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[0.95] tracking-tight">
             <motion.span
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.05, ease }}
               className="block text-foreground text-glow"
             >
-              MAKE FRIENDS.
+              EARN REWARDS.
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 24 }}
@@ -101,7 +102,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.15, ease }}
               className="block text-foreground text-glow"
             >
-              PLACE BETS.
+              MANIPULATE MARKETS.
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 24 }}
@@ -109,7 +110,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.25, ease }}
               className="block bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent"
             >
-              MOVE MARKETS.
+              START YOUR CABAL.
             </motion.span>
           </h1>
 
@@ -152,7 +153,7 @@ It&apos;s a social network. You meet people, post spicy takes, and
               href="/app/markets"
               className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-white/25 hover:bg-surface"
             >
-              EXPLORE MARKETS
+              EXPLORE BLACKCROW
             </Link>
           </motion.div>
 
@@ -171,13 +172,7 @@ It&apos;s a social network. You meet people, post spicy takes, and
                 />
               ))}
             </div>
-            <div>
-              <p className="font-mono text-base font-bold leading-none text-foreground">10,892</p>
-              <p className="mt-1 flex items-center gap-1.5 text-[11px] tracking-[0.12em] text-faint">
-                <span className="h-1.5 w-1.5 rounded-full bg-bull animate-pulse-dot" />
-                DEGENS ONLINE
-              </p>
-            </div>
+            <OnlineCounter />
           </motion.div>
         </div>
 
@@ -187,17 +182,17 @@ It&apos;s a social network. You meet people, post spicy takes, and
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease }}
-            className="relative mx-auto aspect-square w-full max-w-[560px]"
+            className="relative mx-auto aspect-[4/3] w-full max-w-[600px]"
           >
-            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-background via-transparent to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-gradient-to-t from-background to-transparent" />
+            {/* Soft glow behind the crow for depth */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-3/4 w-3/4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.04] blur-[90px]" />
             <Image
-              src="/images/raven-hero.png"
+              src="/images/raven-hero-clean.png"
               alt="BLACKCROW raven"
               fill
               priority
-              sizes="(max-width: 1024px) 90vw, 560px"
-              className="object-contain object-center"
+              sizes="(max-width: 1024px) 90vw, 600px"
+              className="object-contain object-center drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
             />
           </motion.div>
 

@@ -136,6 +136,13 @@ create table if not exists notifications (
   created_at timestamptz not null default now()
 );
 
+-- ───────────────────────────── PRESENCE (live online counter) ───────────────
+create table if not exists presence (
+  session_id text primary key,
+  last_seen  timestamptz not null default now()
+);
+create index if not exists idx_presence_last_seen on presence(last_seen);
+
 -- ───────────────────────────── INDEXES ──────────────────────────────────────
 create index if not exists idx_posts_created    on posts(created_at desc);
 create index if not exists idx_posts_market     on posts(market_id);
