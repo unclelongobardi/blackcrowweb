@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import AuthControls from "./AuthControls";
+import CopyButton from "./CopyButton";
+import { IconTwitterX } from "./icons";
 
 const LINKS = [
   { label: "HOME", href: "#home" },
@@ -12,6 +14,9 @@ const LINKS = [
   { label: "LEADERBOARD", href: "#leaderboard" },
   { label: "ABOUT", href: "#about" },
 ];
+
+const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL ?? "https://x.com/";
+const TOKEN_CA = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() ?? "";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,12 +43,12 @@ export default function Navbar() {
             : "mt-0 max-w-7xl border-b border-line/60 bg-transparent px-6"
         }`}
       >
-        <nav className="flex h-16 items-center justify-between">
-          <a href="#home" className="text-foreground">
+        <nav className="flex h-16 items-center justify-between gap-3">
+          <a href="#home" className="shrink-0 text-foreground">
             <Logo />
           </a>
 
-          <ul className="hidden items-center gap-9 lg:flex">
+          <ul className="hidden items-center gap-7 xl:flex">
             {LINKS.map((l) => (
               <li key={l.label}>
                 <a
@@ -57,13 +62,40 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
+            <div
+              className="hidden items-center gap-2 rounded-xl border border-line bg-surface/40 px-2 py-1.5 lg:flex"
+              title="Token contract address"
+            >
+              <span className="text-[10px] font-bold tracking-wide text-faint">CA</span>
+              {TOKEN_CA ? (
+                <>
+                  <span className="max-w-[120px] truncate font-mono text-[10px] text-muted xl:max-w-[160px]">
+                    {TOKEN_CA}
+                  </span>
+                  <CopyButton value={TOKEN_CA} label="Copy" />
+                </>
+              ) : (
+                <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[10px] text-faint">TBA</span>
+              )}
+            </div>
+
+            <a
+              href={TWITTER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X (Twitter)"
+              className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-white/25 hover:text-foreground sm:flex"
+            >
+              <IconTwitterX className="h-4 w-4" />
+            </a>
+
             <AuthControls />
 
             <button
               aria-label="Toggle menu"
               onClick={() => setOpen((v) => !v)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-foreground lg:hidden"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line text-foreground xl:hidden"
             >
               <span className="relative flex h-4 w-5 flex-col justify-between">
                 <span className={`h-0.5 w-full bg-current transition-transform ${open ? "translate-y-[7px] rotate-45" : ""}`} />
@@ -76,14 +108,14 @@ export default function Navbar() {
 
         <AnimatePresence>
           {open && (
-            <motion.ul
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="overflow-hidden lg:hidden"
+              className="overflow-hidden xl:hidden"
             >
-              <div className="flex flex-col gap-1 pb-4 pt-2">
+              <div className="flex flex-col gap-1 border-t border-line pb-4 pt-2">
                 {LINKS.map((l) => (
                   <a
                     key={l.label}
@@ -94,8 +126,23 @@ export default function Navbar() {
                     {l.label}
                   </a>
                 ))}
+                <div className="mt-2 flex items-center justify-between rounded-lg border border-line bg-surface/30 px-3 py-2.5">
+                  <div>
+                    <p className="text-[10px] font-bold text-faint">CA</p>
+                    <p className="font-mono text-[11px] text-muted">{TOKEN_CA || "TBA"}</p>
+                  </div>
+                  {TOKEN_CA && <CopyButton value={TOKEN_CA} />}
+                </div>
+                <a
+                  href={TWITTER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-white/5 hover:text-foreground"
+                >
+                  <IconTwitterX className="h-4 w-4" /> X / Twitter
+                </a>
               </div>
-            </motion.ul>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

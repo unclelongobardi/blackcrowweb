@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SocialProof from "@/components/SocialProof";
 import Dashboard from "@/components/Dashboard";
+import LandingLeaderboard from "@/components/LandingLeaderboard";
 import Features from "@/components/Features";
 import Footer from "@/components/Footer";
 import { fetchPolymarketMarkets, pickInteresting } from "@/lib/polymarket";
@@ -18,6 +19,7 @@ export default async function Home() {
       <Hero markets={markets} />
       <SocialProof markets={markets} />
       <Dashboard markets={markets} />
+      <LandingLeaderboard />
       <Features />
       <Footer />
     </main>

@@ -2,12 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { getUserHandle, getUserInitials } from "@/lib/user";
-import { IconArrow, IconUser, IconChart2, IconWallet } from "./icons";
+import { IconArrow, IconUser, IconTarget, IconWallet } from "./icons";
 
 export default function AuthControls() {
   const { ready, authenticated, user, login, logout } = usePrivy();
+  const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -18,6 +21,12 @@ export default function AuthControls() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
+
+  useEffect(() => {
+    if (ready && authenticated && pathname === "/") {
+      router.replace("/app");
+    }
+  }, [ready, authenticated, pathname, router]);
 
   if (!ready) {
     return <div className="h-9 w-36 animate-pulse rounded-lg bg-white/[0.06]" />;
@@ -61,7 +70,7 @@ export default function AuthControls() {
       {open && (
         <div className="absolute right-0 top-12 w-56 overflow-hidden rounded-xl glass p-1.5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
           <div className="border-b border-line px-3 py-2.5">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-faint">Signed in as</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-faint">Connected</p>
             <p className="mt-0.5 truncate text-[13px] font-medium text-foreground">{getUserHandle(user)}</p>
           </div>
           <Link
@@ -69,21 +78,21 @@ export default function AuthControls() {
             onClick={() => setOpen(false)}
             className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
           >
-            <IconChart2 className="h-4 w-4" /> The Nest
+            <IconTarget className="h-4 w-4" /> War Room
           </Link>
           <Link
             href="/app/profile"
             onClick={() => setOpen(false)}
             className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
           >
-            <IconUser className="h-4 w-4" /> Profile
+            <IconUser className="h-4 w-4" /> My profile
           </Link>
           <Link
             href="/account"
             onClick={() => setOpen(false)}
             className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
           >
-            <IconWallet className="h-4 w-4" /> Wallet
+            <IconWallet className="h-4 w-4" /> Wallet & account
           </Link>
           <button
             onClick={() => {
@@ -92,7 +101,7 @@ export default function AuthControls() {
             }}
             className="mt-1 flex w-full items-center gap-2.5 rounded-lg border-t border-line px-3 py-2.5 text-left text-[13px] text-bear transition-colors hover:bg-bear/10"
           >
-            Log out
+            Disconnect wallet
           </button>
         </div>
       )}
