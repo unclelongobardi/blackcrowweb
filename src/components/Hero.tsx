@@ -71,9 +71,9 @@ const FALLBACK_CARDS = [
 ];
 
 const CARD_POS = [
-  { className: "left-[1%] top-[24%]", delay: 0.7, float: "animate-float" },
-  { className: "right-[5%] top-[5%]", delay: 0.85, float: "animate-float-slow" },
-  { className: "bottom-[10%] right-[15%]", delay: 1, float: "animate-float" },
+  { className: "left-[-2%] top-[20%]", delay: 0.7, float: "animate-float" },
+  { className: "right-[1%] top-[2%]", delay: 0.85, float: "animate-float-slow" },
+  { className: "bottom-[6%] right-[18%]", delay: 1, float: "animate-float" },
 ];
 
 export default function Hero({ markets = [] }: { markets?: Market[] }) {
@@ -97,7 +97,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
       <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-emerald-500/5 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.03] blur-[120px]" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-2 lg:pb-0">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:min-h-[600px] lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-4 lg:pb-0">
         {/* LEFT */}
         <div className="lg:self-center">
           <motion.div
@@ -206,7 +206,7 @@ It&apos;s a social network. You meet people, post spicy takes, and
         </div>
 
         {/* RIGHT — raven + floating cards (in-flow, bottom-anchored to the ticker) */}
-        <div className="relative mx-auto mt-6 w-full max-w-[560px] self-end lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none xl:-mr-10">
+        <div className="relative mx-auto mt-6 w-full max-w-[560px] self-end lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none lg:-mr-4 xl:-mr-16">
           <motion.div
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
