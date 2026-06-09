@@ -76,19 +76,14 @@ export default function OpenBountiesSidebar({
                     {creator ? (
                       <div className="mb-2 flex items-center gap-2">
                         <Avatar
-                          seed={creator.avatar_seed}
-                          label={creator.codename}
+                          seed={b.is_official ? "blackcrow_official" : creator.avatar_seed}
+                          label={b.is_official ? "blackcrow_official" : creator.codename}
                           size={22}
                           verified={verified}
                         />
                         <span className="truncate text-[11px] font-semibold text-foreground">
-                          {creator.display_name || creator.codename}
+                          {b.is_official ? "blackcrow_official" : creator.display_name || creator.codename}
                         </span>
-                        {b.is_official && (
-                          <span className="shrink-0 rounded bg-white/5 px-1 py-0.5 text-[8px] font-bold uppercase text-faint">
-                            Official
-                          </span>
-                        )}
                       </div>
                     ) : (
                       <p className="mb-2 text-[11px] text-faint">Unknown creator</p>

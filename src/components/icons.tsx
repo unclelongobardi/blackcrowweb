@@ -330,23 +330,16 @@ export function IconShare(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Solana — brand gradient mark */
-export function IconSolana(props: SVGProps<SVGSVGElement>) {
-  const { className, ...rest } = props;
+/** Solana — official brand mark */
+export function IconSolana({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden {...rest}>
-      <defs>
-        <linearGradient id="bc-solana" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#9945FF" />
-          <stop offset="0.5" stopColor="#8752F3" />
-          <stop offset="1" stopColor="#14F195" />
-        </linearGradient>
-      </defs>
-      <path
-        fill="url(#bc-solana)"
-        d="M6.5 15.8 9.8 12.5h8.9l-3.3 3.3H6.5Zm0-4.1L9.8 8.4h8.9L15.4 11.7H6.5Zm3.3 8.2 3.3-3.3h8.9l-3.3 3.3h-8.9Z"
-      />
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/images/solana-logo.svg"
+      alt=""
+      aria-hidden
+      className={className ?? "h-4 w-4 shrink-0"}
+    />
   );
 }
 

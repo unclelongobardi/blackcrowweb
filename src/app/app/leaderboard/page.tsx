@@ -238,7 +238,7 @@ export default function LeaderboardPage() {
           summary="Reputation points on the leaderboard — separate from SOL bounties."
         >
           <p className="text-[13px] leading-relaxed text-muted">
-            Feathers measure activity and influence on BLACKCROW. SOL in bounties is real money in escrow;
+            Feathers measure activity and influence on BLACKCROW. Bounty rewards are real on-chain payouts;
             Feathers are status, rank, and visibility on The Roost and in search.
           </p>
         </AccordionSection>

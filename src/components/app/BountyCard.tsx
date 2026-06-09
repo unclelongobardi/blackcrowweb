@@ -188,10 +188,20 @@ export default function BountyCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          {isOfficial && (
-            <span className="rounded-md bg-bull/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-bull">
-              BlackCrow Official
-            </span>
+          {isOfficial && bounty.creator && (
+            <Link
+              href={`/app/u/${bounty.creator.codename}`}
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1.5 rounded-md bg-white/5 py-0.5 pl-0.5 pr-2"
+            >
+              <Avatar
+                seed={bounty.creator.avatar_seed}
+                label={bounty.creator.codename}
+                size={20}
+                verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
+              />
+              <span className="text-[10px] font-semibold text-foreground">blackcrow_official</span>
+            </Link>
           )}
           <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
             {KIND_LABEL[bounty.kind] ?? bounty.kind}
@@ -211,9 +221,7 @@ export default function BountyCard({
         <div className="text-right">
           <SolAmount amount={sol} className="font-mono text-lg font-bold text-bull" iconClassName="h-4 w-4" />
           <p className="flex items-center justify-end gap-1 text-[10px] text-faint">
-            {isOfficial ? (
-              "In escrow"
-            ) : (
+            {!isOfficial && (
               <>
                 +{helperFeathers}
                 <IconFeather className="h-3 w-3 text-bull" /> helper
@@ -473,7 +481,7 @@ export default function BountyCard({
           </a>
         )}
         {bounty.status === "paid" && bounty.payout_tx?.startsWith("OFFICIAL_MANUAL") && (
-          <p className="text-center text-[11px] text-faint">Official payout released</p>
+          <p className="text-center text-[11px] text-faint">Payout released</p>
         )}
       </div>
     </div>

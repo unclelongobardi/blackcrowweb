@@ -50,7 +50,7 @@ export default function CreateBountyModal({
       <div className="glass max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6">
         <p className="text-[11px] font-semibold tracking-[0.18em] text-faint">POST A BOUNTY</p>
         <p className="mt-1 text-[13px] text-muted">
-          Put <IconSolana className="inline h-3.5 w-3.5 align-[-2px]" /> in escrow. Someone does the job. You approve → they get paid.
+          Lock <IconSolana className="inline h-3.5 w-3.5 align-[-2px]" /> in a bounty. Someone does the job. You approve → they get paid.
         </p>
 
         {market && (
