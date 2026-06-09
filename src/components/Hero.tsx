@@ -119,7 +119,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
               transition={{ duration: 0.7, delay: 0.05, ease }}
               className="block text-foreground text-glow"
             >
-              EARN REWARDS.
+              MANIPULATE MARKETS.
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 24 }}
@@ -127,7 +127,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
               transition={{ duration: 0.7, delay: 0.15, ease }}
               className="block text-foreground text-glow"
             >
-              MANIPULATE MARKETS.
+              EARN REWARDS.
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 24 }}
