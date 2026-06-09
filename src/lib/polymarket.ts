@@ -102,8 +102,8 @@ const TOPIC_KEYWORDS: Record<number, string[]> = {
   // 3 = sports (deprioritized)
   3: [
     "fifa", "world cup", "nba", "nfl", "super bowl", "champions league", "premier league",
-    "la liga", "finals", "playoff", "match", "win the", "ballon", "uefa", "mlb", "nhl",
-    "f1", "grand prix", "olympic", "tournament",
+    "la liga", "nba finals", "playoff", "ballon d", "uefa", "mlb", "nhl", "ncaa",
+    "f1", "grand prix", "olympic", "tournament", "golf", "tennis", "boxing", "ufc",
   ],
 };
 
