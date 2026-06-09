@@ -53,13 +53,9 @@ function StatCard({
   );
 }
 
-const AVATAR_COLORS = [
-  "from-emerald-500/40 to-teal-700/40",
-  "from-fuchsia-500/40 to-purple-700/40",
-  "from-sky-500/40 to-blue-700/40",
-  "from-amber-500/40 to-orange-700/40",
-  "from-rose-500/40 to-red-700/40",
-];
+const AVATAR_SEEDS = ["Nyx", "Vega", "Karma", "Ghost", "Loki", "Onyx"];
+const avatarUrl = (seed: string) =>
+  `https://api.dicebear.com/9.x/bottts/png?seed=${seed}&size=80&radius=50`;
 
 export default function Hero() {
   const { ready, authenticated, login } = usePrivy();
@@ -165,10 +161,14 @@ It&apos;s a social network. You meet people, post spicy takes, and
             className="mt-9 flex items-center gap-4"
           >
             <div className="flex -space-x-2.5">
-              {AVATAR_COLORS.map((c, i) => (
-                <div
-                  key={i}
-                  className={`h-9 w-9 rounded-full border-2 border-background bg-gradient-to-br ${c} ring-1 ring-white/10`}
+              {AVATAR_SEEDS.map((seed) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={seed}
+                  src={avatarUrl(seed)}
+                  alt=""
+                  loading="lazy"
+                  className="h-9 w-9 rounded-full border-2 border-background bg-surface object-cover ring-1 ring-white/10"
                 />
               ))}
             </div>
@@ -179,20 +179,20 @@ It&apos;s a social network. You meet people, post spicy takes, and
         {/* RIGHT — raven + floating cards */}
         <div className="relative">
           <motion.div
-            initial={{ opacity: 0, scale: 1.04 }}
+            initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease }}
-            className="relative mx-auto aspect-[4/3] w-full max-w-[600px]"
+            className="relative mx-auto aspect-[3/2] w-full max-w-[680px] lg:max-w-[780px] lg:-mr-6 xl:-mr-16"
           >
             {/* Soft glow behind the crow for depth */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-3/4 w-3/4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.04] blur-[90px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.05] blur-[100px]" />
             <Image
-              src="/images/raven-hero-clean.png"
+              src="/images/raven-hero-cutout.png"
               alt="BLACKCROW raven"
               fill
               priority
-              sizes="(max-width: 1024px) 90vw, 600px"
-              className="object-contain object-center drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
+              sizes="(max-width: 1024px) 92vw, 780px"
+              className="object-contain object-center drop-shadow-[0_40px_70px_rgba(0,0,0,0.85)]"
             />
           </motion.div>
 
