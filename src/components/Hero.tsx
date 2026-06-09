@@ -71,9 +71,9 @@ const FALLBACK_CARDS = [
 ];
 
 const CARD_POS = [
-  { className: "left-0 top-8 sm:left-2", delay: 0.7, float: "animate-float" },
-  { className: "right-[14%] top-2 sm:top-4", delay: 0.85, float: "animate-float-slow" },
-  { className: "bottom-8 right-[12%] sm:right-[14%]", delay: 1, float: "animate-float" },
+  { className: "left-[1%] top-[24%]", delay: 0.7, float: "animate-float" },
+  { className: "right-[5%] top-[5%]", delay: 0.85, float: "animate-float-slow" },
+  { className: "bottom-[10%] right-[15%]", delay: 1, float: "animate-float" },
 ];
 
 export default function Hero({ markets = [] }: { markets?: Market[] }) {
@@ -90,16 +90,16 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
       : FALLBACK_CARDS;
 
   return (
-    <section id="home" className="relative overflow-hidden pt-32 sm:pt-36 lg:pt-40">
+    <section id="home" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-32">
       {/* Animated background grid */}
       <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-70" />
       {/* Ambient glows */}
       <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-emerald-500/5 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.03] blur-[120px]" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 pb-20 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-0 lg:pb-28">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-2 lg:pb-0">
         {/* LEFT */}
-        <div>
+        <div className="lg:self-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
             </span>
           </motion.div>
 
-          <h1 className="font-display text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[0.95] tracking-tight">
+          <h1 className="font-display text-[clamp(1.75rem,3.6vw,3rem)] font-extrabold leading-[1.02] tracking-tight">
             <motion.span
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -205,10 +205,10 @@ It&apos;s a social network. You meet people, post spicy takes, and
           </motion.div>
         </div>
 
-        {/* RIGHT — raven + floating cards (anchored to the bottom ticker) */}
-        <div className="relative mx-auto mt-10 w-full max-w-[640px] lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:w-[56vw] lg:max-w-[1000px] xl:-right-8">
+        {/* RIGHT — raven + floating cards (in-flow, bottom-anchored to the ticker) */}
+        <div className="relative mx-auto mt-6 w-full max-w-[560px] self-end lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none xl:-mr-10">
           <motion.div
-            initial={{ opacity: 0, scale: 1.06 }}
+            initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease }}
             className="relative aspect-[3/2] w-full"
@@ -231,7 +231,7 @@ It&apos;s a social network. You meet people, post spicy takes, and
 
           {cards.map((c, i) => (
             <StatCard
-              key={i}
+              key={c.label + i}
               className={CARD_POS[i].className}
               label={c.label}
               yes={c.yes}
