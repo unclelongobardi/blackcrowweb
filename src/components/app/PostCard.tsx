@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Avatar from "./Avatar";
+import UserName from "./UserName";
 import { useApi } from "@/lib/useApi";
 import { timeAgo, compactNumber } from "@/lib/format";
 import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots } from "@/components/icons";
@@ -66,13 +68,30 @@ export default function PostCard({ post }: { post: Post }) {
   return (
     <article className="cursor-pointer border-b border-line px-4 py-3.5 transition-colors hover:bg-white/[0.015] sm:px-5">
       <div className="flex gap-3">
-        <Avatar seed={post.author?.avatar_seed} label={post.author?.codename} size={42} />
+        {post.author?.codename ? (
+          <Link href={`/app/u/${post.author.codename}`}>
+            <Avatar
+              seed={post.author.avatar_seed}
+              label={post.author.codename}
+              size={42}
+              verified={post.author.is_verified || post.author.codename === "blackcrow_official"}
+            />
+          </Link>
+        ) : (
+          <Avatar seed={post.author?.avatar_seed} label={post.author?.codename} size={42} />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="truncate text-[14px] font-semibold text-foreground">
-              {post.author?.display_name || post.author?.codename || "anon"}
-            </span>
-            <span className="truncate text-[13px] text-faint">@{post.author?.codename ?? "anon"}</span>
+            {post.author?.codename ? (
+              <UserName
+                codename={post.author.codename}
+                displayName={post.author.display_name}
+                verified={post.author.is_verified || post.author.codename === "blackcrow_official"}
+                className="truncate text-[14px]"
+              />
+            ) : (
+              <span className="truncate text-[14px] font-semibold text-foreground">anon</span>
+            )}
             <span className="text-faint">·</span>
             <span className="text-[13px] text-faint">{timeAgo(post.created_at)}</span>
             {post.sentiment !== "neutral" && (

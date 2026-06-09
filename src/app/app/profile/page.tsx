@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useApi } from "@/lib/useApi";
 import { useAppContext } from "@/components/app/appContext";
@@ -19,6 +20,7 @@ export default function ProfilePage() {
 
   if (!me) return null;
   const p = me.profile;
+  const verified = p.is_verified || p.codename === "blackcrow_official";
 
   async function save() {
     setLoading(true);
@@ -41,10 +43,13 @@ export default function ProfilePage() {
     <div className="mx-auto max-w-2xl px-5 py-6">
       <div className="glass rounded-2xl p-6">
         <div className="flex items-center gap-4">
-          <Avatar seed={p.avatar_seed} label={p.codename} size={64} />
+          <Avatar seed={p.avatar_seed} label={p.codename} size={64} verified={verified} />
           <div className="min-w-0 flex-1">
-            <h1 className="font-display text-2xl font-extrabold tracking-tight">{p.codename}</h1>
-            {p.display_name && <p className="text-[13px] text-muted">{p.display_name}</p>}
+            <h1 className="font-display text-2xl font-extrabold tracking-tight">{p.display_name || p.codename}</h1>
+            <p className="text-[13px] text-faint">@{p.codename}</p>
+            <Link href={`/app/u/${p.codename}`} className="mt-1 inline-block text-[12px] text-bull hover:underline">
+              View public profile →
+            </Link>
           </div>
           <button
             onClick={() => setEditing((v) => !v)}
@@ -88,11 +93,12 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
           {[
             { label: "Feathers", value: p.influence.toLocaleString() },
             { label: "Rank", value: `#${me.stats.rank}` },
-            { label: "Operations", value: String(me.stats.operations) },
+            { label: "Bounties", value: String(me.stats.bounties_posted) },
+            { label: "Completed", value: String(me.stats.bounties_done) },
             { label: "Posts", value: String(me.stats.posts) },
           ].map((s) => (
             <div key={s.label} className="rounded-xl border border-line bg-surface/40 p-3 text-center">

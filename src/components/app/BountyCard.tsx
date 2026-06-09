@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { useApi } from "@/lib/useApi";
@@ -41,7 +42,10 @@ export default function BountyCard({
 
   const sol = lamportsToSol(bounty.reward_sol_lamports);
   const role = bounty.my_role;
-  const isOfficial = bounty.is_official || bounty.creator?.codename === "blackcrow";
+  const isOfficial =
+    bounty.is_official ||
+    bounty.creator?.codename === "blackcrow_official" ||
+    bounty.creator?.codename === "blackcrow";
   const canApprove =
     bounty.status === "submitted" && (role === "creator" || isOfficial);
 
@@ -176,16 +180,22 @@ export default function BountyCard({
 
       <div className="mt-3 flex items-center gap-2 text-[11px] text-faint">
         {bounty.creator && (
-          <span className="flex items-center gap-1">
-            <Avatar seed={bounty.creator.avatar_seed} label={bounty.creator.codename} size={18} />
+          <Link href={`/app/u/${bounty.creator.codename}`} className="flex items-center gap-1 hover:text-foreground">
+            <Avatar
+              seed={bounty.creator.avatar_seed}
+              label={bounty.creator.codename}
+              size={18}
+              verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
+            />
             {bounty.creator.codename}
-          </span>
+          </Link>
         )}
         {bounty.helper && (
-          <span className="flex items-center gap-1">
-            → <Avatar seed={bounty.helper.avatar_seed} label={bounty.helper.codename} size={18} />
+          <Link href={`/app/u/${bounty.helper.codename}`} className="flex items-center gap-1 hover:text-foreground">
+            →{" "}
+            <Avatar seed={bounty.helper.avatar_seed} label={bounty.helper.codename} size={18} />
             {bounty.helper.codename}
-          </span>
+          </Link>
         )}
       </div>
 

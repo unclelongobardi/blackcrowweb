@@ -1,11 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useApi } from "@/lib/useApi";
 import { compactNumber } from "@/lib/format";
 import Avatar from "@/components/app/Avatar";
 
-type Operative = { id: string; codename: string; display_name: string | null; avatar_seed: string | null; influence: number };
+type Operative = {
+  id: string;
+  codename: string;
+  display_name: string | null;
+  avatar_seed: string | null;
+  influence: number;
+  is_verified?: boolean;
+};
 type CabalRow = { id: string; slug: string; name: string; motto: string | null; emblem_seed: string | null; member_count: number };
 
 export default function LeaderboardPage() {
@@ -45,7 +53,11 @@ export default function LeaderboardPage() {
             </h2>
             <div className="divide-y divide-line">
               {operatives.map((o, i) => (
-                <div key={o.id} className="flex items-center gap-3 px-5 py-3">
+                <Link
+                  key={o.id}
+                  href={`/app/u/${o.codename}`}
+                  className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/[0.02]"
+                >
                   <span
                     className={`w-6 text-center font-mono text-[13px] font-bold ${
                       i === 0 ? "text-bull" : i < 3 ? "text-foreground" : "text-faint"
@@ -53,7 +65,12 @@ export default function LeaderboardPage() {
                   >
                     {i + 1}
                   </span>
-                  <Avatar seed={o.avatar_seed} label={o.codename} size={34} />
+                  <Avatar
+                    seed={o.avatar_seed}
+                    label={o.codename}
+                    size={34}
+                    verified={o.is_verified || o.codename === "blackcrow_official"}
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-semibold text-foreground">{o.codename}</p>
                     {o.display_name && <p className="truncate text-[11px] text-faint">{o.display_name}</p>}
@@ -61,7 +78,7 @@ export default function LeaderboardPage() {
                   <span className="font-mono text-[13px] font-bold text-bull">
                     {compactNumber(o.influence)} ⚑
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -72,7 +89,11 @@ export default function LeaderboardPage() {
             </h2>
             <div className="divide-y divide-line">
               {cabals.map((c, i) => (
-                <div key={c.id} className="flex items-center gap-3 px-5 py-3">
+                <Link
+                  key={c.id}
+                  href={`/app/cabals/${c.slug}`}
+                  className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-white/[0.02]"
+                >
                   <span className="w-6 text-center font-mono text-[13px] font-bold text-faint">{i + 1}</span>
                   <Avatar seed={c.emblem_seed} label={c.name} size={34} />
                   <div className="min-w-0 flex-1">
@@ -80,7 +101,7 @@ export default function LeaderboardPage() {
                     {c.motto && <p className="truncate text-[11px] italic text-faint">{c.motto}</p>}
                   </div>
                   <span className="font-mono text-[12px] font-bold text-foreground">{c.member_count}</span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

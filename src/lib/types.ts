@@ -8,8 +8,12 @@ export type Profile = {
   avatar_seed: string | null;
   influence: number;
   is_onboarded: boolean;
+  is_verified?: boolean;
   created_at: string;
 };
+
+export type CabalKind = "tipsters" | "manipulation" | "discussion";
+export type CabalVisibility = "public" | "private";
 
 export type Cabal = {
   id: string;
@@ -20,7 +24,30 @@ export type Cabal = {
   emblem_seed: string | null;
   created_by: string | null;
   created_at: string;
+  visibility?: CabalVisibility;
+  kind?: CabalKind;
   member_count?: number;
+  is_member?: boolean;
+  pending_request?: boolean;
+  is_leader?: boolean;
+};
+
+export type DmConversation = {
+  id: string;
+  updated_at: string;
+  other: Profile;
+  last_body: string | null;
+  last_at: string | null;
+  unread: boolean;
+};
+
+export type DmMessage = {
+  id: string;
+  conversation_id?: string;
+  sender_id: string;
+  body: string;
+  created_at: string;
+  sender?: Profile | null;
 };
 
 export type Market = {

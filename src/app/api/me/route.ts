@@ -15,13 +15,15 @@ export async function GET(request: Request) {
   const { profile } = ctx;
   const stats = await queryOne<{
     cabals: string;
-    operations: string;
+    bounties_posted: string;
+    bounties_done: string;
     posts: string;
     rank: string;
   }>(
     `select
        (select count(*) from cabal_members where profile_id = $1) as cabals,
-       (select count(*) from operation_joins where profile_id = $1) as operations,
+       (select count(*) from bounties where created_by = $1) as bounties_posted,
+       (select count(*) from bounties where helper_id = $1 and status = 'paid') as bounties_done,
        (select count(*) from posts where author_id = $1) as posts,
        (select count(*) from profiles where influence > $2) + 1 as rank`,
     [profile.id, profile.influence],
@@ -32,7 +34,8 @@ export async function GET(request: Request) {
     profile,
     stats: {
       cabals: Number(stats?.cabals ?? 0),
-      operations: Number(stats?.operations ?? 0),
+      bounties_posted: Number(stats?.bounties_posted ?? 0),
+      bounties_done: Number(stats?.bounties_done ?? 0),
       posts: Number(stats?.posts ?? 0),
       rank: Number(stats?.rank ?? 1),
     },

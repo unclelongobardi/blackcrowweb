@@ -7,10 +7,10 @@ insert into profiles (id, privy_did, codename, display_name, bio, avatar_seed, i
 values (
   '00000000-0000-0000-0000-0000000000bc',
   'seed:blackcrow_official',
-  'blackcrow',
+  'blackcrow_official',
   'BlackCrow',
   'Official bounties from the nest. Real Polymarket targets. SOL rewards held in escrow.',
-  'blackcrow',
+  'blackcrow_official',
   10000,
   true,
   'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH'

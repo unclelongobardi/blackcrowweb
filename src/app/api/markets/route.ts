@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { fetchPolymarketMarkets, pickExploitable, pickInteresting } from "@/lib/polymarket";
+import { fetchPolymarketMarkets } from "@/lib/polymarket";
+import { filterMarkets } from "@/lib/marketFilters";
 import { getPool, isDbConfigured } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -7,16 +8,19 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const limit = Math.min(48, Number(url.searchParams.get("limit") ?? 24) || 24);
-  const mode = url.searchParams.get("mode");
   const pool = await fetchPolymarketMarkets(150);
-  const markets =
-    mode === "exploitable" ? pickExploitable(pool, limit) : pickInteresting(pool, limit);
+  const markets = filterMarkets(pool, {
+    mode: url.searchParams.get("mode") ?? undefined,
+    category: url.searchParams.get("category") ?? undefined,
+    q: url.searchParams.get("q") ?? undefined,
+    liquidity: url.searchParams.get("liquidity") ?? undefined,
+    sort: url.searchParams.get("sort") ?? undefined,
+    limit: Number(url.searchParams.get("limit") ?? 24) || 24,
+  });
 
-  // Best-effort cache so operations can reference live markets.
   if (markets.length && isDbConfigured()) {
     try {
-      const pool = getPool();
+      const db = getPool();
       const values: string[] = [];
       const params: unknown[] = [];
       markets.forEach((m, i) => {
@@ -29,7 +33,7 @@ export async function GET(request: Request) {
           m.yes_price, m.no_price, m.volume, m.end_date, m.url,
         );
       });
-      await pool.query(
+      await db.query(
         `insert into markets (id, slug, question, category, image, yes_price, no_price, volume, end_date, url, last_synced)
          values ${values.join(",")}
          on conflict (id) do update set

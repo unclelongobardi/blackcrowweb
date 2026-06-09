@@ -6,7 +6,7 @@ import type { Profile } from "@/lib/types";
 export type Me = {
   authenticated: boolean;
   profile: Profile;
-  stats: { cabals: number; operations: number; posts: number; rank: number };
+  stats: { cabals: number; bounties_posted: number; bounties_done: number; posts: number; rank: number };
 };
 
 type AppContextValue = {

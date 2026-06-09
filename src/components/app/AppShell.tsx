@@ -16,7 +16,8 @@ import { IconArrow, IconHome, IconGrid, IconTrophy, IconUser } from "@/component
 const MOBILE_NAV = [
   { label: "Bounties", href: "/app", icon: IconHome },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
-  { label: "Ops", href: "/app/operations", icon: IconTrophy },
+  { label: "Cabals", href: "/app/cabals", icon: IconTrophy },
+  { label: "Msgs", href: "/app/messages", icon: IconGrid },
   { label: "Profile", href: "/app/profile", icon: IconUser },
 ];
 
