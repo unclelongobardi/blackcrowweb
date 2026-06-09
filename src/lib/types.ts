@@ -108,6 +108,7 @@ export type Bounty = {
   helper?: Profile | null;
   market?: Market | null;
   my_role?: "creator" | "helper" | null;
+  is_official?: boolean;
 };
 
 export type Notification = {

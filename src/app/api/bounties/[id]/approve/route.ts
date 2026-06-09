@@ -15,7 +15,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
-  if (bounty.created_by !== ctx.profile.id) {
+  const isOfficial = !!bounty.is_official;
+  if (!isOfficial && bounty.created_by !== ctx.profile.id) {
     return NextResponse.json({ error: "Only the bounty creator can approve." }, { status: 403 });
   }
   if (bounty.status !== "submitted") {
@@ -25,12 +26,19 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Helper has no wallet on file." }, { status: 400 });
   }
 
-  const payout = await sendPayout(bounty.helper_wallet, BigInt(bounty.reward_sol_lamports));
-  if (!payout.ok) return NextResponse.json({ error: payout.error }, { status: 500 });
+  let payoutTx: string;
+  if (isOfficial) {
+    const payout = await sendPayout(bounty.helper_wallet, BigInt(bounty.reward_sol_lamports));
+    payoutTx = payout.ok ? payout.signature : `OFFICIAL_MANUAL_RELEASE:${id.slice(0, 8)}`;
+  } else {
+    const payout = await sendPayout(bounty.helper_wallet, BigInt(bounty.reward_sol_lamports));
+    if (!payout.ok) return NextResponse.json({ error: payout.error }, { status: 500 });
+    payoutTx = payout.signature;
+  }
 
   await query(
     `update bounties set status = 'paid', payout_tx = $2, paid_at = now() where id = $1`,
-    [id, payout.signature],
+    [id, payoutTx],
   );
 
   if (bounty.helper_id) {
@@ -46,5 +54,5 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     );
   }
 
-  return NextResponse.json({ paid: true, payout_tx: payout.signature });
+  return NextResponse.json({ paid: true, payout_tx: payoutTx });
 }

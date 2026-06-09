@@ -37,7 +37,7 @@ const run = async () => {
   console.log("Connected. Applying schema…");
   await client.query(readFileSync("supabase/schema.sql", "utf8"));
   console.log("Applying migrations…");
-  for (const file of ["002_bounty_escrow.sql", "003_clean_fake_data.sql"]) {
+  for (const file of ["002_bounty_escrow.sql", "003_clean_fake_data.sql", "004_official_bounties.sql"]) {
     try {
       await client.query(readFileSync(`supabase/migrations/${file}`, "utf8"));
     } catch (err) {

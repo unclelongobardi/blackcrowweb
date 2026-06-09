@@ -41,6 +41,9 @@ export default function BountyCard({
 
   const sol = lamportsToSol(bounty.reward_sol_lamports);
   const role = bounty.my_role;
+  const isOfficial = bounty.is_official || bounty.creator?.codename === "blackcrow";
+  const canApprove =
+    bounty.status === "submitted" && (role === "creator" || isOfficial);
 
   async function run<T>(fn: () => Promise<T>): Promise<T | null> {
     setBusy(true);
@@ -113,6 +116,11 @@ export default function BountyCard({
     <div className="glass glass-hover flex flex-col rounded-2xl p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
+          {isOfficial && (
+            <span className="rounded-md bg-bull/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-bull">
+              BlackCrow Official
+            </span>
+          )}
           <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
             {KIND_LABEL[bounty.kind] ?? bounty.kind}
           </span>
@@ -130,7 +138,9 @@ export default function BountyCard({
         </div>
         <div className="text-right">
           <p className="font-mono text-lg font-bold text-bull">{sol} SOL</p>
-          <p className="text-[10px] text-faint">+{bounty.reward_influence} ⚑</p>
+          <p className="text-[10px] text-faint">
+            {isOfficial ? "In escrow" : `+${bounty.reward_influence} ⚑`}
+          </p>
         </div>
       </div>
 
@@ -221,14 +231,14 @@ export default function BountyCard({
           </>
         )}
 
-        {bounty.status === "submitted" && role === "creator" && (
+        {canApprove && (
           <div className="flex gap-2">
             <button
               onClick={approve}
               disabled={busy}
               className="flex-1 rounded-lg bg-bull px-4 py-2.5 text-[12px] font-bold tracking-wide text-black disabled:opacity-60"
             >
-              {busy ? "…" : "APPROVE & PAY"}
+              {busy ? "…" : isOfficial ? "APPROVE & RELEASE SOL" : "APPROVE & PAY"}
             </button>
             <button
               onClick={reject}
@@ -240,7 +250,7 @@ export default function BountyCard({
           </div>
         )}
 
-        {bounty.status === "paid" && bounty.payout_tx && (
+        {bounty.status === "paid" && bounty.payout_tx && !bounty.payout_tx.startsWith("OFFICIAL_MANUAL") && (
           <a
             href={`https://solscan.io/tx/${bounty.payout_tx}`}
             target="_blank"
@@ -249,6 +259,9 @@ export default function BountyCard({
           >
             View payout on Solscan →
           </a>
+        )}
+        {bounty.status === "paid" && bounty.payout_tx?.startsWith("OFFICIAL_MANUAL") && (
+          <p className="text-center text-[11px] text-faint">Official payout released</p>
         )}
       </div>
     </div>

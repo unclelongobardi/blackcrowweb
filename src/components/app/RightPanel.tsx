@@ -44,10 +44,11 @@ export default function RightPanel({
 }) {
   const watch = markets.slice(0, 5);
   const open = bounties.filter((b) => b.status === "open").slice(0, 4);
+  const officialCount = bounties.filter((b) => b.is_official && b.status === "open").length;
 
   return (
     <aside className="hidden w-[332px] shrink-0 flex-col gap-4 p-4 xl:flex">
-      <Section title="OPEN BOUNTIES" href="/app">
+      <Section title={officialCount ? `OPEN BOUNTIES (${officialCount} OFFICIAL)` : "OPEN BOUNTIES"} href="/app">
         <div className="divide-y divide-line">
           {open.length === 0 ? (
             <p className="px-4 py-5 text-[12px] leading-relaxed text-faint">
@@ -61,7 +62,14 @@ export default function RightPanel({
             open.map((b) => (
               <div key={b.id} className="px-4 py-3">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="line-clamp-2 text-[12.5px] font-semibold text-foreground">{b.title}</p>
+                  <div className="min-w-0">
+                    {b.is_official && (
+                      <span className="mb-1 inline-block text-[9px] font-bold uppercase tracking-wide text-bull">
+                        BlackCrow
+                      </span>
+                    )}
+                    <p className="line-clamp-2 text-[12.5px] font-semibold text-foreground">{b.title}</p>
+                  </div>
                   <span className="shrink-0 font-mono text-[12px] font-bold text-bull">
                     {lamportsToSol(b.reward_sol_lamports)} SOL
                   </span>

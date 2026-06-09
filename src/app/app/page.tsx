@@ -79,8 +79,8 @@ export default function HomePage() {
             Open bounties
           </h1>
           <p className="mt-2 max-w-md text-[13px] leading-relaxed text-muted">
-            Someone posts a job. SOL sits in escrow. You do it, they approve, you get paid.
-            Find a thin market on Polymarket, post a bounty, rally your people.
+            BlackCrow posts official jobs on real Polymarket markets — SOL in escrow.
+            Accept one, do the work, get paid when approved.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <button

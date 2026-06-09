@@ -127,7 +127,8 @@ create table if not exists bounties (
   funded_at           timestamptz,
   assigned_at         timestamptz,
   submitted_at        timestamptz,
-  paid_at             timestamptz
+  paid_at             timestamptz,
+  is_official         boolean not null default false
 );
 
 -- Bounty indexes applied in supabase/migrations/002_bounty_escrow.sql
