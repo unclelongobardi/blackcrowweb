@@ -145,9 +145,9 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
             transition={{ duration: 0.6, delay: 0.35, ease }}
             className="mt-6 max-w-md border-l border-line pl-4 text-sm leading-relaxed tracking-wide text-muted"
           >
-It&apos;s a social network. You meet people, post spicy takes, and
-            move prediction markets together. Like a group chat — except the
-            group chat moves the odds.
+A social network to meet people obsessed with prediction markets —
+            the kind who want to control the game, not be controlled by
+            someone else&apos;s.
           </motion.p>
 
           <motion.div
