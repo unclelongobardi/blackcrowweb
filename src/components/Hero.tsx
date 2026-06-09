@@ -93,7 +93,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.05, ease }}
               className="block text-foreground text-glow"
             >
-              PREDICT CHAOS.
+              MAKE FRIENDS.
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 24 }}
@@ -101,7 +101,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.15, ease }}
               className="block text-foreground text-glow"
             >
-              MOVE MARKETS.
+              PLACE BETS.
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 24 }}
@@ -109,7 +109,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.25, ease }}
               className="block bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent"
             >
-              STAY ANONYMOUS.
+              MOVE MARKETS.
             </motion.span>
           </h1>
 
@@ -135,7 +135,7 @@ It&apos;s a social network. You meet people, post spicy takes, and
                 href="/app"
                 className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
               >
-                ENTER THE WAR ROOM
+                ENTER THE NEST
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             ) : (

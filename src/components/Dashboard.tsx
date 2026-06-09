@@ -21,7 +21,7 @@ import {
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const NAV = [
-  { label: "War Room", icon: IconFeed, active: true },
+  { label: "The Nest", icon: IconFeed, active: true },
   { label: "Markets", icon: IconGrid },
   { label: "Operations", icon: IconPlus },
   { label: "Cabals", icon: IconUsers },
@@ -117,7 +117,7 @@ export default function Dashboard() {
             {/* Feed */}
             <div className="border-line lg:border-r">
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">WAR ROOM</h3>
+                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">THE NEST</h3>
                 <button className="flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1 text-[11px] font-medium text-muted transition-colors hover:text-foreground">
                   Trending
                   <span className="text-faint">▾</span>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AppShell from "@/components/app/AppShell";
 
 export const metadata: Metadata = {
-  title: "BLACKCROW — War Room",
+  title: "BLACKCROW — The Nest",
   description: "Coordinate. Debate. Move markets.",
 };
 
