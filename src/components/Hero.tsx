@@ -73,7 +73,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-emerald-500/5 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.03] blur-[120px]" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-6 lg:pb-28">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 pb-20 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-0 lg:pb-28">
         {/* LEFT */}
         <div>
           <motion.div
@@ -187,36 +187,36 @@ It&apos;s a social network. You meet people, post spicy takes, and
             initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease }}
-            className="relative mx-auto aspect-[3/2] w-full max-w-[680px] lg:max-w-[780px] lg:-mr-6 xl:-mr-16"
+            className="relative mx-auto aspect-[3/2] w-full max-w-[720px] lg:mx-0 lg:ml-auto lg:-mr-10 lg:-mt-12 lg:w-[60vw] lg:max-w-[1040px] xl:-mr-24"
           >
             {/* Soft glow behind the crow for depth */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.05] blur-[100px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.06] blur-[120px]" />
             <Image
               src="/images/raven-hero-cutout.png"
               alt="BLACKCROW raven"
               fill
               priority
-              sizes="(max-width: 1024px) 92vw, 780px"
-              className="object-contain object-center drop-shadow-[0_40px_70px_rgba(0,0,0,0.85)]"
+              sizes="(max-width: 1024px) 92vw, 64vw"
+              className="object-contain object-center drop-shadow-[0_50px_90px_rgba(0,0,0,0.9)]"
             />
           </motion.div>
 
           <StatCard
-            className="left-2 top-6 sm:left-4"
+            className="left-0 top-8 sm:left-2"
             label="Fed rate cut · May 2025?"
             yes="42%"
             no="58%"
             delay={0.7}
           />
           <StatCard
-            className="right-0 top-0"
+            className="right-[14%] top-2 sm:top-4"
             label="Smelldown"
             yes="78%"
             delay={0.85}
             float="animate-float-slow"
           />
           <StatCard
-            className="bottom-4 right-2 sm:right-6"
+            className="bottom-8 right-[12%] sm:right-[14%]"
             label="Bitcoin ATH this week?"
             yes="63%"
             no="37%"
