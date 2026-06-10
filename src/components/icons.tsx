@@ -395,6 +395,19 @@ export function IconRoost(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/** Anonymous operator — angular mark (brand geometry) */
+export function IconOperator(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} strokeWidth={1.5} {...props}>
+      <path d="M5 7 12 3l7 4v8l-7 4-7-4V7Z" />
+      <path d="M9.5 11.5c.8-1.2 2.2-1.8 4-1.8M9.5 13.5c.8 1.2 2.2 1.8 4 1.8" />
+      <circle cx="10" cy="12" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="14" cy="12" r="0.9" fill="currentColor" stroke="none" />
+      <path d="M12 3v2.5" />
+    </svg>
+  );
+}
+
 /** Target / bounty hub */
 export function IconTarget(props: SVGProps<SVGSVGElement>) {
   return (

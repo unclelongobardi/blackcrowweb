@@ -1,89 +1,110 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { ComponentType } from "react";
 import {
-  IconSkull,
-  IconChart,
-  IconUsers,
-  IconBolt,
-  IconTrophy,
+  IconOperator,
+  IconCabal,
+  IconSolana,
+  IconFeed,
+  IconFeather,
 } from "./icons";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const FEATURES = [
   {
-    icon: IconSkull,
+    icon: IconOperator,
+    brand: false,
     title: "STAY ANONYMOUS",
-    desc: "No real name, no selfie, no LinkedIn. Just a codename and your worst ideas.",
+    desc: "Phantom or Solflare only. No email signup—pick a codename, set an avatar, and operate from a wallet address.",
   },
   {
-    icon: IconUsers,
+    icon: IconCabal,
+    brand: false,
     title: "FIND YOUR PEOPLE",
-    desc: "Meet strangers who are confidently wrong about the exact same things you are.",
+    desc: "Join cabals by type: tipsters, MARKET OPS, or discussion. Public groups or private rooms with leader approval.",
   },
   {
-    icon: IconBolt,
+    icon: IconSolana,
+    brand: true,
     title: "MOVE MARKETS TOGETHER",
-    desc: "Pick a market, rally the group chat, and nudge the odds. Strength in numbers (and copium).",
+    desc: "Post bounties with SOL in escrow, let others boost the pool, and hit thin-book Polymarket markets flagged on-platform.",
   },
   {
-    icon: IconChart,
+    icon: IconFeed,
+    brand: false,
     title: "POST YOUR TAKES",
-    desc: "Share predictions, start fights, talk your book. On here, loud counts as research.",
+    desc: "War Room feed with bullish / bearish / neutral tags. Attach open bounties to posts and coordinate from one thread.",
   },
   {
-    icon: IconTrophy,
+    icon: IconFeather,
+    brand: true,
     title: "GET CLOUT",
-    desc: "Call it right, climb the leaderboard, and become genuinely insufferable about it.",
+    desc: "Stack Feathers from intel, bounty work, and cabals you found. Climb The Roost—reputation separate from SOL payouts.",
   },
-];
+] as const;
+
+function FeatureIcon({
+  icon: Icon,
+  brand,
+}: {
+  icon: ComponentType<{ className?: string }>;
+  brand: boolean;
+}) {
+  return (
+    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-black/40 text-bull transition-colors group-hover:border-bull/35 group-hover:bg-bull/5">
+      <Icon
+        className={
+          brand
+            ? "h-6 w-6"
+            : "h-[22px] w-[22px] text-foreground transition-colors group-hover:text-bull"
+        }
+      />
+    </div>
+  );
+}
 
 export default function Features() {
   return (
-    <section id="about" className="relative scroll-mt-24 px-6 py-24 lg:py-32">
+    <section id="about" className="relative scroll-mt-24 px-6 py-20 lg:py-28">
       <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-30" />
       <div className="relative mx-auto max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease }}
-          className="mx-auto max-w-4xl text-center"
+          transition={{ duration: 0.6, ease }}
+          className="mx-auto max-w-2xl text-center"
         >
-          <p className="text-[12px] font-semibold tracking-[0.22em] text-faint">WHAT IS THIS, EXACTLY?</p>
-          <h2 className="mx-auto mt-4 max-w-3xl font-display text-[clamp(1.6rem,3.4vw,2.6rem)] font-extrabold leading-[1.12] tracking-tight">
-            <span className="block text-balance text-foreground">
-              A SOCIAL NETWORK FOR PEOPLE WHO DON&apos;T WANT TO PLAY THE GAME.
-            </span>
-            <span className="mt-1 block bg-gradient-to-r from-neutral-600 to-neutral-400 bg-clip-text text-transparent">
-              THEY WANT TO OWN IT.
-            </span>
+          <p className="section-label">WHAT IS THIS, EXACTLY?</p>
+          <h2 className="mt-4 font-display text-[clamp(1.2rem,2.2vw,1.75rem)] font-extrabold leading-snug tracking-tight text-foreground">
+            A SOCIAL NETWORK FOR PEOPLE WHO DON&apos;T WANT TO PLAY THE GAME.
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted">
-            You follow people. They post predictions. You all pile into the same
-            markets and try to move the odds. Sometimes it works. Either way, you
-            made friends.
+          <p className="mt-2 font-display text-[clamp(1rem,1.8vw,1.35rem)] font-bold tracking-tight text-muted">
+            THEY WANT TO OWN IT.
+          </p>
+          <p className="mx-auto mt-5 max-w-lg text-[14px] leading-relaxed text-faint">
+            Connect a Solana wallet, enter the War Room, and run coordinated plays on prediction
+            markets—bounties in SOL, cabals for alignment, Feathers for rank.
           </p>
         </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:mt-14 lg:grid-cols-5">
           {FEATURES.map((f, i) => (
-            <motion.div
+            <motion.article
               key={f.title}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease }}
-              className="glass glass-hover group relative overflow-hidden rounded-2xl p-6"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.06, ease }}
+              className="glass glass-hover group relative flex flex-col overflow-hidden rounded-2xl border border-line/80 p-5 sm:p-5"
             >
-              <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/[0.03] blur-2xl transition-opacity duration-500 group-hover:bg-sky-500/10" />
-              <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface-2 text-foreground transition-colors group-hover:border-white/20 group-hover:text-bull">
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="text-[12.5px] font-bold tracking-[0.1em] text-foreground">{f.title}</h3>
-              <p className="mt-2.5 text-[13px] leading-relaxed text-muted">{f.desc}</p>
-            </motion.div>
+              <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-bull/[0.04] blur-2xl transition-opacity group-hover:bg-bull/10" />
+              <FeatureIcon icon={f.icon} brand={f.brand} />
+              <h3 className="text-[11px] font-bold tracking-[0.12em] text-foreground">{f.title}</h3>
+              <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-muted">{f.desc}</p>
+            </motion.article>
           ))}
         </div>
       </div>
