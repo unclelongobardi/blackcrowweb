@@ -107,7 +107,11 @@ export async function listBounties(
   await expireStaleBounties();
   const params: unknown[] = [];
   let where = "where b.status not in ('cancelled', 'funding', 'expired')";
+  const allowedStatuses = new Set(["open", "assigned", "submitted", "paid", "expired"]);
   if (status) {
+    if (!allowedStatuses.has(status)) {
+      return [];
+    }
     params.push(status);
     where = `where b.status = $${params.length}`;
   }

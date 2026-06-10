@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
+import {
+  claimBountyForPayout,
+  getExistingPayoutSignature,
+  releaseBountyPayoutLock,
+} from "@/lib/bountySettlement";
 import { recordEscrowTransaction } from "@/lib/escrowLedger";
 import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
@@ -24,15 +29,28 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
-  const isOfficial = !!bounty.is_official;
-  if (!isOfficial && bounty.created_by !== ctx.profile.id) {
+
+  if (bounty.created_by !== ctx.profile.id) {
     return NextResponse.json({ error: "Only the bounty creator can approve." }, { status: 403 });
   }
+
   if (bounty.status === "paid") {
     return NextResponse.json({ error: "This bounty was already paid out." }, { status: 400 });
   }
+
+  const isOfficial = !!bounty.is_official;
   if (!bounty.deposit_tx && !isOfficial) {
     return NextResponse.json({ error: "Bounty was never funded." }, { status: 400 });
+  }
+
+  const existingPayout = await getExistingPayoutSignature(id);
+  if (existingPayout) {
+    await query(
+      `update bounties set status = 'paid', payout_tx = $2, paid_at = coalesce(paid_at, now()) where id = $1`,
+      [id, existingPayout],
+    );
+    const updated = await getBountyById(id, ctx.profile.id);
+    return NextResponse.json({ paid: true, payout_tx: existingPayout, bounty: updated });
   }
 
   type ParticipantRow = {
@@ -59,33 +77,34 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
        order by submitted_at asc limit 1`,
       [id],
     );
-    if (!participant && bounty.helper_wallet) {
-      participant = {
-        id: "",
-        profile_id: bounty.helper_id!,
-        wallet_address: bounty.helper_wallet,
-        status: "submitted",
-      };
-    }
   }
 
   if (!participant?.wallet_address) {
-    return NextResponse.json({ error: "Helper has no wallet on file." }, { status: 400 });
+    return NextResponse.json({ error: "No submitted proof to approve." }, { status: 400 });
+  }
+
+  const claimed = await claimBountyForPayout(id);
+  if (!claimed) {
+    return NextResponse.json({ error: "Payout already in progress or bounty is closed." }, { status: 409 });
   }
 
   const payoutLamports = BigInt(bounty.reward_sol_lamports);
   const balanceCheck = await ensureEscrowCanPay(payoutLamports);
   if (!balanceCheck.ok) {
+    await releaseBountyPayoutLock(id);
     return NextResponse.json({ error: balanceCheck.error }, { status: 500 });
   }
 
   const payout = await sendPayout(participant.wallet_address, payoutLamports);
-  if (!payout.ok) return NextResponse.json({ error: payout.error }, { status: 500 });
+  if (!payout.ok) {
+    await releaseBountyPayoutLock(id);
+    return NextResponse.json({ error: payout.error }, { status: 500 });
+  }
 
   const payoutTx = payout.signature;
   const escrowAddress = getEscrowAddress();
 
-  if (participant.id) {
+  try {
     await query(
       `update bounty_participants set status = 'approved', reviewed_at = now(), payout_tx = $2 where id = $1`,
       [participant.id, payoutTx],
@@ -95,35 +114,38 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
        where bounty_id = $1 and id != $2 and status = 'submitted'`,
       [id, participant.id],
     );
+
+    await query(
+      `update bounties set status = 'paid', payout_tx = $2, paid_at = now(), helper_id = $3, helper_wallet = $4 where id = $1`,
+      [id, payoutTx, participant.profile_id, participant.wallet_address],
+    );
+
+    await recordEscrowTransaction({
+      bountyId: id,
+      kind: "payout",
+      txSignature: payoutTx,
+      lamports: payoutLamports,
+      fromWallet: escrowAddress,
+      toWallet: participant.wallet_address,
+      profileId: participant.profile_id,
+    });
+
+    const feathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
+    await query("update profiles set influence = influence + $2 where id = $1", [
+      participant.profile_id,
+      feathers,
+    ]);
+
+    await notify(
+      participant.profile_id,
+      "bounty_paid",
+      `You got paid for: ${bounty.title}. Check your wallet.`,
+      `/app/bounties#bounty-${id}`,
+    );
+  } catch (err) {
+    await releaseBountyPayoutLock(id);
+    throw err;
   }
-
-  await query(
-    `update bounties set status = 'paid', payout_tx = $2, paid_at = now(), helper_id = $3, helper_wallet = $4 where id = $1`,
-    [id, payoutTx, participant.profile_id, participant.wallet_address],
-  );
-
-  await recordEscrowTransaction({
-    bountyId: id,
-    kind: "payout",
-    txSignature: payoutTx,
-    lamports: payoutLamports,
-    fromWallet: escrowAddress,
-    toWallet: participant.wallet_address,
-    profileId: participant.profile_id,
-  });
-
-  const feathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
-  await query("update profiles set influence = influence + $2 where id = $1", [
-    participant.profile_id,
-    feathers,
-  ]);
-
-  await notify(
-    participant.profile_id,
-    "bounty_paid",
-    `You got paid for: ${bounty.title}. Check your wallet.`,
-    `/app/bounties#bounty-${id}`,
-  );
 
   const updated = await getBountyById(id, ctx.profile.id);
   return NextResponse.json({ paid: true, payout_tx: payoutTx, bounty: updated });

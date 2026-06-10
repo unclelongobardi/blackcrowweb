@@ -4,13 +4,15 @@ import { getBountyById } from "@/lib/bounties";
 import { canContributeToPool } from "@/lib/bountyRules";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { isEscrowTxSignatureUsed, recordEscrowTransaction } from "@/lib/escrowLedger";
-import { query } from "@/lib/db";
+import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 import { canOperateEscrow, getEscrowAddress, verifyDepositTx } from "@/lib/solana";
-import { solToLamports } from "@/lib/solanaFormat";
+import { lamportsToSol, solToLamports } from "@/lib/solanaFormat";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const MAX_CONTRIBUTION_SOL = 50;
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const ctx = await getAuthedProfile(request);
@@ -34,6 +36,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!Number.isFinite(rewardSol) || rewardSol < 0.01) {
     return NextResponse.json({ error: "Invalid contribution amount." }, { status: 400 });
   }
+  if (rewardSol > MAX_CONTRIBUTION_SOL) {
+    return NextResponse.json({ error: `Maximum contribution per tx is ${MAX_CONTRIBUTION_SOL} SOL.` }, { status: 400 });
+  }
 
   const lamports = solToLamports(rewardSol);
 
@@ -44,25 +49,32 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const verified = await verifyDepositTx(txSignature, lamports, id, ctx.profile.wallet_address);
   if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
 
+  const received = verified.receivedLamports;
+
   await query(
     `insert into bounty_contributions (bounty_id, profile_id, lamports, tx_signature)
      values ($1, $2, $3, $4)`,
-    [id, ctx.profile.id, lamports.toString(), txSignature],
+    [id, ctx.profile.id, received.toString(), txSignature],
   );
 
-  const newTotal = BigInt(bounty.reward_sol_lamports) + lamports;
+  const updatedRow = await queryOne<{ reward_sol_lamports: string }>(
+    `update bounties set reward_sol_lamports = reward_sol_lamports + $2 where id = $1 returning reward_sol_lamports`,
+    [id, received.toString()],
+  );
+
+  if (!updatedRow) {
+    return NextResponse.json({ error: "Failed to update bounty pool." }, { status: 500 });
+  }
+
+  const newTotal = BigInt(updatedRow.reward_sol_lamports);
   const newInfluence = helperInfluenceFromLamports(newTotal);
-
-  await query(
-    `update bounties set reward_sol_lamports = $2, reward_influence = $3 where id = $1`,
-    [id, newTotal.toString(), newInfluence],
-  );
+  await query(`update bounties set reward_influence = $2 where id = $1`, [id, newInfluence]);
 
   await recordEscrowTransaction({
     bountyId: id,
     kind: "contribution",
     txSignature,
-    lamports: verified.receivedLamports,
+    lamports: received,
     fromWallet: ctx.profile.wallet_address,
     toWallet: getEscrowAddress(),
     profileId: ctx.profile.id,
@@ -72,7 +84,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     await notify(
       bounty.created_by,
       "bounty_contribution",
-      `${ctx.profile.codename} added ${rewardSol} SOL to your bounty pool`,
+      `${ctx.profile.codename} added ${lamportsToSol(received)} SOL to your bounty pool`,
       `/app`,
     );
   }

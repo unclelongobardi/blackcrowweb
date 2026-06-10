@@ -23,6 +23,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       id,
       ctx.profile.id,
     ]);
+    await query("update profiles set influence = greatest(influence - 1, 0) where id = $1", [ctx.profile.id]);
     return NextResponse.json({ joined: false });
   }
 

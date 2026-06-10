@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getProfileId } from "@/lib/auth";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
+import { toPublicProfile } from "@/lib/profilePublic";
 import type { Post, Profile } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -62,7 +63,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ code
   );
 
   return NextResponse.json({
-    profile: { ...profile, is_verified: (profile as Profile & { is_verified?: boolean }).is_verified },
+    profile: toPublicProfile(profile, { isSelf: myId === profile.id }),
     stats: {
       posts: Number(stats?.posts ?? 0),
       cabals: Number(stats?.cabals ?? 0),

@@ -3,7 +3,7 @@ import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { creatorPostInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { isEscrowTxSignatureUsed, recordEscrowTransaction } from "@/lib/escrowLedger";
-import { query } from "@/lib/db";
+import { query, queryOne } from "@/lib/db";
 import { canOperateEscrow, getEscrowAddress, verifyDepositTx } from "@/lib/solana";
 
 export const runtime = "nodejs";
@@ -46,12 +46,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const creatorFeathers = creatorPostInfluenceFromLamports(bounty.reward_sol_lamports);
   const escrowAddress = getEscrowAddress();
 
-  await query(
+  const funded = await queryOne<{ id: string }>(
     `update bounties set status = 'open', deposit_tx = $2, funded_at = now(), creator_wallet = $3,
        creator_base_lamports = reward_sol_lamports
-     where id = $1`,
+     where id = $1 and status = 'funding'
+     returning id`,
     [id, txSignature, ctx.profile.wallet_address],
   );
+  if (!funded) {
+    return NextResponse.json({ error: "Bounty is not awaiting funding." }, { status: 409 });
+  }
 
   await recordEscrowTransaction({
     bountyId: id,

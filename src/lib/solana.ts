@@ -58,9 +58,14 @@ export function canOperateEscrow(): boolean {
 }
 
 export function getEscrowAddress(): string | null {
+  const kp = escrowKeypair();
   const explicit = process.env.ESCROW_WALLET_ADDRESS?.trim();
+  if (explicit && kp && explicit !== kp.publicKey.toBase58()) {
+    console.error("[escrow] ESCROW_WALLET_ADDRESS does not match signing keypair");
+    return null;
+  }
   if (explicit) return explicit;
-  return escrowKeypair()?.publicKey.toBase58() ?? null;
+  return kp?.publicKey.toBase58() ?? null;
 }
 
 const MEMO_PREFIX = "BLACKCROW:bounty:";
@@ -144,6 +149,45 @@ export type VerifyDepositResult =
   | { ok: true; receivedLamports: bigint }
   | { ok: false; error: string };
 
+function collectTransferLamports(
+  tx: NonNullable<Awaited<ReturnType<Connection["getParsedTransaction"]>>>,
+  escrowPk: PublicKey,
+  fromWallet: string | null | undefined,
+): { received: bigint; senderOk: boolean } {
+  let received = BigInt(0);
+  let senderOk = !fromWallet;
+
+  const processIx = (ix: unknown) => {
+    if (!ix || typeof ix !== "object") return;
+    const parsed =
+      "parsed" in ix && ix.parsed
+        ? (ix.parsed as { type?: string; info?: Record<string, unknown> })
+        : null;
+    if (!parsed || parsed.type !== "transfer") return;
+    const info = parsed.info ?? {};
+    const destination = info.destination as string | undefined;
+    const source = info.source as string | undefined;
+    const lamports = info.lamports as number | undefined;
+    if (destination === escrowPk.toBase58()) {
+      received += BigInt(lamports ?? 0);
+    }
+    if (fromWallet && source === fromWallet) senderOk = true;
+  };
+
+  for (const ix of tx.transaction.message.instructions) {
+    processIx(ix);
+  }
+
+  const inner = tx.meta?.innerInstructions ?? [];
+  for (const group of inner) {
+    for (const ix of group.instructions) {
+      processIx(ix);
+    }
+  }
+
+  return { received, senderOk };
+}
+
 /** Verify a deposit tx sent to the escrow wallet for a bounty. */
 export async function verifyDepositTx(
   signature: string,
@@ -165,37 +209,31 @@ export async function verifyDepositTx(
     if (tx.meta?.err) return { ok: false, error: "Transaction failed on-chain." };
 
     const escrowPk = new PublicKey(escrow);
-    let received = BigInt(0);
-    let senderOk = !fromWallet;
+    const { received, senderOk } = collectTransferLamports(tx, escrowPk, fromWallet);
 
-    for (const ix of tx.transaction.message.instructions) {
-      const parsed = "parsed" in ix ? ix.parsed : null;
-      if (!parsed || parsed.type !== "transfer") continue;
-      const info = parsed.info as {
-        destination?: string;
-        source?: string;
-        lamports?: number;
-      };
-      if (info.destination === escrowPk.toBase58()) {
-        received += BigInt(info.lamports ?? 0);
-      }
-      if (fromWallet && info.source === fromWallet) senderOk = true;
-    }
-
-    if (received < expectedLamports) {
+    if (received !== expectedLamports) {
       return {
         ok: false,
-        error: `Insufficient deposit. Expected ${lamportsToSol(expectedLamports)} SOL, got ${lamportsToSol(received)} SOL.`,
+        error: `Deposit amount mismatch. Expected ${lamportsToSol(expectedLamports)} SOL, got ${lamportsToSol(received)} SOL.`,
       };
     }
     if (!senderOk) {
       return { ok: false, error: "Deposit must come from your connected wallet." };
     }
 
-    const logs = tx.meta?.logMessages ?? [];
     const memo = bountyMemo(bountyId);
-    const hasMemo = logs.some((l) => l.includes(memo));
-    if (!hasMemo) {
+    const logs = tx.meta?.logMessages ?? [];
+    let memoOk = logs.some((l) => l.includes(memo));
+    if (!memoOk) {
+      for (const ix of tx.transaction.message.instructions) {
+        if (!("programId" in ix) || !ix.programId.equals(MEMO_PROGRAM_ID)) continue;
+        if ("data" in ix && typeof ix.data === "string") {
+          const text = Buffer.from(ix.data, "base64").toString("utf8");
+          if (text === memo) memoOk = true;
+        }
+      }
+    }
+    if (!memoOk) {
       return {
         ok: false,
         error: "Deposit memo missing. Rebuild the transaction from the app and try again.",

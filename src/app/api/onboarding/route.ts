@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json().catch(() => ({}));
-  const codename = String(body.codename ?? "").trim();
+  const codename = String(body.codename ?? "").trim().toLowerCase();
   const displayName = body.display_name ? String(body.display_name).trim().slice(0, 60) : null;
   const bio = body.bio ? String(body.bio).trim().slice(0, 240) : null;
   const walletAddress = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   }
 
   const taken = await queryOne<{ id: string }>(
-    "select id from profiles where codename = $1 and id <> $2",
+    "select id from profiles where lower(codename) = lower($1) and id <> $2",
     [codename, ctx.profile.id],
   );
   if (taken) return NextResponse.json({ error: "Codename already taken." }, { status: 409 });

@@ -18,13 +18,21 @@ export function getTokenFromRequest(request: Request): string | undefined {
   const bearer = authHeader?.toLowerCase().startsWith("bearer ")
     ? authHeader.slice(7).trim()
     : undefined;
-  const cookieToken = request.headers
-    .get("cookie")
-    ?.split(";")
-    .map((c) => c.trim())
-    .find((c) => c.startsWith("privy-token="))
-    ?.split("=")[1];
-  return bearer || cookieToken;
+  if (bearer) return bearer;
+
+  const cookieHeader = request.headers.get("cookie");
+  if (!cookieHeader) return undefined;
+  for (const part of cookieHeader.split(";")) {
+    const trimmed = part.trim();
+    if (!trimmed.startsWith("privy-token=")) continue;
+    const raw = trimmed.slice("privy-token=".length);
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      return raw;
+    }
+  }
+  return undefined;
 }
 
 /** Verify the Privy access token and return the user's DID, or null. */

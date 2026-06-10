@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
+import {
+  claimBountyForRefund,
+  releaseBountyRefundLock,
+} from "@/lib/bountySettlement";
 import { recordEscrowTransaction } from "@/lib/escrowLedger";
 import { query, queryOne } from "@/lib/db";
 import { canOperateEscrow, getEscrowAddress, sendRefund } from "@/lib/solana";
@@ -40,7 +44,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   );
 
   if (bounty.status === "funding") {
-    await query(`update bounties set status = 'cancelled' where id = $1`, [id]);
+    const closed = await queryOne<{ id: string }>(
+      `update bounties set status = 'cancelled'
+         where id = $1 and status = 'funding'
+       returning id`,
+      [id],
+    );
+    if (!closed) {
+      return NextResponse.json({ error: "Bounty state changed. Refresh and try again." }, { status: 409 });
+    }
     const updated = await getBountyById(id, ctx.profile.id);
     return NextResponse.json({ cancelled: true, refunded: false, bounty: updated });
   }
@@ -56,17 +68,35 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     );
   }
 
+  const contributions = BigInt(bounty.contributions_lamports ?? 0);
+  if (contributions > BigInt(0)) {
+    return NextResponse.json(
+      {
+        error:
+          "Cannot cancel a bounty with pool contributions. Resolve the bounty or wait for expiry policies.",
+      },
+      { status: 400 },
+    );
+  }
+
   const refundWallet = bounty.creator_wallet ?? ctx.profile.wallet_address;
   if (!refundWallet) {
     return NextResponse.json({ error: "No creator wallet on file for refund." }, { status: 400 });
   }
 
   const baseLamports = BigInt(bounty.creator_base_lamports ?? bounty.reward_sol_lamports);
-  const contributions = BigInt(bounty.contributions_lamports ?? 0);
   const refundLamports = baseLamports;
 
   if (refundLamports <= BigInt(0) || !bounty.deposit_tx) {
-    await query(`update bounties set status = 'cancelled' where id = $1`, [id]);
+    const closed = await queryOne<{ id: string }>(
+      `update bounties set status = 'cancelled'
+         where id = $1 and status in ('open', 'assigned', 'submitted', 'expired')
+       returning id`,
+      [id],
+    );
+    if (!closed) {
+      return NextResponse.json({ error: "Bounty state changed. Refresh and try again." }, { status: 409 });
+    }
     const updated = await getBountyById(id, ctx.profile.id);
     return NextResponse.json({ cancelled: true, refunded: false, bounty: updated });
   }
@@ -75,23 +105,36 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
   }
 
+  const claimed = await claimBountyForRefund(id);
+  if (!claimed) {
+    return NextResponse.json({ error: "Refund already in progress or bounty is closed." }, { status: 409 });
+  }
+
   const refund = await sendRefund(refundWallet, refundLamports);
-  if (!refund.ok) return NextResponse.json({ error: refund.error }, { status: 500 });
+  if (!refund.ok) {
+    await releaseBountyRefundLock(id);
+    return NextResponse.json({ error: refund.error }, { status: 500 });
+  }
 
-  await query(
-    `update bounties set status = 'cancelled', payout_tx = $2 where id = $1`,
-    [id, refund.signature],
-  );
+  try {
+    await query(
+      `update bounties set status = 'cancelled', payout_tx = $2 where id = $1`,
+      [id, refund.signature],
+    );
 
-  await recordEscrowTransaction({
-    bountyId: id,
-    kind: "refund",
-    txSignature: refund.signature,
-    lamports: refundLamports,
-    fromWallet: getEscrowAddress(),
-    toWallet: refundWallet,
-    profileId: ctx.profile.id,
-  });
+    await recordEscrowTransaction({
+      bountyId: id,
+      kind: "refund",
+      txSignature: refund.signature,
+      lamports: refundLamports,
+      fromWallet: getEscrowAddress(),
+      toWallet: refundWallet,
+      profileId: ctx.profile.id,
+    });
+  } catch (err) {
+    await releaseBountyRefundLock(id);
+    throw err;
+  }
 
   const updated = await getBountyById(id, ctx.profile.id);
   return NextResponse.json({
@@ -99,7 +142,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     refunded: true,
     refund_tx: refund.signature,
     refund_lamports: refundLamports.toString(),
-    pool_contributions_retained: contributions > BigInt(0),
     bounty: updated,
   });
 }

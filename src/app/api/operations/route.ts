@@ -76,6 +76,17 @@ export async function POST(request: Request) {
     );
   }
 
+  const cabalId = body.cabal_id ? String(body.cabal_id) : null;
+  if (cabalId) {
+    const member = await queryOne(
+      "select 1 from cabal_members where cabal_id = $1 and profile_id = $2",
+      [cabalId, ctx.profile.id],
+    );
+    if (!member) {
+      return NextResponse.json({ error: "You must be a member of that cabal." }, { status: 403 });
+    }
+  }
+
   const op = await queryOne<Operation>(
     `insert into operations (title, thesis, target_side, market_id, cabal_id, created_by, status)
      values ($1,$2,$3,$4,$5,$6,'active')
@@ -85,7 +96,7 @@ export async function POST(request: Request) {
       body.thesis ? String(body.thesis).slice(0, 400) : null,
       targetSide,
       marketId,
-      body.cabal_id ?? null,
+      cabalId,
       ctx.profile.id,
     ],
   );

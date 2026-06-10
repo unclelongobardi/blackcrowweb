@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile, getProfileId } from "@/lib/auth";
 import { getPool, isDbConfigured, query, queryOne } from "@/lib/db";
+import { isAllowedPostImageUrl } from "@/lib/postMedia";
 import type { Market, Post } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -101,6 +102,24 @@ export async function GET(request: Request) {
   const params: unknown[] = [myId];
 
   if (cabalId) {
+    const cabal = await queryOne<{ visibility: string }>("select visibility from cabals where id = $1", [
+      cabalId,
+    ]);
+    if (!cabal) {
+      return NextResponse.json({ error: "Cabal not found.", posts: [] }, { status: 404, ...NO_STORE });
+    }
+    if (cabal.visibility !== "public") {
+      if (!myId) {
+        return NextResponse.json({ error: "Forbidden.", posts: [] }, { status: 403, ...NO_STORE });
+      }
+      const member = await queryOne(
+        "select 1 from cabal_members where cabal_id = $1 and profile_id = $2",
+        [cabalId, myId],
+      );
+      if (!member) {
+        return NextResponse.json({ error: "Forbidden.", posts: [] }, { status: 403, ...NO_STORE });
+      }
+    }
     params.push(cabalId);
     conditions.push(`p.cabal_id = $${params.length}`);
   } else {
@@ -196,6 +215,9 @@ export async function POST(request: Request) {
   const sentiment = ["bullish", "bearish", "neutral"].includes(body.sentiment) ? body.sentiment : "neutral";
   let cabalId = body.cabal_id ? String(body.cabal_id) : null;
   const imageUrl = body.image_url ? String(body.image_url) : null;
+  if (!isAllowedPostImageUrl(imageUrl)) {
+    return NextResponse.json({ error: "Invalid image attachment." }, { status: 400 });
+  }
   const marketId = body.market_id ? String(body.market_id) : null;
   const parentId = body.parent_id ? String(body.parent_id) : null;
   const kind = parentId ? "post" : isThread ? "thread" : isPoll ? "poll" : "post";

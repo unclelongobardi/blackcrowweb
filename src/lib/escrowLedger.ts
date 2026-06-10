@@ -8,7 +8,7 @@ export async function isEscrowTxSignatureUsed(signature: string): Promise<boolea
        exists (select 1 from escrow_transactions where tx_signature = $1)
        or exists (select 1 from bounties where deposit_tx = $1)
        or exists (select 1 from bounty_contributions where tx_signature = $1)
-       or exists (select 1 from bounties where payout_tx = $1)
+       or exists (select 1 from bounties where payout_tx = $1 and payout_tx not like '__%')
        or exists (select 1 from bounty_participants where payout_tx = $1)
      ) as used`,
     [signature],
@@ -47,7 +47,8 @@ export async function sumActiveBountyLiability(): Promise<bigint> {
     `select coalesce(sum(reward_sol_lamports), 0)::text as total
        from bounties
       where status in ('open', 'assigned', 'submitted')
-        and deposit_tx is not null`,
+        and deposit_tx is not null
+        and coalesce(is_official, false) = false`,
   );
   return BigInt(row?.total ?? 0);
 }

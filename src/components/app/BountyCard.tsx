@@ -161,10 +161,7 @@ export default function BountyCard({
   const expired = isBountyExpired(bounty) || bounty.status === "expired";
   const expiryLabel = expiresInLabel(bounty.expires_at);
   const isWorldCup = bounty.collection === "world_cup";
-  const isOfficial =
-    bounty.is_official ||
-    bounty.creator?.codename === "blackcrow_official" ||
-    bounty.creator?.codename === "blackcrow";
+  const isOfficial = !!bounty.is_official;
   const pendingSubmissions =
     bounty.participants?.filter((p) => p.status === "submitted") ?? [];
   const canApprove = role === "creator" && pendingSubmissions.length > 0 && bounty.status !== "paid";
