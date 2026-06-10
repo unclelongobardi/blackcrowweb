@@ -200,6 +200,20 @@ create table if not exists bounty_contributions (
 
 create index if not exists idx_bounty_contributions_bounty on bounty_contributions(bounty_id, created_at desc);
 
+create table if not exists escrow_transactions (
+  id uuid primary key default gen_random_uuid(),
+  bounty_id uuid references bounties(id) on delete set null,
+  kind text not null check (kind in ('deposit', 'contribution', 'payout', 'refund')),
+  tx_signature text not null unique,
+  from_wallet text,
+  to_wallet text,
+  lamports bigint not null,
+  profile_id uuid references profiles(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_escrow_transactions_bounty on escrow_transactions(bounty_id, created_at desc);
+
 -- Bounty indexes applied in supabase/migrations/002_bounty_escrow.sql
 
 -- ───────────────────────────── DIRECT MESSAGES ──────────────────────────────

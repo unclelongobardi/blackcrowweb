@@ -282,8 +282,9 @@ export default function DocsContent() {
           </p>
           <Sub title="Initial deposit">
             <p>
-              The creator signs a deposit transaction to escrow. When confirmed, the bounty goes live and the creator
-              earns Feathers (see Feathers section).
+              The creator signs a Solana transfer to the BLACKCROW escrow wallet. Each deposit includes an on-chain memo
+              tying the transaction to that bounty ID. After confirmation, the bounty goes live and the creator earns
+              Feathers (see Feathers section). Deposits are disabled if the server escrow wallet is not configured.
             </p>
           </Sub>
           <Sub title="Collaborative pool">
@@ -301,8 +302,15 @@ export default function DocsContent() {
             <p>
               Multiple operators can join the same bounty and each submit their own proof with photos or video. The
               creator reviews each submission and approves exactly one winner (or rejects individually). Approval pays
-              the full boosted pool to that wallet on-chain. Contributors never gain approve power — only the creator
-              decides who fulfilled the job.
+              the full boosted pool to that wallet on-chain from the escrow treasury. Contributors never gain approve
+              power — only the creator decides who fulfilled the job.
+            </p>
+          </Sub>
+          <Sub title="Cancel & refund">
+            <p>
+              Creators can cancel unfunded bounties instantly. For funded bounties still open (no pending proofs), the
+              creator can cancel and receive a refund of their base deposit to the wallet on file. Pool contributions
+              from others are not auto-refunded in v1 — contributors accept that risk when boosting.
             </p>
           </Sub>
         </DocSection>

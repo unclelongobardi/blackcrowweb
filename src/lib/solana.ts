@@ -1,5 +1,14 @@
-import { Connection, Keypair, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+  TransactionInstruction,
+} from "@solana/web3.js";
 import bs58 from "bs58";
+import { sumActiveBountyLiability } from "./escrowLedger";
+import { getSolanaNetwork } from "./solanaExplorer";
 import { lamportsToSol, solToLamports } from "./solanaFormat";
 
 export { lamportsToSol, solToLamports };
@@ -8,6 +17,9 @@ const RPC =
   process.env.SOLANA_RPC_URL ||
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
   "https://api.mainnet-beta.solana.com";
+
+const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+const FEE_BUFFER_LAMPORTS = BigInt(10_000);
 
 let _connection: Connection | null = null;
 let _keypair: Keypair | null | undefined;
@@ -40,6 +52,14 @@ export function isEscrowConfigured(): boolean {
   return !!getEscrowAddress();
 }
 
+export function isEscrowSigningConfigured(): boolean {
+  return !!escrowKeypair();
+}
+
+export function canOperateEscrow(): boolean {
+  return isEscrowConfigured() && isEscrowSigningConfigured();
+}
+
 export function getEscrowAddress(): string | null {
   const explicit = process.env.ESCROW_WALLET_ADDRESS?.trim();
   if (explicit) return explicit;
@@ -52,7 +72,80 @@ export function bountyMemo(bountyId: string): string {
   return `${MEMO_PREFIX}${bountyId}`;
 }
 
-type VerifyResult = { ok: true } | { ok: false; error: string };
+export type EscrowStatus = {
+  configured: boolean;
+  signingConfigured: boolean;
+  address: string | null;
+  balanceLamports: string | null;
+  balanceSol: string | null;
+  network: string;
+  activeLiabilityLamports: string | null;
+  activeLiabilitySol: string | null;
+};
+
+export async function getEscrowStatus(): Promise<EscrowStatus> {
+  const address = getEscrowAddress();
+  const signingConfigured = isEscrowSigningConfigured();
+  const network = getSolanaNetwork();
+
+  if (!address) {
+    return {
+      configured: false,
+      signingConfigured,
+      address: null,
+      balanceLamports: null,
+      balanceSol: null,
+      network,
+      activeLiabilityLamports: null,
+      activeLiabilitySol: null,
+    };
+  }
+
+  let balanceLamports: bigint | null = null;
+  try {
+    const balance = await connection().getBalance(new PublicKey(address));
+    balanceLamports = BigInt(balance);
+  } catch {
+    balanceLamports = null;
+  }
+
+  let liability = BigInt(0);
+  try {
+    liability = await sumActiveBountyLiability();
+  } catch {
+    liability = BigInt(0);
+  }
+
+  return {
+    configured: true,
+    signingConfigured,
+    address,
+    balanceLamports: balanceLamports != null ? balanceLamports.toString() : null,
+    balanceSol: balanceLamports != null ? lamportsToSol(balanceLamports) : null,
+    network,
+    activeLiabilityLamports: liability.toString(),
+    activeLiabilitySol: lamportsToSol(liability),
+  };
+}
+
+function lamportsToTransferAmount(lamports: bigint): number {
+  if (lamports > BigInt(Number.MAX_SAFE_INTEGER)) {
+    throw new Error("Lamport amount exceeds safe transfer limit.");
+  }
+  return Number(lamports);
+}
+
+function memoInstruction(signer: PublicKey, memo: string): TransactionInstruction {
+  return new TransactionInstruction({
+    keys: [{ pubkey: signer, isSigner: true, isWritable: false }],
+    programId: MEMO_PROGRAM_ID,
+    data: Buffer.from(memo, "utf8"),
+  });
+}
+
+export type VerifyDepositResult =
+  | { ok: true; receivedLamports: bigint }
+  | { ok: false; error: string };
 
 /** Verify a deposit tx sent to the escrow wallet for a bounty. */
 export async function verifyDepositTx(
@@ -60,7 +153,7 @@ export async function verifyDepositTx(
   expectedLamports: bigint,
   bountyId: string,
   fromWallet?: string | null,
-): Promise<VerifyResult> {
+): Promise<VerifyDepositResult> {
   const escrow = getEscrowAddress();
   if (!escrow) return { ok: false, error: "Escrow wallet not configured." };
 
@@ -102,26 +195,25 @@ export async function verifyDepositTx(
       return { ok: false, error: "Deposit must come from your connected wallet." };
     }
 
-    // Memo is optional but logged for audit
     const logs = tx.meta?.logMessages ?? [];
-    const hasMemo = logs.some((l) => l.includes(bountyMemo(bountyId)));
+    const memo = bountyMemo(bountyId);
+    const hasMemo = logs.some((l) => l.includes(memo));
     if (!hasMemo) {
-      // Non-fatal — amount + sender + recipient are the real checks
+      return {
+        ok: false,
+        error: "Deposit memo missing. Rebuild the transaction from the app and try again.",
+      };
     }
 
-    return { ok: true };
+    return { ok: true, receivedLamports: received };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Verification failed." };
   }
 }
 
-type PayoutResult = { ok: true; signature: string } | { ok: false; error: string };
+type TransferResult = { ok: true; signature: string } | { ok: false; error: string };
 
-/** Release escrowed SOL to the helper's wallet. */
-export async function sendPayout(
-  toAddress: string,
-  lamports: bigint,
-): Promise<PayoutResult> {
+async function sendEscrowTransfer(toAddress: string, lamports: bigint): Promise<TransferResult> {
   const kp = escrowKeypair();
   if (!kp) return { ok: false, error: "Escrow signing key not configured." };
 
@@ -129,8 +221,7 @@ export async function sendPayout(
     const conn = connection();
     const to = new PublicKey(toAddress);
     const balance = await conn.getBalance(kp.publicKey);
-    const feeBuffer = 10_000; // lamports for tx fee
-    if (BigInt(balance) < lamports + BigInt(feeBuffer)) {
+    if (BigInt(balance) < lamports + FEE_BUFFER_LAMPORTS) {
       return { ok: false, error: "Escrow wallet has insufficient balance." };
     }
 
@@ -138,7 +229,7 @@ export async function sendPayout(
       SystemProgram.transfer({
         fromPubkey: kp.publicKey,
         toPubkey: to,
-        lamports: Number(lamports),
+        lamports: lamportsToTransferAmount(lamports),
       }),
     );
 
@@ -151,8 +242,38 @@ export async function sendPayout(
 
     return { ok: true, signature };
   } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : "Payout failed." };
+    return { ok: false, error: err instanceof Error ? err.message : "Transfer failed." };
   }
+}
+
+/** Release escrowed SOL to the helper's wallet. */
+export async function sendPayout(toAddress: string, lamports: bigint): Promise<TransferResult> {
+  return sendEscrowTransfer(toAddress, lamports);
+}
+
+/** Return escrowed SOL to a wallet (cancel / refund). */
+export async function sendRefund(toAddress: string, lamports: bigint): Promise<TransferResult> {
+  return sendEscrowTransfer(toAddress, lamports);
+}
+
+export async function getEscrowBalanceLamports(): Promise<bigint | null> {
+  const address = getEscrowAddress();
+  if (!address) return null;
+  try {
+    const balance = await connection().getBalance(new PublicKey(address));
+    return BigInt(balance);
+  } catch {
+    return null;
+  }
+}
+
+export async function ensureEscrowCanPay(lamports: bigint): Promise<TransferResult | { ok: true }> {
+  const balance = await getEscrowBalanceLamports();
+  if (balance == null) return { ok: false, error: "Could not read escrow balance." };
+  if (balance < lamports + FEE_BUFFER_LAMPORTS) {
+    return { ok: false, error: "Escrow wallet has insufficient balance for this payout." };
+  }
+  return { ok: true };
 }
 
 /** Build an unsigned deposit transaction for the client to sign. */
@@ -160,7 +281,7 @@ export async function buildDepositTransaction(
   fromAddress: string,
   lamports: bigint,
   bountyId: string,
-): Promise<{ transaction: string; escrowAddress: string } | { error: string }> {
+): Promise<{ transaction: string; escrowAddress: string; memo: string } | { error: string }> {
   const escrow = getEscrowAddress();
   if (!escrow) return { error: "Escrow wallet not configured." };
 
@@ -168,23 +289,27 @@ export async function buildDepositTransaction(
     const conn = connection();
     const from = new PublicKey(fromAddress);
     const to = new PublicKey(escrow);
+    const memo = bountyMemo(bountyId);
 
     const { blockhash } = await conn.getLatestBlockhash("confirmed");
     const tx = new Transaction({
       recentBlockhash: blockhash,
       feePayer: from,
-    }).add(
-      SystemProgram.transfer({
-        fromPubkey: from,
-        toPubkey: to,
-        lamports: Number(lamports),
-      }),
-    );
+    })
+      .add(
+        SystemProgram.transfer({
+          fromPubkey: from,
+          toPubkey: to,
+          lamports: lamportsToTransferAmount(lamports),
+        }),
+      )
+      .add(memoInstruction(from, memo));
 
     const serialized = tx.serialize({ requireAllSignatures: false, verifySignatures: false });
     return {
       transaction: Buffer.from(serialized).toString("base64"),
       escrowAddress: escrow,
+      memo,
     };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Failed to build transaction." };

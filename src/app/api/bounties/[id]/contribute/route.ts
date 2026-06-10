@@ -3,9 +3,10 @@ import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { canContributeToPool } from "@/lib/bountyRules";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
-import { query, queryOne } from "@/lib/db";
+import { isEscrowTxSignatureUsed, recordEscrowTransaction } from "@/lib/escrowLedger";
+import { query } from "@/lib/db";
 import { notify } from "@/lib/notifications";
-import { verifyDepositTx } from "@/lib/solana";
+import { canOperateEscrow, getEscrowAddress, verifyDepositTx } from "@/lib/solana";
 import { solToLamports } from "@/lib/solanaFormat";
 
 export const runtime = "nodejs";
@@ -15,6 +16,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
+
+  if (!canOperateEscrow()) {
+    return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
+  }
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -32,8 +37,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const lamports = solToLamports(rewardSol);
 
-  const dup = await queryOne("select 1 from bounty_contributions where tx_signature = $1", [txSignature]);
-  if (dup) return NextResponse.json({ error: "Transaction already recorded." }, { status: 409 });
+  if (await isEscrowTxSignatureUsed(txSignature)) {
+    return NextResponse.json({ error: "Transaction already recorded." }, { status: 409 });
+  }
 
   const verified = await verifyDepositTx(txSignature, lamports, id, ctx.profile.wallet_address);
   if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
@@ -51,6 +57,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     `update bounties set reward_sol_lamports = $2, reward_influence = $3 where id = $1`,
     [id, newTotal.toString(), newInfluence],
   );
+
+  await recordEscrowTransaction({
+    bountyId: id,
+    kind: "contribution",
+    txSignature,
+    lamports: verified.receivedLamports,
+    fromWallet: ctx.profile.wallet_address,
+    toWallet: getEscrowAddress(),
+    profileId: ctx.profile.id,
+  });
 
   if (bounty.created_by && bounty.created_by !== ctx.profile.id) {
     await notify(

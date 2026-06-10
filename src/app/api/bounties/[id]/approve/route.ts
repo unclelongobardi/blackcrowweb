@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
+import { recordEscrowTransaction } from "@/lib/escrowLedger";
 import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
-import { sendPayout } from "@/lib/solana";
+import { canOperateEscrow, ensureEscrowCanPay, getEscrowAddress, sendPayout } from "@/lib/solana";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
+
+  if (!canOperateEscrow()) {
+    return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
+  }
 
   const body = await request.json().catch(() => ({}));
   const participantId = body.participant_id ? String(body.participant_id) : null;
@@ -25,6 +30,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   }
   if (bounty.status === "paid") {
     return NextResponse.json({ error: "This bounty was already paid out." }, { status: 400 });
+  }
+  if (!bounty.deposit_tx && !isOfficial) {
+    return NextResponse.json({ error: "Bounty was never funded." }, { status: 400 });
   }
 
   type ParticipantRow = {
@@ -65,15 +73,17 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Helper has no wallet on file." }, { status: 400 });
   }
 
-  let payoutTx: string;
-  if (isOfficial) {
-    const payout = await sendPayout(participant.wallet_address, BigInt(bounty.reward_sol_lamports));
-    payoutTx = payout.ok ? payout.signature : `OFFICIAL_MANUAL_RELEASE:${id.slice(0, 8)}`;
-  } else {
-    const payout = await sendPayout(participant.wallet_address, BigInt(bounty.reward_sol_lamports));
-    if (!payout.ok) return NextResponse.json({ error: payout.error }, { status: 500 });
-    payoutTx = payout.signature;
+  const payoutLamports = BigInt(bounty.reward_sol_lamports);
+  const balanceCheck = await ensureEscrowCanPay(payoutLamports);
+  if (!balanceCheck.ok) {
+    return NextResponse.json({ error: balanceCheck.error }, { status: 500 });
   }
+
+  const payout = await sendPayout(participant.wallet_address, payoutLamports);
+  if (!payout.ok) return NextResponse.json({ error: payout.error }, { status: 500 });
+
+  const payoutTx = payout.signature;
+  const escrowAddress = getEscrowAddress();
 
   if (participant.id) {
     await query(
@@ -91,6 +101,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     `update bounties set status = 'paid', payout_tx = $2, paid_at = now(), helper_id = $3, helper_wallet = $4 where id = $1`,
     [id, payoutTx, participant.profile_id, participant.wallet_address],
   );
+
+  await recordEscrowTransaction({
+    bountyId: id,
+    kind: "payout",
+    txSignature: payoutTx,
+    lamports: payoutLamports,
+    fromWallet: escrowAddress,
+    toWallet: participant.wallet_address,
+    profileId: participant.profile_id,
+  });
 
   const feathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
   await query("update profiles set influence = influence + $2 where id = $1", [

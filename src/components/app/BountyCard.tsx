@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { useApi } from "@/lib/useApi";
 import { canAcceptBounty, canContributeToPool, expiresInLabel, isBountyExpired } from "@/lib/bountyRules";
 import { creatorPostInfluenceFromLamports, helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { lamportsToSol } from "@/lib/solanaFormat";
+import { solscanAccountUrl, solscanTxUrl } from "@/lib/solanaExplorer";
+import type { EscrowStatus } from "@/lib/solana";
 import { useSolanaDeposit } from "@/lib/solanaClient";
 import { pct } from "@/lib/format";
 import { uiBtnPrimary } from "@/lib/uiClasses";
@@ -137,6 +139,21 @@ export default function BountyCard({
   const [uploading, setUploading] = useState(false);
   const [contribAmount, setContribAmount] = useState("0.1");
   const [error, setError] = useState<string | null>(null);
+  const [escrow, setEscrow] = useState<EscrowStatus | null>(null);
+  const [fundStep, setFundStep] = useState<"idle" | "signing" | "confirming">("idle");
+
+  const escrowReady = !!(escrow?.configured && escrow.signingConfigured);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await api<EscrowStatus>("/api/bounties/escrow");
+        setEscrow(data);
+      } catch {
+        setEscrow(null);
+      }
+    })();
+  }, [api]);
 
   const sol = lamportsToSol(bounty.reward_sol_lamports);
   const role = bounty.my_role;
@@ -177,19 +194,36 @@ export default function BountyCard({
       setError("Connect your Solana wallet first.");
       return;
     }
+    if (!escrowReady) {
+      setError("Escrow is not configured on the server. Deposits are disabled.");
+      return;
+    }
+    setFundStep("signing");
     const built = await run(() =>
-      api<{ transaction: string }>(`/api/bounties/${bounty.id}/deposit-tx`, { method: "POST" }),
+      api<{ transaction: string; escrowAddress: string }>(`/api/bounties/${bounty.id}/deposit-tx`, {
+        method: "POST",
+        body: JSON.stringify({ wallet_address: wallet.address }),
+      }),
     );
-    if (!built) return;
+    if (!built) {
+      setFundStep("idle");
+      return;
+    }
     const sig = await run(() => sendDeposit(wallet, built.transaction));
-    if (!sig) return;
+    if (!sig) {
+      setFundStep("idle");
+      return;
+    }
+    setFundStep("confirming");
     const res = await run(() =>
-      api<{ creator_feathers?: number }>(`/api/bounties/${bounty.id}/fund`, {
+      api<{ creator_feathers?: number; bounty?: Bounty }>(`/api/bounties/${bounty.id}/fund`, {
         method: "POST",
         body: JSON.stringify({ tx_signature: sig }),
       }),
     );
-    if (res) {
+    setFundStep("idle");
+    if (res?.bounty) onUpdate(res.bounty);
+    else if (res) {
       onUpdate({
         ...bounty,
         status: "open",
@@ -204,6 +238,10 @@ export default function BountyCard({
       setError("Connect your Solana wallet first.");
       return;
     }
+    if (!escrowReady) {
+      setError("Escrow is not configured on the server.");
+      return;
+    }
     const amount = Number(contribAmount);
     if (!Number.isFinite(amount) || amount < 0.01) {
       setError("Minimum contribution is 0.01 SOL.");
@@ -212,7 +250,7 @@ export default function BountyCard({
     const built = await run(() =>
       api<{ transaction: string }>(`/api/bounties/${bounty.id}/contribute/deposit-tx`, {
         method: "POST",
-        body: JSON.stringify({ amount_sol: amount }),
+        body: JSON.stringify({ amount_sol: amount, wallet_address: wallet.address }),
       }),
     );
     if (!built) return;
@@ -276,6 +314,17 @@ export default function BountyCard({
     );
     if (res?.bounty) onUpdate(res.bounty);
     else if (res) onUpdate({ ...bounty, status: "paid", payout_tx: res.payout_tx });
+  }
+
+  async function cancelBounty() {
+    if (!confirm("Cancel this bounty? Your base deposit will be refunded if it was funded.")) return;
+    const res = await run(() =>
+      api<{ bounty?: Bounty; refunded?: boolean; refund_tx?: string }>(
+        `/api/bounties/${bounty.id}/cancel`,
+        { method: "POST" },
+      ),
+    );
+    if (res?.bounty) onUpdate(res.bounty);
   }
 
   async function rejectParticipant(participantId: string) {
@@ -540,6 +589,12 @@ export default function BountyCard({
         )}
       </div>
 
+      {!isOfficial && bounty.status === "funding" && escrow && !escrowReady && (
+        <p className="mt-3 rounded-lg border border-bear/30 bg-bear/10 px-3 py-2 text-[11px] text-bear">
+          Escrow not configured — deposits disabled until server wallet is set up.
+        </p>
+      )}
+
       {error && <p className="mt-3 text-[12px] text-bear">{error}</p>}
 
       {onShareToWarRoom && (
@@ -561,23 +616,72 @@ export default function BountyCard({
             <p className="text-[11px] text-faint">
               Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} Feathers
             </p>
+            {escrow?.address && (
+              <p className="text-[10px] text-faint">
+                Escrow:{" "}
+                <a
+                  href={solscanAccountUrl(escrow.address)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-bull hover:underline"
+                >
+                  {escrow.address.slice(0, 6)}…{escrow.address.slice(-4)}
+                </a>
+              </p>
+            )}
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 fund();
               }}
-              disabled={busy}
+              disabled={busy || !escrowReady}
               className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
-              {busy ? "…" : (
-                <>
-                  DEPOSIT <SolAmount amount={sol} className="font-mono" iconClassName="h-3.5 w-3.5" /> TO ESCROW
-                </>
-              )}
+              {fundStep === "signing"
+                ? "Sign in wallet…"
+                : fundStep === "confirming"
+                  ? "Confirming…"
+                  : busy
+                    ? "…"
+                    : (
+                        <>
+                          DEPOSIT <SolAmount amount={sol} className="font-mono" iconClassName="h-3.5 w-3.5" /> TO
+                          ESCROW
+                        </>
+                      )}
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                cancelBounty();
+              }}
+              disabled={busy}
+              className="rounded-lg border border-line px-4 py-2 text-[11px] font-semibold text-muted disabled:opacity-60"
+            >
+              Cancel bounty
             </button>
           </>
         )}
+
+        {!isOfficial &&
+          role === "creator" &&
+          (bounty.status === "open" || bounty.status === "expired") &&
+          pendingSubmissions.length === 0 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                cancelBounty();
+              }}
+              disabled={busy}
+              className="rounded-lg border border-line px-4 py-2 text-[11px] font-semibold text-muted disabled:opacity-60"
+            >
+              Cancel & refund base deposit
+            </button>
+          )}
 
         {poolOpen && role !== "creator" && (
           <div className="rounded-xl border border-bull/20 bg-bull/5 p-3">
@@ -716,18 +820,38 @@ export default function BountyCard({
           </div>
         )}
 
-        {bounty.status === "paid" && bounty.payout_tx && !bounty.payout_tx.startsWith("OFFICIAL_MANUAL") && (
+        {bounty.status === "paid" && bounty.payout_tx && (
           <a
-            href={`https://solscan.io/tx/${bounty.payout_tx}`}
+            href={solscanTxUrl(bounty.payout_tx)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
             className="text-center text-[11px] text-bull hover:underline"
           >
             View payout on Solscan →
           </a>
         )}
-        {bounty.status === "paid" && bounty.payout_tx?.startsWith("OFFICIAL_MANUAL") && (
-          <p className="text-center text-[11px] text-faint">Payout released</p>
+        {bounty.status === "cancelled" && bounty.payout_tx && (
+          <a
+            href={solscanTxUrl(bounty.payout_tx)}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="text-center text-[11px] text-bull hover:underline"
+          >
+            View refund on Solscan →
+          </a>
+        )}
+        {bounty.deposit_tx && bounty.status !== "paid" && bounty.status !== "cancelled" && (
+          <a
+            href={solscanTxUrl(bounty.deposit_tx)}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="text-center text-[10px] text-faint hover:text-bull hover:underline"
+          >
+            View deposit tx →
+          </a>
         )}
       </div>
     </div>

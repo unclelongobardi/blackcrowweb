@@ -3,7 +3,7 @@
 import Link from "next/link";
 import BountyCard from "./BountyCard";
 import WorldCupBountiesButton from "./WorldCupBountiesButton";
-import { lamportsToSol } from "@/lib/solanaFormat";
+import { lamportsToSol, sumLamports } from "@/lib/solanaFormat";
 import SolAmount from "./SolAmount";
 import type { Bounty } from "@/lib/types";
 
@@ -16,7 +16,7 @@ export function isWorldCupBounty(b: Bounty): boolean {
 export function splitWorldCupBounties(bounties: Bounty[]) {
   const worldCup = bounties
     .filter(isWorldCupBounty)
-    .sort((a, b) => b.reward_sol_lamports - a.reward_sol_lamports);
+    .sort((a, b) => Number(BigInt(b.reward_sol_lamports) - BigInt(a.reward_sol_lamports)));
   const rest = bounties.filter((b) => !isWorldCupBounty(b));
   return { worldCup, rest };
 }
@@ -78,7 +78,7 @@ export default function WorldCupBountiesSection({
   const { worldCup } = splitWorldCupBounties(bounties);
   if (!worldCup.length) return null;
 
-  const poolSol = worldCup.reduce((s, b) => s + b.reward_sol_lamports, 0);
+  const poolLamports = sumLamports(worldCup.map((b) => b.reward_sol_lamports));
 
   return (
     <section id="world-cup-bounties" className="scroll-mt-24">
@@ -93,7 +93,7 @@ export default function WorldCupBountiesSection({
           <div className="text-right">
             <p className="text-[10px] uppercase tracking-wide text-faint">Total pool</p>
             <SolAmount
-              amount={lamportsToSol(poolSol)}
+              amount={lamportsToSol(poolLamports)}
               className="font-mono text-lg font-bold text-bull"
               iconClassName="h-4 w-4"
             />
