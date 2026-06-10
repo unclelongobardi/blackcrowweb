@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Avatar from "./Avatar";
 import UserName from "./UserName";
 import { useApi } from "@/lib/useApi";
+import { useAppContext } from "./appContext";
 import { timeAgo, compactNumber, pct } from "@/lib/format";
 import { lamportsToSol } from "@/lib/solanaFormat";
 import SolAmount from "./SolAmount";
 import PostPoll from "./PostPoll";
-import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots, IconThread } from "@/components/icons";
+import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots, IconThread, IconShare } from "@/components/icons";
 import type { Post } from "@/lib/types";
 
 const SENTIMENT = {
@@ -24,38 +25,62 @@ const SENTIMENT_LABEL = {
   neutral: "Neutral",
 } as const;
 
-// Stable pseudo-engagement so demo posts look alive (purely cosmetic).
-function seedNum(id: string, salt: number, max: number): number {
-  let h = 2166136261 ^ salt;
-  for (let i = 0; i < id.length; i++) {
-    h ^= id.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return Math.abs(h) % max;
-}
-
 export default function PostCard({
   post,
   onBountyClick,
+  onReply,
 }: {
   post: Post;
   onBountyClick?: () => void;
+  onReply?: () => void;
 }) {
   const api = useApi();
-  const baseLikes = 80 + seedNum(post.id, 7, 360);
-  const [score, setScore] = useState(post.score ?? 0);
+  const { me } = useAppContext();
+  const viewedRef = useRef(false);
+
+  const [likeCount, setLikeCount] = useState(post.like_count ?? Math.max(0, post.score ?? 0));
   const [liked, setLiked] = useState((post.my_vote ?? 0) === 1);
-  const [bookmarked, setBookmarked] = useState(false);
+  const [repostCount, setRepostCount] = useState(post.repost_count ?? 0);
+  const [reposted, setReposted] = useState(!!post.my_reposted);
+  const [viewCount, setViewCount] = useState(post.view_count ?? 0);
+  const [bookmarked, setBookmarked] = useState(!!post.my_bookmarked);
+  const [replyCount, setReplyCount] = useState(post.reply_count ?? 0);
   const [pending, setPending] = useState(false);
+
   const [poll, setPoll] = useState(post.poll ?? null);
   const [threadOpen, setThreadOpen] = useState(false);
   const [threadReplies, setThreadReplies] = useState<Post[]>(post.thread_preview ?? []);
   const [loadingThread, setLoadingThread] = useState(false);
 
-  const reposts = 20 + seedNum(post.id, 3, 120);
-  const views = 1200 + seedNum(post.id, 11, 8000);
-  const comments = post.reply_count ?? seedNum(post.id, 5, 40);
-  const likes = baseLikes + Math.max(0, score) + (liked ? 1 : 0);
+  const [replyOpen, setReplyOpen] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [replies, setReplies] = useState<Post[]>([]);
+  const [repliesOpen, setRepliesOpen] = useState(false);
+  const [loadingReplies, setLoadingReplies] = useState(false);
+  const [replyBusy, setReplyBusy] = useState(false);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const isThreadPost = post.kind === "thread";
+  const commentCount = isThreadPost ? 0 : replyCount;
+
+  useEffect(() => {
+    if (viewedRef.current) return;
+    viewedRef.current = true;
+    void api<{ view_count: number }>(`/api/posts/${post.id}/view`, { method: "POST" })
+      .then((d) => setViewCount(d.view_count))
+      .catch(() => {});
+  }, [api, post.id]);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    }
+    if (menuOpen) document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [menuOpen]);
 
   async function loadThread() {
     if (loadingThread) return;
@@ -69,29 +94,117 @@ export default function PostCard({
     }
   }
 
+  async function loadReplies() {
+    if (loadingReplies) return;
+    setLoadingReplies(true);
+    try {
+      const data = await api<{ replies: Post[] }>(`/api/posts/${post.id}/replies`);
+      setReplies(data.replies.filter((r) => r.kind !== "thread"));
+      setRepliesOpen(true);
+    } finally {
+      setLoadingReplies(false);
+    }
+  }
+
   async function toggleLike() {
     if (pending) return;
     setPending(true);
     const next = !liked;
     setLiked(next);
-    setScore((s) => s + (next ? 1 : -1));
+    setLikeCount((c) => c + (next ? 1 : -1));
     try {
-      const data = await api<{ score: number; my_vote: number }>(`/api/posts/${post.id}/vote`, {
+      const data = await api<{ like_count: number; my_vote: number }>(`/api/posts/${post.id}/vote`, {
         method: "POST",
-        body: JSON.stringify({ value: 1 }),
+        body: JSON.stringify({ value: next ? 1 : 0 }),
       });
-      setScore(data.score);
+      setLikeCount(data.like_count);
       setLiked(data.my_vote === 1);
     } catch {
       setLiked(!next);
-      setScore((s) => s + (next ? -1 : 1));
+      setLikeCount((c) => c + (next ? -1 : 1));
     } finally {
       setPending(false);
     }
   }
 
+  async function toggleRepost() {
+    if (pending) return;
+    setPending(true);
+    const next = !reposted;
+    setReposted(next);
+    setRepostCount((c) => c + (next ? 1 : -1));
+    try {
+      const data = await api<{ repost_count: number; my_reposted: boolean }>(
+        `/api/posts/${post.id}/repost`,
+        { method: "POST" },
+      );
+      setRepostCount(data.repost_count);
+      setReposted(data.my_reposted);
+    } catch {
+      setReposted(!next);
+      setRepostCount((c) => c + (next ? -1 : 1));
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function toggleBookmark() {
+    if (pending) return;
+    setPending(true);
+    const next = !bookmarked;
+    setBookmarked(next);
+    try {
+      const data = await api<{ my_bookmarked: boolean }>(`/api/posts/${post.id}/bookmark`, {
+        method: "POST",
+      });
+      setBookmarked(data.my_bookmarked);
+    } catch {
+      setBookmarked(!next);
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function submitReply() {
+    const text = replyText.trim();
+    if (!text || replyBusy) return;
+    setReplyBusy(true);
+    try {
+      const data = await api<{ post: Post }>("/api/feed", {
+        method: "POST",
+        body: JSON.stringify({
+          content: text,
+          sentiment: post.sentiment,
+          parent_id: post.id,
+          cabal_id: post.cabal_id ?? null,
+        }),
+      });
+      setReplies((prev) => [...prev, data.post]);
+      setReplyCount((c) => c + 1);
+      setReplyText("");
+      setRepliesOpen(true);
+      setReplyOpen(false);
+      onReply?.();
+    } finally {
+      setReplyBusy(false);
+    }
+  }
+
+  async function copyLink() {
+    const url = `${window.location.origin}/app#post-${post.id}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setMenuOpen(false);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   return (
-    <article className="cursor-pointer border-b border-line px-4 py-3.5 transition-colors hover:bg-white/[0.015] sm:px-5">
+    <article id={`post-${post.id}`} className="scroll-mt-24 border-b border-line px-4 py-3.5 transition-colors hover:bg-white/[0.015] sm:px-5">
+      {reposted && (
+        <p className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold text-muted">
+          <IconRepeat className="h-3.5 w-3.5 text-bull" /> You reposted
+        </p>
+      )}
       <div className="flex gap-3">
         {post.author?.codename ? (
           <Link href={`/app/u/${post.author.codename}`}>
@@ -128,7 +241,7 @@ export default function PostCard({
                 {post.cabal.name}
               </Link>
             )}
-            {post.kind === "thread" && (
+            {isThreadPost && (
               <span className="inline-flex items-center gap-1 rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-bull">
                 <IconThread className="h-3 w-3" /> Thread
               </span>
@@ -140,9 +253,7 @@ export default function PostCard({
             )}
           </div>
 
-          <p className="mt-0.5 whitespace-pre-wrap text-[14.5px] leading-relaxed text-foreground/90">
-            {post.content}
-          </p>
+          <p className="mt-0.5 whitespace-pre-wrap text-[14.5px] leading-relaxed text-foreground/90">{post.content}</p>
 
           {post.image_url && (
             <div className="mt-2.5 overflow-hidden rounded-xl border border-line">
@@ -151,18 +262,14 @@ export default function PostCard({
             </div>
           )}
 
-          {poll && (
-            <PostPoll postId={post.id} poll={poll} onUpdate={setPoll} />
-          )}
+          {poll && <PostPoll postId={post.id} poll={poll} onUpdate={setPoll} />}
 
-          {(post.kind === "thread" || (post.reply_count ?? 0) > 0) && (
+          {isThreadPost && (post.reply_count ?? 0) > 0 && (
             <div className="mt-2.5">
               {!threadOpen && threadReplies.length > 0 && (
                 <div className="space-y-2 border-l-2 border-line pl-3">
                   {threadReplies.map((r) => (
-                    <div key={r.id}>
-                      <p className="text-[12px] text-muted">{r.content}</p>
-                    </div>
+                    <p key={r.id} className="text-[12px] text-muted">{r.content}</p>
                   ))}
                 </div>
               )}
@@ -171,11 +278,7 @@ export default function PostCard({
                 onClick={() => (threadOpen ? setThreadOpen(false) : loadThread())}
                 className="mt-1 text-[12px] font-semibold text-bull hover:underline"
               >
-                {loadingThread
-                  ? "Loading…"
-                  : threadOpen
-                    ? "Hide thread"
-                    : `Show full thread (${post.reply_count ?? threadReplies.length} parts)`}
+                {loadingThread ? "Loading…" : threadOpen ? "Hide thread" : `Show full thread (${post.reply_count} parts)`}
               </button>
               {threadOpen && (
                 <div className="mt-2 space-y-3 border-l-2 border-bull/30 pl-3">
@@ -195,9 +298,7 @@ export default function PostCard({
               <span className="text-base">📊</span>
               <span className="min-w-0 flex-1 truncate text-[13px] text-muted">{post.market.question}</span>
               {post.market.yes_price != null && (
-                <span className="font-mono text-[13px] font-bold text-bull">
-                  {Math.round(post.market.yes_price * 100)}%
-                </span>
+                <span className="font-mono text-[13px] font-bold text-bull">{Math.round(post.market.yes_price * 100)}%</span>
               )}
             </div>
           )}
@@ -210,10 +311,7 @@ export default function PostCard({
                   e.preventDefault();
                   onBountyClick();
                   requestAnimationFrame(() => {
-                    document.getElementById(`bounty-${post.bounty!.id}`)?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
+                    document.getElementById(`bounty-${post.bounty!.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
                   });
                 }
               }}
@@ -222,57 +320,142 @@ export default function PostCard({
               <p className="text-[10px] font-bold uppercase tracking-wide text-bull">Bounty</p>
               <p className="mt-0.5 text-[13px] font-semibold text-foreground">{post.bounty.title}</p>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] text-muted">
-                <SolAmount
-                  amount={lamportsToSol(post.bounty.reward_sol_lamports)}
-                  className="font-mono font-bold text-bull"
-                  iconClassName="h-3 w-3"
-                />
-                {post.bounty.market?.yes_price != null && (
-                  <span>Market YES {pct(post.bounty.market.yes_price)}</span>
-                )}
+                <SolAmount amount={lamportsToSol(post.bounty.reward_sol_lamports)} className="font-mono font-bold text-bull" iconClassName="h-3 w-3" />
+                {post.bounty.market?.yes_price != null && <span>Market YES {pct(post.bounty.market.yes_price)}</span>}
                 <span className="capitalize">{post.bounty.status}</span>
               </div>
             </a>
           )}
 
           <div className="mt-3 flex items-center justify-between pr-1 text-faint">
-            <Action icon={<IconComment className="h-[17px] w-[17px]" />} value={comments} hover="hover:text-sky-400" />
-            <Action icon={<IconRepeat className="h-[17px] w-[17px]" />} value={reposts} hover="hover:text-bull" />
             <button
-              onClick={toggleLike}
-              className={`group flex items-center gap-1.5 text-[12.5px] transition-colors hover:text-bear ${
-                liked ? "text-bear" : ""
-              }`}
+              type="button"
+              onClick={() => {
+                setReplyOpen((v) => !v);
+                if (!repliesOpen && commentCount > 0) void loadReplies();
+              }}
+              className="flex items-center gap-1.5 text-[12.5px] transition-colors hover:text-sky-400"
             >
-              <IconHeart className="h-[17px] w-[17px]" />
-              {compactNumber(likes)}
+              <IconComment className="h-[17px] w-[17px]" />
+              {commentCount > 0 ? compactNumber(commentCount) : ""}
             </button>
-            <Action icon={<IconViews className="h-[17px] w-[17px]" />} value={views} hover="hover:text-foreground" />
+
+            <button
+              type="button"
+              onClick={toggleRepost}
+              disabled={pending}
+              className={`flex items-center gap-1.5 text-[12.5px] transition-colors hover:text-bull ${reposted ? "text-bull" : ""}`}
+            >
+              <IconRepeat className="h-[17px] w-[17px]" />
+              {repostCount > 0 ? compactNumber(repostCount) : ""}
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleLike}
+              disabled={pending}
+              className={`flex items-center gap-1.5 text-[12.5px] transition-colors hover:text-bear ${liked ? "text-bear" : ""}`}
+            >
+              <IconHeart className={`h-[17px] w-[17px] ${liked ? "fill-current" : ""}`} />
+              {likeCount > 0 ? compactNumber(likeCount) : ""}
+            </button>
+
+            <span className="flex items-center gap-1.5 text-[12.5px] text-faint">
+              <IconViews className="h-[17px] w-[17px]" />
+              {viewCount > 0 ? compactNumber(viewCount) : ""}
+            </span>
+
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setBookmarked((b) => !b)}
+                type="button"
+                onClick={toggleBookmark}
+                disabled={pending}
                 className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/[0.05] hover:text-foreground ${
                   bookmarked ? "text-bull" : ""
                 }`}
+                title={bookmarked ? "Remove bookmark" : "Bookmark"}
               >
-                <IconBookmark className="h-[17px] w-[17px]" />
+                <IconBookmark className={`h-[17px] w-[17px] ${bookmarked ? "fill-current" : ""}`} />
               </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/[0.05] hover:text-foreground">
-                <IconDots className="h-[17px] w-[17px]" />
-              </button>
+              <div className="relative" ref={menuRef}>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/[0.05] hover:text-foreground"
+                >
+                  <IconDots className="h-[17px] w-[17px]" />
+                </button>
+                {menuOpen && (
+                  <div className="absolute right-0 z-30 mt-1 min-w-[140px] overflow-hidden rounded-xl border border-line bg-surface shadow-xl">
+                    <button
+                      type="button"
+                      onClick={copyLink}
+                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] text-muted hover:bg-white/[0.04] hover:text-foreground"
+                    >
+                      <IconShare className="h-3.5 w-3.5" />
+                      {copied ? "Copied!" : "Copy link"}
+                    </button>
+                    {me?.profile.id === post.author_id && (
+                      <Link
+                        href={`/app/u/${post.author?.codename}`}
+                        className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] text-muted hover:bg-white/[0.04] hover:text-foreground"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        View profile
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
+          {replyOpen && !isThreadPost && (
+            <div className="mt-3 flex gap-2">
+              <textarea
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                placeholder="Write a reply…"
+                rows={2}
+                maxLength={600}
+                className="min-w-0 flex-1 resize-none rounded-xl border border-line bg-surface/40 px-3 py-2 text-[13px] outline-none focus:border-bull/40"
+              />
+              <button
+                type="button"
+                onClick={submitReply}
+                disabled={!replyText.trim() || replyBusy}
+                className="self-end rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold text-black disabled:opacity-40"
+              >
+                {replyBusy ? "…" : "Reply"}
+              </button>
+            </div>
+          )}
+
+          {repliesOpen && replies.length > 0 && !isThreadPost && (
+            <div className="mt-3 space-y-3 border-l-2 border-line pl-3">
+              {replies.map((r) => (
+                <div key={r.id} className="flex gap-2">
+                  <Avatar seed={r.author?.avatar_seed} avatarUrl={r.author?.avatar_url} label={r.author?.codename} size={28} />
+                  <div className="min-w-0">
+                    <p className="text-[12px] font-semibold text-foreground">@{r.author?.codename ?? "anon"}</p>
+                    <p className="text-[13px] text-muted">{r.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!replyOpen && commentCount > 0 && !isThreadPost && (
+            <button
+              type="button"
+              onClick={() => (repliesOpen ? setRepliesOpen(false) : loadReplies())}
+              className="mt-2 text-[12px] font-semibold text-bull hover:underline"
+            >
+              {loadingReplies ? "Loading…" : repliesOpen ? "Hide replies" : `View ${commentCount} repl${commentCount === 1 ? "y" : "ies"}`}
+            </button>
+          )}
         </div>
       </div>
     </article>
-  );
-}
-
-function Action({ icon, value, hover }: { icon: React.ReactNode; value: number; hover: string }) {
-  return (
-    <button className={`flex items-center gap-1.5 text-[12.5px] transition-colors ${hover}`}>
-      {icon}
-      {compactNumber(value)}
-    </button>
   );
 }

@@ -128,9 +128,14 @@ export async function GET(request: Request) {
             where bw.id = p.bounty_id
           ) sub
         ) else null end as bounty,
+        (select count(*) from post_votes v where v.post_id = p.id and v.value = 1)::int as like_count,
+        (select count(*) from post_reposts rp where rp.post_id = p.id)::int as repost_count,
+        (select count(*) from post_views vw where vw.post_id = p.id)::int as view_count,
         coalesce((select sum(value) from post_votes v where v.post_id = p.id), 0)::int as score,
         (select count(*) from posts c where c.parent_id = p.id)::int as reply_count,
-        coalesce((select value from post_votes v where v.post_id = p.id and v.profile_id = $1), 0)::int as my_vote
+        coalesce((select value from post_votes v where v.post_id = p.id and v.profile_id = $1), 0)::int as my_vote,
+        exists (select 1 from post_reposts rp where rp.post_id = p.id and rp.profile_id = $1) as my_reposted,
+        exists (select 1 from post_bookmarks bm where bm.post_id = p.id and bm.profile_id = $1) as my_bookmarked
       from posts p
       left join profiles a on a.id = p.author_id
       left join cabals c on c.id = p.cabal_id
@@ -173,10 +178,20 @@ export async function POST(request: Request) {
   }
 
   const sentiment = ["bullish", "bearish", "neutral"].includes(body.sentiment) ? body.sentiment : "neutral";
-  const cabalId = body.cabal_id ? String(body.cabal_id) : null;
+  let cabalId = body.cabal_id ? String(body.cabal_id) : null;
   const imageUrl = body.image_url ? String(body.image_url) : null;
   const marketId = body.market_id ? String(body.market_id) : null;
-  const kind = isThread ? "thread" : isPoll ? "poll" : "post";
+  const parentId = body.parent_id ? String(body.parent_id) : null;
+  const kind = parentId ? "post" : isThread ? "thread" : isPoll ? "poll" : "post";
+
+  if (parentId) {
+    const parent = await queryOne<{ cabal_id: string | null }>(
+      "select cabal_id from posts where id = $1",
+      [parentId],
+    );
+    if (!parent) return NextResponse.json({ error: "Parent post not found." }, { status: 404 });
+    if (!cabalId && parent.cabal_id) cabalId = parent.cabal_id;
+  }
 
   if (cabalId) {
     const member = await queryOne(
@@ -194,7 +209,7 @@ export async function POST(request: Request) {
 
   const post = await queryOne<Post>(
     `insert into posts (author_id, content, sentiment, market_id, operation_id, cabal_id, bounty_id, parent_id, image_url, kind)
-     values ($1, $2, $3, $4, $5, $6, $7, null, $8, $9)
+     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
      returning *`,
     [
       ctx.profile.id,
@@ -204,19 +219,20 @@ export async function POST(request: Request) {
       body.operation_id ?? null,
       cabalId,
       body.bounty_id ?? null,
+      parentId,
       imageUrl,
       kind,
     ],
   );
 
-  if (isPoll && post) {
+  if (isPoll && post && !parentId) {
     await query("insert into post_polls (post_id, options) values ($1, $2)", [
       post.id,
       JSON.stringify(pollOptions),
     ]);
   }
 
-  if (isThread && post) {
+  if (isThread && post && !parentId) {
     for (let i = 1; i < threadParts.length; i++) {
       await query(
         `insert into posts (author_id, content, sentiment, cabal_id, parent_id, kind)
@@ -229,7 +245,21 @@ export async function POST(request: Request) {
   await query("update profiles set influence = influence + 2 where id = $1", [ctx.profile.id]);
 
   const [enriched] = await attachThreadPreview(
-    await attachPollData([{ ...post!, author: ctx.profile, score: 0, reply_count: threadParts.length - 1, my_vote: 0 }], ctx.profile.id),
+    await attachPollData(
+      [{
+        ...post!,
+        author: ctx.profile,
+        like_count: 0,
+        repost_count: 0,
+        view_count: 0,
+        score: 0,
+        reply_count: parentId ? 0 : threadParts.length - 1,
+        my_vote: 0,
+        my_reposted: false,
+        my_bookmarked: false,
+      }],
+      ctx.profile.id,
+    ),
   );
 
   return NextResponse.json({ post: enriched });

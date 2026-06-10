@@ -113,6 +113,27 @@ create table if not exists post_votes (
   primary key (post_id, profile_id)
 );
 
+create table if not exists post_reposts (
+  post_id    uuid references posts(id) on delete cascade,
+  profile_id uuid references profiles(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (post_id, profile_id)
+);
+
+create table if not exists post_bookmarks (
+  post_id    uuid references posts(id) on delete cascade,
+  profile_id uuid references profiles(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (post_id, profile_id)
+);
+
+create table if not exists post_views (
+  post_id    uuid references posts(id) on delete cascade,
+  profile_id uuid references profiles(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (post_id, profile_id)
+);
+
 -- ───────────────────────────── FOLLOWS ──────────────────────────────────────
 create table if not exists follows (
   follower_id  uuid references profiles(id) on delete cascade,

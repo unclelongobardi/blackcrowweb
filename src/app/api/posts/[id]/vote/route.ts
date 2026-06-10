@@ -30,10 +30,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     myVote = value;
   }
 
-  const row = await queryOne<{ score: string }>(
-    "select coalesce(sum(value), 0) as score from post_votes where post_id = $1",
+  const row = await queryOne<{ score: string; like_count: string }>(
+    `select
+       (select coalesce(sum(value), 0) from post_votes where post_id = $1)::text as score,
+       (select count(*)::text from post_votes where post_id = $1 and value = 1) as like_count`,
     [id],
   );
 
-  return NextResponse.json({ score: Number(row?.score ?? 0), my_vote: myVote });
+  return NextResponse.json({
+    score: Number(row?.score ?? 0),
+    like_count: Number(row?.like_count ?? 0),
+    my_vote: myVote,
+  });
 }

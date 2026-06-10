@@ -112,9 +112,15 @@ export type Post = {
     total: number;
   } | null;
   thread_preview?: Post[] | null;
+  like_count?: number;
+  repost_count?: number;
+  view_count?: number;
   score?: number;
   reply_count?: number;
   my_vote?: number;
+  my_reposted?: boolean;
+  my_bookmarked?: boolean;
+  replies?: Post[] | null;
 };
 
 export type BountyStatus =

@@ -212,7 +212,7 @@ export default function HomePage() {
                   </p>
                 </div>
               ) : (
-                posts.map((p) => <PostCard key={p.id} post={p} onBountyClick={() => setMobileTab("bounties")} />)
+                posts.map((p) => <PostCard key={p.id} post={p} onBountyClick={() => setMobileTab("bounties")} onReply={loadFeed} />)
               )}
             </motion.div>
           )}
