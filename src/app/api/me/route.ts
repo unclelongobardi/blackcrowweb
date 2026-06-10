@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
-import { isDbConfigured, queryOne } from "@/lib/db";
+import { isDbConfigured, query, queryOne } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,6 +29,22 @@ export async function GET(request: Request) {
     [profile.id, profile.influence],
   );
 
+  const memberCabals = await query<{
+    id: string;
+    slug: string;
+    name: string;
+    emblem_seed: string | null;
+    kind: string | null;
+    visibility: string | null;
+  }>(
+    `select c.id, c.slug, c.name, c.emblem_seed, c.kind, c.visibility
+       from cabal_members m
+       join cabals c on c.id = m.cabal_id
+      where m.profile_id = $1
+      order by m.joined_at desc`,
+    [profile.id],
+  );
+
   return NextResponse.json({
     authenticated: true,
     profile,
@@ -39,5 +55,6 @@ export async function GET(request: Request) {
       posts: Number(stats?.posts ?? 0),
       rank: Number(stats?.rank ?? 1),
     },
+    member_cabals: memberCabals,
   });
 }

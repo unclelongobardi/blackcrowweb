@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProfileId } from "@/lib/auth";
+import { getAuthedProfile } from "@/lib/auth";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   if (!isDbConfigured()) return NextResponse.json({ error: "Not configured" }, { status: 503 });
   const { slug } = await params;
-  const myId = await getProfileId(_request);
+  const ctx = await getAuthedProfile(_request);
+  const myId = ctx?.profile.id ?? null;
 
   const cabal = await queryOne(
     `select c.*,

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthedProfile, getProfileId } from "@/lib/auth";
+import { getAuthedProfile } from "@/lib/auth";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
 import type { Cabal } from "@/lib/types";
 
@@ -17,7 +17,8 @@ function slugify(name: string): string {
 
 export async function GET(request: Request) {
   if (!isDbConfigured()) return NextResponse.json({ cabals: [] });
-  const myId = await getProfileId(request);
+  const ctx = await getAuthedProfile(request);
+  const myId = ctx?.profile.id ?? null;
   const kind = new URL(request.url).searchParams.get("kind");
   const visibility = new URL(request.url).searchParams.get("visibility");
 

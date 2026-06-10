@@ -65,7 +65,6 @@ export default function CreatePost({
   const [sentiment, setSentiment] = useState<Sentiment>("neutral");
   const [loading, setLoading] = useState(false);
   const [audience, setAudience] = useState<PostAudience>({ scope: "everyone" });
-  const [myCabals, setMyCabals] = useState<Cabal[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -90,16 +89,7 @@ export default function CreatePost({
     }
   }, [attachedBounty]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await api<{ cabals: Cabal[] }>("/api/cabals");
-        setMyCabals(data.cabals.filter((c) => c.is_member));
-      } catch {
-        setMyCabals([]);
-      }
-    })();
-  }, [api]);
+  const myCabals = (me?.member_cabals ?? []) as Cabal[];
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {

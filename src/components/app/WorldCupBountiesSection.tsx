@@ -35,9 +35,6 @@ export function WorldCupBountiesCompact({
     <div className="border-b border-line">
       <div className="px-3 py-3">
         <WorldCupBountiesButton />
-        <p className="mt-2 text-center text-[10px] text-faint">
-          {worldCup.length} jobs · 10–100 SOL
-        </p>
       </div>
       <ul className="divide-y divide-line">
         {worldCup.slice(0, limit).map((b) => (
@@ -90,8 +87,8 @@ export default function WorldCupBountiesSection({
 
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface/30 px-4 py-3 sm:px-5">
           <p className="max-w-xl text-[13px] leading-relaxed text-muted">
-            Live Polymarket jobs on group winners and tournament outcomes — fan-zone proof, intel
-            leaks, and coordinated Home campaigns.
+            Secondary Polymarket books you can actually move — FOX broadcast mentions, stadium
+            spectacle, and co-host narrative ops at USA 2026 matches.
           </p>
           <div className="text-right">
             <p className="text-[10px] uppercase tracking-wide text-faint">Total pool</p>

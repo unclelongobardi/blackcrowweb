@@ -93,7 +93,7 @@ function CabalCard({
 
 export default function CabalsPage() {
   const api = useApi();
-  const { refreshMe } = useAppContext();
+  const { me, refreshMe } = useAppContext();
   const [cabals, setCabals] = useState<Cabal[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -107,10 +107,20 @@ export default function CabalsPage() {
     if (visFilter !== "all") params.set("visibility", visFilter);
     const q = params.toString() ? `?${params}` : "";
     const data = await api<{ cabals: Cabal[] }>(`/api/cabals${q}`);
-    setCabals(data.cabals);
+    const memberSlugs = new Set((me?.member_cabals ?? []).map((c) => c.slug));
+    setCabals(
+      data.cabals.map((c) => ({
+        ...c,
+        is_member: c.is_member || memberSlugs.has(c.slug),
+      })),
+    );
   }
 
   useEffect(() => {
+    if (!me?.profile.id) {
+      setLoading(false);
+      return;
+    }
     (async () => {
       try {
         await load();
@@ -119,7 +129,17 @@ export default function CabalsPage() {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kindFilter, visFilter]);
+  }, [kindFilter, visFilter, me?.profile.id, me?.member_cabals]);
+
+  useEffect(() => {
+    if (!me?.profile.id) return;
+    function onVisible() {
+      if (document.visibilityState === "visible") load();
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me?.profile.id]);
 
   async function join(slug: string) {
     setBusy(slug);
@@ -127,8 +147,8 @@ export default function CabalsPage() {
       const res = await api<{ joined: boolean; requested: boolean }>(`/api/cabals/${slug}/join`, {
         method: "POST",
       });
-      await load();
       await refreshMe();
+      await load();
       if (res.requested) alert("Join request sent to the cabal leader.");
     } finally {
       setBusy(null);

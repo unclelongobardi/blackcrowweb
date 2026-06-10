@@ -1,12 +1,15 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { Profile } from "@/lib/types";
+import type { Cabal, Profile } from "@/lib/types";
+
+export type MeMemberCabal = Pick<Cabal, "id" | "slug" | "name" | "emblem_seed" | "kind" | "visibility">;
 
 export type Me = {
   authenticated: boolean;
   profile: Profile;
   stats: { cabals: number; bounties_posted: number; bounties_done: number; posts: number; rank: number };
+  member_cabals: MeMemberCabal[];
 };
 
 type AppContextValue = {

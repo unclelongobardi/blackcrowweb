@@ -38,14 +38,22 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [loadingMe, setLoadingMe] = useState(true);
 
   const refreshMe = useCallback(async () => {
-    try {
-      const data = await api<Me>("/api/me");
-      setMe(data);
-    } catch {
-      setMe(null);
-    } finally {
-      setLoadingMe(false);
+    setLoadingMe(true);
+    for (let attempt = 0; attempt < 5; attempt++) {
+      try {
+        const data = await api<Me>("/api/me");
+        if (data.authenticated) {
+          setMe(data);
+          setLoadingMe(false);
+          return;
+        }
+      } catch {
+        /* Privy token may not be ready yet on cold load */
+      }
+      await new Promise((r) => setTimeout(r, 150 * (attempt + 1)));
     }
+    setMe(null);
+    setLoadingMe(false);
   }, [api]);
 
   useEffect(() => {

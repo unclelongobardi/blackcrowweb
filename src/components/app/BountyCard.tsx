@@ -290,9 +290,9 @@ export default function BountyCard({
 
   return (
     <div
-      className={`glass glass-hover flex flex-col rounded-2xl ${compact ? "p-4 cursor-pointer" : "p-5"} ${
-        selected ? "border border-bull/30" : ""
-      }`}
+      className={`glass glass-hover flex min-w-0 flex-col overflow-hidden rounded-2xl ${
+        compact ? "p-3.5 cursor-pointer" : "p-5"
+      } ${selected ? "border border-bull/30" : ""}`}
       onClick={compact && onSelect ? onSelect : undefined}
       onKeyDown={
         compact && onSelect
@@ -304,13 +304,19 @@ export default function BountyCard({
       role={compact && onSelect ? "button" : undefined}
       tabIndex={compact && onSelect ? 0 : undefined}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className={compact ? "space-y-2" : "flex items-start justify-between gap-3"}>
+        <div
+          className={
+            compact
+              ? "flex min-w-0 items-center justify-between gap-2"
+              : "flex min-w-0 flex-1 flex-wrap items-center gap-2"
+          }
+        >
           {isOfficial && bounty.creator && (
             <Link
               href={`/app/u/${bounty.creator.codename}`}
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-1.5 rounded-md bg-white/5 py-0.5 pl-0.5 pr-2"
+              className="flex min-w-0 max-w-[58%] items-center gap-1.5 rounded-md bg-white/5 py-0.5 pl-0.5 pr-2"
             >
               <Avatar
                 seed={bounty.creator.avatar_seed}
@@ -319,52 +325,94 @@ export default function BountyCard({
                 size={20}
                 verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
               />
-              <span className="text-[10px] font-semibold text-foreground">blackcrow_official</span>
+              <span className="truncate text-[10px] font-semibold text-foreground">blackcrow_official</span>
             </Link>
           )}
-          {isWorldCup && (
+          {compact && (
+            <div className="shrink-0 text-right">
+              <SolAmount
+                amount={sol}
+                className="font-mono text-base font-bold text-bull"
+                iconClassName="h-3.5 w-3.5"
+              />
+            </div>
+          )}
+          {!compact && isWorldCup && (
             <span className="rounded-md bg-bull/15 px-2 py-0.5 text-[10px] font-bold tracking-wide text-bull">
               WC SPECIAL
             </span>
           )}
-          <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
-            {KIND_LABEL[bounty.kind] ?? bounty.kind}
-          </span>
-          <span
-            className={`rounded-md px-2 py-0.5 text-[10px] font-bold tracking-wide ${
-              bounty.status === "open"
-                ? "bg-bull/10 text-bull"
-                : bounty.status === "paid"
-                  ? "bg-white/10 text-foreground"
-                  : expired
-                    ? "bg-bear/10 text-bear"
-                    : "bg-white/5 text-faint"
-            }`}
-          >
-            {expired ? "Expired" : (STATUS_LABEL[bounty.status] ?? bounty.status)}
-          </span>
-          {expiryLabel && !expired && (
+          {!compact && (
+            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
+              {KIND_LABEL[bounty.kind] ?? bounty.kind}
+            </span>
+          )}
+          {!compact && (
+            <span
+              className={`rounded-md px-2 py-0.5 text-[10px] font-bold tracking-wide ${
+                bounty.status === "open"
+                  ? "bg-bull/10 text-bull"
+                  : bounty.status === "paid"
+                    ? "bg-white/10 text-foreground"
+                    : expired
+                      ? "bg-bear/10 text-bear"
+                      : "bg-white/5 text-faint"
+              }`}
+            >
+              {expired ? "Expired" : (STATUS_LABEL[bounty.status] ?? bounty.status)}
+            </span>
+          )}
+          {!compact && expiryLabel && !expired && (
             <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-faint">
               {expiryLabel}
             </span>
           )}
-          {(bounty.participant_count ?? 0) > 0 && (
+          {!compact && (bounty.participant_count ?? 0) > 0 && (
             <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-faint">
               {bounty.participant_count} joined
             </span>
           )}
         </div>
-        <div className="text-right">
-          <SolAmount amount={sol} className="font-mono text-lg font-bold text-bull" iconClassName="h-4 w-4" />
-          <p className="flex items-center justify-end gap-1 text-[10px] text-faint">
-            {!isOfficial && (
-              <>
-                +{helperFeathers}
-                <IconFeather className="h-3 w-3 text-bull" /> winner
-              </>
+        {compact ? (
+          <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+            {isWorldCup && (
+              <span className="rounded-md bg-bull/15 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-bull">
+                WC
+              </span>
             )}
-          </p>
-        </div>
+            <span className="rounded-md bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-faint">
+              {KIND_LABEL[bounty.kind] ?? bounty.kind}
+            </span>
+            <span
+              className={`rounded-md px-1.5 py-0.5 text-[9px] font-bold tracking-wide ${
+                bounty.status === "open"
+                  ? "bg-bull/10 text-bull"
+                  : expired
+                    ? "bg-bear/10 text-bear"
+                    : "bg-white/5 text-faint"
+              }`}
+            >
+              {expired ? "Expired" : (STATUS_LABEL[bounty.status] ?? bounty.status)}
+            </span>
+            {expiryLabel && !expired && (
+              <span className="rounded-md bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold text-faint">
+                {expiryLabel}
+              </span>
+            )}
+          </div>
+        ) : (
+          <div className="shrink-0 text-right">
+            <SolAmount amount={sol} className="font-mono text-lg font-bold text-bull" iconClassName="h-4 w-4" />
+            <p className="flex items-center justify-end gap-1 text-[10px] text-faint">
+              {!isOfficial && (
+                <>
+                  +{helperFeathers}
+                  <IconFeather className="h-3 w-3 text-bull" /> winner
+                </>
+              )}
+            </p>
+          </div>
+        )}
       </div>
 
       {!isOfficial && bounty.status !== "funding" && (
@@ -383,23 +431,51 @@ export default function BountyCard({
         </p>
       )}
 
-      <h2 className="mt-3 text-[15px] font-bold tracking-tight text-foreground">{bounty.title}</h2>
+      <h2
+        className={`mt-3 font-bold tracking-tight text-foreground ${
+          compact ? "line-clamp-2 text-[13px]" : "text-[15px]"
+        }`}
+      >
+        {bounty.title}
+      </h2>
       {bounty.description && (
-        <p className="mt-1 text-[13px] leading-relaxed text-muted">{bounty.description}</p>
+        <p
+          className={`mt-1 leading-relaxed text-muted ${
+            compact ? "line-clamp-2 text-[11px]" : "text-[13px]"
+          }`}
+        >
+          {bounty.description}
+        </p>
       )}
 
       {bounty.task && (
-        <div className="mt-3 rounded-lg border border-line bg-surface/40 px-3 py-2.5">
+        <div
+          className={`mt-3 rounded-lg border border-line bg-surface/40 px-3 ${
+            compact ? "py-3" : "py-2.5"
+          }`}
+        >
           <p className="section-label">The job</p>
-          <p className="mt-1 text-[12px] leading-relaxed text-foreground">{bounty.task}</p>
+          <p
+            className={`mt-1.5 leading-relaxed text-foreground ${
+              compact ? "line-clamp-4 text-[11px]" : "text-[12px]"
+            }`}
+          >
+            {bounty.task}
+          </p>
         </div>
       )}
 
       {bounty.market && (
-        <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-line bg-surface/40 px-3 py-2">
-          <span className="truncate text-[12px] text-muted">{bounty.market.question}</span>
+        <div
+          className={`mt-3 flex min-w-0 items-center justify-between gap-2 rounded-lg border border-line bg-surface/40 px-3 ${
+            compact ? "py-2" : "py-2"
+          }`}
+        >
+          <span className={`min-w-0 text-muted ${compact ? "line-clamp-2 text-[10px]" : "truncate text-[12px]"}`}>
+            {bounty.market.question}
+          </span>
           {bounty.market.yes_price != null && (
-            <span className="shrink-0 font-mono text-[12px] font-bold text-bull">
+            <span className={`shrink-0 font-mono font-bold text-bull ${compact ? "text-[10px]" : "text-[12px]"}`}>
               {pct(bounty.market.yes_price)} YES
             </span>
           )}
