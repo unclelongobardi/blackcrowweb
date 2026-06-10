@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import AuthControls from "./AuthControls";
@@ -13,7 +14,9 @@ const LINKS = [
   { label: "FEED", href: "#feed" },
   { label: "LEADERBOARD", href: "#leaderboard" },
   { label: "ABOUT", href: "#about" },
-];
+] as const;
+
+const DOCS_HREF = "/docs";
 
 const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL ?? "https://x.com/";
 const TOKEN_CA = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() ?? "";
@@ -60,6 +63,15 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href={DOCS_HREF}
+                className="group relative text-[12px] font-medium tracking-[0.14em] text-muted transition-colors hover:text-foreground"
+              >
+                DOCS
+                <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 bg-foreground transition-all duration-300 group-hover:w-full" />
+              </Link>
+            </li>
           </ul>
 
           <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
@@ -126,6 +138,13 @@ export default function Navbar() {
                     {l.label}
                   </a>
                 ))}
+                <Link
+                  href={DOCS_HREF}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-white/5 hover:text-foreground"
+                >
+                  DOCS
+                </Link>
                 <div className="mt-2 flex items-center justify-between rounded-lg border border-line bg-surface/30 px-3 py-2.5">
                   <div>
                     <p className="text-[10px] font-bold text-faint">CA</p>
