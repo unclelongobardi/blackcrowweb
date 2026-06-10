@@ -3,7 +3,9 @@ import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { canContributeToPool } from "@/lib/bountyRules";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
 import { isEscrowTxSignatureUsed, recordEscrowTransaction } from "@/lib/escrowLedger";
+import { resolveVerifiedSolanaWallet } from "@/lib/privyWallets";
 import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 import { canOperateEscrow, getEscrowAddress, verifyDepositTx } from "@/lib/solana";
@@ -18,6 +20,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
+
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "contribute");
+  if (limited) return limited;
 
   if (!canOperateEscrow()) {
     return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
@@ -46,7 +51,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Transaction already recorded." }, { status: 409 });
   }
 
-  const verified = await verifyDepositTx(txSignature, lamports, id, ctx.profile.wallet_address);
+  const verifiedWallet = await resolveVerifiedSolanaWallet(request, ctx, ctx.profile.wallet_address);
+  if (!verifiedWallet.ok) return NextResponse.json({ error: verifiedWallet.error }, { status: 400 });
+
+  const verified = await verifyDepositTx(txSignature, lamports, id, verifiedWallet.address);
   if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
 
   const received = verified.receivedLamports;
@@ -75,7 +83,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     kind: "contribution",
     txSignature,
     lamports: received,
-    fromWallet: ctx.profile.wallet_address,
+    fromWallet: verifiedWallet.address,
     toWallet: getEscrowAddress(),
     profileId: ctx.profile.id,
   });

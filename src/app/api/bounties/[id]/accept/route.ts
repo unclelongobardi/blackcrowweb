@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { canAcceptBounty } from "@/lib/bountyRules";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
+import { resolveVerifiedSolanaWallet } from "@/lib/privyWallets";
 import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 
@@ -13,9 +15,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
 
-  if (!ctx.profile.wallet_address) {
-    return NextResponse.json({ error: "Connect a Solana wallet first." }, { status: 400 });
-  }
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "accept");
+  if (limited) return limited;
+
+  const verified = await resolveVerifiedSolanaWallet(request, ctx, ctx.profile.wallet_address);
+  if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
+  const wallet = verified.address;
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -42,7 +47,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   await query(
     `insert into bounty_participants (bounty_id, profile_id, wallet_address, status)
      values ($1, $2, $3, 'accepted')`,
-    [id, ctx.profile.id, ctx.profile.wallet_address],
+    [id, ctx.profile.id, wallet],
   );
 
   await query(
@@ -52,7 +57,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
        helper_wallet = coalesce(helper_wallet, $3),
        assigned_at = coalesce(assigned_at, now())
      where id = $1`,
-    [id, ctx.profile.id, ctx.profile.wallet_address],
+    [id, ctx.profile.id, wallet],
   );
 
   if (bounty.created_by) {

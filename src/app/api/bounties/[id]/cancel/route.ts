@@ -5,6 +5,7 @@ import {
   claimBountyForRefund,
   releaseBountyRefundLock,
 } from "@/lib/bountySettlement";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
 import { recordEscrowTransaction } from "@/lib/escrowLedger";
 import { query, queryOne } from "@/lib/db";
 import { canOperateEscrow, getEscrowAddress, sendRefund } from "@/lib/solana";
@@ -16,6 +17,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
+
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "cancel");
+  if (limited) return limited;
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });

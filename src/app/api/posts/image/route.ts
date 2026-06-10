@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { getAuthedProfile } from "@/lib/auth";
+import { enforceUploadRateLimit } from "@/lib/financialRateLimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,6 +12,9 @@ const ALLOWED = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 export async function POST(request: Request) {
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const limited = await enforceUploadRateLimit(request, ctx.profile.id);
+  if (limited) return limited;
 
   const form = await request.formData().catch(() => null);
   const file = form?.get("file");

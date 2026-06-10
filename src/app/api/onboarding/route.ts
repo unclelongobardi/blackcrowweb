@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { isAvatarId, DEFAULT_AVATAR_ID } from "@/lib/avatars";
 import { queryOne } from "@/lib/db";
+import { resolveVerifiedSolanaWallet } from "@/lib/privyWallets";
 import type { Profile } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -17,7 +18,15 @@ export async function POST(request: Request) {
   const codename = String(body.codename ?? "").trim().toLowerCase();
   const displayName = body.display_name ? String(body.display_name).trim().slice(0, 60) : null;
   const bio = body.bio ? String(body.bio).trim().slice(0, 240) : null;
-  const walletAddress = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
+  const walletAddressRaw = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
+  let walletAddress = walletAddressRaw;
+  if (walletAddressRaw) {
+    const verified = await resolveVerifiedSolanaWallet(request, ctx, walletAddressRaw, {
+      syncProfile: false,
+    });
+    if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
+    walletAddress = verified.address;
+  }
   const avatarRaw = body.avatar_seed ? String(body.avatar_seed).trim() : null;
 
   if (avatarRaw && !isAvatarId(avatarRaw)) {

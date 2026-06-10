@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, getIdentityToken } from "@privy-io/react-auth";
 
 async function resolveAccessToken(
   getAccessToken: () => Promise<string | null>,
@@ -23,12 +23,14 @@ export function useApi() {
   return useCallback(
     async <T = unknown>(path: string, options: RequestInit = {}): Promise<T> => {
       const token = await resolveAccessToken(getAccessToken, ready, authenticated);
+      const idToken = ready && authenticated ? await getIdentityToken().catch(() => null) : null;
       const isForm = options.body instanceof FormData;
       const res = await fetch(path, {
         ...options,
         headers: {
           ...(!isForm ? { "content-type": "application/json" } : {}),
           ...(token ? { authorization: `Bearer ${token}` } : {}),
+          ...(idToken ? { "privy-id-token": idToken } : {}),
           ...(options.headers ?? {}),
         },
       });

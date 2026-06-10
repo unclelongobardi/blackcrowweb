@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { creatorPostInfluenceFromLamports } from "@/lib/bountyInfluence";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
 import { isEscrowTxSignatureUsed, recordEscrowTransaction } from "@/lib/escrowLedger";
+import { resolveVerifiedSolanaWallet } from "@/lib/privyWallets";
 import { query, queryOne } from "@/lib/db";
 import { canOperateEscrow, getEscrowAddress, verifyDepositTx } from "@/lib/solana";
 
@@ -13,6 +15,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
+
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "fund");
+  if (limited) return limited;
 
   if (!canOperateEscrow()) {
     return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
@@ -35,11 +40,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "This transaction was already used." }, { status: 409 });
   }
 
+  const verifiedWallet = await resolveVerifiedSolanaWallet(request, ctx, ctx.profile.wallet_address);
+  if (!verifiedWallet.ok) return NextResponse.json({ error: verifiedWallet.error }, { status: 400 });
+
   const verified = await verifyDepositTx(
     txSignature,
     BigInt(bounty.reward_sol_lamports),
     id,
-    ctx.profile.wallet_address,
+    verifiedWallet.address,
   );
   if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
 
@@ -51,7 +59,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
        creator_base_lamports = reward_sol_lamports
      where id = $1 and status = 'funding'
      returning id`,
-    [id, txSignature, ctx.profile.wallet_address],
+    [id, txSignature, verifiedWallet.address],
   );
   if (!funded) {
     return NextResponse.json({ error: "Bounty is not awaiting funding." }, { status: 409 });
@@ -62,7 +70,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     kind: "deposit",
     txSignature,
     lamports: verified.receivedLamports,
-    fromWallet: ctx.profile.wallet_address,
+    fromWallet: verifiedWallet.address,
     toWallet: escrowAddress,
     profileId: ctx.profile.id,
   });

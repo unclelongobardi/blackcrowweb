@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
-import { query } from "@/lib/db";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
+import { resolveVerifiedSolanaWallet } from "@/lib/privyWallets";
 import { buildDepositTransaction, canOperateEscrow } from "@/lib/solana";
 
 export const runtime = "nodejs";
@@ -13,16 +14,18 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
 
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "deposit-tx");
+  if (limited) return limited;
+
   if (!canOperateEscrow()) {
     return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
   }
 
   const body = await request.json().catch(() => ({}));
-  const wallet = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
-  if (!wallet) return NextResponse.json({ error: "Connect a Solana wallet first." }, { status: 400 });
-  if (wallet !== ctx.profile.wallet_address) {
-    await query("update profiles set wallet_address = $1 where id = $2", [wallet, ctx.profile.id]);
-  }
+  const requestedWallet = body.wallet_address ? String(body.wallet_address).trim() : null;
+  const verified = await resolveVerifiedSolanaWallet(request, ctx, requestedWallet);
+  if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
+  const wallet = verified.address;
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });

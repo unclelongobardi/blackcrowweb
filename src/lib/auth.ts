@@ -7,10 +7,38 @@ const APP_ID = process.env.PRIVY_APP_ID;
 const APP_SECRET = process.env.PRIVY_APP_SECRET;
 
 let _privy: PrivyClient | null = null;
-function privy(): PrivyClient | null {
+
+export function getPrivyClient(): PrivyClient | null {
   if (!APP_ID || !APP_SECRET) return null;
   if (!_privy) _privy = new PrivyClient(APP_ID, APP_SECRET);
   return _privy;
+}
+
+function privy(): PrivyClient | null {
+  return getPrivyClient();
+}
+
+function readCookie(request: Request, name: string): string | undefined {
+  const cookieHeader = request.headers.get("cookie");
+  if (!cookieHeader) return undefined;
+  const prefix = `${name}=`;
+  for (const part of cookieHeader.split(";")) {
+    const trimmed = part.trim();
+    if (!trimmed.startsWith(prefix)) continue;
+    const raw = trimmed.slice(prefix.length);
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      return raw;
+    }
+  }
+  return undefined;
+}
+
+export function getIdentityTokenFromRequest(request: Request): string | undefined {
+  const header = request.headers.get("privy-id-token")?.trim();
+  if (header) return header;
+  return readCookie(request, "privy-id-token");
 }
 
 export function getTokenFromRequest(request: Request): string | undefined {
@@ -19,20 +47,7 @@ export function getTokenFromRequest(request: Request): string | undefined {
     ? authHeader.slice(7).trim()
     : undefined;
   if (bearer) return bearer;
-
-  const cookieHeader = request.headers.get("cookie");
-  if (!cookieHeader) return undefined;
-  for (const part of cookieHeader.split(";")) {
-    const trimmed = part.trim();
-    if (!trimmed.startsWith("privy-token=")) continue;
-    const raw = trimmed.slice("privy-token=".length);
-    try {
-      return decodeURIComponent(raw);
-    } catch {
-      return raw;
-    }
-  }
-  return undefined;
+  return readCookie(request, "privy-token");
 }
 
 /** Verify the Privy access token and return the user's DID, or null. */

@@ -214,6 +214,15 @@ create table if not exists escrow_transactions (
 
 create index if not exists idx_escrow_transactions_bounty on escrow_transactions(bounty_id, created_at desc);
 
+-- API rate limit buckets (serverless-safe via Postgres)
+create table if not exists api_rate_limits (
+  bucket text primary key,
+  count integer not null default 0,
+  reset_at timestamptz not null
+);
+
+create index if not exists idx_api_rate_limits_reset_at on api_rate_limits (reset_at);
+
 -- Bounty indexes applied in supabase/migrations/002_bounty_escrow.sql
 
 -- ───────────────────────────── DIRECT MESSAGES ──────────────────────────────

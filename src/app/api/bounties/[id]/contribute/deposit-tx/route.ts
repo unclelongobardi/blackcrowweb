@@ -2,12 +2,15 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile } from "@/lib/auth";
 import { getBountyById } from "@/lib/bounties";
 import { canContributeToPool } from "@/lib/bountyRules";
-import { query } from "@/lib/db";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
+import { resolveVerifiedSolanaWallet } from "@/lib/privyWallets";
 import { buildDepositTransaction, canOperateEscrow } from "@/lib/solana";
 import { solToLamports } from "@/lib/solanaFormat";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const MAX_CONTRIBUTION_SOL = 50;
 
 /** Build an unsigned SOL deposit tx to add to a bounty pool. */
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -15,16 +18,18 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
 
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "deposit-tx");
+  if (limited) return limited;
+
   if (!canOperateEscrow()) {
     return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
   }
 
   const body = await request.json().catch(() => ({}));
-  const wallet = body.wallet_address ? String(body.wallet_address).trim() : ctx.profile.wallet_address;
-  if (!wallet) return NextResponse.json({ error: "Connect a Solana wallet first." }, { status: 400 });
-  if (wallet !== ctx.profile.wallet_address) {
-    await query("update profiles set wallet_address = $1 where id = $2", [wallet, ctx.profile.id]);
-  }
+  const requestedWallet = body.wallet_address ? String(body.wallet_address).trim() : null;
+  const verified = await resolveVerifiedSolanaWallet(request, ctx, requestedWallet);
+  if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
+  const wallet = verified.address;
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -36,8 +41,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!Number.isFinite(rewardSol) || rewardSol < 0.01) {
     return NextResponse.json({ error: "Minimum contribution is 0.01 SOL." }, { status: 400 });
   }
-  if (rewardSol > 50) {
-    return NextResponse.json({ error: "Maximum contribution per tx is 50 SOL." }, { status: 400 });
+  if (rewardSol > MAX_CONTRIBUTION_SOL) {
+    return NextResponse.json({ error: `Maximum contribution per tx is ${MAX_CONTRIBUTION_SOL} SOL.` }, { status: 400 });
   }
 
   const lamports = solToLamports(rewardSol);

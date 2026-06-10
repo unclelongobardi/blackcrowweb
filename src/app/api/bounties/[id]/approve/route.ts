@@ -7,6 +7,7 @@ import {
   getExistingPayoutSignature,
   releaseBountyPayoutLock,
 } from "@/lib/bountySettlement";
+import { enforceFinancialRateLimit } from "@/lib/financialRateLimit";
 import { recordEscrowTransaction } from "@/lib/escrowLedger";
 import { query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
@@ -19,6 +20,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
+
+  const limited = await enforceFinancialRateLimit(request, ctx.profile.id, "approve");
+  if (limited) return limited;
 
   if (!canOperateEscrow()) {
     return NextResponse.json({ error: "Escrow wallet is not fully configured on the server." }, { status: 503 });
