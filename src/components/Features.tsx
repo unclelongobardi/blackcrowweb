@@ -6,7 +6,7 @@ import {
   IconOperator,
   IconCabal,
   IconSolana,
-  IconFeed,
+  IconWarRoom,
   IconFeather,
 } from "./icons";
 
@@ -32,7 +32,7 @@ const FEATURES = [
     desc: "Post bounties with SOL in escrow, let others boost the pool, and hit thin-book Polymarket markets flagged on-platform.",
   },
   {
-    icon: IconFeed,
+    icon: IconWarRoom,
     brand: false,
     title: "POST YOUR TAKES",
     desc: "War Room feed with bullish / bearish / neutral tags. Attach open bounties to posts and coordinate from one thread.",
@@ -53,14 +53,8 @@ function FeatureIcon({
   brand: boolean;
 }) {
   return (
-    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-black/40 text-bull transition-colors group-hover:border-bull/35 group-hover:bg-bull/5">
-      <Icon
-        className={
-          brand
-            ? "h-6 w-6"
-            : "h-[22px] w-[22px] text-foreground transition-colors group-hover:text-bull"
-        }
-      />
+    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-bull/20 bg-bull/[0.06] text-bull shadow-[0_0_20px_-8px_rgba(0,180,255,0.55)] transition-colors group-hover:border-bull/40 group-hover:bg-bull/10">
+      <Icon className={brand ? "h-6 w-6" : "h-[23px] w-[23px] text-bull"} />
     </div>
   );
 }

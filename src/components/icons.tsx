@@ -374,12 +374,15 @@ export function IconFeather(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Cabal / group shield */
+/** Cabal — linked operatives in angular frame */
 export function IconCabal(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg {...base} {...props}>
-      <path d="M12 3 20 7v6c0 4-3.5 7-8 8-4.5-1-8-4-8-8V7l8-4Z" />
-      <path d="M9 12h6M12 9v6" />
+    <svg {...base} strokeWidth={1.5} {...props}>
+      <path d="M5 6.5 12 3l7 3.5v9L12 20l-7-3.5v-9Z" />
+      <circle cx="12" cy="8.5" r="1.6" />
+      <circle cx="8.2" cy="14.5" r="1.6" />
+      <circle cx="15.8" cy="14.5" r="1.6" />
+      <path d="M12 10.2v1.8M10.4 13.2l1.2-1M13.6 13.2l-1.2-1" />
     </svg>
   );
 }
@@ -395,15 +398,27 @@ export function IconRoost(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Anonymous operator — angular mark (brand geometry) */
+/** Anonymous operator — BLACKCROW angular frame + crow profile */
 export function IconOperator(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={1.5} {...props}>
-      <path d="M5 7 12 3l7 4v8l-7 4-7-4V7Z" />
-      <path d="M9.5 11.5c.8-1.2 2.2-1.8 4-1.8M9.5 13.5c.8 1.2 2.2 1.8 4 1.8" />
-      <circle cx="10" cy="12" r="0.9" fill="currentColor" stroke="none" />
-      <circle cx="14" cy="12" r="0.9" fill="currentColor" stroke="none" />
-      <path d="M12 3v2.5" />
+      <path d="M4 5.5 20 5.5 15.5 12 20 18.5 4 18.5 8.5 12 4 5.5Z" />
+      <path d="M9.5 14.5c1.2-2.2 3.8-2.8 5.5-1.2" />
+      <path d="M14.5 13.2 16.5 12.8" />
+      <circle cx="11.2" cy="12.8" r="0.85" fill="currentColor" stroke="none" />
+      <path d="M12 5.5v2" />
+    </svg>
+  );
+}
+
+/** War Room — live intel feed */
+export function IconWarRoom(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} strokeWidth={1.5} {...props}>
+      <path d="M5 7h12a1 1 0 0 1 1 1v2.5H4V8a1 1 0 0 1 1-1Z" />
+      <path d="M4 10.5h16v2.5a1 1 0 0 1-1 1H9l-2.5 3H9v-3" />
+      <path d="M7.5 15.5h9M7.5 18h6" />
+      <circle cx="17.5" cy="8.5" r="1.35" fill="currentColor" stroke="none" />
     </svg>
   );
 }
