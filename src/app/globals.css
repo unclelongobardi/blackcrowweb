@@ -40,6 +40,16 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 1023px) {
+  .mobile-main-pad {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
 button:not(:disabled),
 [role="button"]:not([aria-disabled="true"]),
 summary,

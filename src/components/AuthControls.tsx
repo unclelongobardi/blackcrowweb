@@ -43,9 +43,10 @@ export default function AuthControls() {
         </button>
         <button
           onClick={login}
-          className="group inline-flex items-center gap-2 rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold tracking-[0.1em] text-black transition-transform hover:scale-[1.03]"
+          className="group inline-flex min-h-10 items-center gap-2 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]"
         >
-          JOIN THE NETWORK
+          <span className="sm:hidden">JOIN</span>
+          <span className="hidden sm:inline">JOIN THE NETWORK</span>
           <IconArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </button>
       </>

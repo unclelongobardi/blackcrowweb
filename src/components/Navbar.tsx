@@ -106,7 +106,7 @@ export default function Navbar() {
             <button
               aria-label="Toggle menu"
               onClick={() => setOpen((v) => !v)}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line text-foreground xl:hidden"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-line text-foreground xl:hidden"
             >
               <span className="relative flex h-4 w-5 flex-col justify-between">
                 <span className={`h-0.5 w-full bg-current transition-transform ${open ? "translate-y-[7px] rotate-45" : ""}`} />

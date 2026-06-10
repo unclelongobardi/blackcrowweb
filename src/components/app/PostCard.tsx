@@ -33,7 +33,13 @@ function seedNum(id: string, salt: number, max: number): number {
   return Math.abs(h) % max;
 }
 
-export default function PostCard({ post }: { post: Post }) {
+export default function PostCard({
+  post,
+  onBountyClick,
+}: {
+  post: Post;
+  onBountyClick?: () => void;
+}) {
   const api = useApi();
   const baseLikes = 80 + seedNum(post.id, 7, 360);
   const [score, setScore] = useState(post.score ?? 0);
@@ -122,6 +128,18 @@ export default function PostCard({ post }: { post: Post }) {
           {post.bounty && (
             <a
               href={`#bounty-${post.bounty.id}`}
+              onClick={(e) => {
+                if (onBountyClick && window.matchMedia("(max-width: 1023px)").matches) {
+                  e.preventDefault();
+                  onBountyClick();
+                  requestAnimationFrame(() => {
+                    document.getElementById(`bounty-${post.bounty!.id}`)?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  });
+                }
+              }}
               className="mt-2.5 block rounded-xl border border-bull/20 bg-bull/5 px-3.5 py-2.5 transition-colors hover:bg-bull/10"
             >
               <p className="text-[10px] font-bold uppercase tracking-wide text-bull">Bounty</p>

@@ -9,7 +9,17 @@ import PostCard from "@/components/app/PostCard";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
 import OpenBountiesSidebar from "@/components/app/OpenBountiesSidebar";
 import AllBountiesSidebar from "@/components/app/AllBountiesSidebar";
+import MobileBountiesPanel from "@/components/app/MobileBountiesPanel";
+import RightPanel from "@/components/app/RightPanel";
 import type { Bounty, Market, Post } from "@/lib/types";
+
+type MobileTab = "war" | "bounties" | "thin";
+
+const MOBILE_TABS: { id: MobileTab; label: string }[] = [
+  { id: "war", label: "War Room" },
+  { id: "bounties", label: "Bounties" },
+  { id: "thin", label: "Thin books" },
+];
 
 export default function HomePage() {
   const api = useApi();
@@ -22,6 +32,7 @@ export default function HomePage() {
   const [showCreate, setShowCreate] = useState(false);
   const [attachedBounty, setAttachedBounty] = useState<Bounty | null>(null);
   const [selectedBountyId, setSelectedBountyId] = useState<string | null>(null);
+  const [mobileTab, setMobileTab] = useState<MobileTab>("war");
 
   const loadFeed = useCallback(async () => {
     const data = await api<{ posts: Post[] }>("/api/feed");
@@ -46,6 +57,16 @@ export default function HomePage() {
     })();
   }, [api, loadFeed]);
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith("#bounty-") && window.matchMedia("(max-width: 1023px)").matches) {
+      setMobileTab("bounties");
+      requestAnimationFrame(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, []);
+
   async function createPost(
     content: string,
     sentiment: "bullish" | "bearish" | "neutral",
@@ -69,6 +90,7 @@ export default function HomePage() {
   function handleBountyCreated(b: Bounty) {
     setShowCreate(false);
     setBounties((prev) => [b, ...prev]);
+    setMobileTab("bounties");
   }
 
   function handleSelectBounty(b: Bounty) {
@@ -79,7 +101,10 @@ export default function HomePage() {
   function handleShareToWarRoom(b: Bounty) {
     setSelectedBountyId(b.id);
     setAttachedBounty(b);
-    composeRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setMobileTab("war");
+    requestAnimationFrame(() => {
+      composeRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   const openCount = bounties.filter((b) => b.status === "open").length;
@@ -92,45 +117,89 @@ export default function HomePage() {
         onPostBounty={() => setShowCreate(true)}
       />
 
-      <section className="min-h-screen min-w-0 flex-1 border-x border-line lg:max-w-[640px]">
-        <div className="border-b border-line px-5 py-4">
-          <h1 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
-            War Room
-          </h1>
-          <p className="mt-1 text-[13px] text-muted">
-            Drop intel, coordinate a play, or share a bounty with the crew.
-          </p>
+      <div className="min-w-0 flex-1">
+        <div className="sticky top-16 z-20 border-b border-line bg-background/90 backdrop-blur-xl lg:hidden">
+          <div className="flex">
+            {MOBILE_TABS.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setMobileTab(t.id)}
+                className={`ui-press min-h-11 flex-1 px-2 py-3 text-[11px] font-bold tracking-wide sm:text-[12px] ${
+                  mobileTab === t.id
+                    ? "border-b-2 border-bull text-foreground"
+                    : "text-faint hover:text-muted"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-16">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-line border-t-foreground" />
+        <section
+          className={`min-h-screen min-w-0 border-x border-line lg:max-w-[640px] ${
+            mobileTab !== "war" ? "max-lg:hidden" : ""
+          }`}
+        >
+          <div className="border-b border-line px-4 py-4 sm:px-5">
+            <h1 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+              War Room
+            </h1>
+            <p className="mt-1 text-[13px] text-muted">
+              Drop intel, coordinate a play, or share a bounty with the crew.
+            </p>
           </div>
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div ref={composeRef}>
-              <CreatePost
-                attachedBounty={attachedBounty}
-                onClearBounty={() => {
-                  setAttachedBounty(null);
-                  setSelectedBountyId(null);
-                }}
-                onSubmit={createPost}
-              />
+
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-line border-t-foreground" />
             </div>
-            {posts.length === 0 ? (
-              <div className="px-5 py-14 text-center">
-                <p className="text-[15px] font-bold text-foreground">War room is empty</p>
-                <p className="mt-2 text-[13px] text-faint">
-                  Post intel here, or select a bounty on the right and hit &ldquo;Share to War Room&rdquo;.
-                </p>
+          ) : (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div ref={composeRef}>
+                <CreatePost
+                  attachedBounty={attachedBounty}
+                  onClearBounty={() => {
+                    setAttachedBounty(null);
+                    setSelectedBountyId(null);
+                  }}
+                  onSubmit={createPost}
+                />
               </div>
-            ) : (
-              posts.map((p) => <PostCard key={p.id} post={p} />)
-            )}
-          </motion.div>
-        )}
-      </section>
+              {posts.length === 0 ? (
+                <div className="px-4 py-14 text-center sm:px-5">
+                  <p className="text-[15px] font-bold text-foreground">War room is empty</p>
+                  <p className="mt-2 text-[13px] text-faint lg:hidden">
+                    Post intel here, or open the Bounties tab, pick a job, and hit &ldquo;Share to War Room&rdquo;.
+                  </p>
+                  <p className="mt-2 hidden text-[13px] text-faint lg:block">
+                    Post intel here, or select a bounty on the right and hit &ldquo;Share to War Room&rdquo;.
+                  </p>
+                </div>
+              ) : (
+                posts.map((p) => <PostCard key={p.id} post={p} onBountyClick={() => setMobileTab("bounties")} />)
+              )}
+            </motion.div>
+          )}
+        </section>
+
+        <section className={`lg:hidden ${mobileTab !== "bounties" ? "hidden" : "block"}`}>
+          <MobileBountiesPanel
+            bounties={bounties}
+            openCount={openCount}
+            selectedId={selectedBountyId}
+            onPostBounty={() => setShowCreate(true)}
+            onSelect={handleSelectBounty}
+            onShareToWarRoom={handleShareToWarRoom}
+            onUpdate={handleBountyUpdate}
+          />
+        </section>
+
+        <section className={`px-4 py-4 lg:hidden ${mobileTab !== "thin" ? "hidden" : "block"}`}>
+          <RightPanel markets={markets} />
+        </section>
+      </div>
 
       <AllBountiesSidebar
         bounties={bounties}

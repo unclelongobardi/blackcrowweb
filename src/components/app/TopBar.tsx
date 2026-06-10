@@ -47,23 +47,24 @@ export default function TopBar() {
   const verified = me?.profile.is_verified || me?.profile.codename === "blackcrow_official";
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-line bg-background/70 px-4 backdrop-blur-xl sm:px-6">
-      <form onSubmit={search} className="relative flex-1 max-w-md">
+    <header className="sticky top-0 z-40 flex h-14 items-center gap-2 border-b border-line bg-background/70 px-3 backdrop-blur-xl sm:h-16 sm:gap-4 sm:px-6">
+      <form onSubmit={search} className="relative min-w-0 flex-1 lg:max-w-md">
         <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search markets, users, cabals..."
-          className="h-10 w-full rounded-xl border border-line bg-surface/60 pl-10 pr-4 text-[13px] text-foreground placeholder:text-faint outline-none transition-colors focus:border-white/20"
+          placeholder="Search…"
+          className="h-10 w-full rounded-xl border border-line bg-surface/60 pl-10 pr-3 text-[13px] text-foreground placeholder:text-faint outline-none transition-colors focus:border-white/20 sm:pr-4"
+          aria-label="Search markets, users, cabals"
         />
       </form>
 
-      <div className="ml-auto flex items-center gap-1.5">
+      <div className="ml-auto flex shrink-0 items-center gap-1.5">
         <button
           type="button"
           aria-label="Notifications"
           onClick={() => router.push("/app/notifications")}
-          className={`${uiPress} relative flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground`}
+          className={`${uiPress} relative hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground lg:flex`}
         >
           <IconBell className="h-[18px] w-[18px]" />
           {unread > 0 && (
@@ -76,7 +77,7 @@ export default function TopBar() {
           type="button"
           aria-label="Messages"
           onClick={() => router.push("/app/messages")}
-          className={`${uiPress} flex h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground`}
+          className={`${uiPress} hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground lg:flex`}
         >
           <IconMail className="h-[18px] w-[18px]" />
         </button>

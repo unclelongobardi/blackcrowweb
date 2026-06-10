@@ -89,7 +89,22 @@ export default function DocsContent() {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-6xl gap-10 px-5 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-5 sm:py-10">
+      <nav className="sticky top-16 z-10 -mx-4 mb-6 flex gap-1.5 overflow-x-auto border-b border-line bg-background/95 px-4 py-3 backdrop-blur-xl [-ms-overflow-style:none] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
+        {SECTIONS.map((s) => (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            className={`shrink-0 rounded-lg px-3 py-2 text-[11px] font-semibold transition-colors ${
+              active === s.id ? "bg-bull/10 text-bull" : "text-faint hover:bg-white/[0.03] hover:text-muted"
+            }`}
+          >
+            {s.label}
+          </a>
+        ))}
+      </nav>
+
+      <div className="flex gap-10">
       <aside className="hidden w-52 shrink-0 lg:block">
         <nav className="sticky top-28 space-y-1">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-faint">On this page</p>
@@ -107,7 +122,7 @@ export default function DocsContent() {
         </nav>
       </aside>
 
-      <article className="min-w-0 flex-1 pb-20">
+      <article className="min-w-0 flex-1 pb-16 sm:pb-20">
         <header className="mb-8">
           <p className="section-label">BLACKCROW documentation</p>
           <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
@@ -474,6 +489,7 @@ export default function DocsContent() {
           </Link>
         </div>
       </article>
+      </div>
     </div>
   );
 }

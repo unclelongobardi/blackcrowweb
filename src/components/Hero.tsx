@@ -232,7 +232,7 @@ A social network to meet people obsessed with prediction markets —
           {cards.map((c, i) => (
             <StatCard
               key={c.label + i}
-              className={CARD_POS[i].className}
+              className={`hidden lg:block ${CARD_POS[i].className}`}
               label={c.label}
               yes={c.yes}
               no={c.no}

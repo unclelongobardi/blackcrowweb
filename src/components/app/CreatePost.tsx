@@ -112,7 +112,7 @@ export default function CreatePost({
             ))}
 
             <div className="ml-auto flex items-center gap-2">
-              <div className="hidden items-center gap-1 rounded-lg border border-line p-0.5 sm:flex">
+              <div className="flex items-center gap-1 rounded-lg border border-line p-0.5 max-sm:w-full max-sm:justify-between sm:w-auto">
                 {SENTIMENTS.map((s) => (
                   <button
                     key={s.id}

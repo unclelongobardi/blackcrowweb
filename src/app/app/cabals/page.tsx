@@ -58,17 +58,17 @@ export default function CabalsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-5 py-6">
-      <header className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-extrabold tracking-tight">CABALS</h1>
-          <p className="text-[13px] text-faint">
+    <div className="mx-auto max-w-4xl px-4 py-5 sm:px-5 sm:py-6">
+      <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="font-display text-xl font-extrabold tracking-tight sm:text-2xl">CABALS</h1>
+          <p className="mt-1 text-[13px] text-faint">
             Groups for tipsters, market manipulation, or open discussion. Public or private.
           </p>
         </div>
         <button
           onClick={() => setCreating(true)}
-          className="rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold tracking-wide text-black"
+          className="min-h-11 w-full shrink-0 rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-black sm:w-auto"
         >
           + CREATE CABAL
         </button>
