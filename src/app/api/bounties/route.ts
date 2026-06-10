@@ -4,6 +4,7 @@ import { getBountyById, listBounties } from "@/lib/bounties";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
+import { isValidBountyRewardSol, MAX_BOUNTY_REWARD_SOL, MIN_BOUNTY_REWARD_SOL } from "@/lib/bountyRules";
 import { solToLamports } from "@/lib/solanaFormat";
 import type { Bounty } from "@/lib/types";
 
@@ -50,10 +51,12 @@ export async function POST(request: Request) {
 
   if (title.length < 4) return NextResponse.json({ error: "Title must be at least 4 characters." }, { status: 400 });
   if (task.length < 10) return NextResponse.json({ error: "Describe what the helper must do (10+ chars)." }, { status: 400 });
-  if (!Number.isFinite(rewardSol) || rewardSol < 0.01) {
-    return NextResponse.json({ error: "Minimum reward is 0.01 SOL." }, { status: 400 });
+  if (!isValidBountyRewardSol(rewardSol)) {
+    return NextResponse.json(
+      { error: `Reward must be between ${MIN_BOUNTY_REWARD_SOL} and ${MAX_BOUNTY_REWARD_SOL} SOL.` },
+      { status: 400 },
+    );
   }
-  if (rewardSol > 100) return NextResponse.json({ error: "Maximum reward is 100 SOL." }, { status: 400 });
 
   const lamports = solToLamports(rewardSol);
   const wallet = ctx.profile.wallet_address;

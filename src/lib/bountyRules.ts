@@ -1,5 +1,12 @@
 import type { Bounty } from "./types";
 
+export const MIN_BOUNTY_REWARD_SOL = 0.00001;
+export const MAX_BOUNTY_REWARD_SOL = 100;
+
+export function isValidBountyRewardSol(sol: number): boolean {
+  return Number.isFinite(sol) && sol >= MIN_BOUNTY_REWARD_SOL && sol <= MAX_BOUNTY_REWARD_SOL;
+}
+
 export function isBountyExpired(bounty: { expires_at?: string | null }): boolean {
   if (!bounty.expires_at) return false;
   return new Date(bounty.expires_at).getTime() <= Date.now();

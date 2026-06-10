@@ -98,6 +98,12 @@ export default function WorldCupBountiesSection({
               iconClassName="h-4 w-4"
             />
             <p className="mt-1 text-[10px] text-faint">{worldCup.length} open jobs</p>
+            <Link
+              href="/app/markets?category=world_cup&sort=date"
+              className="mt-2 inline-block text-[11px] font-semibold text-bull hover:underline"
+            >
+              Ver todos los partidos →
+            </Link>
           </div>
         </div>
 

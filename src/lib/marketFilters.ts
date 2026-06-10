@@ -1,5 +1,5 @@
 import type { Market } from "./types";
-import { annotateExploitability, pickExploitable } from "./polymarket";
+import { annotateExploitability, isWorldCupMatchMarket, pickExploitable } from "./polymarket";
 
 export type MarketFilterOpts = {
   mode?: string;
@@ -10,10 +10,11 @@ export type MarketFilterOpts = {
   limit?: number;
 };
 
-export type MarketCategoryId = "all" | "weather" | "crypto" | "economy" | "politics" | "sports";
+export type MarketCategoryId = "all" | "weather" | "crypto" | "economy" | "politics" | "sports" | "world_cup";
 
 export const MARKET_CATEGORIES: { id: MarketCategoryId; label: string }[] = [
   { id: "all", label: "All" },
+  { id: "world_cup", label: "World Cup" },
   { id: "weather", label: "Weather" },
   { id: "crypto", label: "Crypto" },
   { id: "economy", label: "Economy" },
@@ -49,6 +50,7 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
 };
 
 export function inferCategory(m: Market): string {
+  if (isWorldCupMatchMarket(m)) return "world_cup";
   const text = `${m.question} ${m.category ?? ""}`.toLowerCase();
   for (const [cat, keys] of Object.entries(CATEGORY_KEYWORDS)) {
     if (keys.some((k) => text.includes(k))) return cat;
@@ -65,6 +67,7 @@ export function inferCategory(m: Market): string {
 export function countByCategory(pool: Market[]): Record<string, number> {
   const counts: Record<string, number> = {
     all: pool.length,
+    world_cup: 0,
     weather: 0,
     crypto: 0,
     economy: 0,
@@ -81,6 +84,7 @@ export function countByCategory(pool: Market[]): Record<string, number> {
 }
 
 function matchesCategory(m: Market, cat: string): boolean {
+  if (cat === "world_cup") return isWorldCupMatchMarket(m);
   const inferred = inferCategory(m);
   if (inferred === cat) return true;
   const raw = (m.category ?? "").toLowerCase();
@@ -88,7 +92,7 @@ function matchesCategory(m: Market, cat: string): boolean {
 }
 
 export function filterMarkets(pool: Market[], opts: MarketFilterOpts): Market[] {
-  const limit = Math.min(150, Math.max(1, opts.limit ?? 100));
+  const limit = Math.min(300, Math.max(1, opts.limit ?? 100));
   const category = opts.category?.toLowerCase();
   const hasCategory = Boolean(category && category !== "all");
 
@@ -121,6 +125,10 @@ export function filterMarkets(pool: Market[], opts: MarketFilterOpts): Market[] 
 
   if (opts.sort === "volume") {
     markets.sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0));
+  } else if (opts.sort === "date") {
+    markets.sort(
+      (a, b) => (a.end_date ?? "").localeCompare(b.end_date ?? "") || a.question.localeCompare(b.question),
+    );
   } else if (opts.sort === "volume24") {
     markets.sort((a, b) => (b.volume_24hr ?? 0) - (a.volume_24hr ?? 0));
   } else if (opts.sort === "contested") {

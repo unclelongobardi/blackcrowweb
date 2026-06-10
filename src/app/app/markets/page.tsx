@@ -12,7 +12,10 @@ import { MARKET_CATEGORIES } from "@/lib/marketFilters";
 import type { Market } from "@/lib/types";
 
 const REFRESH_MS = 45_000;
-const FETCH_LIMIT = 100;
+
+function fetchLimitForCategory(category: string): number {
+  return category === "world_cup" ? 250 : 100;
+}
 
 type MarketsMeta = {
   synced_at: string;
@@ -61,7 +64,7 @@ function MarketsContent() {
       if (!silent) setLoading(true);
       else setRefreshing(true);
       try {
-        const params = new URLSearchParams({ limit: String(FETCH_LIMIT) });
+        const params = new URLSearchParams({ limit: String(fetchLimitForCategory(category)) });
         if (mode) params.set("mode", mode);
         if (category !== "all") params.set("category", category);
         if (q) params.set("q", q);
@@ -135,6 +138,10 @@ function MarketsContent() {
     const p = new URLSearchParams(searchParams.toString());
     if (value === "all" || !value) p.delete(key);
     else p.set(key, value);
+    if (key === "category" && value === "world_cup") {
+      p.set("sort", "date");
+      p.delete("mode");
+    }
     router.push(`/app/markets?${p.toString()}`);
   }
 
@@ -150,7 +157,9 @@ function MarketsContent() {
             <p className="section-label">Polymarket intel</p>
             <h1 className="font-display text-2xl font-extrabold tracking-tight">MARKETS</h1>
             <p className="mt-1 max-w-xl text-[13px] text-faint">
-              Live books from Polymarket Gamma — {FETCH_LIMIT}+ markets, auto-refresh every 45s. Real volume, prices, and liquidity tiers.
+              {category === "world_cup"
+                ? "Todos los partidos del Mundial 2026 en Polymarket — victoria local, empate o visitante. Ordenados por fecha del partido."
+                : `Live books from Polymarket Gamma — ${fetchLimitForCategory(category)}+ markets, auto-refresh every 45s. Real volume, prices, and liquidity tiers.`}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -223,6 +232,7 @@ function MarketsContent() {
           className="rounded-xl border border-line bg-surface/60 px-3 py-2.5 text-[12px]"
         >
           <option value="volume">Highest volume</option>
+          <option value="date">Match date</option>
           <option value="volume24">24h volume</option>
           <option value="contested">Most contested</option>
           <option value="exploitable">Most exploitable</option>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MAX_BOUNTY_REWARD_SOL, MIN_BOUNTY_REWARD_SOL } from "@/lib/bountyRules";
 import { useApi } from "@/lib/useApi";
 import { IconSolana } from "@/components/icons";
 import type { Bounty, Market } from "@/lib/types";
@@ -88,9 +89,9 @@ export default function CreateBountyModal({
           <div className="flex gap-2">
             <input
               type="number"
-              step="0.01"
-              min="0.01"
-              max="100"
+              step="0.00001"
+              min={MIN_BOUNTY_REWARD_SOL}
+              max={MAX_BOUNTY_REWARD_SOL}
               value={rewardSol}
               onChange={(e) => setRewardSol(e.target.value)}
               className="flex-1 rounded-xl border border-line bg-surface/60 px-4 py-3 font-mono text-sm text-foreground outline-none focus:border-white/25"
@@ -99,6 +100,9 @@ export default function CreateBountyModal({
               <IconSolana className="h-5 w-5" aria-label="Solana" />
             </span>
           </div>
+          <p className="text-[11px] text-faint">
+            Min {MIN_BOUNTY_REWARD_SOL} · max {MAX_BOUNTY_REWARD_SOL} SOL
+          </p>
           <div className="flex gap-2">
             {(["action", "intel", "coord"] as const).map((k) => (
               <button

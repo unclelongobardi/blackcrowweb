@@ -268,7 +268,7 @@ export default function DocsContent() {
               items={[
                 "Use + POST A BOUNTY from the left sidebar or POST BOUNTY on a market card.",
                 "Title, pitch, and a clear task description are required.",
-                "Set reward in SOL (0.01–100). Kind and optional linked market.",
+                "Set reward in SOL (0.00001–100). Kind and optional linked market.",
                 "After creation, deposit via your wallet to move from Funding → Open.",
               ]}
             />

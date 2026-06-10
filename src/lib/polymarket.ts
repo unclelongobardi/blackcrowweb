@@ -39,9 +39,95 @@ type GammaMarket = {
   closed?: boolean;
 };
 
-type GammaTag = { id: number; slug?: string; label?: string };
+type GammaEvent = {
+  slug?: string;
+  title?: string;
+  markets?: GammaMarket[];
+};
+
+/** Base FIFA WC 2026 fixture events (moneyline 1X2), e.g. fifwc-usa-par-2026-06-12 */
+const WORLD_CUP_MATCH_EVENT = /^fifwc-[a-z0-9]+-[a-z0-9]+-\d{4}-\d{2}-\d{2}$/;
+
+function isWorldCupMatchQuestion(question: string): boolean {
+  return /win on 2026-\d{2}-\d{2}/i.test(question) || /end in a draw\?/i.test(question);
+}
+
+export function isWorldCupMatchMarket(m: Market): boolean {
+  if (isWorldCupMatchQuestion(m.question)) return true;
+  const slug = (m.slug ?? "").toLowerCase();
+  return slug.startsWith("fifwc-") && WORLD_CUP_MATCH_EVENT.test(slug.split("/")[0] ?? slug);
+}
+
+async function fetchGammaEventsPage(offset: number, limit = 100): Promise<GammaEvent[]> {
+  const url =
+    `${GAMMA}/events?active=true&closed=false&archived=false` +
+    `&limit=${limit}&offset=${offset}&order=id&ascending=false`;
+  const data = await fetchJson<GammaEvent[]>(url);
+  return Array.isArray(data) ? data : [];
+}
+
+async function fetchGammaEventBySlug(slug: string): Promise<GammaEvent | null> {
+  const data = await fetchJson<GammaEvent[]>(`${GAMMA}/events?slug=${encodeURIComponent(slug)}`);
+  return Array.isArray(data) && data[0] ? data[0] : null;
+}
+
+/** All FIFA World Cup 2026 match moneyline markets (win / draw) from Polymarket. */
+export async function fetchWorldCupMatchMarkets(): Promise<Market[]> {
+  const markets: Market[] = [];
+  const slugsNeedingFetch: string[] = [];
+
+  for (let offset = 0; offset < 4000; offset += 100) {
+    const page = await fetchGammaEventsPage(offset);
+    if (!page.length) break;
+    for (const ev of page) {
+      const slug = ev.slug ?? "";
+      if (!WORLD_CUP_MATCH_EVENT.test(slug)) continue;
+      if (ev.markets?.length) {
+        for (const m of ev.markets) {
+          const mapped = mapMarket(m);
+          if (mapped) markets.push({ ...mapped, category: mapped.category ?? "Sports" });
+        }
+      } else {
+        slugsNeedingFetch.push(slug);
+      }
+    }
+    if (page.length < 100) break;
+  }
+
+  const uniqueSlugs = [...new Set(slugsNeedingFetch)].sort();
+  for (let i = 0; i < uniqueSlugs.length; i += 10) {
+    const batch = uniqueSlugs.slice(i, i + 10);
+    const events = await Promise.all(batch.map((slug) => fetchGammaEventBySlug(slug)));
+    for (const ev of events) {
+      if (!ev?.markets?.length) continue;
+      for (const m of ev.markets) {
+        const mapped = mapMarket(m);
+        if (mapped) markets.push({ ...mapped, category: mapped.category ?? "Sports" });
+      }
+    }
+  }
+
+  const searchQueries = ["FIFA World Cup win on 2026", "World Cup end in a draw 2026"];
+  for (const q of searchQueries) {
+    const searchHits = await fetchMarketsBySearch(q, 200);
+    for (const m of searchHits) {
+      if (isWorldCupMatchQuestion(m.question)) {
+        markets.push({ ...m, category: m.category ?? "Sports" });
+      }
+    }
+  }
+
+  return dedupeMarkets(markets).sort((a, b) => {
+    const da = a.end_date ?? "";
+    const db = b.end_date ?? "";
+    return da.localeCompare(db) || a.question.localeCompare(b.question);
+  });
+}
+
 
 type KeysetPayload = { markets?: GammaMarket[]; next_cursor?: string | null };
+
+type GammaTag = { id: number; slug?: string; label?: string };
 
 let tagCache: { at: number; tags: GammaTag[] } | null = null;
 const TAG_CACHE_MS = 60 * 60 * 1000;
@@ -181,7 +267,7 @@ const CATEGORY_SEARCH_QUERIES: Record<string, string[]> = {
   crypto: ["bitcoin", "ethereum", "crypto", "solana"],
   economy: ["fed rate", "inflation", "recession"],
   politics: ["election", "president", "trump"],
-  sports: ["nba", "nfl", "super bowl"],
+  sports: ["nba", "nfl", "fifa", "world cup", "fifwc"],
 };
 
 /** Map UI category → Polymarket tag slugs/labels to query by tag_id. */
@@ -190,7 +276,8 @@ const CATEGORY_TAG_HINTS: Record<string, string[]> = {
   weather: ["weather", "climate", "science", "environment"],
   economy: ["finance", "economics", "fed", "economy", "business"],
   politics: ["politics", "us-politics", "world-politics", "elections", "geopolitics"],
-  sports: ["sports", "nba", "nfl", "soccer", "mlb", "nhl", "ufc"],
+  sports: ["sports", "nba", "nfl", "soccer", "mlb", "nhl", "ufc", "fifa"],
+  world_cup: ["fifa", "world cup", "soccer"],
 };
 
 export async function resolveTagIdsForCategory(category: string): Promise<number[]> {
@@ -222,6 +309,11 @@ export async function fetchPolymarketPool(opts?: {
   const minCount = opts?.minCount ?? POLYMARKET_POOL_TARGET;
   const category = opts?.category?.toLowerCase();
   const fetchedAt = new Date().toISOString();
+
+  if (category === "world_cup") {
+    const matches = await fetchWorldCupMatchMarkets();
+    return { markets: matches, fetchedAt, poolSize: matches.length };
+  }
 
   const batches: Market[][] = [];
 

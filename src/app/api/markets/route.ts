@@ -9,10 +9,13 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const category = url.searchParams.get("category") ?? undefined;
-  const limit = Number(url.searchParams.get("limit") ?? 100) || 100;
+  const isWorldCup = category?.toLowerCase() === "world_cup";
+  const limit = isWorldCup
+    ? Math.min(300, Number(url.searchParams.get("limit") ?? 250) || 250)
+    : Number(url.searchParams.get("limit") ?? 100) || 100;
 
   const { markets: pool, fetchedAt, poolSize } = await fetchPolymarketPool({
-    minCount: 250,
+    minCount: isWorldCup ? 200 : 250,
     category: category && category !== "all" ? category : undefined,
   });
 
@@ -21,7 +24,7 @@ export async function GET(request: Request) {
     category,
     q: url.searchParams.get("q") ?? undefined,
     liquidity: url.searchParams.get("liquidity") ?? undefined,
-    sort: url.searchParams.get("sort") ?? undefined,
+    sort: isWorldCup && !url.searchParams.get("sort") ? "date" : url.searchParams.get("sort") ?? undefined,
     limit,
   });
 

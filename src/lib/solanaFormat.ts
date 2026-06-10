@@ -2,7 +2,9 @@ import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export function lamportsToSol(lamports: number | bigint | string): string {
   const n = Number(BigInt(lamports)) / LAMPORTS_PER_SOL;
-  return n >= 1 ? n.toFixed(2) : n.toFixed(4);
+  if (n >= 1) return n.toFixed(2);
+  if (n >= 0.0001) return n.toFixed(4);
+  return n.toFixed(5);
 }
 
 export function sumLamports(values: Array<number | bigint | string>): bigint {
