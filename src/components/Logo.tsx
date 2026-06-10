@@ -2,23 +2,26 @@ import Image from "next/image";
 
 type LogoProps = {
   className?: string;
-  /** When false, shows only the icon portion (for compact layouts). */
+  /** When false, shows only the icon mark (no wordmark). */
   showText?: boolean;
 };
 
 export default function Logo({ className = "", showText = true }: LogoProps) {
   return (
-    <div className={`flex items-center ${className}`}>
+    <div className={`flex items-center gap-2.5 ${className}`}>
       <Image
-        src="/images/blackcrow-logo.png"
+        src="/images/blackcrow-mark-white.png"
         alt="BLACKCROW"
-        width={showText ? 240 : 48}
-        height={48}
+        width={40}
+        height={40}
         priority
-        className={`brightness-0 invert ${
-          showText ? "h-9 w-auto sm:h-10" : "h-9 w-9 object-cover object-left sm:h-10 sm:w-10"
-        }`}
+        className="h-9 w-9 shrink-0 sm:h-10 sm:w-10"
       />
+      {showText && (
+        <span className="font-display text-[17px] font-extrabold tracking-[0.18em] text-foreground">
+          BLACKCROW
+        </span>
+      )}
     </div>
   );
 }

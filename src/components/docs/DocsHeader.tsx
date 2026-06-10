@@ -15,7 +15,7 @@ export default function DocsHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
         <div className="flex items-center gap-4">
           <Link href="/" className="text-foreground">
-            <Logo />
+            <Logo showText={false} />
           </Link>
           <span className="hidden h-4 w-px bg-line sm:block" />
           <span className="hidden text-[12px] font-bold tracking-[0.14em] text-muted sm:block">DOCS</span>

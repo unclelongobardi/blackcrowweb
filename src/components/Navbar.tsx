@@ -47,7 +47,7 @@ export default function Navbar() {
       >
         <nav className="flex h-16 items-center justify-between gap-3">
           <a href="#home" className="shrink-0 text-foreground">
-            <Logo />
+            <Logo showText={false} />
           </a>
 
           <ul className="hidden items-center gap-7 xl:flex">

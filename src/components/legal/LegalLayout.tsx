@@ -19,7 +19,7 @@ export default function LegalLayout({
         <div className="mx-auto flex h-16 max-w-3xl items-center justify-between gap-4 px-5">
           <div className="flex min-w-0 items-center gap-4">
             <Link href="/" className="shrink-0 text-foreground">
-              <Logo />
+              <Logo showText={false} />
             </Link>
             <span className="hidden h-4 w-px bg-line sm:block" />
             <span className="hidden text-[12px] font-bold tracking-[0.14em] text-muted sm:block">{label}</span>

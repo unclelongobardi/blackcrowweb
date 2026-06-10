@@ -39,7 +39,7 @@ export default function Sidebar() {
     <aside className="sticky top-0 hidden h-screen w-[244px] shrink-0 flex-col border-r border-line bg-surface/30 lg:flex">
       <div className="flex h-16 items-center border-b border-line px-5 text-foreground">
         <Link href="/">
-          <Logo />
+          <Logo showText={false} />
         </Link>
       </div>
 
