@@ -105,19 +105,36 @@ export default function TopBar() {
           </button>
 
           {open && (
-            <div className="absolute right-0 top-12 w-52 overflow-hidden rounded-xl glass p-1.5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
-              <Link href="/app/profile" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-white/[0.04] hover:text-foreground">
+            <div className="absolute right-0 top-12 z-50 w-52 overflow-hidden rounded-xl border border-white/12 bg-[#0a0a0c]/95 p-1.5 shadow-[0_24px_64px_-16px_rgba(0,0,0,0.95)] backdrop-blur-xl">
+              <Link
+                href="/app/profile"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-white/[0.08] hover:text-foreground"
+              >
                 Profile
               </Link>
-              <Link href="/app/search" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-white/[0.04] hover:text-foreground">
+              <Link
+                href="/app/search"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-white/[0.08] hover:text-foreground"
+              >
                 Search
               </Link>
-              <Link href="/" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-white/[0.04] hover:text-foreground">
-                Landing page
+              <div className="my-1 border-t border-white/10" />
+              <Link
+                href="/"
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-white/[0.08] hover:text-foreground"
+              >
+                Home
               </Link>
+              <div className="my-1 border-t border-white/10" />
               <button
-                onClick={() => { setOpen(false); logout(); }}
-                className="mt-1 block w-full rounded-lg border-t border-line px-3 py-2.5 text-left text-[13px] text-bear hover:bg-bear/10"
+                onClick={() => {
+                  setOpen(false);
+                  logout();
+                }}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-[13px] font-medium text-bear transition-colors hover:bg-bear/10"
               >
                 Log out
               </button>
