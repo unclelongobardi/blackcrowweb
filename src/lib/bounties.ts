@@ -106,14 +106,26 @@ export async function listBounties(
 ): Promise<Bounty[]> {
   await expireStaleBounties();
   const params: unknown[] = [];
-  let where = "where b.status not in ('cancelled', 'funding', 'expired')";
-  const allowedStatuses = new Set(["open", "assigned", "submitted", "paid", "expired"]);
+  let where: string;
+  const allowedStatuses = new Set(["open", "assigned", "submitted", "paid", "expired", "funding"]);
   if (status) {
     if (!allowedStatuses.has(status)) {
       return [];
     }
-    params.push(status);
-    where = `where b.status = $${params.length}`;
+    if (status === "funding") {
+      if (!myId) return [];
+      params.push(status, myId);
+      where = "where b.status = $1 and b.created_by = $2";
+    } else {
+      params.push(status);
+      where = `where b.status = $${params.length}`;
+    }
+  } else if (myId) {
+    params.push(myId);
+    where = `where b.status not in ('cancelled', 'expired')
+      and (b.status != 'funding' or b.created_by = $1)`;
+  } else {
+    where = "where b.status not in ('cancelled', 'funding', 'expired')";
   }
   const rows = await query<
     Bounty & { creator: Profile | null; helper: Profile | null; market: Market | null }

@@ -310,9 +310,9 @@ function MarketsContent() {
         <CreateBountyModal
           market={bountyTarget}
           onClose={() => setBountyTarget(null)}
-          onCreated={() => {
+          onCreated={(b) => {
             setBountyTarget(null);
-            router.push("/app");
+            router.push(`/app/bounties?status=funding#bounty-${b.id}`);
           }}
         />
       )}

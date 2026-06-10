@@ -46,14 +46,13 @@ function BountiesContent() {
 
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash.startsWith("#bounty-")) {
-      const id = hash.replace("#bounty-", "");
-      setExpandedId(id);
-      requestAnimationFrame(() => {
-        document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    }
-  }, [bounties.length]);
+    if (!hash.startsWith("#bounty-")) return;
+    const id = hash.replace("#bounty-", "");
+    setExpandedId(id);
+    requestAnimationFrame(() => {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, [bounties, statusFilter]);
 
   const { worldCup, rest } = useMemo(() => splitWorldCupBounties(bounties), [bounties]);
 
@@ -197,6 +196,8 @@ function BountiesContent() {
           onCreated={(b) => {
             setShowCreate(false);
             setBounties((prev) => [b, ...prev]);
+            setExpandedId(b.id);
+            router.push(`/app/bounties?status=funding#bounty-${b.id}`);
           }}
         />
       )}

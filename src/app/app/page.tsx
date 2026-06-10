@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useApi } from "@/lib/useApi";
 import { useAppContext } from "@/components/app/appContext";
@@ -23,6 +24,7 @@ const MOBILE_TABS: { id: MobileTab; label: string }[] = [
 
 export default function HomePage() {
   const api = useApi();
+  const router = useRouter();
   const { refreshMe } = useAppContext();
   const composeRef = useRef<HTMLDivElement>(null);
   const [bounties, setBounties] = useState<Bounty[]>([]);
@@ -136,8 +138,7 @@ export default function HomePage() {
 
   function handleBountyCreated(b: Bounty) {
     setShowCreate(false);
-    setBounties((prev) => [b, ...prev]);
-    setMobileTab("bounties");
+    router.push(`/app/bounties?status=funding#bounty-${b.id}`);
   }
 
   function handleSelectBounty(b: Bounty) {

@@ -60,6 +60,12 @@ export async function POST(request: Request) {
 
   const lamports = solToLamports(rewardSol);
   const wallet = ctx.profile.wallet_address;
+  if (!wallet) {
+    return NextResponse.json(
+      { error: "Connect your Solana wallet before posting a bounty." },
+      { status: 400 },
+    );
+  }
 
   // Cache market if provided
   if (market?.id && market?.question) {

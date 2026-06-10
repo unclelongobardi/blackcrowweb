@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { MAX_BOUNTY_REWARD_SOL, MIN_BOUNTY_REWARD_SOL } from "@/lib/bountyRules";
 import { useApi } from "@/lib/useApi";
 import { IconSolana } from "@/components/icons";
@@ -16,6 +17,8 @@ export default function CreateBountyModal({
   onCreated: (b: Bounty) => void;
 }) {
   const api = useApi();
+  const { wallets } = useSolanaWallets();
+  const wallet = wallets[0];
   const [title, setTitle] = useState(market ? `Move: ${market.question.slice(0, 60)}` : "");
   const [description, setDescription] = useState("");
   const [task, setTask] = useState("");
@@ -25,6 +28,18 @@ export default function CreateBountyModal({
   const [error, setError] = useState<string | null>(null);
 
   async function create() {
+    if (!wallet?.address) {
+      setError("Connect your Solana wallet before posting a bounty.");
+      return;
+    }
+    if (title.trim().length < 4) {
+      setError("Title must be at least 4 characters.");
+      return;
+    }
+    if (task.trim().length < 10) {
+      setError("Describe what the helper must do (10+ characters).");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -42,6 +57,7 @@ export default function CreateBountyModal({
       onCreated(data.bounty);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create.");
+    } finally {
       setLoading(false);
     }
   }
@@ -51,8 +67,13 @@ export default function CreateBountyModal({
       <div className="glass max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6">
         <p className="text-[11px] font-semibold tracking-[0.18em] text-faint">POST A BOUNTY</p>
         <p className="mt-1 text-[13px] text-muted">
-          Lock <IconSolana className="inline h-3.5 w-3.5 align-[-2px]" /> in a bounty. Someone does the job. You approve → they get paid.
+          Create the job first, then deposit SOL to publish it. After that you can post it to Home.
         </p>
+        {!wallet?.address && (
+          <p className="mt-2 rounded-lg border border-bear/30 bg-bear/10 px-3 py-2 text-[11px] text-bear">
+            Connect your Solana wallet to continue.
+          </p>
+        )}
 
         {market && (
           <div className="mt-3 rounded-lg border border-line bg-surface/40 px-3 py-2">
@@ -128,10 +149,10 @@ export default function CreateBountyModal({
           </button>
           <button
             onClick={create}
-            disabled={loading}
+            disabled={loading || !wallet?.address}
             className="flex-1 rounded-xl bg-foreground px-4 py-3 text-[13px] font-bold text-black disabled:opacity-60"
           >
-            {loading ? "…" : "CREATE & FUND"}
+            {loading ? "…" : "CREATE BOUNTY"}
           </button>
         </div>
       </div>
