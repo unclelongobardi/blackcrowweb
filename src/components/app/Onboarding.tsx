@@ -5,8 +5,11 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { motion } from "framer-motion";
 import { useApi } from "@/lib/useApi";
+import { DEFAULT_AVATAR_ID, type AvatarId } from "@/lib/avatars";
 import { IconArrow } from "@/components/icons";
 import Logo from "@/components/Logo";
+import Avatar from "@/components/app/Avatar";
+import AvatarPicker from "@/components/app/AvatarPicker";
 
 export default function Onboarding({ onDone }: { onDone: () => void }) {
   const api = useApi();
@@ -15,6 +18,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
   const [codename, setCodename] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
+  const [avatarId, setAvatarId] = useState<AvatarId>(DEFAULT_AVATAR_ID);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +33,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
           codename,
           display_name: displayName,
           bio,
+          avatar_seed: avatarId,
           wallet_address: wallets[0]?.address,
         }),
       });
@@ -41,22 +46,32 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 px-6 py-8 backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="glass w-full max-w-md rounded-2xl p-7"
+        className="glass my-auto w-full max-w-lg rounded-2xl p-7"
       >
         <Logo />
         <p className="mt-6 text-[11px] font-semibold tracking-[0.2em] text-faint">ALMOST IN</p>
-        <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight">Pick a codename</h2>
+        <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight">Set up your profile</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted">
-          No real names here. Choose the handle everyone will @ when your call
-          prints (or when it very much doesn&apos;t).
+          Pick a codename and avatar. No real names — just the handle and face the crew will see in the
+          War Room.
         </p>
 
-        <form onSubmit={submit} className="mt-6 space-y-3">
+        <form onSubmit={submit} className="mt-6 space-y-4">
+          <div className="flex items-center gap-4 rounded-xl border border-line bg-surface/30 px-4 py-3">
+            <Avatar seed={avatarId} label={codename || "you"} size={52} />
+            <div className="min-w-0">
+              <p className="text-[12px] font-semibold text-foreground">{codename || "your_codename"}</p>
+              <p className="text-[11px] text-faint">Preview</p>
+            </div>
+          </div>
+
+          <AvatarPicker value={avatarId} onChange={setAvatarId} />
+
           <div>
             <label className="text-[11px] font-semibold uppercase tracking-wide text-faint">Codename</label>
             <input

@@ -1,28 +1,6 @@
-const NFTS = [
-  "/images/avatars/av1.png",
-  "/images/avatars/av2.png",
-  "/images/avatars/av3.png",
-  "/images/avatars/av4.png",
-  "/images/avatars/av5.png",
-  "/images/avatars/av6.png",
-];
+"use client";
 
-const OFFICIAL = "/images/blackcrow-official.png";
-
-function hash(seed: string): number {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h << 5) - h + seed.charCodeAt(i);
-  return Math.abs(h);
-}
-
-function isOfficial(seed: string): boolean {
-  return seed === "blackcrow_official" || seed === "blackcrow";
-}
-
-function avatarSrc(seed: string): string {
-  if (isOfficial(seed)) return OFFICIAL;
-  return NFTS[hash(seed) % NFTS.length];
-}
+import { avatarImageUrl, isAvatarId, PROFILE_AVATARS, resolveAvatarId, type AvatarId } from "@/lib/avatars";
 
 export default function Avatar({
   seed,
@@ -38,8 +16,8 @@ export default function Avatar({
   verified?: boolean;
 }) {
   const s = seed || label || "crow";
-  const src = avatarSrc(s);
-  const official = isOfficial(s);
+  const src = avatarImageUrl(s);
+  const official = s === "blackcrow_official" || s === "blackcrow";
 
   return (
     <span className="relative inline-flex shrink-0">
@@ -65,3 +43,5 @@ export default function Avatar({
     </span>
   );
 }
+
+export { isAvatarId, resolveAvatarId, type AvatarId };

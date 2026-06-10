@@ -1,5 +1,6 @@
 import { PrivyClient } from "@privy-io/server-auth";
-import { query, queryOne } from "./db";
+import { DEFAULT_AVATAR_ID } from "./avatars";
+import { queryOne } from "./db";
 import type { Profile } from "./types";
 
 const APP_ID = process.env.PRIVY_APP_ID;
@@ -68,10 +69,10 @@ export async function getAuthedProfile(request: Request): Promise<AuthedContext 
   const codename = randomCodename();
   const created = await queryOne<Profile>(
     `insert into profiles (privy_did, codename, avatar_seed)
-     values ($1, $2, $2)
+     values ($1, $2, $3)
      on conflict (privy_did) do update set privy_did = excluded.privy_did
      returning *`,
-    [did, codename],
+    [did, codename, DEFAULT_AVATAR_ID],
   );
   return created ? { did, profile: created } : null;
 }

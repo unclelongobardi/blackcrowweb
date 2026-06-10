@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "@/lib/useApi";
 import { useAppContext } from "@/components/app/appContext";
-import Avatar from "@/components/app/Avatar";
+import Avatar, { resolveAvatarId, type AvatarId } from "@/components/app/Avatar";
+import AvatarPicker from "@/components/app/AvatarPicker";
 import CopyButton from "@/components/CopyButton";
 import { truncateAddress } from "@/lib/user";
 
@@ -15,8 +16,17 @@ export default function ProfilePage() {
   const [codename, setCodename] = useState(me?.profile.codename ?? "");
   const [displayName, setDisplayName] = useState(me?.profile.display_name ?? "");
   const [bio, setBio] = useState(me?.profile.bio ?? "");
+  const [avatarId, setAvatarId] = useState<AvatarId>("av1");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!me) return;
+    setCodename(me.profile.codename);
+    setDisplayName(me.profile.display_name ?? "");
+    setBio(me.profile.bio ?? "");
+    setAvatarId(resolveAvatarId(me.profile.avatar_seed));
+  }, [me]);
 
   if (!me) return null;
   const p = me.profile;
@@ -28,7 +38,12 @@ export default function ProfilePage() {
     try {
       await api("/api/onboarding", {
         method: "POST",
-        body: JSON.stringify({ codename, display_name: displayName, bio }),
+        body: JSON.stringify({
+          codename,
+          display_name: displayName,
+          bio,
+          avatar_seed: avatarId,
+        }),
       });
       await refreshMe();
       setEditing(false);
@@ -43,7 +58,7 @@ export default function ProfilePage() {
     <div className="mx-auto max-w-2xl px-5 py-6">
       <div className="glass rounded-2xl p-6">
         <div className="flex items-center gap-4">
-          <Avatar seed={p.avatar_seed} label={p.codename} size={64} verified={verified} />
+          <Avatar seed={editing ? avatarId : p.avatar_seed} label={p.codename} size={64} verified={verified} />
           <div className="min-w-0 flex-1">
             <h1 className="font-display text-2xl font-extrabold tracking-tight">{p.display_name || p.codename}</h1>
             <p className="text-[13px] text-faint">@{p.codename}</p>
@@ -62,7 +77,8 @@ export default function ProfilePage() {
         {p.bio && !editing && <p className="mt-4 text-[14px] leading-relaxed text-muted">{p.bio}</p>}
 
         {editing && (
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 space-y-4">
+            <AvatarPicker value={avatarId} onChange={setAvatarId} />
             <input
               value={codename}
               onChange={(e) => setCodename(e.target.value)}
