@@ -129,27 +129,29 @@ export default function DocsContent() {
             How the platform works
           </h1>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
-            Everything you need to coordinate on Polymarket-style prediction markets: bounties paid in
-            Solana, reputation via Feathers, cabals, and the War Room feed.
+            Coordinate market manipulation plays and surface actionable intel—thin books ranked for
+            exploitability, SOL-funded bounties for execution, cabal ops, and the War Room feed.
           </p>
         </header>
 
         <DocSection id="overview" title="Overview">
           <p>
-            BLACKCROW is a Solana-native social layer for prediction-market operators. You connect a wallet
-            (Phantom or Solflare), pick a codename, and enter <strong className="text-foreground">The Nest</strong>{" "}
-            — the authenticated app at <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">/app</code>.
+            BLACKCROW is a Solana-native coordination layer for operators who want to move prediction-market
+            odds—not just watch them. Connect a wallet (Phantom or Solflare), pick a codename, and enter{" "}
+            <strong className="text-foreground">The Nest</strong> at{" "}
+            <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">/app</code>.
           </p>
           <p>
-            The product combines four loops: <strong className="text-foreground">Markets intel</strong> (thin books
-            from Polymarket), <strong className="text-foreground">Bounties</strong> (SOL rewards for real-world or
-            on-chain tasks), <strong className="text-foreground">War Room</strong> (public feed for intel and
-            coordination), and <strong className="text-foreground">Cabals</strong> (private or public groups).
+            The workflow is built around four loops: <strong className="text-foreground">Market intel</strong> (thin
+            books and exploit scores from Polymarket), <strong className="text-foreground">Bounties</strong> (SOL to
+            fund research, field ops, or timed coordination), <strong className="text-foreground">War Room</strong>{" "}
+            (shared thesis and play-by-play before execution), and <strong className="text-foreground">Cabals</strong>{" "}
+            (aligned crews—especially MARKET OPS—for private coordination).
           </p>
           <p>
-            Money and reputation are separate: SOL in bounties is real payout on approval;{" "}
-            <strong className="text-foreground">Feathers</strong> are off-chain influence points for leaderboard rank
-            and visibility.
+            Payouts and rank are separate: SOL settles on-chain when a bounty is approved;{" "}
+            <strong className="text-foreground">Feathers</strong> track who is consistently sourcing intel and
+            running plays—visible on The Roost and in search.
           </p>
         </DocSection>
 
@@ -167,7 +169,7 @@ export default function DocsContent() {
               <Link href="/app" className="text-bull hover:underline">
                 /app
               </Link>{" "}
-              — the War Room hub — instead of staying on the marketing page.
+              — the hub where live intel, open bounties, and thin-book targets sit in one view.
             </p>
           </Sub>
           <Sub title="3. Onboarding (first visit)">
@@ -196,20 +198,23 @@ export default function DocsContent() {
         </DocSection>
 
         <DocSection id="hub-layout" title="Hub layout (/app)">
-          <p>The main hub is a three-column layout on large screens:</p>
+          <p>
+            The hub is a three-column command surface on large screens—built so you can spot a target, fund a
+            play, and broadcast the thesis without switching tabs:
+          </p>
           <List
             items={[
-              "Left sidebar — Bounties controls: post a bounty, find thin markets, and a scrollable Open bounties menu with creator avatar + reward.",
-              "Center — War Room: compose posts and read the live feed. This is the default focus of the hub.",
-              "Right sidebar — All bounties (full cards with actions) plus a Thin books panel synced from Polymarket.",
+              "Left sidebar — Post bounties, scan open jobs, and jump to thin markets worth pushing.",
+              "Center — War Room: drop intel, sentiment, and coordination posts. Default focus of the hub.",
+              "Right sidebar — Full bounty cards (accept, fund, share) plus live Thin books ranked for exploitability.",
             ]}
           />
           <Sub title="Selecting & sharing a bounty">
             <Flow
               steps={[
-                "Click a bounty card in the right sidebar to select it.",
-                "Press SHARE TO WAR ROOM to attach it to the composer.",
-                "Write your take and post — the bounty is linked on the feed for the crew to see.",
+                "Select a bounty from the right sidebar—the play you want the room aligned on.",
+                "Press SHARE TO WAR ROOM to pin it to the composer.",
+                "Post your thesis—timing, side, size—so the crew sees the target and the job in one card.",
               ]}
             />
           </Sub>
@@ -217,15 +222,16 @@ export default function DocsContent() {
 
         <DocSection id="bounties" title="Bounties">
           <p>
-            A bounty is a paid job tied to a market or thesis. The poster locks SOL; a helper accepts, does the
-            work, submits proof; the creator approves or rejects.
+            A bounty is a SOL-funded task tied to a market or manipulation thesis. The poster locks escrow; an
+            operator accepts, executes or researches, submits proof; the creator approves or rejects. This is how
+            you pay for on-the-ground work, narrative setup, or timed coordination around a thin book.
           </p>
           <Sub title="Bounty kinds">
             <List
               items={[
-                "Field op — physical or real-world action (e.g. on-site proof).",
-                "Intel — research, data, or narrative work.",
-                "Coordination — organizing others, cabal plays, timing.",
+                "Field op — real-world action that supports a play (proof, presence, execution on the ground).",
+                "Intel — research, flow analysis, or narrative that changes how the room reads a market.",
+                "Coordination — rallying operators, cabal timing, or multi-wallet alignment before a push.",
               ]}
             />
           </Sub>
@@ -295,62 +301,64 @@ export default function DocsContent() {
 
         <DocSection id="war-room" title="War Room">
           <p>
-            The War Room is the center column at <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">/app</code>.
-            It is a public feed — not a private DM channel.
+            The War Room at <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">/app</code> is
+            the public intel layer—where operators surface reads, flag targets, and align before a move. Not a private
+            DM channel; use cabals or messages for closed coordination.
           </p>
           <Sub title="Posting">
             <List
               items={[
-                "Write up to 600 characters per post.",
-                "Optional sentiment: Bullish, Bearish, or Neutral.",
-                "Attach a bounty from the right sidebar before posting to include a bounty card in the feed.",
-                "Each post grants +2 Feathers to the author.",
+                "Up to 600 characters per drop—enough for thesis, entry, and timing.",
+                "Tag sentiment: Bullish, Bearish, or Neutral on the market you are pushing.",
+                "Attach an open bounty so the feed shows the job and the target in one embed.",
+                "Each post grants +2 Feathers—consistent intel sources climb The Roost.",
               ]}
             />
           </Sub>
           <Sub title="Engagement">
             <p>
-              Posts show author avatar, codename, optional verified badge, linked market or bounty embeds, and cosmetic
-              engagement counts. Likes call the vote API and update your Feathers-related activity indirectly via
-              participation.
+              Posts show avatar, codename, verified badge when applicable, and linked market or bounty cards—so the
+              room can see who called what and which play is live. Engagement signals who is actively reading the tape.
             </p>
           </Sub>
         </DocSection>
 
         <DocSection id="markets" title="Markets">
           <p>
-            Markets data is pulled from the public Polymarket Gamma API, cached in Postgres, and ranked for
-            exploitability (thin liquidity + contested odds + on-brand topics).
+            Market data comes from the Polymarket Gamma API, cached in Postgres, and re-ranked for operators—not
+            casual bettors. The goal is insight: which books are thin, contested, and worth coordinating on.
           </p>
           <Sub title="Thin books">
             <p>
-              A <strong className="text-foreground">thin book</strong> is a market with low volume where small trades
-              can move the price — useful for coordinated plays and field bounties. Tier thresholds: under ~$25k = thin,
-              under ~$150k = medium, above = thick.
+              A <strong className="text-foreground">thin book</strong> is low-liquidity surface area—where coordinated
+              size or narrative can move YES/NO. That is the primary filter for manipulation plays and field bounties.
+              Tiers: under ~$25k = thin, under ~$150k = medium, above = thick.
             </p>
           </Sub>
           <Sub title="Markets page (/app/markets)">
             <List
               items={[
-                "Live stats bar: count, total volume, thin books, contested markets.",
-                "Filters: search, thin-only mode, sort by exploitable / contested / volume, liquidity tier, category.",
-                "Each card: image, sparkline, YES/NO bar, volume relative to the set, op score, expiry.",
-                "POST BOUNTY pre-fills a modal linked to that market.",
+                "Stats bar: market count, volume, thin-book count, contested setups.",
+                "Filters: search, thin-only, sort by exploitable / contested / volume, liquidity tier, category.",
+                "Each card: sparkline, YES/NO bar, relative volume, op score, expiry—scan for actionable targets.",
+                "POST BOUNTY links a SOL job directly to that market for your crew to execute.",
               ]}
             />
           </Sub>
           <Sub title="Exploit score">
             <p>
-              Lower internal score = more exploitable. It weighs volume (log scale), distance from 50/50, manipulable
-              keywords (weather, temperatures, counts), and topic priority (crypto/economy favored over sports).
+              Lower score = more actionable for coordinated pushes. Inputs include volume (log scale), distance from
+              50/50, manipulable event types (weather, counts, deadlines), and topic weighting—so the feed surfaces
+              markets where insight and alignment matter more than raw bankroll.
             </p>
           </Sub>
         </DocSection>
 
         <DocSection id="feathers" title="Feathers & leaderboard">
           <p>
-            Feathers are reputation points stored on your profile (<code className="font-mono text-[12px]">influence</code>
-            ). They do not decay. Cabals rank by member count, not Feathers.
+            Feathers (<code className="font-mono text-[12px]">influence</code>) measure who is consistently bringing
+            intel and running plays—not who holds the most SOL. They do not decay. Cabals rank by member count, not
+            Feathers.
           </p>
           <Sub title="How to earn">
             <List
@@ -380,7 +388,8 @@ export default function DocsContent() {
 
         <DocSection id="cabals" title="Cabals">
           <p>
-            Cabals are groups for coordination. Create or join from{" "}
+            Cabals are closed crews for aligned execution—where you coordinate plays away from the public War Room.
+            Create or join from{" "}
             <Link href="/app/cabals" className="text-bull hover:underline">
               /app/cabals
             </Link>
@@ -389,9 +398,9 @@ export default function DocsContent() {
           <Sub title="Types">
             <List
               items={[
-                "MARKET OPS — manipulation / market operations focus (first filter in the UI).",
-                "Tipsters — signal and pick sharing.",
-                "Discussion — general chat and thesis.",
+                "MARKET OPS — manipulation and execution focus; default filter in the UI.",
+                "Tipsters — signals, entries, and read on specific markets.",
+                "Discussion — thesis development before a play goes live.",
               ]}
             />
           </Sub>
@@ -409,14 +418,15 @@ export default function DocsContent() {
         <DocSection id="social" title="Social layer">
           <Sub title="Profiles">
             <p>
-              Public profiles at <code className="font-mono text-[12px]">/app/u/[codename]</code> show bio, Feathers,
-              follow counts, and follow/unfollow. Verified accounts display a blue check on avatar and username.
+              Public profiles at <code className="font-mono text-[12px]">/app/u/[codename]</code> show track record:
+              Feathers, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
+              Verified accounts display a blue check on avatar and username.
             </p>
           </Sub>
           <Sub title="Messages">
             <p>
-              DMs at <Link href="/app/messages" className="text-bull hover:underline">/app/messages</Link> — 1:1
-              conversations with unread indicators and real-time message list.
+              DMs at <Link href="/app/messages" className="text-bull hover:underline">/app/messages</Link> for 1:1
+              coordination—timing, size, and side without broadcasting to the full War Room.
             </p>
           </Sub>
           <Sub title="Notifications">
@@ -462,13 +472,13 @@ export default function DocsContent() {
         <DocSection id="glossary" title="Glossary">
           <dl className="space-y-4">
             {[
-              ["War Room", "Public intel feed at /app center column."],
-              ["Thin book", "Low-liquidity Polymarket market; easier to move."],
-              ["Feathers", "Reputation points; leaderboard currency."],
-              ["Pool", "Extra SOL added by contributors to a bounty reward."],
-              ["Op score", "Markets page exploitability index (higher = more actionable)."],
+              ["War Room", "Public intel feed—surface reads and align operators before a push."],
+              ["Thin book", "Low-liquidity market where coordinated size or narrative can move odds."],
+              ["Feathers", "Reputation for intel and execution; ranks operators on The Roost."],
+              ["Pool", "Extra SOL stacked on a bounty so the helper payout scales with the play."],
+              ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
               ["The Nest", "Authenticated app shell (/app and children)."],
-              ["The Roost", "Leaderboard branding."],
+              ["The Roost", "Leaderboard—who is consistently moving markets with the crew."],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>
@@ -479,8 +489,10 @@ export default function DocsContent() {
         </DocSection>
 
         <div className="mt-12 rounded-2xl border border-bull/25 bg-bull/5 px-6 py-8 text-center">
-          <p className="text-[15px] font-bold text-foreground">Ready to operate?</p>
-          <p className="mt-2 text-[13px] text-muted">Connect your wallet and enter the War Room.</p>
+          <p className="text-[15px] font-bold text-foreground">Ready to coordinate?</p>
+          <p className="mt-2 text-[13px] text-muted">
+            Connect your wallet, scan thin books, and run your first play from the War Room.
+          </p>
           <Link
             href="/app"
             className="mt-4 inline-flex rounded-xl bg-foreground px-6 py-3 text-[12px] font-bold text-black"

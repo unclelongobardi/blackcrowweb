@@ -15,48 +15,33 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const FEATURES = [
   {
     icon: IconOperator,
-    brand: false,
     title: "STAY ANONYMOUS",
     desc: "Phantom or Solflare only. No email signup—pick a codename, set an avatar, and operate from a wallet address.",
   },
   {
     icon: IconCabal,
-    brand: false,
     title: "FIND YOUR PEOPLE",
     desc: "Join cabals by type: tipsters, MARKET OPS, or discussion. Public groups or private rooms with leader approval.",
   },
   {
     icon: IconSolana,
-    brand: true,
     title: "MOVE MARKETS TOGETHER",
     desc: "Post bounties with SOL in escrow, let others boost the pool, and hit thin-book Polymarket markets flagged on-platform.",
   },
   {
     icon: IconWarRoom,
-    brand: false,
     title: "POST YOUR TAKES",
     desc: "War Room feed with bullish / bearish / neutral tags. Attach open bounties to posts and coordinate from one thread.",
   },
   {
     icon: IconFeather,
-    brand: true,
     title: "GET CLOUT",
     desc: "Stack Feathers from intel, bounty work, and cabals you found. Climb The Roost—reputation separate from SOL payouts.",
   },
 ] as const;
 
-function FeatureIcon({
-  icon: Icon,
-  brand,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  brand: boolean;
-}) {
-  return (
-    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-bull/20 bg-bull/[0.06] text-bull shadow-[0_0_20px_-8px_rgba(0,180,255,0.55)] transition-colors group-hover:border-bull/40 group-hover:bg-bull/10">
-      <Icon className={brand ? "h-6 w-6" : "h-[23px] w-[23px] text-bull"} />
-    </div>
-  );
+function FeatureIcon({ icon: Icon }: { icon: ComponentType<{ className?: string }> }) {
+  return <Icon className="mb-4 block h-6 w-6 shrink-0 text-bull" />;
 }
 
 export default function Features() {
@@ -94,8 +79,7 @@ export default function Features() {
               transition={{ duration: 0.5, delay: i * 0.06, ease }}
               className="glass glass-hover group relative flex flex-col overflow-hidden rounded-2xl border border-line/80 p-5 sm:p-5"
             >
-              <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-bull/[0.04] blur-2xl transition-opacity group-hover:bg-bull/10" />
-              <FeatureIcon icon={f.icon} brand={f.brand} />
+              <FeatureIcon icon={f.icon} />
               <h3 className="text-[11px] font-bold tracking-[0.12em] text-foreground">{f.title}</h3>
               <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-muted">{f.desc}</p>
             </motion.article>
