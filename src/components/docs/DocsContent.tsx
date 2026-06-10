@@ -15,7 +15,7 @@ const SECTIONS = [
   { id: "cabals", label: "Cabals" },
   { id: "social", label: "Social layer" },
   { id: "official", label: "Official account" },
-  { id: "token", label: "Token (CA)" },
+  { id: "token", label: "Token ($CROW)" },
   { id: "glossary", label: "Glossary" },
 ] as const;
 
@@ -457,11 +457,11 @@ export default function DocsContent() {
           />
         </DocSection>
 
-        <DocSection id="token" title="Token (CA)">
+        <DocSection id="token" title="Token ($CROW)">
           <p>
-            When the project token launches on Solana, the contract address appears in the site header as{" "}
-            <strong className="text-foreground">CA</strong> with a copy button. Until then it shows{" "}
-            <strong className="text-foreground">TBA</strong>.
+            The project token on Solana is <strong className="text-foreground">$CROW</strong>. When live, the contract
+            address appears in the site header as <strong className="text-foreground">CA</strong> with a copy button.
+            Until then it shows <strong className="text-foreground">TBA</strong>.
           </p>
           <p>
             Set <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
@@ -479,6 +479,7 @@ export default function DocsContent() {
               ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
               ["The Nest", "Authenticated app shell (/app and children)."],
               ["The Roost", "Leaderboard—who is consistently moving markets with the crew."],
+              ["$CROW", "Solana SPL token for the BLACKCROW project; CA shown in the site header when live."],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>

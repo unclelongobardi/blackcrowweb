@@ -85,15 +85,15 @@ export default function TermsContent() {
         redeemable for SOL except indirectly through platform visibility and rank.
       </P>
 
-      <H2>5. $BLACKCROW token</H2>
+      <H2>5. $CROW token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">$BLACKCROW</strong>. When live, the contract address (&ldquo;CA&rdquo;) may
+        <strong className="text-foreground">$CROW</strong>. When live, the contract address (&ldquo;CA&rdquo;) may
         appear in the site header and documentation. Unless we publish a separate, signed token utility statement:
       </P>
       <Ul
         items={[
-          "$BLACKCROW is not an investment contract, security, or promise of profit.",
+          "$CROW is not an investment contract, security, or promise of profit.",
           "Token ownership does not grant governance over user bounties, escrow, or third-party markets.",
           "Token value can go to zero; only interact with contracts you have verified on-chain.",
           "Nothing on this site constitutes an offer to sell or solicitation to buy tokens in any jurisdiction where unlawful.",

@@ -77,7 +77,7 @@ export default function PrivacyContent() {
           "Compute Feathers, rankings, exploit scores, and market caches.",
           "Moderate abuse, enforce Terms, and protect platform integrity.",
           "Improve reliability, debug errors, and analyze aggregate usage.",
-          "Communicate launch updates (including $BLACKCROW token) via official channels or optional email list.",
+          "Communicate launch updates (including $CROW token) via official channels or optional email list.",
         ]}
       />
 
@@ -109,9 +109,9 @@ export default function PrivacyContent() {
         for details.
       </P>
 
-      <H2>6. $BLACKCROW token & on-chain privacy</H2>
+      <H2>6. $CROW token & on-chain privacy</H2>
       <P>
-        Blockchain transactions are public and permanent. If you buy, sell, or transfer $BLACKCROW or interact with bounty
+        Blockchain transactions are public and permanent. If you buy, sell, or transfer $CROW or interact with bounty
         escrow, those actions are visible on Solana explorers (e.g. Solscan) and analytics sites (e.g. Dexscreener).
         Contract addresses displayed in the UI come from environment configuration; always verify on-chain before
         interacting.
