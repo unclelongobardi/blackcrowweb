@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import SocialProof from "@/components/SocialProof";
 import Dashboard from "@/components/Dashboard";
 import LandingLeaderboard from "@/components/LandingLeaderboard";
 import Features from "@/components/Features";
@@ -17,7 +16,6 @@ export default async function Home() {
     <main className="relative">
       <Navbar />
       <Hero markets={markets} />
-      <SocialProof markets={markets} />
       <Dashboard markets={markets} />
       <LandingLeaderboard />
       <Features />

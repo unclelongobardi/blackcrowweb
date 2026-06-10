@@ -10,7 +10,6 @@ import { IconTwitterX } from "./icons";
 
 const LINKS = [
   { label: "HOME", href: "#home" },
-  { label: "MARKETS", href: "#markets" },
   { label: "FEED", href: "#feed" },
   { label: "LEADERBOARD", href: "#leaderboard" },
   { label: "ABOUT", href: "#about" },
