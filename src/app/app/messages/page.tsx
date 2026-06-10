@@ -108,6 +108,7 @@ function MessagesContent() {
               >
                 <Avatar
                   seed={c.other?.avatar_seed}
+                  avatarUrl={c.other?.avatar_url}
                   label={c.other?.codename}
                   size={40}
                   verified={c.other?.is_verified || c.other?.codename === "blackcrow_official"}

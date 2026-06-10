@@ -119,7 +119,7 @@ export default function MarketCard({
           <span className="text-bear">NO {no}%</span>
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <div className="rounded-xl border border-line bg-surface/30 px-3 py-2">
             <p className="text-[9px] font-semibold uppercase tracking-wide text-faint">Volume</p>
             <p className="mt-0.5 font-mono text-[13px] font-bold text-foreground">${compactNumber(vol)}</p>
@@ -127,6 +127,12 @@ export default function MarketCard({
               <div className="h-full rounded-full bg-bull/60" style={{ width: `${volPct}%` }} />
             </div>
           </div>
+          {market.volume_24hr != null && market.volume_24hr > 0 ? (
+            <div className="rounded-xl border border-line bg-surface/30 px-3 py-2">
+              <p className="text-[9px] font-semibold uppercase tracking-wide text-faint">24h vol</p>
+              <p className="mt-0.5 font-mono text-[13px] font-bold text-foreground">${compactNumber(market.volume_24hr)}</p>
+            </div>
+          ) : null}
           <div className="rounded-xl border border-line bg-surface/30 px-3 py-2">
             <p className="text-[9px] font-semibold uppercase tracking-wide text-faint">Edge</p>
             <p className="mt-0.5 font-mono text-[13px] font-bold text-foreground">{contested}pt split</p>

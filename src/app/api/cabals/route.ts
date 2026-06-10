@@ -44,7 +44,7 @@ export async function GET(request: Request) {
         ) as pending_request
       from cabals c
       ${where}
-      order by c.created_at desc`,
+      order by case when c.slug = 'blackcrow-official' then 0 else 1 end, c.created_at desc`,
     params,
   );
 

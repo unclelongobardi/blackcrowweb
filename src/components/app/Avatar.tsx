@@ -1,22 +1,24 @@
 "use client";
 
-import { avatarImageUrl, isAvatarId, PROFILE_AVATARS, resolveAvatarId, type AvatarId } from "@/lib/avatars";
+import { avatarImageUrl, isAvatarId, resolveAvatarId, type AvatarId } from "@/lib/avatars";
 
 export default function Avatar({
   seed,
+  avatarUrl,
   label,
   size = 36,
   className = "",
   verified,
 }: {
   seed?: string | null;
+  avatarUrl?: string | null;
   label?: string | null;
   size?: number;
   className?: string;
   verified?: boolean;
 }) {
   const s = seed || label || "crow";
-  const src = avatarImageUrl(s);
+  const src = avatarImageUrl(s, avatarUrl);
   const official = s === "blackcrow_official" || s === "blackcrow";
 
   return (

@@ -1,74 +1,135 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useApi } from "@/lib/useApi";
 import { compactNumber } from "@/lib/format";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
 import MarketCard from "@/components/app/MarketCard";
-import { IconFlame, IconGrid } from "@/components/icons";
+import { IconFlame, IconGrid, IconRepeat } from "@/components/icons";
+import { MARKET_CATEGORIES } from "@/lib/marketFilters";
 import type { Market } from "@/lib/types";
 
-const CATEGORIES = [
-  { id: "all", label: "All" },
-  { id: "weather", label: "Weather" },
-  { id: "crypto", label: "Crypto" },
-  { id: "economy", label: "Economy" },
-  { id: "politics", label: "Politics" },
-  { id: "sports", label: "Sports" },
-];
+const REFRESH_MS = 45_000;
+const FETCH_LIMIT = 100;
+
+type MarketsMeta = {
+  synced_at: string;
+  pool_size: number;
+  returned: number;
+  category_counts: Record<string, number>;
+  stats: {
+    totalVol: number;
+    vol24: number;
+    thin: number;
+    medium: number;
+    thick: number;
+    contested: number;
+    avgYes: number;
+    avgSpread: number;
+    count: number;
+  };
+};
+
+function secondsAgo(iso: string | null): number {
+  if (!iso) return 0;
+  return Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
+}
 
 function MarketsContent() {
   const api = useApi();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [markets, setMarkets] = useState<Market[]>([]);
+  const [meta, setMeta] = useState<MarketsMeta | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [bountyTarget, setBountyTarget] = useState<Market | null>(null);
   const [searchInput, setSearchInput] = useState(searchParams.get("q") ?? "");
+  const [tick, setTick] = useState(0);
+  const initialLoad = useRef(true);
 
-  const mode = searchParams.get("mode") ?? "exploitable";
+  const mode = searchParams.get("mode") ?? "";
   const category = searchParams.get("category") ?? "all";
   const q = searchParams.get("q") ?? "";
   const liquidity = searchParams.get("liquidity") ?? "all";
-  const sort = searchParams.get("sort") ?? "exploitable";
+  const sort = searchParams.get("sort") ?? "volume";
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({ limit: "36" });
-      if (mode) params.set("mode", mode);
-      if (category !== "all") params.set("category", category);
-      if (q) params.set("q", q);
-      if (liquidity !== "all") params.set("liquidity", liquidity);
-      if (sort) params.set("sort", sort);
-      const data = await api<{ markets: Market[] }>(`/api/markets?${params}`);
-      setMarkets(data.markets);
-    } finally {
-      setLoading(false);
-    }
-  }, [api, mode, category, q, liquidity, sort]);
+  const load = useCallback(
+    async (silent = false) => {
+      if (!silent) setLoading(true);
+      else setRefreshing(true);
+      try {
+        const params = new URLSearchParams({ limit: String(FETCH_LIMIT) });
+        if (mode) params.set("mode", mode);
+        if (category !== "all") params.set("category", category);
+        if (q) params.set("q", q);
+        if (liquidity !== "all") params.set("liquidity", liquidity);
+        if (sort) params.set("sort", sort);
+        const data = await api<{ markets: Market[]; meta: MarketsMeta }>(`/api/markets?${params}`);
+        setMarkets(data.markets);
+        setMeta(data.meta);
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+        initialLoad.current = false;
+      }
+    },
+    [api, mode, category, q, liquidity, sort],
+  );
 
   useEffect(() => {
     load();
   }, [load]);
 
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!initialLoad.current) load(true);
+    }, REFRESH_MS);
+    return () => clearInterval(id);
+  }, [load]);
+
   const stats = useMemo(() => {
+    if (meta?.stats) {
+      return {
+        ...meta.stats,
+        poolSize: meta.pool_size,
+        syncedAt: meta.synced_at,
+        categoryCounts: meta.category_counts,
+      };
+    }
     const totalVol = markets.reduce((s, m) => s + (m.volume ?? 0), 0);
     const thin = markets.filter((m) => m.liquidity_tier === "thin").length;
-    const avgYes =
-      markets.length > 0
-        ? Math.round(
-            markets.reduce((s, m) => s + (m.yes_price != null ? m.yes_price * 100 : 50), 0) / markets.length,
-          )
-        : 0;
     const contested = markets.filter(
       (m) => m.yes_price != null && m.yes_price >= 0.35 && m.yes_price <= 0.65,
     ).length;
     const maxVolume = Math.max(...markets.map((m) => m.volume ?? 0), 1);
-    return { totalVol, thin, avgYes, contested, maxVolume, count: markets.length };
-  }, [markets]);
+    return {
+      count: markets.length,
+      totalVol,
+      vol24: 0,
+      thin,
+      medium: 0,
+      thick: 0,
+      contested,
+      avgYes: 50,
+      avgSpread: 0,
+      maxVolume,
+      poolSize: markets.length,
+      syncedAt: null as string | null,
+      categoryCounts: {} as Record<string, number>,
+    };
+  }, [markets, meta, tick]);
+
+  const maxVolume = Math.max(...markets.map((m) => m.volume ?? 0), 1);
+  const ageSec = secondsAgo(stats.syncedAt);
+  const nextRefresh = Math.max(0, Math.ceil((REFRESH_MS - ageSec * 1000) / 1000));
 
   function setFilter(key: string, value: string) {
     const p = new URLSearchParams(searchParams.toString());
@@ -89,34 +150,45 @@ function MarketsContent() {
             <p className="section-label">Polymarket intel</p>
             <h1 className="font-display text-2xl font-extrabold tracking-tight">MARKETS</h1>
             <p className="mt-1 max-w-xl text-[13px] text-faint">
-              Live books from Polymarket — volume, liquidity tier, and op scores to spot thin, movable markets.
+              Live books from Polymarket Gamma — {FETCH_LIMIT}+ markets, auto-refresh every 45s. Real volume, prices, and liquidity tiers.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => load()}
-            className="ui-btn rounded-xl border border-line px-4 py-2 text-[11px] font-semibold text-muted hover:text-foreground"
-          >
-            Refresh feed
-          </button>
+          <div className="flex items-center gap-2">
+            {stats.syncedAt && (
+              <span className="hidden text-[11px] text-faint sm:inline">
+                Synced {ageSec}s ago · next {nextRefresh}s
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => load(true)}
+              disabled={refreshing}
+              className="ui-btn flex items-center gap-2 rounded-xl border border-line px-4 py-2 text-[11px] font-semibold text-muted hover:text-foreground disabled:opacity-60"
+            >
+              <IconRepeat className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
+              {refreshing ? "SYNCING…" : "REFRESH"}
+            </button>
+          </div>
         </div>
 
-        {!loading && markets.length > 0 && (
+        {!loading && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4"
+            className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"
           >
             {[
-              { label: "Showing", value: String(stats.count), sub: "markets" },
-              { label: "Total volume", value: `$${compactNumber(stats.totalVol)}`, sub: "filtered set" },
-              { label: "Thin books", value: String(stats.thin), sub: "low liquidity" },
+              { label: "Showing", value: String(stats.count), sub: `of ${stats.poolSize} scanned` },
+              { label: "Total volume", value: `$${compactNumber(stats.totalVol)}`, sub: "lifetime" },
+              { label: "24h volume", value: `$${compactNumber(stats.vol24)}`, sub: "recent flow" },
+              { label: "Thin books", value: String(stats.thin), sub: `${stats.medium} med · ${stats.thick} thick` },
               { label: "Contested", value: String(stats.contested), sub: "35–65% YES" },
+              { label: "Avg YES", value: `${Math.round(stats.avgYes)}%`, sub: `${stats.avgSpread.toFixed(0)}pt from 50/50` },
             ].map((s) => (
-              <div key={s.label} className="rounded-xl border border-line bg-surface/30 px-4 py-3">
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-faint">{s.label}</p>
-                <p className="mt-1 font-mono text-xl font-bold text-foreground">{s.value}</p>
-                <p className="text-[10px] text-muted">{s.sub}</p>
+              <div key={s.label} className="rounded-xl border border-line bg-surface/30 px-3 py-3 sm:px-4">
+                <p className="text-[9px] font-semibold uppercase tracking-wide text-faint sm:text-[10px]">{s.label}</p>
+                <p className="mt-1 font-mono text-lg font-bold text-foreground sm:text-xl">{s.value}</p>
+                <p className="text-[9px] text-muted sm:text-[10px]">{s.sub}</p>
               </div>
             ))}
           </motion.div>
@@ -142,17 +214,18 @@ function MarketsContent() {
           onChange={(e) => setFilter("mode", e.target.value)}
           className="rounded-xl border border-line bg-surface/60 px-3 py-2.5 text-[12px]"
         >
-          <option value="exploitable">Thin books</option>
           <option value="">All active</option>
+          <option value="exploitable">Thin books only</option>
         </select>
         <select
           value={sort}
           onChange={(e) => setFilter("sort", e.target.value)}
           className="rounded-xl border border-line bg-surface/60 px-3 py-2.5 text-[12px]"
         >
-          <option value="exploitable">Most exploitable</option>
-          <option value="contested">Most contested</option>
           <option value="volume">Highest volume</option>
+          <option value="volume24">24h volume</option>
+          <option value="contested">Most contested</option>
+          <option value="exploitable">Most exploitable</option>
         </select>
         <select
           value={liquidity}
@@ -166,22 +239,30 @@ function MarketsContent() {
       </div>
 
       <div className="mb-6 flex flex-wrap gap-2">
-        {CATEGORIES.map((c) => (
-          <button
-            key={c.id}
-            onClick={() => setFilter("category", c.id)}
-            className={`rounded-lg px-3 py-1.5 text-[11px] font-bold tracking-wide ${
-              category === c.id ? "bg-bull text-black" : "border border-line text-muted hover:border-bull/30"
-            }`}
-          >
-            {c.label.toUpperCase()}
-          </button>
-        ))}
+        {MARKET_CATEGORIES.map((c) => {
+          const count = meta?.category_counts?.[c.id];
+          return (
+            <button
+              key={c.id}
+              onClick={() => setFilter("category", c.id)}
+              className={`rounded-lg px-3 py-1.5 text-[11px] font-bold tracking-wide ${
+                category === c.id ? "bg-bull text-black" : "border border-line text-muted hover:border-bull/30"
+              }`}
+            >
+              {c.label.toUpperCase()}
+              {count != null && c.id !== "all" && (
+                <span className={`ml-1.5 font-mono text-[10px] ${category === c.id ? "text-black/70" : "text-faint"}`}>
+                  {count}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {loading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 12 }).map((_, i) => (
             <div key={i} className="h-[420px] animate-pulse rounded-2xl border border-line bg-surface/30" />
           ))}
         </div>
@@ -189,7 +270,9 @@ function MarketsContent() {
         <div className="rounded-2xl border border-dashed border-line py-20 text-center">
           <IconGrid className="mx-auto h-8 w-8 text-faint" />
           <p className="mt-3 text-[15px] font-bold text-foreground">No markets match</p>
-          <p className="mt-1 text-[13px] text-faint">Try clearing filters or switching to all active markets.</p>
+          <p className="mt-1 text-[13px] text-faint">
+            Try another category or switch to &quot;All active&quot;. Weather and crypto load from Polymarket tags + keyword scan.
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -197,7 +280,7 @@ function MarketsContent() {
             <MarketCard
               key={m.id}
               market={m}
-              maxVolume={stats.maxVolume}
+              maxVolume={maxVolume}
               index={i}
               onPostBounty={setBountyTarget}
             />
@@ -206,9 +289,10 @@ function MarketsContent() {
       )}
 
       {!loading && markets.length > 0 && (
-        <p className="mt-8 flex items-center justify-center gap-1.5 text-[11px] text-faint">
+        <p className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] text-faint">
           <IconFlame className="h-3.5 w-3.5 text-bull" />
-          Data synced from Polymarket Gamma API · avg YES {stats.avgYes}% across this view
+          Live Polymarket Gamma · {markets.length} markets shown · pool {stats.poolSize} · auto-refresh 45s
+          {stats.syncedAt && <span>· last sync {ageSec}s ago</span>}
         </p>
       )}
 

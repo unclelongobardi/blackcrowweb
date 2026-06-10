@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { fetchPolymarketMarkets } from "@/lib/polymarket";
-import { filterMarkets } from "@/lib/marketFilters";
+import { fetchPolymarketPool, computeMarketStats } from "@/lib/polymarket";
+import { countByCategory, filterMarkets } from "@/lib/marketFilters";
 import { getPool, isDbConfigured } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -8,15 +8,25 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const pool = await fetchPolymarketMarkets(150);
+  const category = url.searchParams.get("category") ?? undefined;
+  const limit = Number(url.searchParams.get("limit") ?? 100) || 100;
+
+  const { markets: pool, fetchedAt, poolSize } = await fetchPolymarketPool({
+    minCount: 250,
+    category: category && category !== "all" ? category : undefined,
+  });
+
   const markets = filterMarkets(pool, {
     mode: url.searchParams.get("mode") ?? undefined,
-    category: url.searchParams.get("category") ?? undefined,
+    category,
     q: url.searchParams.get("q") ?? undefined,
     liquidity: url.searchParams.get("liquidity") ?? undefined,
     sort: url.searchParams.get("sort") ?? undefined,
-    limit: Number(url.searchParams.get("limit") ?? 24) || 24,
+    limit,
   });
+
+  const categoryCounts = countByCategory(pool);
+  const stats = computeMarketStats(markets);
 
   if (markets.length && isDbConfigured()) {
     try {
@@ -46,5 +56,14 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ markets });
+  return NextResponse.json({
+    markets,
+    meta: {
+      synced_at: fetchedAt,
+      pool_size: poolSize,
+      returned: markets.length,
+      category_counts: categoryCounts,
+      stats,
+    },
+  });
 }

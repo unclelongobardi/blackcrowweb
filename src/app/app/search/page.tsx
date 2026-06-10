@@ -54,7 +54,7 @@ function SearchContent() {
           <div className="space-y-2">
             {users.map((u) => (
               <Link key={u.id} href={`/app/u/${u.codename}`} className="glass flex items-center gap-3 rounded-xl p-3 hover:bg-white/[0.02]">
-                <Avatar seed={u.avatar_seed} label={u.codename} size={40} verified={u.is_verified} />
+                <Avatar seed={u.avatar_seed} avatarUrl={u.avatar_url} label={u.codename} size={40} verified={u.is_verified} />
                 <div>
                   <p className="text-[14px] font-semibold">{u.display_name || u.codename}</p>
                   <p className="text-[12px] text-faint">@{u.codename} · {u.influence} ⚑</p>

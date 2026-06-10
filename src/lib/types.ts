@@ -6,6 +6,7 @@ export type Profile = {
   display_name: string | null;
   bio: string | null;
   avatar_seed: string | null;
+  avatar_url?: string | null;
   influence: number;
   is_onboarded: boolean;
   is_verified?: boolean;
@@ -59,6 +60,8 @@ export type Market = {
   yes_price: number | null;
   no_price: number | null;
   volume: number | null;
+  volume_24hr?: number | null;
+  liquidity?: number | null;
   end_date: string | null;
   url: string | null;
   last_synced?: string;
@@ -90,14 +93,25 @@ export type Post = {
   author_id: string | null;
   market_id: string | null;
   operation_id: string | null;
+  cabal_id?: string | null;
   bounty_id: string | null;
   parent_id: string | null;
   content: string;
   sentiment: "bullish" | "bearish" | "neutral";
+  kind?: "post" | "poll" | "thread";
+  image_url?: string | null;
   created_at: string;
   author?: Profile | null;
   market?: Market | null;
   bounty?: Bounty | null;
+  cabal?: Cabal | null;
+  poll?: {
+    options: string[];
+    counts: number[];
+    my_option?: number | null;
+    total: number;
+  } | null;
+  thread_preview?: Post[] | null;
   score?: number;
   reply_count?: number;
   my_vote?: number;

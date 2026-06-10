@@ -82,11 +82,27 @@ create table if not exists posts (
   author_id    uuid references profiles(id) on delete cascade,
   market_id    text references markets(id) on delete set null,
   operation_id uuid references operations(id) on delete set null,
+  cabal_id     uuid references cabals(id) on delete set null,
   bounty_id    uuid references bounties(id) on delete set null,
   parent_id    uuid references posts(id) on delete cascade,
   content      text not null,
   sentiment    text default 'neutral',  -- bullish | bearish | neutral
+  image_url    text,
+  kind         text not null default 'post',
   created_at   timestamptz not null default now()
+);
+
+create table if not exists post_polls (
+  post_id uuid primary key references posts(id) on delete cascade,
+  options jsonb not null
+);
+
+create table if not exists post_poll_votes (
+  post_id uuid references posts(id) on delete cascade,
+  profile_id uuid references profiles(id) on delete cascade,
+  option_index smallint not null,
+  created_at timestamptz not null default now(),
+  primary key (post_id, profile_id)
 );
 
 create table if not exists post_votes (

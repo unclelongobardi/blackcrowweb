@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import BountyCard from "./BountyCard";
 import RightPanel from "./RightPanel";
 import type { Bounty, Market } from "@/lib/types";
@@ -22,7 +23,12 @@ export default function AllBountiesSidebar({
   return (
     <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-[360px] shrink-0 flex-col border-l border-line bg-surface/10 xl:flex">
       <div className="flex items-center justify-between border-b border-line px-4 py-3.5">
-        <h2 className="section-label">All bounties</h2>
+        <div>
+          <h2 className="section-label">All bounties</h2>
+          <Link href="/app/bounties" className="text-[10px] font-semibold text-bull hover:underline">
+            Full browse →
+          </Link>
+        </div>
         <span className="font-mono text-[11px] text-faint">{bounties.length}</span>
       </div>
 

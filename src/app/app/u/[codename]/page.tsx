@@ -82,7 +82,7 @@ export default function PublicProfilePage() {
     <div className="mx-auto max-w-2xl px-5 py-6">
       <div className="glass rounded-2xl p-6">
         <div className="flex items-start gap-4">
-          <Avatar seed={profile.avatar_seed} label={profile.codename} size={72} verified={verified} />
+          <Avatar seed={profile.avatar_seed} avatarUrl={profile.avatar_url} label={profile.codename} size={72} verified={verified} />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <h1 className="font-display text-xl font-extrabold">{profile.display_name || profile.codename}</h1>

@@ -196,6 +196,7 @@ export default function BountyCard({
             >
               <Avatar
                 seed={bounty.creator.avatar_seed}
+                avatarUrl={bounty.creator.avatar_url}
                 label={bounty.creator.codename}
                 size={20}
                 verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
@@ -302,6 +303,7 @@ export default function BountyCard({
           <Link href={`/app/u/${bounty.creator.codename}`} className="flex items-center gap-1 hover:text-foreground">
             <Avatar
               seed={bounty.creator.avatar_seed}
+              avatarUrl={bounty.creator.avatar_url}
               label={bounty.creator.codename}
               size={18}
               verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
@@ -312,7 +314,7 @@ export default function BountyCard({
         {bounty.helper && (
           <Link href={`/app/u/${bounty.helper.codename}`} className="flex items-center gap-1 hover:text-foreground">
             →{" "}
-            <Avatar seed={bounty.helper.avatar_seed} label={bounty.helper.codename} size={18} />
+            <Avatar seed={bounty.helper.avatar_seed} avatarUrl={bounty.helper.avatar_url} label={bounty.helper.codename} size={18} />
             {bounty.helper.codename}
           </Link>
         )}

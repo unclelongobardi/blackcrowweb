@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 
   if (isDbConfigured() && (type === "all" || type === "users")) {
     result.users = await query<Profile>(
-      `select id, codename, display_name, bio, avatar_seed, influence, is_onboarded, created_at, privy_did, wallet_address,
+      `select id, codename, display_name, bio, avatar_seed, avatar_url, influence, is_onboarded, created_at, privy_did, wallet_address,
               coalesce(is_verified, false) as is_verified
        from profiles
        where codename ilike $1 or display_name ilike $1

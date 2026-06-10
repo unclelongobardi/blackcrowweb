@@ -24,7 +24,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid avatar selection." }, { status: 400 });
   }
 
-  const avatarSeed = avatarRaw ?? (ctx.profile.is_onboarded ? ctx.profile.avatar_seed : DEFAULT_AVATAR_ID);
+  const usePreset = body.avatar_mode === "preset" || (avatarRaw && isAvatarId(avatarRaw) && body.avatar_mode !== "custom");
+  const avatarSeed =
+    usePreset && avatarRaw
+      ? avatarRaw
+      : usePreset
+        ? ctx.profile.is_onboarded && isAvatarId(ctx.profile.avatar_seed)
+          ? ctx.profile.avatar_seed
+          : DEFAULT_AVATAR_ID
+        : ctx.profile.avatar_seed === "custom"
+          ? "custom"
+          : avatarRaw && isAvatarId(avatarRaw)
+            ? avatarRaw
+            : DEFAULT_AVATAR_ID;
+  const avatarUrl = usePreset ? null : ctx.profile.avatar_url;
 
   if (!CODENAME_RE.test(codename)) {
     return NextResponse.json(
@@ -42,10 +55,10 @@ export async function POST(request: Request) {
   const profile = await queryOne<Profile>(
     `update profiles
        set codename = $1, display_name = $2, bio = $3, wallet_address = $4,
-           avatar_seed = $5, is_onboarded = true
-     where id = $6
+           avatar_seed = $5, avatar_url = $6, is_onboarded = true
+     where id = $7
      returning *`,
-    [codename, displayName, bio, walletAddress, avatarSeed, ctx.profile.id],
+    [codename, displayName, bio, walletAddress, avatarSeed, avatarUrl, ctx.profile.id],
   );
 
   return NextResponse.json({ profile });

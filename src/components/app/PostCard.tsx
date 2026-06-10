@@ -8,7 +8,8 @@ import { useApi } from "@/lib/useApi";
 import { timeAgo, compactNumber, pct } from "@/lib/format";
 import { lamportsToSol } from "@/lib/solanaFormat";
 import SolAmount from "./SolAmount";
-import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots } from "@/components/icons";
+import PostPoll from "./PostPoll";
+import { IconComment, IconRepeat, IconHeart, IconViews, IconBookmark, IconDots, IconThread } from "@/components/icons";
 import type { Post } from "@/lib/types";
 
 const SENTIMENT = {
@@ -46,11 +47,27 @@ export default function PostCard({
   const [liked, setLiked] = useState((post.my_vote ?? 0) === 1);
   const [bookmarked, setBookmarked] = useState(false);
   const [pending, setPending] = useState(false);
+  const [poll, setPoll] = useState(post.poll ?? null);
+  const [threadOpen, setThreadOpen] = useState(false);
+  const [threadReplies, setThreadReplies] = useState<Post[]>(post.thread_preview ?? []);
+  const [loadingThread, setLoadingThread] = useState(false);
 
   const reposts = 20 + seedNum(post.id, 3, 120);
   const views = 1200 + seedNum(post.id, 11, 8000);
   const comments = post.reply_count ?? seedNum(post.id, 5, 40);
   const likes = baseLikes + Math.max(0, score) + (liked ? 1 : 0);
+
+  async function loadThread() {
+    if (loadingThread) return;
+    setLoadingThread(true);
+    try {
+      const data = await api<{ replies: Post[] }>(`/api/posts/${post.id}/replies`);
+      setThreadReplies(data.replies);
+      setThreadOpen(true);
+    } finally {
+      setLoadingThread(false);
+    }
+  }
 
   async function toggleLike() {
     if (pending) return;
@@ -80,13 +97,14 @@ export default function PostCard({
           <Link href={`/app/u/${post.author.codename}`}>
             <Avatar
               seed={post.author.avatar_seed}
+              avatarUrl={post.author.avatar_url}
               label={post.author.codename}
               size={42}
               verified={post.author.is_verified || post.author.codename === "blackcrow_official"}
             />
           </Link>
         ) : (
-          <Avatar seed={post.author?.avatar_seed} label={post.author?.codename} size={42} />
+          <Avatar seed={post.author?.avatar_seed} avatarUrl={post.author?.avatar_url} label={post.author?.codename} size={42} />
         )}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
@@ -102,6 +120,19 @@ export default function PostCard({
             )}
             <span className="text-faint">·</span>
             <span className="text-[13px] text-faint">{timeAgo(post.created_at)}</span>
+            {post.cabal?.name && (
+              <Link
+                href={`/app/cabals/${post.cabal.slug}`}
+                className="rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-bull hover:bg-bull/10"
+              >
+                {post.cabal.name}
+              </Link>
+            )}
+            {post.kind === "thread" && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-bull">
+                <IconThread className="h-3 w-3" /> Thread
+              </span>
+            )}
             {post.sentiment !== "neutral" && (
               <span className={`ml-auto text-[12px] font-semibold ${SENTIMENT[post.sentiment]}`}>
                 {SENTIMENT_LABEL[post.sentiment]}
@@ -112,6 +143,52 @@ export default function PostCard({
           <p className="mt-0.5 whitespace-pre-wrap text-[14.5px] leading-relaxed text-foreground/90">
             {post.content}
           </p>
+
+          {post.image_url && (
+            <div className="mt-2.5 overflow-hidden rounded-xl border border-line">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={post.image_url} alt="" className="max-h-80 w-full object-cover" />
+            </div>
+          )}
+
+          {poll && (
+            <PostPoll postId={post.id} poll={poll} onUpdate={setPoll} />
+          )}
+
+          {(post.kind === "thread" || (post.reply_count ?? 0) > 0) && (
+            <div className="mt-2.5">
+              {!threadOpen && threadReplies.length > 0 && (
+                <div className="space-y-2 border-l-2 border-line pl-3">
+                  {threadReplies.map((r) => (
+                    <div key={r.id}>
+                      <p className="text-[12px] text-muted">{r.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={() => (threadOpen ? setThreadOpen(false) : loadThread())}
+                className="mt-1 text-[12px] font-semibold text-bull hover:underline"
+              >
+                {loadingThread
+                  ? "Loading…"
+                  : threadOpen
+                    ? "Hide thread"
+                    : `Show full thread (${post.reply_count ?? threadReplies.length} parts)`}
+              </button>
+              {threadOpen && (
+                <div className="mt-2 space-y-3 border-l-2 border-bull/30 pl-3">
+                  {threadReplies.map((r, i) => (
+                    <div key={r.id}>
+                      <p className="text-[10px] font-mono text-faint">{i + 2}/{threadReplies.length + 1}</p>
+                      <p className="text-[13px] leading-relaxed text-foreground/90">{r.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {post.market && (
             <div className="mt-2.5 flex items-center gap-2.5 rounded-xl border border-line bg-surface/40 px-3.5 py-2.5">

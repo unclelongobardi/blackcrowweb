@@ -67,14 +67,48 @@ export default function HomePage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!bounties.length) return;
+    const shareId = new URLSearchParams(window.location.search).get("shareBounty");
+    if (!shareId) return;
+    const b = bounties.find((x) => x.id === shareId);
+    if (b) {
+      setAttachedBounty(b);
+      setSelectedBountyId(b.id);
+      setMobileTab("war");
+      window.history.replaceState({}, "", "/app");
+      requestAnimationFrame(() => {
+        composeRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, [bounties]);
+
   async function createPost(
     content: string,
     sentiment: "bullish" | "bearish" | "neutral",
-    bountyId?: string | null,
+    opts?: {
+      bountyId?: string | null;
+      cabalId?: string | null;
+      marketId?: string | null;
+      market?: Market | null;
+      imageUrl?: string | null;
+      pollOptions?: string[];
+      threadParts?: string[];
+    },
   ) {
     await api("/api/feed", {
       method: "POST",
-      body: JSON.stringify({ content, sentiment, bounty_id: bountyId ?? null }),
+      body: JSON.stringify({
+        content,
+        sentiment,
+        bounty_id: opts?.bountyId ?? null,
+        cabal_id: opts?.cabalId ?? null,
+        market_id: opts?.marketId ?? null,
+        market: opts?.market ?? null,
+        image_url: opts?.imageUrl ?? null,
+        poll_options: opts?.pollOptions,
+        thread_parts: opts?.threadParts,
+      }),
     });
     await loadFeed();
     await refreshMe();

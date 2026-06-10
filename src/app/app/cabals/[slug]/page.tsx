@@ -65,10 +65,17 @@ export default function CabalDetailPage() {
     );
   }
 
+  const isOfficial = cabal.slug === "blackcrow-official";
+
   return (
     <div className="mx-auto max-w-3xl px-5 py-6">
       <Link href="/app/cabals" className="text-[12px] text-faint hover:text-muted">← All cabals</Link>
-      <div className="glass mt-4 rounded-2xl p-6">
+      <div className={`mt-4 rounded-2xl p-6 ${isOfficial ? "border border-bull/30 bg-gradient-to-br from-bull/10 via-surface/40 to-surface/20" : "glass"}`}>
+        {isOfficial && (
+          <span className="mb-3 inline-flex items-center rounded-full bg-bull/15 px-2.5 py-0.5 text-[9px] font-bold tracking-[0.14em] text-bull">
+            OFFICIAL BLACKCROW CABAL
+          </span>
+        )}
         <div className="flex items-center gap-4">
           <Avatar seed={cabal.emblem_seed} label={cabal.name} size={56} />
           <div>
@@ -88,7 +95,7 @@ export default function CabalDetailPage() {
           {requests.map((r) => (
             <div key={r.profile.id} className="mt-3 flex items-center justify-between">
               <Link href={`/app/u/${r.profile.codename}`} className="flex items-center gap-2">
-                <Avatar seed={r.profile.avatar_seed} label={r.profile.codename} size={28} />
+                <Avatar seed={r.profile.avatar_seed} avatarUrl={r.profile.avatar_url} label={r.profile.codename} size={28} />
                 <span className="text-[13px] font-semibold">@{r.profile.codename}</span>
               </Link>
               <div className="flex gap-2">
@@ -104,7 +111,7 @@ export default function CabalDetailPage() {
       <div className="flex flex-wrap gap-3">
         {(cabal.members ?? []).map((m) => (
           <Link key={m.profile.id} href={`/app/u/${m.profile.codename}`} className="glass flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-white/[0.02]">
-            <Avatar seed={m.profile.avatar_seed} label={m.profile.codename} size={28} verified={m.profile.is_verified} />
+            <Avatar seed={m.profile.avatar_seed} avatarUrl={m.profile.avatar_url} label={m.profile.codename} size={28} verified={m.profile.is_verified} />
             <span className="text-[12px]">@{m.profile.codename}</span>
             {m.role === "leader" && <span className="text-[10px] text-bull">leader</span>}
           </Link>

@@ -8,7 +8,7 @@ import Logo from "@/components/Logo";
 import { truncateAddress } from "@/lib/user";
 import { uiNav, uiBtn } from "@/lib/uiClasses";
 import {
-  IconTarget,
+  IconWarRoom,
   IconGrid,
   IconCabal,
   IconMail,
@@ -20,7 +20,7 @@ import {
 } from "@/components/icons";
 
 const NAV = [
-  { label: "Bounties", href: "/app", icon: IconTarget, primary: true },
+  { label: "War Room", href: "/app", icon: IconWarRoom, primary: true },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
   { label: "Cabals", href: "/app/cabals", icon: IconCabal },
   { label: "Messages", href: "/app/messages", icon: IconMail },

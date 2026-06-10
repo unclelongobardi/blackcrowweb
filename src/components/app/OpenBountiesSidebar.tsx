@@ -70,7 +70,7 @@ export default function OpenBountiesSidebar({
               return (
                 <li key={b.id}>
                   <a
-                    href={`#bounty-${b.id}`}
+                    href={`/app/bounties#bounty-${b.id}`}
                     className={`${uiRow} block px-4 py-3 hover:bg-white/[0.03]`}
                   >
                     {creator ? (
@@ -105,6 +105,12 @@ export default function OpenBountiesSidebar({
       </nav>
 
       <div className="border-t border-line p-3">
+        <Link
+          href="/app/bounties"
+          className="ui-nav mb-2 block rounded-lg border border-bull/30 bg-bull/5 px-3 py-2 text-center text-[11px] font-bold text-bull hover:bg-bull/10"
+        >
+          Browse all bounties →
+        </Link>
         <Link
           href="/app/markets"
           className="ui-nav block rounded-lg border border-line px-3 py-2 text-center text-[11px] font-semibold text-muted hover:border-white/20 hover:text-foreground"

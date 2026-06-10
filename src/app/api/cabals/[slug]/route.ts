@@ -47,8 +47,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
         `select p.*, row_to_json(a.*) as author
           from posts p
           join profiles a on a.id = p.author_id
-          join cabal_members cm on cm.profile_id = p.author_id and cm.cabal_id = $1
-          where p.parent_id is null
+          where p.parent_id is null and p.cabal_id = $1
           order by p.created_at desc
           limit 15`,
         [cabal.id],

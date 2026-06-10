@@ -13,6 +13,84 @@ const KIND_LABEL: Record<CabalKind, string> = {
   discussion: "Discussion",
 };
 
+const OFFICIAL_SLUG = "blackcrow-official";
+
+function CabalCard({
+  c,
+  busy,
+  onJoin,
+  featured,
+}: {
+  c: Cabal;
+  busy: string | null;
+  onJoin: (slug: string) => void;
+  featured?: boolean;
+}) {
+  const isOfficial = c.slug === OFFICIAL_SLUG;
+
+  return (
+    <div
+      className={`rounded-2xl p-5 ${
+        featured || isOfficial
+          ? "border border-bull/30 bg-gradient-to-br from-bull/10 via-surface/40 to-surface/20 ring-1 ring-bull/20"
+          : "glass glass-hover"
+      }`}
+    >
+      {isOfficial && (
+        <span className="mb-3 inline-flex items-center rounded-full bg-bull/15 px-2.5 py-0.5 text-[9px] font-bold tracking-[0.14em] text-bull">
+          OFFICIAL CABAL
+        </span>
+      )}
+      <div className="flex items-center gap-3">
+        <Avatar seed={c.emblem_seed} label={c.name} size={featured || isOfficial ? 52 : 44} />
+        <div className="min-w-0 flex-1">
+          <Link href={`/app/cabals/${c.slug}`} className="truncate text-[15px] font-bold hover:underline">
+            {c.name}
+          </Link>
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
+              {c.kind ? KIND_LABEL[c.kind] : "Group"}
+            </span>
+            <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
+              {c.visibility === "private" ? "Private" : "Public"}
+            </span>
+          </div>
+        </div>
+      </div>
+      {c.motto && <p className="mt-3 text-[13px] italic text-muted">"{c.motto}"</p>}
+      {c.description && isOfficial && (
+        <p className="mt-2 text-[12px] leading-relaxed text-faint">{c.description}</p>
+      )}
+      <p className="mt-2 text-[11px] text-faint">{c.member_count ?? 0} members</p>
+      <button
+        onClick={() => onJoin(c.slug)}
+        disabled={busy === c.slug}
+        className={`mt-4 w-full rounded-lg px-3 py-2 text-[12px] font-semibold ${
+          c.is_member
+            ? "border border-line text-muted"
+            : c.pending_request
+              ? "border border-bull/30 text-bull"
+              : isOfficial
+                ? "bg-bull text-black hover:bg-bull/90"
+                : "bg-foreground text-black"
+        }`}
+      >
+        {busy === c.slug
+          ? "…"
+          : c.is_member
+            ? "LEAVE"
+            : c.pending_request
+              ? "REQUEST PENDING"
+              : c.visibility === "private"
+                ? "REQUEST TO JOIN"
+                : isOfficial
+                  ? "JOIN OFFICIAL CABAL"
+                  : "JOIN"}
+      </button>
+    </div>
+  );
+}
+
 export default function CabalsPage() {
   const api = useApi();
   const { refreshMe } = useAppContext();
@@ -103,51 +181,29 @@ export default function CabalsPage() {
       ) : cabals.length === 0 ? (
         <p className="py-16 text-center text-[13px] text-faint">No cabals yet. Create the first one.</p>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {cabals.map((c) => (
-            <div key={c.id} className="glass glass-hover rounded-2xl p-5">
-              <div className="flex items-center gap-3">
-                <Avatar seed={c.emblem_seed} label={c.name} size={44} />
-                <div className="min-w-0 flex-1">
-                  <Link href={`/app/cabals/${c.slug}`} className="truncate text-[15px] font-bold hover:underline">
-                    {c.name}
-                  </Link>
-                  <div className="mt-1 flex flex-wrap gap-1.5">
-                    <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
-                      {c.kind ? KIND_LABEL[c.kind] : "Group"}
-                    </span>
-                    <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
-                      {c.visibility === "private" ? "Private" : "Public"}
-                    </span>
+        <>
+          {(() => {
+            const official = cabals.find((c) => c.slug === OFFICIAL_SLUG);
+            const rest = cabals.filter((c) => c.slug !== OFFICIAL_SLUG);
+            return (
+              <>
+                {official && (
+                  <div className="mb-6">
+                    <p className="mb-3 text-[11px] font-bold tracking-[0.16em] text-bull">BLACKCROW OFFICIAL</p>
+                    <CabalCard c={official} busy={busy} onJoin={join} featured />
                   </div>
-                </div>
-              </div>
-              {c.motto && <p className="mt-3 text-[13px] italic text-muted">"{c.motto}"</p>}
-              <p className="mt-2 text-[11px] text-faint">{c.member_count ?? 0} members</p>
-              <button
-                onClick={() => join(c.slug)}
-                disabled={busy === c.slug}
-                className={`mt-4 w-full rounded-lg px-3 py-2 text-[12px] font-semibold ${
-                  c.is_member
-                    ? "border border-line text-muted"
-                    : c.pending_request
-                      ? "border border-bull/30 text-bull"
-                      : "bg-foreground text-black"
-                }`}
-              >
-                {busy === c.slug
-                  ? "…"
-                  : c.is_member
-                    ? "LEAVE"
-                    : c.pending_request
-                      ? "REQUEST PENDING"
-                      : c.visibility === "private"
-                        ? "REQUEST TO JOIN"
-                        : "JOIN"}
-              </button>
-            </div>
-          ))}
-        </div>
+                )}
+                {rest.length > 0 && (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {rest.map((c) => (
+                      <CabalCard key={c.id} c={c} busy={busy} onJoin={join} />
+                    ))}
+                  </div>
+                )}
+              </>
+            );
+          })()}
+        </>
       )}
 
       {creating && (

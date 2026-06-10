@@ -43,10 +43,16 @@ export default function MobileBountiesPanel({
             + POST A BOUNTY
           </button>
           <Link
+            href="/app/bounties"
+            className="ui-nav flex min-h-11 flex-1 items-center justify-center rounded-xl border border-bull/30 bg-bull/5 px-4 py-3 text-center text-[12px] font-bold text-bull"
+          >
+            BROWSE ALL
+          </Link>
+          <Link
             href="/app/markets"
             className="ui-nav flex min-h-11 flex-1 items-center justify-center rounded-xl border border-line px-4 py-3 text-center text-[12px] font-semibold text-foreground"
           >
-            FIND THIN MARKETS
+            THIN MARKETS
           </Link>
         </div>
         {openCount > 0 && (

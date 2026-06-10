@@ -90,6 +90,7 @@ export default function TopBar() {
           >
             <Avatar
               seed={me?.profile.avatar_seed}
+              avatarUrl={me?.profile.avatar_url}
               label={me?.profile.codename}
               size={30}
               verified={verified}

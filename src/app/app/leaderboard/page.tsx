@@ -13,6 +13,7 @@ type Operative = {
   codename: string;
   display_name: string | null;
   avatar_seed: string | null;
+  avatar_url?: string | null;
   influence: number;
   is_verified?: boolean;
 };
@@ -177,6 +178,7 @@ export default function LeaderboardPage() {
                     <RankBadge rank={i + 1} />
                     <Avatar
                       seed={o.avatar_seed}
+                      avatarUrl={o.avatar_url}
                       label={o.codename}
                       size={36}
                       verified={o.is_verified || o.codename === "blackcrow_official"}

@@ -54,7 +54,11 @@ export function resolveAvatarId(seed: string | null | undefined): AvatarId {
   return PROFILE_AVATARS[hash(s) % PROFILE_AVATARS.length]!.id;
 }
 
-export function avatarImageUrl(seed: string | null | undefined): string {
+export function avatarImageUrl(
+  seed: string | null | undefined,
+  avatarUrl?: string | null,
+): string {
+  if (avatarUrl) return avatarUrl;
   if (seed === "blackcrow_official" || seed === "blackcrow") {
     return "/images/blackcrow-official.png";
   }

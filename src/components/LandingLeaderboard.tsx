@@ -78,6 +78,7 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
         </span>
         <Avatar
           seed={operative.avatar_seed}
+          avatarUrl={operative.avatar_url}
           label={operative.codename}
           size={isFirst ? 72 : 56}
           verified={verified}
@@ -112,7 +113,7 @@ function OperativeRow({ operative, rank }: { operative: LeaderboardOperative; ra
         className="flex items-center gap-3 rounded-xl border border-line bg-surface/30 px-4 py-3.5 transition-colors hover:border-bull/25 hover:bg-surface/50"
       >
         <RankBadge rank={rank} />
-        <Avatar seed={operative.avatar_seed} label={operative.codename} size={40} verified={verified} />
+        <Avatar seed={operative.avatar_seed} avatarUrl={operative.avatar_url} label={operative.codename} size={40} verified={verified} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-[13px] font-semibold text-foreground">@{operative.codename}</p>
           {operative.display_name && (
