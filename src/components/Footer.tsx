@@ -1,19 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Logo from "./Logo";
-import { IconArrow, IconX, IconDiscord, IconTelegram, IconGlobe } from "./icons";
-import { TWITTER_URL } from "@/lib/links";
+import { IconArrow, IconTwitterX, IconDexscreener } from "./icons";
+import { TWITTER_URL, DEXSCREENER_URL } from "@/lib/links";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const SOCIALS = [
-  { icon: IconX, label: "X", href: TWITTER_URL, external: true },
-  { icon: IconDiscord, label: "Discord", href: "#", external: false },
-  { icon: IconTelegram, label: "Telegram", href: "#", external: false },
-  { icon: IconGlobe, label: "Website", href: "#", external: false },
-];
+  {
+    label: "X (Twitter)",
+    href: TWITTER_URL,
+    render: () => <IconTwitterX className="h-[18px] w-[18px]" />,
+  },
+  {
+    label: "Dexscreener",
+    href: DEXSCREENER_URL,
+    render: () => <IconDexscreener className="h-[18px] w-[18px] rounded-sm" />,
+  },
+] as const;
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -21,7 +28,6 @@ export default function Footer() {
 
   return (
     <footer id="join" className="relative scroll-mt-24 overflow-hidden border-t border-line">
-      {/* decorative wave dots */}
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.18] [mask-image:radial-gradient(ellipse_60%_120%_at_10%_100%,#000_10%,transparent_70%)]" />
       <div className="pointer-events-none absolute -bottom-32 left-0 h-72 w-72 rounded-full bg-sky-500/[0.04] blur-[120px]" />
 
@@ -36,9 +42,7 @@ export default function Footer() {
           <div>
             <Logo className="text-foreground" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-              A social network where you make friends
-              <br />
-              and move markets together. What could go wrong?
+              Coordinate market plays, fund bounties in SOL, and rank on The Roost.
             </p>
           </div>
 
@@ -71,13 +75,12 @@ export default function Footer() {
                 <a
                   key={s.label}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s.label}
-                  {...(s.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-white/25 hover:text-foreground"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-foreground transition-colors hover:border-white/25 hover:text-bull"
                 >
-                  <s.icon className="h-4 w-4" />
+                  {s.render()}
                 </a>
               ))}
             </div>
@@ -86,12 +89,15 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 sm:flex-row">
           <p className="text-[11px] tracking-[0.12em] text-faint">
-            © 2025 BLACKCROW. ALL RIGHTS RESERVED.
+            © 2026 BLACKCROW. ALL RIGHTS RESERVED.
           </p>
           <div className="flex items-center gap-7 text-[11px] font-medium tracking-[0.12em] text-faint">
-            <a href="#" className="transition-colors hover:text-foreground">TERMS</a>
-            <a href="#" className="transition-colors hover:text-foreground">PRIVACY</a>
-            <a href="#" className="transition-colors hover:text-foreground">CONTACT</a>
+            <Link href="/terms" className="transition-colors hover:text-foreground">
+              TERMS
+            </Link>
+            <Link href="/privacy" className="transition-colors hover:text-foreground">
+              PRIVACY
+            </Link>
           </div>
         </div>
       </div>

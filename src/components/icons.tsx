@@ -352,6 +352,19 @@ export function IconTwitterX(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/** Dexscreener — official favicon / brand mark */
+export function IconDexscreener({ className }: { className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/images/dexscreener-logo.ico"
+      alt=""
+      aria-hidden
+      className={className ?? "h-4 w-4 shrink-0"}
+    />
+  );
+}
+
 /** Reputation / feathers — brand asset tinted via currentColor */
 export function IconFeather(props: SVGProps<SVGSVGElement>) {
   const { className, style, ...rest } = props;
