@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthedProfile, getProfileId } from "@/lib/auth";
-import { listBounties } from "@/lib/bounties";
+import { getBountyById, listBounties } from "@/lib/bounties";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
 import { notify } from "@/lib/notifications";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
@@ -17,25 +17,18 @@ export async function GET(request: Request) {
   const mine = new URL(request.url).searchParams.get("mine") === "1";
 
   if (mine && myId) {
-    const rows = await query<Bounty>(
-      `select b.*,
-          row_to_json(creator.*) as creator,
-          row_to_json(helper.*) as helper,
-          row_to_json(m.*) as market
-        from bounties b
-        left join profiles creator on creator.id = b.created_by
-        left join profiles helper on helper.id = b.helper_id
-        left join markets m on m.id = b.market_id
-        where b.created_by = $1 or b.helper_id = $1
+    const rows = await query<{ id: string }>(
+      `select b.id from bounties b
+        where b.created_by = $1
+           or b.helper_id = $1
+           or exists (select 1 from bounty_participants bp where bp.bounty_id = b.id and bp.profile_id = $1)
         order by b.created_at desc`,
       [myId],
     );
-    return NextResponse.json({
-      bounties: rows.map((b) => ({
-        ...b,
-        my_role: b.created_by === myId ? "creator" : b.helper_id === myId ? "helper" : null,
-      })),
-    });
+    const bounties = (
+      await Promise.all(rows.map((r) => getBountyById(r.id, myId)))
+    ).filter((b): b is Bounty => !!b);
+    return NextResponse.json({ bounties });
   }
 
   const bounties = await listBounties(myId, status);
@@ -79,11 +72,13 @@ export async function POST(request: Request) {
     );
   }
 
+  const expiresAt = market?.end_date ?? null;
+
   const bounty = await queryOne<Bounty>(
     `insert into bounties (
        created_by, market_id, title, description, task,
-       reward_sol_lamports, reward_influence, kind, status, creator_wallet
-     ) values ($1,$2,$3,$4,$5,$6,$7,$8,'funding',$9)
+       reward_sol_lamports, reward_influence, kind, status, creator_wallet, expires_at
+     ) values ($1,$2,$3,$4,$5,$6,$7,$8,'funding',$9,$10)
      returning *`,
     [
       ctx.profile.id,
@@ -95,6 +90,7 @@ export async function POST(request: Request) {
       helperInfluenceFromLamports(lamports),
       kind,
       wallet,
+      expiresAt,
     ],
   );
 

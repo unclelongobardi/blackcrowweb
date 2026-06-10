@@ -473,7 +473,7 @@ export default function CreatePost({
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-faint" />
                       Everyone
-                      <span className="ml-auto text-[10px] text-faint">Public War Room</span>
+                      <span className="ml-auto text-[10px] text-faint">Public timeline</span>
                     </button>
                     {myCabals.length > 0 && (
                       <>

@@ -78,7 +78,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     [id, ctx.profile.id],
   );
   if (other) {
-    await notify(other.id, "dm", `New message from ${ctx.profile.codename}`, `/app/messages?c=${id}`);
+    await notify(other.id, "dm", `New direct message from @${ctx.profile.codename}`, `/app/messages?c=${id}`);
   }
 
   return NextResponse.json({ message: msg });

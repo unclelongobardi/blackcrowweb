@@ -136,7 +136,7 @@ export default function PublicProfilePage() {
                 href={`/app/messages?to=${profile.codename}`}
                 className="flex-1 rounded-xl border border-line px-4 py-2.5 text-center text-[12px] font-bold text-foreground hover:border-white/25"
               >
-                MESSAGE
+                Message
               </Link>
             </>
           )}

@@ -36,7 +36,7 @@ export default function TermsContent() {
       <H2>1. What BLACKCROW is</H2>
       <P>
         BLACKCROW is a Solana-native coordination layer for prediction-market operators. The platform provides market
-        intelligence (including thin-book rankings sourced from third-party APIs), a public War Room feed, SOL-funded
+        intelligence (including thin-book rankings sourced from third-party APIs), a public Home feed, SOL-funded
         bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;Feathers&rdquo;), and related
         social features. BLACKCROW does not operate a centralized exchange, custody user funds beyond programmatic
         bounty escrow flows you explicitly authorize, or guarantee any market outcome.
@@ -62,7 +62,7 @@ export default function TermsContent() {
 
       <H2>4. Platform features</H2>
       <P>
-        <strong className="text-foreground">War Room</strong> — public feed for intel, sentiment-tagged posts, and
+        <strong className="text-foreground">Home</strong> — public timeline for intel, sentiment-tagged posts, and
         bounty embeds. Content you post is visible to other users.
       </P>
       <P>

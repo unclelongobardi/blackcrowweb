@@ -14,47 +14,97 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
 
+  const body = await request.json().catch(() => ({}));
+  const participantId = body.participant_id ? String(body.participant_id) : null;
+
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
   const isOfficial = !!bounty.is_official;
   if (!isOfficial && bounty.created_by !== ctx.profile.id) {
     return NextResponse.json({ error: "Only the bounty creator can approve." }, { status: 403 });
   }
-  if (bounty.status !== "submitted") {
-    return NextResponse.json({ error: "No proof to approve yet." }, { status: 400 });
+  if (bounty.status === "paid") {
+    return NextResponse.json({ error: "This bounty was already paid out." }, { status: 400 });
   }
-  if (!bounty.helper_wallet) {
+
+  type ParticipantRow = {
+    id: string;
+    profile_id: string;
+    wallet_address: string | null;
+    status: string;
+  };
+
+  let participant: ParticipantRow | null = null;
+
+  if (participantId) {
+    participant = await queryOne<ParticipantRow>(
+      "select id, profile_id, wallet_address, status from bounty_participants where id = $1 and bounty_id = $2",
+      [participantId, id],
+    );
+    if (!participant || participant.status !== "submitted") {
+      return NextResponse.json({ error: "No pending proof from that participant." }, { status: 400 });
+    }
+  } else {
+    participant = await queryOne<ParticipantRow>(
+      `select id, profile_id, wallet_address, status from bounty_participants
+       where bounty_id = $1 and status = 'submitted'
+       order by submitted_at asc limit 1`,
+      [id],
+    );
+    if (!participant && bounty.helper_wallet) {
+      participant = {
+        id: "",
+        profile_id: bounty.helper_id!,
+        wallet_address: bounty.helper_wallet,
+        status: "submitted",
+      };
+    }
+  }
+
+  if (!participant?.wallet_address) {
     return NextResponse.json({ error: "Helper has no wallet on file." }, { status: 400 });
   }
 
   let payoutTx: string;
   if (isOfficial) {
-    const payout = await sendPayout(bounty.helper_wallet, BigInt(bounty.reward_sol_lamports));
+    const payout = await sendPayout(participant.wallet_address, BigInt(bounty.reward_sol_lamports));
     payoutTx = payout.ok ? payout.signature : `OFFICIAL_MANUAL_RELEASE:${id.slice(0, 8)}`;
   } else {
-    const payout = await sendPayout(bounty.helper_wallet, BigInt(bounty.reward_sol_lamports));
+    const payout = await sendPayout(participant.wallet_address, BigInt(bounty.reward_sol_lamports));
     if (!payout.ok) return NextResponse.json({ error: payout.error }, { status: 500 });
     payoutTx = payout.signature;
   }
 
-  await query(
-    `update bounties set status = 'paid', payout_tx = $2, paid_at = now() where id = $1`,
-    [id, payoutTx],
-  );
-
-  if (bounty.helper_id) {
-    const feathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
+  if (participant.id) {
     await query(
-      "update profiles set influence = influence + $2 where id = $1",
-      [bounty.helper_id, feathers],
+      `update bounty_participants set status = 'approved', reviewed_at = now(), payout_tx = $2 where id = $1`,
+      [participant.id, payoutTx],
     );
-    await notify(
-      bounty.helper_id,
-      "bounty_paid",
-      `You got paid for: ${bounty.title}. Check your wallet.`,
-      `/app/rewards`,
+    await query(
+      `update bounty_participants set status = 'rejected', reviewed_at = now()
+       where bounty_id = $1 and id != $2 and status = 'submitted'`,
+      [id, participant.id],
     );
   }
 
-  return NextResponse.json({ paid: true, payout_tx: payoutTx });
+  await query(
+    `update bounties set status = 'paid', payout_tx = $2, paid_at = now(), helper_id = $3, helper_wallet = $4 where id = $1`,
+    [id, payoutTx, participant.profile_id, participant.wallet_address],
+  );
+
+  const feathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
+  await query("update profiles set influence = influence + $2 where id = $1", [
+    participant.profile_id,
+    feathers,
+  ]);
+
+  await notify(
+    participant.profile_id,
+    "bounty_paid",
+    `You got paid for: ${bounty.title}. Check your wallet.`,
+    `/app/bounties#bounty-${id}`,
+  );
+
+  const updated = await getBountyById(id, ctx.profile.id);
+  return NextResponse.json({ paid: true, payout_tx: payoutTx, bounty: updated });
 }

@@ -120,7 +120,7 @@ export default function CabalDetailPage() {
 
       {cabal.is_member && (
         <>
-          <h2 className="mt-8 mb-3 text-[11px] font-bold tracking-[0.16em] text-muted">WAR ROOM FEED</h2>
+          <h2 className="mt-8 mb-3 text-[11px] font-bold tracking-[0.16em] text-muted">HOME FEED</h2>
           {posts.length === 0 ? (
             <p className="text-[13px] text-faint">No posts from members yet.</p>
           ) : (

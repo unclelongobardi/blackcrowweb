@@ -8,7 +8,7 @@ import Logo from "@/components/Logo";
 import { truncateAddress } from "@/lib/user";
 import { uiNav, uiBtn } from "@/lib/uiClasses";
 import {
-  IconWarRoom,
+  IconHome,
   IconGrid,
   IconCabal,
   IconMail,
@@ -20,10 +20,10 @@ import {
 } from "@/components/icons";
 
 const NAV = [
-  { label: "War Room", href: "/app", icon: IconWarRoom, primary: true },
+  { label: "Home", href: "/app", icon: IconHome, primary: true },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
   { label: "Cabals", href: "/app/cabals", icon: IconCabal },
-  { label: "Messages", href: "/app/messages", icon: IconMail },
+  { label: "Chat", href: "/app/messages", icon: IconMail },
   { label: "Notifications", href: "/app/notifications", icon: IconBell },
   { label: "Leaderboard", href: "/app/leaderboard", icon: IconRoost },
   { label: "Profile", href: "/app/profile", icon: IconUser },

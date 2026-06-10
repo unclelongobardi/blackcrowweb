@@ -129,7 +129,30 @@ export type BountyStatus =
   | "assigned"
   | "submitted"
   | "paid"
-  | "cancelled";
+  | "cancelled"
+  | "expired";
+
+export type BountyProofMedia = {
+  type: "image" | "video";
+  url: string;
+};
+
+export type BountyParticipantStatus = "accepted" | "submitted" | "approved" | "rejected";
+
+export type BountyParticipant = {
+  id: string;
+  bounty_id: string;
+  profile_id: string;
+  wallet_address: string | null;
+  status: BountyParticipantStatus;
+  proof_text: string | null;
+  proof_media: BountyProofMedia[];
+  submitted_at: string | null;
+  reviewed_at: string | null;
+  payout_tx: string | null;
+  joined_at: string;
+  profile?: Profile | null;
+};
 
 export type Bounty = {
   id: string;
@@ -153,6 +176,7 @@ export type Bounty = {
   assigned_at: string | null;
   submitted_at: string | null;
   paid_at: string | null;
+  expires_at: string | null;
   creator?: Profile | null;
   helper?: Profile | null;
   market?: Market | null;
@@ -162,6 +186,9 @@ export type Bounty = {
   contribution_count?: number;
   contributions_lamports?: number;
   contributions?: BountyContribution[];
+  participants?: BountyParticipant[];
+  participant_count?: number;
+  my_participant?: BountyParticipant | null;
 };
 
 export type BountyContribution = {

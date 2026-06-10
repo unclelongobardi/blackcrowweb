@@ -88,7 +88,7 @@ function BountiesContent() {
               href="/app"
               className="rounded-xl border border-line px-4 py-2.5 text-[11px] font-semibold text-muted hover:text-foreground"
             >
-              ← War Room
+              ← Home
             </Link>
             <button
               type="button"

@@ -28,7 +28,7 @@ type CabalRow = {
 
 const EARN_RULES = [
   {
-    action: "Post in the War Room",
+    action: "Post on Home",
     feathers: "+2",
     detail: "Every intel drop, thesis, or coordination post on the feed.",
   },
@@ -247,7 +247,7 @@ export default function LeaderboardPage() {
 
         <AccordionSection
           title="How to earn Feathers"
-          summary="War Room posts, cabals, bounties, and more."
+          summary="Home posts, cabals, bounties, and more."
         >
           <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3">
             {EARN_RULES.map((rule) => (

@@ -16,7 +16,7 @@ import type { Bounty, Market, Post } from "@/lib/types";
 type MobileTab = "war" | "bounties" | "thin";
 
 const MOBILE_TABS: { id: MobileTab; label: string }[] = [
-  { id: "war", label: "War Room" },
+  { id: "war", label: "Home" },
   { id: "bounties", label: "Bounties" },
   { id: "thin", label: "Thin books" },
 ];
@@ -178,10 +178,10 @@ export default function HomePage() {
         >
           <div className="border-b border-line px-4 py-4 sm:px-5">
             <h1 className="font-display text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
-              War Room
+              Home
             </h1>
             <p className="mt-1 text-[13px] text-muted">
-              Drop intel, coordinate a play, or share a bounty with the crew.
+              See what&apos;s happening — post your take, attach a bounty, or coordinate a play.
             </p>
           </div>
 
@@ -203,12 +203,12 @@ export default function HomePage() {
               </div>
               {posts.length === 0 ? (
                 <div className="px-4 py-14 text-center sm:px-5">
-                  <p className="text-[15px] font-bold text-foreground">War room is empty</p>
+                  <p className="text-[15px] font-bold text-foreground">Nothing to see here — yet</p>
                   <p className="mt-2 text-[13px] text-faint lg:hidden">
-                    Post intel here, or open the Bounties tab, pick a job, and hit &ldquo;Share to War Room&rdquo;.
+                    Post something, or open Bounties, pick a job, and hit &ldquo;Post to Home&rdquo;.
                   </p>
                   <p className="mt-2 hidden text-[13px] text-faint lg:block">
-                    Post intel here, or select a bounty on the right and hit &ldquo;Share to War Room&rdquo;.
+                    Post something, or select a bounty on the right and hit &ldquo;Post to Home&rdquo;.
                   </p>
                 </div>
               ) : (

@@ -9,10 +9,11 @@ export function useApi() {
   return useCallback(
     async <T = unknown>(path: string, options: RequestInit = {}): Promise<T> => {
       const token = await getAccessToken();
+      const isForm = options.body instanceof FormData;
       const res = await fetch(path, {
         ...options,
         headers: {
-          "content-type": "application/json",
+          ...(!isForm ? { "content-type": "application/json" } : {}),
           ...(token ? { authorization: `Bearer ${token}` } : {}),
           ...(options.headers ?? {}),
         },

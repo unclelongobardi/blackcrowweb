@@ -13,7 +13,7 @@ import { useApi } from "@/lib/useApi";
 import { uiNav, uiBtnPrimary } from "@/lib/uiClasses";
 import {
   IconArrow,
-  IconWarRoom,
+  IconHome,
   IconGrid,
   IconCabal,
   IconRoost,
@@ -22,11 +22,11 @@ import {
 } from "@/components/icons";
 
 const MOBILE_NAV = [
-  { label: "War Room", href: "/app", icon: IconWarRoom },
+  { label: "Home", href: "/app", icon: IconHome },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
   { label: "Cabals", href: "/app/cabals", icon: IconCabal },
   { label: "Roost", href: "/app/leaderboard", icon: IconRoost },
-  { label: "Msgs", href: "/app/messages", icon: IconMail },
+  { label: "Chat", href: "/app/messages", icon: IconMail },
   { label: "Alerts", href: "/app/notifications", icon: IconBell },
 ];
 

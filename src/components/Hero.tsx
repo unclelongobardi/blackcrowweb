@@ -161,7 +161,7 @@ A social network to meet people obsessed with prediction markets —
                 href="/app"
                 className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
               >
-                ENTER WAR ROOM
+                OPEN HOME
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             ) : (

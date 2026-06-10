@@ -54,9 +54,14 @@ export default function CreateBountyModal({
         </p>
 
         {market && (
-          <p className="mt-3 line-clamp-2 rounded-lg border border-line bg-surface/40 px-3 py-2 text-[12px] text-foreground">
-            🎯 {market.question}
-          </p>
+          <div className="mt-3 rounded-lg border border-line bg-surface/40 px-3 py-2">
+            <p className="line-clamp-2 text-[12px] text-foreground">🎯 {market.question}</p>
+            {market.end_date && (
+              <p className="mt-1 text-[10px] text-faint">
+                Expires with market · {new Date(market.end_date).toLocaleDateString()}
+              </p>
+            )}
+          </div>
         )}
 
         <div className="mt-4 space-y-3">

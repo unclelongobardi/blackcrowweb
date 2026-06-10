@@ -12,7 +12,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const EXPLAIN = [
   {
     title: "Reputation score",
-    body: "Feathers track verified activity on the network: War Room posts, bounties funded and completed, cabals founded.",
+    body: "Feathers track verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
   },
   {
     title: "Live rankings",

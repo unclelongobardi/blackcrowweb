@@ -167,8 +167,26 @@ create table if not exists bounties (
   submitted_at        timestamptz,
   paid_at             timestamptz,
   is_official         boolean not null default false,
-  creator_base_lamports bigint
+  creator_base_lamports bigint,
+  expires_at          timestamptz
 );
+
+create table if not exists bounty_participants (
+  id             uuid primary key default gen_random_uuid(),
+  bounty_id      uuid not null references bounties(id) on delete cascade,
+  profile_id     uuid not null references profiles(id) on delete cascade,
+  wallet_address text,
+  status         text not null default 'accepted',
+  proof_text     text,
+  proof_media    jsonb not null default '[]'::jsonb,
+  submitted_at   timestamptz,
+  reviewed_at    timestamptz,
+  payout_tx      text,
+  joined_at      timestamptz not null default now(),
+  unique (bounty_id, profile_id)
+);
+
+create index if not exists idx_bounty_participants_bounty on bounty_participants(bounty_id);
 
 create table if not exists bounty_contributions (
   id           uuid primary key default gen_random_uuid(),

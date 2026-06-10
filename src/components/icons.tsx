@@ -424,7 +424,7 @@ export function IconOperator(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** War Room — live intel feed */
+/** Home — public timeline feed */
 export function IconWarRoom(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={1.5} {...props}>

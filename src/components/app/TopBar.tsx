@@ -75,7 +75,7 @@ export default function TopBar() {
         </button>
         <button
           type="button"
-          aria-label="Messages"
+          aria-label="Chat"
           onClick={() => router.push("/app/messages")}
           className={`${uiPress} hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground lg:flex`}
         >

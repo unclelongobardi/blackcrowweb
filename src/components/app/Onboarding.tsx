@@ -87,7 +87,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
         <p className="mt-6 text-[11px] font-semibold tracking-[0.2em] text-faint">ALMOST IN</p>
         <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight">Set up your profile</h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted">
-          Upload a photo or pick an avatar, then choose your codename for the War Room.
+          Upload a photo or pick an avatar, then choose your codename for Home.
         </p>
 
         <form onSubmit={submit} className="mt-6 space-y-4">

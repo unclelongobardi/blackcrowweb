@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const bounty = await getBountyById(id);
   if (!bounty) return NextResponse.json({ error: "Not found." }, { status: 404 });
-  if (!canContributeToPool(bounty.status, bounty.is_official)) {
+  if (!canContributeToPool(bounty.status, bounty.is_official, bounty.expires_at)) {
     return NextResponse.json({ error: "This bounty is not accepting pool contributions." }, { status: 400 });
   }
 

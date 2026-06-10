@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { useApi } from "@/lib/useApi";
-import { canContributeToPool } from "@/lib/bountyRules";
+import { canAcceptBounty, canContributeToPool, expiresInLabel, isBountyExpired } from "@/lib/bountyRules";
 import { creatorPostInfluenceFromLamports, helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { lamportsToSol } from "@/lib/solanaFormat";
 import { useSolanaDeposit } from "@/lib/solanaClient";
@@ -13,15 +13,16 @@ import { uiBtnPrimary } from "@/lib/uiClasses";
 import SolAmount from "./SolAmount";
 import Avatar from "./Avatar";
 import { IconFeather, IconSolana } from "@/components/icons";
-import type { Bounty } from "@/lib/types";
+import type { Bounty, BountyParticipant, BountyProofMedia } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
   funding: "Awaiting deposit",
   open: "Open",
   assigned: "In progress",
-  submitted: "Proof submitted",
+  submitted: "Proofs to review",
   paid: "Paid",
   cancelled: "Cancelled",
+  expired: "Expired",
 };
 
 const KIND_LABEL: Record<string, string> = {
@@ -29,6 +30,85 @@ const KIND_LABEL: Record<string, string> = {
   intel: "Intel",
   coord: "Coordination",
 };
+
+function ProofMediaGrid({ media }: { media: BountyProofMedia[] }) {
+  if (!media.length) return null;
+  return (
+    <div className="mt-2 flex flex-wrap gap-2">
+      {media.map((m, i) =>
+        m.type === "video" && !m.url.startsWith("data:") ? (
+          <a
+            key={i}
+            href={m.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg border border-line bg-surface/50 px-3 py-2 text-[11px] text-bull hover:underline"
+          >
+            Watch video →
+          </a>
+        ) : m.type === "video" ? (
+          <video key={i} src={m.url} controls className="max-h-40 max-w-full rounded-lg border border-line" />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img key={i} src={m.url} alt="" className="max-h-40 max-w-[160px] rounded-lg border border-line object-cover" />
+        ),
+      )}
+    </div>
+  );
+}
+
+function ParticipantProof({
+  participant,
+  onApprove,
+  onReject,
+  busy,
+}: {
+  participant: BountyParticipant;
+  onApprove: () => void;
+  onReject: () => void;
+  busy: boolean;
+}) {
+  return (
+    <div className="rounded-xl border border-bull/20 bg-bull/5 p-3">
+      <div className="flex items-center gap-2">
+        {participant.profile && (
+          <Avatar
+            seed={participant.profile.avatar_seed}
+            avatarUrl={participant.profile.avatar_url}
+            label={participant.profile.codename}
+            size={28}
+            verified={participant.profile.is_verified}
+          />
+        )}
+        <Link href={`/app/u/${participant.profile?.codename}`} className="text-[12px] font-semibold hover:text-bull">
+          @{participant.profile?.codename ?? "…"}
+        </Link>
+      </div>
+      {participant.proof_text && (
+        <p className="mt-2 whitespace-pre-wrap text-[12px] text-foreground">{participant.proof_text}</p>
+      )}
+      <ProofMediaGrid media={participant.proof_media ?? []} />
+      <div className="mt-3 flex gap-2">
+        <button
+          type="button"
+          onClick={onApprove}
+          disabled={busy}
+          className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-3 py-2 text-[11px] font-bold text-black disabled:opacity-60`}
+        >
+          Approve & pay pool
+        </button>
+        <button
+          type="button"
+          onClick={onReject}
+          disabled={busy}
+          className="ui-btn flex-1 rounded-lg border border-line px-3 py-2 text-[11px] font-semibold text-muted disabled:opacity-60"
+        >
+          Reject
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function BountyCard({
   bounty,
@@ -49,19 +129,29 @@ export default function BountyCard({
   const { sendDeposit } = useSolanaDeposit();
   const { wallets } = useSolanaWallets();
   const wallet = wallets[0];
+  const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [proof, setProof] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [media, setMedia] = useState<BountyProofMedia[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [contribAmount, setContribAmount] = useState("0.1");
   const [error, setError] = useState<string | null>(null);
 
   const sol = lamportsToSol(bounty.reward_sol_lamports);
   const role = bounty.my_role;
+  const myParticipant = bounty.my_participant;
+  const expired = isBountyExpired(bounty) || bounty.status === "expired";
+  const expiryLabel = expiresInLabel(bounty.expires_at);
   const isOfficial =
     bounty.is_official ||
     bounty.creator?.codename === "blackcrow_official" ||
     bounty.creator?.codename === "blackcrow";
-  const canApprove = bounty.status === "submitted" && role === "creator";
-  const poolOpen = canContributeToPool(bounty.status, bounty.is_official);
+  const pendingSubmissions =
+    bounty.participants?.filter((p) => p.status === "submitted") ?? [];
+  const canApprove = role === "creator" && pendingSubmissions.length > 0 && bounty.status !== "paid";
+  const poolOpen = canContributeToPool(bounty.status, bounty.is_official, bounty.expires_at);
+  const canJoin = canAcceptBounty(bounty) && !myParticipant && role !== "creator";
   const helperFeathers = helperInfluenceFromLamports(bounty.reward_sol_lamports);
   const othersSol =
     bounty.contributions_lamports && bounty.contributions_lamports > 0
@@ -138,36 +228,63 @@ export default function BountyCard({
 
   async function accept() {
     const res = await run(() =>
-      api<{ status: string }>(`/api/bounties/${bounty.id}/accept`, { method: "POST" }),
+      api<{ bounty?: Bounty }>(`/api/bounties/${bounty.id}/accept`, { method: "POST" }),
     );
-    if (res) onUpdate({ ...bounty, status: "assigned", my_role: "helper" });
+    if (res?.bounty) onUpdate(res.bounty);
+  }
+
+  async function uploadMedia(file: File) {
+    setUploading(true);
+    setError(null);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await api<{ type: "image" | "video"; url: string }>("/api/bounties/proof-media", {
+        method: "POST",
+        body: form,
+      });
+      setMedia((prev) => [...prev, { type: res.type, url: res.url }].slice(0, 6));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed.");
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function submitProof() {
     const res = await run(() =>
-      api<{ status: string }>(`/api/bounties/${bounty.id}/submit`, {
+      api<{ bounty?: Bounty }>(`/api/bounties/${bounty.id}/submit`, {
         method: "POST",
-        body: JSON.stringify({ proof }),
+        body: JSON.stringify({ proof, media, video_url: videoUrl || undefined }),
       }),
     );
-    if (res) onUpdate({ ...bounty, status: "submitted", proof });
+    if (res?.bounty) {
+      setProof("");
+      setMedia([]);
+      setVideoUrl("");
+      onUpdate(res.bounty);
+    }
   }
 
-  async function approve() {
+  async function approveParticipant(participantId: string) {
     const res = await run(() =>
-      api<{ payout_tx: string }>(`/api/bounties/${bounty.id}/approve`, { method: "POST" }),
-    );
-    if (res) onUpdate({ ...bounty, status: "paid", payout_tx: res.payout_tx });
-  }
-
-  async function reject() {
-    const res = await run(() =>
-      api(`/api/bounties/${bounty.id}/reject`, {
+      api<{ bounty?: Bounty; payout_tx: string }>(`/api/bounties/${bounty.id}/approve`, {
         method: "POST",
-        body: JSON.stringify({ reason: "Needs better proof." }),
+        body: JSON.stringify({ participant_id: participantId }),
       }),
     );
-    if (res) onUpdate({ ...bounty, status: "assigned", proof: null });
+    if (res?.bounty) onUpdate(res.bounty);
+    else if (res) onUpdate({ ...bounty, status: "paid", payout_tx: res.payout_tx });
+  }
+
+  async function rejectParticipant(participantId: string) {
+    const res = await run(() =>
+      api<{ bounty?: Bounty }>(`/api/bounties/${bounty.id}/reject`, {
+        method: "POST",
+        body: JSON.stringify({ participant_id: participantId, reason: "Needs better proof." }),
+      }),
+    );
+    if (res?.bounty) onUpdate(res.bounty);
   }
 
   return (
@@ -213,11 +330,23 @@ export default function BountyCard({
                 ? "bg-bull/10 text-bull"
                 : bounty.status === "paid"
                   ? "bg-white/10 text-foreground"
-                  : "bg-white/5 text-faint"
+                  : expired
+                    ? "bg-bear/10 text-bear"
+                    : "bg-white/5 text-faint"
             }`}
           >
-            {STATUS_LABEL[bounty.status] ?? bounty.status}
+            {expired ? "Expired" : (STATUS_LABEL[bounty.status] ?? bounty.status)}
           </span>
+          {expiryLabel && !expired && (
+            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-faint">
+              {expiryLabel}
+            </span>
+          )}
+          {(bounty.participant_count ?? 0) > 0 && (
+            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-faint">
+              {bounty.participant_count} joined
+            </span>
+          )}
         </div>
         <div className="text-right">
           <SolAmount amount={sol} className="font-mono text-lg font-bold text-bull" iconClassName="h-4 w-4" />
@@ -225,7 +354,7 @@ export default function BountyCard({
             {!isOfficial && (
               <>
                 +{helperFeathers}
-                <IconFeather className="h-3 w-3 text-bull" /> helper
+                <IconFeather className="h-3 w-3 text-bull" /> winner
               </>
             )}
           </p>
@@ -234,17 +363,17 @@ export default function BountyCard({
 
       {!isOfficial && bounty.status !== "funding" && (
         <p className="mt-2 text-[11px] text-faint">
-          Pool
+          Reward pool
           {othersSol ? (
             <>
               {" · +"}
               <SolAmount amount={othersSol} className="font-mono text-faint" iconClassName="h-3 w-3" />
-              {` from ${bounty.contribution_count ?? 0} contributor(s)`}
+              {` boosted by ${bounty.contribution_count ?? 0} contributor(s)`}
             </>
           ) : (
-            ""
+            " · anyone can boost with SOL"
           )}
-          {role === "creator" && bounty.status === "submitted" && " · You decide approve/reject"}
+          {role === "creator" && pendingSubmissions.length > 0 && " · you pick who gets paid"}
         </p>
       )}
 
@@ -271,9 +400,16 @@ export default function BountyCard({
         </div>
       )}
 
+      {bounty.expires_at && (
+        <p className="mt-2 text-[10px] text-faint">
+          Deadline: {new Date(bounty.expires_at).toLocaleString()}
+          {bounty.market?.end_date ? " (linked to market close)" : ""}
+        </p>
+      )}
+
       {bounty.contributions && bounty.contributions.length > 0 && (
         <div className="mt-3 rounded-lg border border-line bg-surface/30 px-3 py-2">
-          <p className="section-label">Pool contributions</p>
+          <p className="section-label">Pool boosts</p>
           <div className="mt-2 space-y-1.5">
             {bounty.contributions.slice(0, 4).map((c) => (
               <div key={c.id} className="flex items-center justify-between text-[11px]">
@@ -291,10 +427,19 @@ export default function BountyCard({
         </div>
       )}
 
-      {bounty.proof && bounty.status !== "assigned" && (
-        <div className="mt-3 rounded-lg border border-bull/20 bg-bull/5 px-3 py-2">
-          <p className="section-label">Proof</p>
-          <p className="mt-1 whitespace-pre-wrap text-[12px] text-foreground">{bounty.proof}</p>
+      {bounty.participants && bounty.participants.length > 0 && role !== "creator" && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {bounty.participants.slice(0, 6).map((p) => (
+            <span
+              key={p.id}
+              className={`rounded-md px-2 py-0.5 text-[10px] ${
+                p.status === "submitted" ? "bg-bull/10 text-bull" : "bg-white/5 text-faint"
+              }`}
+            >
+              @{p.profile?.codename ?? "…"}
+              {p.status === "submitted" ? " · proof in" : p.status === "approved" ? " · paid" : ""}
+            </span>
+          ))}
         </div>
       )}
 
@@ -311,13 +456,6 @@ export default function BountyCard({
             {bounty.creator.codename}
           </Link>
         )}
-        {bounty.helper && (
-          <Link href={`/app/u/${bounty.helper.codename}`} className="flex items-center gap-1 hover:text-foreground">
-            →{" "}
-            <Avatar seed={bounty.helper.avatar_seed} avatarUrl={bounty.helper.avatar_url} label={bounty.helper.codename} size={18} />
-            {bounty.helper.codename}
-          </Link>
-        )}
       </div>
 
       {error && <p className="mt-3 text-[12px] text-bear">{error}</p>}
@@ -331,7 +469,7 @@ export default function BountyCard({
           }}
           className="ui-btn mt-3 w-full rounded-lg border border-bull/30 bg-bull/5 px-3 py-2 text-[11px] font-bold text-bull hover:bg-bull/10"
         >
-          SHARE TO WAR ROOM
+          POST TO HOME
         </button>
       )}
 
@@ -360,10 +498,11 @@ export default function BountyCard({
         )}
 
         {poolOpen && role !== "creator" && (
-          <div className="rounded-xl border border-line bg-surface/30 p-3">
-            <p className="text-[11px] font-semibold text-muted">Boost the pool</p>
+          <div className="rounded-xl border border-bull/20 bg-bull/5 p-3">
+            <p className="text-[11px] font-semibold text-foreground">Boost the reward pool</p>
             <p className="mt-1 text-[10px] leading-relaxed text-faint">
-              Add to increase the reward. Only {bounty.creator?.codename ?? "the creator"} approves proof.
+              Add SOL so the winner earns more. Only {bounty.creator?.codename ?? "the creator"} decides who fulfilled
+              the job and gets paid.
             </p>
             <div className="mt-2 flex gap-2">
               <input
@@ -396,12 +535,12 @@ export default function BountyCard({
 
         {poolOpen && role === "creator" && (
           <div className="rounded-xl border border-dashed border-line px-3 py-2 text-[10px] text-faint">
-            Others can add <IconSolana className="inline h-3 w-3 align-[-2px]" /> to your pool while this is open. You keep
-            final approve/reject power.
+            Others can boost your pool with <IconSolana className="inline h-3 w-3 align-[-2px]" /> while this is open.
+            You approve who fulfilled the job and receives the full pool.
           </div>
         )}
 
-        {bounty.status === "open" && !role && (
+        {canJoin && (
           <button
             type="button"
             onClick={(e) => {
@@ -411,27 +550,66 @@ export default function BountyCard({
             disabled={busy}
             className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
           >
-            {busy ? "…" : "I'LL DO IT — ACCEPT BOUNTY"}
+            {busy ? "…" : "JOIN CHALLENGE"}
           </button>
         )}
 
-        {bounty.status === "assigned" && role === "helper" && (
+        {myParticipant?.status === "submitted" && (
+          <p className="rounded-lg border border-line bg-surface/40 px-3 py-2 text-[11px] text-muted">
+            Your proof is under review. The creator will approve or reject.
+          </p>
+        )}
+
+        {myParticipant && (myParticipant.status === "accepted" || myParticipant.status === "rejected") && !expired && (
           <>
+            <p className="text-[11px] font-semibold text-muted">Submit your proof</p>
             <textarea
               value={proof}
               onChange={(e) => setProof(e.target.value)}
               onClick={(e) => e.stopPropagation()}
-              placeholder="Proof: links, photos, what you did…"
+              placeholder="What you did, links, context…"
               rows={3}
               className="w-full resize-none rounded-xl border border-line bg-surface/60 px-3 py-2 text-[12px] text-foreground placeholder:text-faint outline-none focus:border-white/25"
             />
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*,video/mp4,video/webm"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) uploadMedia(f);
+                e.target.value = "";
+              }}
+            />
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  fileRef.current?.click();
+                }}
+                disabled={uploading || media.length >= 6}
+                className="rounded-lg border border-line px-3 py-2 text-[11px] font-semibold text-muted disabled:opacity-50"
+              >
+                {uploading ? "Uploading…" : "Add photo / video"}
+              </button>
+              <input
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                placeholder="Or paste video URL"
+                className="min-w-0 flex-1 rounded-lg border border-line bg-surface/60 px-3 py-2 text-[11px] outline-none"
+              />
+            </div>
+            {media.length > 0 && <ProofMediaGrid media={media} />}
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 submitProof();
               }}
-              disabled={busy || proof.length < 10}
+              disabled={busy || uploading || (proof.length < 10 && media.length === 0 && !videoUrl)}
               className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
             >
               {busy ? "…" : "SUBMIT PROOF"}
@@ -440,35 +618,19 @@ export default function BountyCard({
         )}
 
         {canApprove && (
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                approve();
-              }}
-              disabled={busy}
-              className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
-            >
-              {busy ? "…" : isOfficial ? (
-                <span className="inline-flex items-center justify-center gap-1">
-                  APPROVE & RELEASE <IconSolana className="h-3.5 w-3.5" />
-                </span>
-              ) : (
-                "APPROVE & PAY POOL"
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                reject();
-              }}
-              disabled={busy}
-              className="ui-btn flex-1 rounded-lg border border-line px-4 py-2.5 text-[12px] font-semibold text-muted disabled:opacity-60"
-            >
-              REJECT
-            </button>
+          <div className="space-y-3">
+            <p className="text-[11px] font-semibold text-muted">
+              Review proofs ({pendingSubmissions.length}) — pick who gets the pool
+            </p>
+            {pendingSubmissions.map((p) => (
+              <ParticipantProof
+                key={p.id}
+                participant={p}
+                busy={busy}
+                onApprove={() => approveParticipant(p.id)}
+                onReject={() => rejectParticipant(p.id)}
+              />
+            ))}
           </div>
         )}
 

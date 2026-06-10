@@ -30,7 +30,7 @@ export default function BookmarksPage() {
     <div className="mx-auto max-w-2xl border-x border-line min-h-screen">
       <header className="border-b border-line px-5 py-4">
         <h1 className="font-display text-xl font-extrabold tracking-tight">Bookmarks</h1>
-        <p className="mt-1 text-[13px] text-faint">Posts you saved from the War Room.</p>
+        <p className="mt-1 text-[13px] text-faint">Posts you saved from Home.</p>
       </header>
 
       {loading ? (
@@ -43,7 +43,7 @@ export default function BookmarksPage() {
           <p className="mt-3 text-[15px] font-bold text-foreground">No bookmarks yet</p>
           <p className="mt-1 text-[13px] text-faint">Tap the bookmark icon on any post to save it here.</p>
           <Link href="/app" className="mt-4 inline-block text-[13px] font-semibold text-bull hover:underline">
-            Go to War Room →
+            Go to Home →
           </Link>
         </div>
       ) : (

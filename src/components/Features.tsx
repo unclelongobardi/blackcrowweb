@@ -31,7 +31,7 @@ const FEATURES = [
   {
     icon: IconWarRoom,
     title: "POST YOUR TAKES",
-    desc: "War Room feed with bullish / bearish / neutral tags. Attach open bounties to posts and coordinate from one thread.",
+    desc: "Home feed with bullish / bearish / neutral tags. Attach open bounties to posts and coordinate from one thread.",
   },
   {
     icon: IconFeather,
@@ -64,7 +64,7 @@ export default function Features() {
             THEY WANT TO OWN IT.
           </p>
           <p className="mx-auto mt-5 max-w-lg text-[14px] leading-relaxed text-faint">
-            Connect a Solana wallet, enter the War Room, and run coordinated plays on prediction
+            Connect a Solana wallet, open Home, and run coordinated plays on prediction
             markets—bounties in SOL, cabals for alignment, Feathers for rank.
           </p>
         </motion.div>

@@ -79,7 +79,7 @@ export default function AuthControls() {
             onClick={() => setOpen(false)}
             className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
           >
-            <IconTarget className="h-4 w-4" /> War Room
+            <IconTarget className="h-4 w-4" /> Home
           </Link>
           <Link
             href="/app/profile"

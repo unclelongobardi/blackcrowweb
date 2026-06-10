@@ -51,8 +51,8 @@ export default function PrivacyContent() {
         Feathers (influence score), verification flags, and onboarding timestamps stored in our database.
       </P>
       <P>
-        <strong className="text-foreground">Content & social</strong> — War Room posts, sentiment tags, bounty
-        attachments, cabal membership, direct messages, follows, notifications, search queries, and bounty/cabal
+        <strong className="text-foreground">Content & social</strong> — Home posts, sentiment tags, bounty
+        attachments, cabal membership, chat messages, follows, notifications, search queries, and bounty/cabal
         actions you perform in-app.
       </P>
       <P>
@@ -72,7 +72,7 @@ export default function PrivacyContent() {
       <H2>3. How we use information</H2>
       <Ul
         items={[
-          "Operate accounts, feeds, bounties, cabals, messages, and leaderboards.",
+          "Operate accounts, feeds, bounties, cabals, chat, and leaderboards.",
           "Process SOL bounty escrow flows you authorize.",
           "Compute Feathers, rankings, exploit scores, and market caches.",
           "Moderate abuse, enforce Terms, and protect platform integrity.",
@@ -83,7 +83,7 @@ export default function PrivacyContent() {
 
       <H2>4. What we share</H2>
       <P>
-        <strong className="text-foreground">Public by design</strong> — War Room posts, public profiles (
+        <strong className="text-foreground">Public by design</strong> — Home posts, public profiles (
         <code className="font-mono text-[12px]">/app/u/[codename]</code>), public cabals, and leaderboard entries are
         visible to other users and may be indexed by search engines.
       </P>
@@ -148,7 +148,7 @@ export default function PrivacyContent() {
         items={[
           "Disconnect wallet and stop using the service at any time.",
           "Edit profile fields in /app/profile where available.",
-          "Use private cabals and DMs for sensitive coordination instead of the public War Room.",
+          "Use private cabals and Chat for sensitive coordination instead of the public Home timeline.",
           "Request access or deletion of off-chain account data via official contact below.",
         ]}
       />

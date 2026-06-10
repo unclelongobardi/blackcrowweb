@@ -5,7 +5,7 @@ import DocsContent from "@/components/docs/DocsContent";
 export const metadata: Metadata = {
   title: "BLACKCROW Docs — Platform guide",
   description:
-    "Detailed documentation for BLACKCROW: bounties, War Room, markets, Feathers, cabals, and Solana payouts.",
+    "Detailed documentation for BLACKCROW: bounties, Home feed, markets, Feathers, cabals, and Solana payouts.",
 };
 
 export default function DocsPage() {

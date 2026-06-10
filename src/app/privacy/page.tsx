@@ -5,7 +5,7 @@ import PrivacyContent from "@/components/legal/PrivacyContent";
 export const metadata: Metadata = {
   title: "Privacy Policy — BLACKCROW",
   description:
-    "Privacy Policy for BLACKCROW: wallet data, profiles, War Room, bounties, and $CROW token interactions.",
+    "Privacy Policy for BLACKCROW: wallet data, profiles, Home feed, bounties, and $CROW token interactions.",
 };
 
 const UPDATED = "June 9, 2026";

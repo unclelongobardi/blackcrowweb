@@ -44,7 +44,7 @@ function MessagesContent() {
         await loadConversations();
         if (activeId) await loadThread(activeId);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Could not load messages.");
+        setError(err instanceof Error ? err.message : "Could not load your chats.");
       } finally {
         setLoading(false);
       }
@@ -92,11 +92,14 @@ function MessagesContent() {
         }`}
       >
         <div className="border-b border-line px-4 py-3">
-          <h1 className="font-display text-lg font-extrabold">MESSAGES</h1>
+          <h1 className="font-display text-lg font-extrabold">Chat</h1>
+          <p className="mt-0.5 text-[11px] text-faint">Direct messages</p>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">
           {conversations.length === 0 ? (
-            <p className="px-4 py-8 text-[12px] text-faint">No conversations yet.</p>
+            <p className="px-4 py-8 text-[12px] text-faint">
+              You haven&apos;t chatted with anyone — yet. When you do, they&apos;ll show up here.
+            </p>
           ) : (
             conversations.map((c) => (
               <a
@@ -172,7 +175,7 @@ function MessagesContent() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && send()}
-                placeholder="Write a message…"
+                placeholder="Start a new message"
                 className="min-h-11 min-w-0 flex-1 rounded-xl border border-line bg-surface/60 px-4 py-2.5 text-[13px] outline-none"
               />
               <button
@@ -180,15 +183,15 @@ function MessagesContent() {
                 disabled={busy}
                 className="min-h-11 shrink-0 rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60"
               >
-                SEND
+                Send
               </button>
             </div>
           </>
         ) : (
           <div className="flex flex-1 flex-col items-center justify-center p-6 text-center sm:p-8">
-            <p className="text-[14px] font-semibold">Start a conversation</p>
+            <p className="text-[14px] font-semibold">Select a message</p>
             <p className="mt-2 text-[13px] text-faint">
-              Message someone from their profile, or enter a codename below.
+              Choose from your existing conversations, or start a new one.
             </p>
             <div className="mt-4 flex w-full max-w-sm gap-2">
               <input
@@ -201,7 +204,7 @@ function MessagesContent() {
             <input
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="First message…"
+              placeholder="Start a new message"
               className="mt-2 min-h-11 w-full max-w-sm rounded-xl border border-line bg-surface/60 px-4 py-2.5 text-[13px] outline-none"
             />
             <button
@@ -209,7 +212,7 @@ function MessagesContent() {
               disabled={busy}
               className="mt-3 min-h-11 rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-black"
             >
-              SEND
+              Send
             </button>
           </div>
         )}
