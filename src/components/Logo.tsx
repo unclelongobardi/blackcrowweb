@@ -12,11 +12,11 @@ export default function Logo({ className = "", showText = true }: LogoProps) {
       <Image
         src="/images/blackcrow-logo.png"
         alt="BLACKCROW"
-        width={showText ? 200 : 40}
-        height={40}
+        width={showText ? 240 : 48}
+        height={48}
         priority
         className={`brightness-0 invert ${
-          showText ? "h-7 w-auto sm:h-8" : "h-8 w-8 object-cover object-left"
+          showText ? "h-9 w-auto sm:h-10" : "h-9 w-9 object-cover object-left sm:h-10 sm:w-10"
         }`}
       />
     </div>

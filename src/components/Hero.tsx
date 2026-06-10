@@ -108,7 +108,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-bull animate-pulse-dot" />
             <span className="text-[11px] font-medium tracking-[0.14em] text-muted">
-              MAKE FRIENDS · MOVE MARKETS · LIVE
+              PREDICTION MARKETS · COORDINATED EXECUTION
             </span>
           </motion.div>
 
