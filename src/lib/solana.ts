@@ -8,15 +8,12 @@ import {
 } from "@solana/web3.js";
 import bs58 from "bs58";
 import { sumActiveBountyLiability } from "./escrowLedger";
-import { getSolanaNetwork } from "./solanaExplorer";
+import { getSolanaNetwork, getSolanaRpcUrl } from "./solanaExplorer";
 import { lamportsToSol, solToLamports } from "./solanaFormat";
 
 export { lamportsToSol, solToLamports };
 
-const RPC =
-  process.env.SOLANA_RPC_URL ||
-  process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
-  "https://api.mainnet-beta.solana.com";
+const RPC = getSolanaRpcUrl();
 
 const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
 const FEE_BUFFER_LAMPORTS = BigInt(10_000);

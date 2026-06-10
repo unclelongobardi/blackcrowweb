@@ -1,5 +1,17 @@
+function envTrim(value: string | undefined): string | undefined {
+  return value?.trim() || undefined;
+}
+
 export function getSolanaNetwork(): string {
-  return process.env.SOLANA_NETWORK ?? process.env.NEXT_PUBLIC_SOLANA_NETWORK ?? "mainnet-beta";
+  return envTrim(process.env.SOLANA_NETWORK) ?? envTrim(process.env.NEXT_PUBLIC_SOLANA_NETWORK) ?? "mainnet-beta";
+}
+
+export function getSolanaRpcUrl(): string {
+  return (
+    envTrim(process.env.SOLANA_RPC_URL) ??
+    envTrim(process.env.NEXT_PUBLIC_SOLANA_RPC_URL) ??
+    "https://api.mainnet-beta.solana.com"
+  );
 }
 
 export function solscanTxUrl(signature: string): string {
