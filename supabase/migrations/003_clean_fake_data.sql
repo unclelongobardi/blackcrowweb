@@ -1,13 +1,4 @@
--- Remove all demo/fake content. Safe to run multiple times.
+-- Legacy one-time cleanup. Intentionally empty on re-run so user posts are never wiped.
+-- (Original version deleted all posts/bounties/cabals — removed to preserve live data.)
 
-delete from post_votes;
-delete from posts;
-delete from operation_joins;
-delete from operations;
-delete from cabal_members;
-delete from cabals;
-delete from bounties;
-delete from notifications where profile_id in (
-  select id from profiles where privy_did like 'seed:%'
-);
-delete from profiles where privy_did like 'seed:%';
+select 1;

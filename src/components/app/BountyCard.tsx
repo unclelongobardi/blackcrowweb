@@ -143,6 +143,7 @@ export default function BountyCard({
   const myParticipant = bounty.my_participant;
   const expired = isBountyExpired(bounty) || bounty.status === "expired";
   const expiryLabel = expiresInLabel(bounty.expires_at);
+  const isWorldCup = bounty.collection === "world_cup";
   const isOfficial =
     bounty.is_official ||
     bounty.creator?.codename === "blackcrow_official" ||
@@ -320,6 +321,11 @@ export default function BountyCard({
               />
               <span className="text-[10px] font-semibold text-foreground">blackcrow_official</span>
             </Link>
+          )}
+          {isWorldCup && (
+            <span className="rounded-md bg-bull/15 px-2 py-0.5 text-[10px] font-bold tracking-wide text-bull">
+              WC SPECIAL
+            </span>
           )}
           <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
             {KIND_LABEL[bounty.kind] ?? bounty.kind}

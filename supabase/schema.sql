@@ -168,7 +168,8 @@ create table if not exists bounties (
   paid_at             timestamptz,
   is_official         boolean not null default false,
   creator_base_lamports bigint,
-  expires_at          timestamptz
+  expires_at          timestamptz,
+  collection          text
 );
 
 create table if not exists bounty_participants (
@@ -249,6 +250,11 @@ create index if not exists idx_posts_created    on posts(created_at desc);
 create index if not exists idx_posts_market     on posts(market_id);
 create index if not exists idx_posts_operation  on posts(operation_id);
 create index if not exists idx_posts_parent     on posts(parent_id);
+
+create table if not exists schema_migrations (
+  name       text primary key,
+  applied_at timestamptz not null default now()
+);
 create index if not exists idx_operations_status on operations(status);
 create index if not exists idx_profiles_influence on profiles(influence desc);
 create index if not exists idx_cabal_members_profile on cabal_members(profile_id);

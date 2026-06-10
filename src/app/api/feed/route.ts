@@ -85,8 +85,12 @@ async function attachThreadPreview(posts: Post[]) {
   return enriched;
 }
 
+const NO_STORE = { headers: { "Cache-Control": "no-store, max-age=0" } };
+
 export async function GET(request: Request) {
-  if (!isDbConfigured()) return NextResponse.json({ posts: [] });
+  if (!isDbConfigured()) {
+    return NextResponse.json({ error: "Database not configured.", posts: [] }, { status: 503, ...NO_STORE });
+  }
   const url = new URL(request.url);
   const operationId = url.searchParams.get("operation_id");
   const marketId = url.searchParams.get("market_id");
@@ -112,7 +116,9 @@ export async function GET(request: Request) {
     conditions.push(`p.market_id = $${params.length}`);
   }
 
-  let posts = await query<Post>(
+  let posts: Post[];
+  try {
+    posts = await query<Post>(
     `select p.*,
         row_to_json(a) as author,
         case when c.id is not null then row_to_json(c) else null end as cabal,
@@ -145,14 +151,24 @@ export async function GET(request: Request) {
       limit 50`,
     params,
   );
+  } catch (err) {
+    console.error("[feed GET]", err);
+    return NextResponse.json(
+      { error: "Failed to load feed.", posts: [] },
+      { status: 500, ...NO_STORE },
+    );
+  }
 
   posts = await attachPollData(posts, myId);
   posts = await attachThreadPreview(posts);
 
-  return NextResponse.json({ posts });
+  return NextResponse.json({ posts }, NO_STORE);
 }
 
 export async function POST(request: Request) {
+  if (!isDbConfigured()) {
+    return NextResponse.json({ error: "Database not configured." }, { status: 503 });
+  }
   const ctx = await getAuthedProfile(request);
   if (!ctx) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -207,23 +223,33 @@ export async function POST(request: Request) {
     await upsertMarket(body.market as Market);
   }
 
-  const post = await queryOne<Post>(
-    `insert into posts (author_id, content, sentiment, market_id, operation_id, cabal_id, bounty_id, parent_id, image_url, kind)
-     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-     returning *`,
-    [
-      ctx.profile.id,
-      content,
-      sentiment,
-      marketId,
-      body.operation_id ?? null,
-      cabalId,
-      body.bounty_id ?? null,
-      parentId,
-      imageUrl,
-      kind,
-    ],
-  );
+  let post: Post | null;
+  try {
+    post = await queryOne<Post>(
+      `insert into posts (author_id, content, sentiment, market_id, operation_id, cabal_id, bounty_id, parent_id, image_url, kind)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+       returning *`,
+      [
+        ctx.profile.id,
+        content,
+        sentiment,
+        marketId,
+        body.operation_id ?? null,
+        cabalId,
+        body.bounty_id ?? null,
+        parentId,
+        imageUrl,
+        kind,
+      ],
+    );
+  } catch (err) {
+    console.error("[feed POST insert]", err);
+    return NextResponse.json({ error: "Failed to save post." }, { status: 500 });
+  }
+
+  if (!post) {
+    return NextResponse.json({ error: "Failed to save post." }, { status: 500 });
+  }
 
   if (isPoll && post && !parentId) {
     await query("insert into post_polls (post_id, options) values ($1, $2)", [

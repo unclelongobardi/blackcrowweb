@@ -189,6 +189,7 @@ export type Bounty = {
   participants?: BountyParticipant[];
   participant_count?: number;
   my_participant?: BountyParticipant | null;
+  collection?: string | null;
 };
 
 export type BountyContribution = {

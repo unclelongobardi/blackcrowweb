@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
 import BountyCard from "@/components/app/BountyCard";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
+import WorldCupBountiesSection, { splitWorldCupBounties } from "@/components/app/WorldCupBountiesSection";
 import { IconTarget } from "@/components/icons";
 import type { Bounty } from "@/lib/types";
 
@@ -54,10 +55,18 @@ function BountiesContent() {
     }
   }, [bounties.length]);
 
+  const { worldCup, rest } = useMemo(() => splitWorldCupBounties(bounties), [bounties]);
+
   const filtered = useMemo(() => {
-    if (statusFilter === "all") return bounties;
-    return bounties.filter((b) => b.status === statusFilter);
-  }, [bounties, statusFilter]);
+    const base = rest;
+    if (statusFilter === "all") return base;
+    return base.filter((b) => b.status === statusFilter);
+  }, [rest, statusFilter]);
+
+  const filteredWorldCup = useMemo(() => {
+    if (statusFilter === "all") return worldCup;
+    return worldCup.filter((b) => b.status === statusFilter);
+  }, [worldCup, statusFilter]);
 
   const openCount = bounties.filter((b) => b.status === "open").length;
 
@@ -73,7 +82,7 @@ function BountiesContent() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-5">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-5">
       <header className="mb-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -131,13 +140,27 @@ function BountiesContent() {
         ))}
       </div>
 
+      {!loading && filteredWorldCup.length > 0 && (
+        <div className="mb-8">
+          <WorldCupBountiesSection
+            bounties={bounties}
+            onUpdate={(updated) => setBounties((prev) => prev.map((x) => (x.id === updated.id ? updated : x)))}
+            onShare={handleShareToWarRoom}
+          />
+        </div>
+      )}
+
+      {!loading && filteredWorldCup.length > 0 && (
+        <h2 className="mb-4 text-[11px] font-bold tracking-[0.18em] text-muted">ALL BOUNTIES</h2>
+      )}
+
       {loading ? (
         <div className="space-y-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-64 animate-pulse rounded-2xl border border-line bg-surface/30" />
           ))}
         </div>
-      ) : filtered.length === 0 ? (
+      ) : filtered.length === 0 && filteredWorldCup.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-line py-20 text-center">
           <IconTarget className="mx-auto h-8 w-8 text-faint" />
           <p className="mt-3 text-[15px] font-bold text-foreground">No bounties here</p>

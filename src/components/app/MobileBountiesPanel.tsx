@@ -6,6 +6,8 @@ import { lamportsToSol } from "@/lib/solanaFormat";
 import { uiBtnPrimary, uiRow } from "@/lib/uiClasses";
 import Avatar from "./Avatar";
 import SolAmount from "./SolAmount";
+import WorldCupBountiesButton from "./WorldCupBountiesButton";
+import { splitWorldCupBounties } from "./WorldCupBountiesSection";
 import type { Bounty } from "@/lib/types";
 
 export default function MobileBountiesPanel({
@@ -26,9 +28,15 @@ export default function MobileBountiesPanel({
   onUpdate: (b: Bounty) => void;
 }) {
   const open = bounties.filter((b) => b.status === "open");
+  const { worldCup } = splitWorldCupBounties(bounties);
 
   return (
     <div className="pb-6">
+      {worldCup.length > 0 && (
+        <div className="mx-4 mt-4">
+          <WorldCupBountiesButton />
+        </div>
+      )}
       <div className="border-b border-line p-4">
         <h2 className="font-display text-lg font-extrabold tracking-tight text-foreground">Bounties</h2>
         <p className="mt-1 text-[12px] text-muted">

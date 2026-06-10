@@ -29,14 +29,20 @@ export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [markets, setMarkets] = useState<Market[]>([]);
   const [loading, setLoading] = useState(true);
+  const [feedError, setFeedError] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [attachedBounty, setAttachedBounty] = useState<Bounty | null>(null);
   const [selectedBountyId, setSelectedBountyId] = useState<string | null>(null);
   const [mobileTab, setMobileTab] = useState<MobileTab>("war");
 
   const loadFeed = useCallback(async () => {
-    const data = await api<{ posts: Post[] }>("/api/feed");
-    setPosts(data.posts);
+    try {
+      setFeedError(null);
+      const data = await api<{ posts: Post[] }>("/api/feed");
+      setPosts(data.posts);
+    } catch (err) {
+      setFeedError(err instanceof Error ? err.message : "Could not load posts.");
+    }
   }, [api]);
 
   useEffect(() => {
@@ -48,14 +54,21 @@ export default function HomePage() {
         ]);
         setBounties(b.bounties);
         setMarkets(m.markets);
-        await loadFeed();
       } catch {
-        /* ignore */
-      } finally {
-        setLoading(false);
+        /* non-fatal */
       }
+      await loadFeed();
+      setLoading(false);
     })();
   }, [api, loadFeed]);
+
+  useEffect(() => {
+    function onVisible() {
+      if (document.visibilityState === "visible") loadFeed();
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [loadFeed]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -184,6 +197,19 @@ export default function HomePage() {
               See what&apos;s happening — post your take, attach a bounty, or coordinate a play.
             </p>
           </div>
+
+          {feedError && (
+            <div className="border-b border-line px-4 py-3 sm:px-5">
+              <p className="text-[12px] text-bear">{feedError}</p>
+              <button
+                type="button"
+                onClick={() => loadFeed()}
+                className="mt-2 text-[11px] font-semibold text-bull hover:underline"
+              >
+                Retry
+              </button>
+            </div>
+          )}
 
           {loading ? (
             <div className="flex justify-center py-16">

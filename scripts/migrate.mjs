@@ -1,6 +1,7 @@
-// Runs supabase/schema.sql then supabase/seed.sql against the Neon database.
+// Runs supabase/schema.sql then pending migrations against Neon/Postgres.
 // Usage: node scripts/migrate.mjs
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import pg from "pg";
 
 function loadEnvLocal() {
@@ -30,38 +31,79 @@ if (!url) {
   process.exit(1);
 }
 
+const MIGRATION_FILES = readdirSync(join("supabase", "migrations"))
+  .filter((f) => f.endsWith(".sql"))
+  .sort();
+
 const client = new pg.Client({ connectionString: url, ssl: { rejectUnauthorized: false } });
+
+async function ensureMigrationsTable() {
+  await client.query(`
+    create table if not exists schema_migrations (
+      name text primary key,
+      applied_at timestamptz not null default now()
+    )
+  `);
+}
+
+async function getApplied() {
+  const { rows } = await client.query("select name from schema_migrations");
+  return new Set(rows.map((r) => r.name));
+}
+
+async function recordMigration(name) {
+  await client.query(
+    "insert into schema_migrations (name) values ($1) on conflict (name) do nothing",
+    [name],
+  );
+}
+
+async function bootstrapExistingDb(applied) {
+  const { rows } = await client.query("select 1 from profiles limit 1");
+  if (!rows.length) return false;
+
+  console.log("Existing database detected — bootstrapping migration history (no re-run).");
+  for (const file of MIGRATION_FILES) {
+    if (!applied.has(file)) await recordMigration(file);
+  }
+  return true;
+}
 
 const run = async () => {
   await client.connect();
   console.log("Connected. Applying schema…");
   await client.query(readFileSync("supabase/schema.sql", "utf8"));
-  console.log("Applying migrations…");
-  for (const file of [
-    "002_bounty_escrow.sql",
-    "003_clean_fake_data.sql",
-    "004_official_bounties.sql",
-    "005_social_upgrade.sql",
-    "006_bounty_pool.sql",
-    "007_post_bounty.sql",
-    "008_avatar_url_official_cabal.sql",
-    "009_post_cabal.sql",
-    "010_post_extras.sql",
-    "011_post_engagement.sql",
-    "012_bounty_multi_expiry.sql",
-    "013_official_bounties_refresh.sql",
-  ]) {
+
+  await ensureMigrationsTable();
+  let applied = await getApplied();
+
+  if (applied.size === 0) {
+    const bootstrapped = await bootstrapExistingDb(applied);
+    if (bootstrapped) applied = await getApplied();
+  }
+
+  console.log("Applying pending migrations…");
+  for (const file of MIGRATION_FILES) {
+    if (applied.has(file)) continue;
+    const sql = readFileSync(join("supabase", "migrations", file), "utf8");
     try {
-      await client.query(readFileSync(`supabase/migrations/${file}`, "utf8"));
+      await client.query(sql);
+      await recordMigration(file);
+      console.log("  ✓", file);
     } catch (err) {
-      console.warn(`Migration ${file}:`, err.message);
+      console.warn(`  ✗ ${file}:`, err.message);
     }
   }
-  console.log("Schema applied. Seeding…");
+
+  console.log("Seeding…");
   await client.query(readFileSync("supabase/seed.sql", "utf8"));
-  console.log("Seed applied.");
+
   const { rows } = await client.query(
-    "select (select count(*) from profiles) as profiles, (select count(*) from cabals) as cabals, (select count(*) from bounties) as bounties",
+    `select
+       (select count(*) from profiles) as profiles,
+       (select count(*) from cabals) as cabals,
+       (select count(*) from bounties) as bounties,
+       (select count(*) from posts) as posts`,
   );
   console.log("Row counts:", rows[0]);
   await client.end();
