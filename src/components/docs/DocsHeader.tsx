@@ -5,8 +5,8 @@ import Logo from "@/components/Logo";
 import AuthControls from "@/components/AuthControls";
 import CopyButton from "@/components/CopyButton";
 import { IconTwitterX, IconArrow } from "@/components/icons";
+import { TWITTER_URL } from "@/lib/links";
 
-const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL ?? "https://x.com/";
 const TOKEN_CA = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() ?? "";
 
 export default function DocsHeader() {

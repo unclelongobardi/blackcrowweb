@@ -4,14 +4,15 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { IconArrow, IconX, IconDiscord, IconTelegram, IconGlobe } from "./icons";
+import { TWITTER_URL } from "@/lib/links";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const SOCIALS = [
-  { icon: IconX, label: "X" },
-  { icon: IconDiscord, label: "Discord" },
-  { icon: IconTelegram, label: "Telegram" },
-  { icon: IconGlobe, label: "Website" },
+  { icon: IconX, label: "X", href: TWITTER_URL, external: true },
+  { icon: IconDiscord, label: "Discord", href: "#", external: false },
+  { icon: IconTelegram, label: "Telegram", href: "#", external: false },
+  { icon: IconGlobe, label: "Website", href: "#", external: false },
 ];
 
 export default function Footer() {
@@ -69,8 +70,11 @@ export default function Footer() {
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
-                  href="#"
+                  href={s.href}
                   aria-label={s.label}
+                  {...(s.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-white/25 hover:text-foreground"
                 >
                   <s.icon className="h-4 w-4" />

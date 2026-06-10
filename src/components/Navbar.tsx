@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import AuthControls from "./AuthControls";
 import CopyButton from "./CopyButton";
 import { IconTwitterX } from "./icons";
+import { TWITTER_URL } from "@/lib/links";
 
 const LINKS = [
   { label: "HOME", href: "#home" },
@@ -17,7 +18,6 @@ const LINKS = [
 
 const DOCS_HREF = "/docs";
 
-const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL ?? "https://x.com/";
 const TOKEN_CA = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() ?? "";
 
 export default function Navbar() {
