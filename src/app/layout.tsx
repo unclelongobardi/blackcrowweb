@@ -26,9 +26,12 @@ export const metadata: Metadata = {
   description:
     "A social network to meet people obsessed with prediction markets — the kind who want to control the game, not be controlled by someone else's. Anonymous, on Solana.",
   icons: {
-    icon: [{ url: "/images/blackcrow-mark-white.png", type: "image/png" }],
-    apple: [{ url: "/images/blackcrow-mark-white.png", type: "image/png" }],
-    shortcut: "/images/blackcrow-mark-white.png",
+    icon: [
+      { url: "/images/blackcrow-favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/images/blackcrow-favicon.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: "/images/blackcrow-favicon.png", type: "image/png" }],
+    shortcut: "/images/blackcrow-favicon.png",
   },
   openGraph: {
     title: "BLACKCROW",
