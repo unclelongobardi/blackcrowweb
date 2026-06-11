@@ -25,14 +25,6 @@ export const metadata: Metadata = {
   title: "BLACKCROW — Manipulate Markets. Earn Rewards. Start Your Cabal.",
   description:
     "A social network to meet people obsessed with prediction markets — the kind who want to control the game, not be controlled by someone else's. Anonymous, on Solana.",
-  icons: {
-    icon: [
-      { url: "/images/blackcrow-favicon.png", type: "image/png", sizes: "32x32" },
-      { url: "/images/blackcrow-favicon.png", type: "image/png", sizes: "192x192" },
-    ],
-    apple: [{ url: "/images/blackcrow-favicon.png", type: "image/png" }],
-    shortcut: "/images/blackcrow-favicon.png",
-  },
   openGraph: {
     title: "BLACKCROW",
     description: "Manipulate markets. Earn rewards. Start your cabal.",

@@ -58,5 +58,3 @@ async function toWhiteTransparent(inputPath, outputPath, size) {
 
 console.log("source", input);
 await toWhiteTransparent(input, path.join(root, "public", "images", "blackcrow-mark-white.png"), 512);
-await toWhiteTransparent(input, path.join(root, "src", "app", "icon.png"), 32);
-await toWhiteTransparent(input, path.join(root, "src", "app", "apple-icon.png"), 180);
