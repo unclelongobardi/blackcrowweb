@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import Logo from "@/components/Logo";
+import TokenCaChip from "@/components/TokenCaChip";
 import { truncateAddress } from "@/lib/user";
 import { uiNav, uiBtn } from "@/lib/uiClasses";
 import {
@@ -41,6 +42,10 @@ export default function Sidebar() {
         <Link href="/">
           <Logo showText={false} />
         </Link>
+      </div>
+
+      <div className="border-b border-line px-3 py-3">
+        <TokenCaChip variant="inline" label="CA" />
       </div>
 
       <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-4">

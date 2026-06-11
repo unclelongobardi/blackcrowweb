@@ -8,6 +8,7 @@ import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
 import { useApi } from "@/lib/useApi";
 import { uiPress } from "@/lib/uiClasses";
+import TokenCaChip from "@/components/TokenCaChip";
 import { IconSearch, IconBell, IconMail, IconChevronDown } from "@/components/icons";
 
 export default function TopBar() {
@@ -60,6 +61,7 @@ export default function TopBar() {
       </form>
 
       <div className="ml-auto flex shrink-0 items-center gap-1.5">
+        <TokenCaChip className="hidden shrink-0 md:flex" />
         <button
           type="button"
           aria-label="Notifications"

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import TokenCaChip from "@/components/TokenCaChip";
 
 const SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -478,13 +479,14 @@ export default function DocsContent() {
 
         <DocSection id="token" title="Token ($CROW)">
           <p>
-            The project token on Solana is <strong className="text-foreground">$CROW</strong>. When live, the contract
-            address appears in the site header as <strong className="text-foreground">CA</strong> with a copy button.
-            Until then it shows <strong className="text-foreground">TBA</strong>.
+            The project token on Solana is <strong className="text-foreground">$CROW</strong>. The contract address
+            (CA) is shown in the site header, footer, hero, and app shell — always verify on-chain before trading.
           </p>
+          <TokenCaChip variant="panel" className="my-5" />
           <p>
-            Set <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
-            environment variables to populate it in production.
+            You can override the mint via{" "}
+            <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
+            environment variables if needed for staging.
           </p>
         </DocSection>
 
@@ -499,7 +501,7 @@ export default function DocsContent() {
               ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
               ["The Nest", "Authenticated app shell (/app and children)."],
               ["The Roost", "Leaderboard—who is consistently moving markets with the crew."],
-              ["$CROW", "Solana SPL token for the BLACKCROW project; CA shown in the site header when live."],
+              ["$CROW", "Solana SPL token for the BLACKCROW project; CA shown across the site and in docs."],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>

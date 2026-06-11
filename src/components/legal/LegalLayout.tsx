@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import TokenCaChip from "@/components/TokenCaChip";
 import { IconArrow } from "@/components/icons";
 
 export default function LegalLayout({
@@ -24,13 +25,16 @@ export default function LegalLayout({
             <span className="hidden h-4 w-px bg-line sm:block" />
             <span className="hidden text-[12px] font-bold tracking-[0.14em] text-muted sm:block">{label}</span>
           </div>
-          <Link
-            href="/"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-[11px] font-semibold text-muted transition-colors hover:text-foreground"
-          >
-            <IconArrow className="h-3.5 w-3.5 rotate-180" />
-            Home
-          </Link>
+          <div className="flex shrink-0 items-center gap-2">
+            <TokenCaChip className="hidden sm:flex" />
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-[11px] font-semibold text-muted transition-colors hover:text-foreground"
+            >
+              <IconArrow className="h-3.5 w-3.5 rotate-180" />
+              Home
+            </Link>
+          </div>
         </div>
       </header>
 

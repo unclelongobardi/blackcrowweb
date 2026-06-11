@@ -29,3 +29,11 @@ export function solscanAccountUrl(address: string): string {
   if (network === "testnet") return `${base}${address}?cluster=testnet`;
   return `${base}${address}`;
 }
+
+export function solscanTokenUrl(mint: string): string {
+  const network = getSolanaNetwork();
+  const base = "https://solscan.io/token/";
+  if (network === "devnet") return `${base}${mint}?cluster=devnet`;
+  if (network === "testnet") return `${base}${mint}?cluster=testnet`;
+  return `${base}${mint}`;
+}

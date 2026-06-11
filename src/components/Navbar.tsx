@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import AuthControls from "./AuthControls";
-import CopyButton from "./CopyButton";
+import TokenCaChip from "./TokenCaChip";
 import { IconTwitterX } from "./icons";
 import { TWITTER_URL } from "@/lib/links";
 
@@ -17,8 +17,6 @@ const LINKS = [
 ] as const;
 
 const DOCS_HREF = "/docs";
-
-const TOKEN_CA = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() ?? "";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -74,21 +72,8 @@ export default function Navbar() {
           </ul>
 
           <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
-            <div
-              className="hidden items-center gap-2 rounded-xl border border-line bg-surface/40 px-2 py-1.5 lg:flex"
-              title="Token contract address"
-            >
-              <span className="text-[10px] font-bold tracking-wide text-faint">CA</span>
-              {TOKEN_CA ? (
-                <>
-                  <span className="max-w-[120px] truncate font-mono text-[10px] text-muted xl:max-w-[160px]">
-                    {TOKEN_CA}
-                  </span>
-                  <CopyButton value={TOKEN_CA} label="Copy" />
-                </>
-              ) : (
-                <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[10px] text-faint">TBA</span>
-              )}
+            <div className="hidden items-center gap-2 lg:flex">
+              <TokenCaChip />
             </div>
 
             <a
@@ -144,13 +129,7 @@ export default function Navbar() {
                 >
                   DOCS
                 </Link>
-                <div className="mt-2 flex items-center justify-between rounded-lg border border-line bg-surface/30 px-3 py-2.5">
-                  <div>
-                    <p className="text-[10px] font-bold text-faint">CA</p>
-                    <p className="font-mono text-[11px] text-muted">{TOKEN_CA || "TBA"}</p>
-                  </div>
-                  {TOKEN_CA && <CopyButton value={TOKEN_CA} />}
-                </div>
+                <TokenCaChip variant="inline" className="mt-2" />
                 <a
                   href={TWITTER_URL}
                   target="_blank"

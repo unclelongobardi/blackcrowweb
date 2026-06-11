@@ -3,11 +3,9 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import AuthControls from "@/components/AuthControls";
-import CopyButton from "@/components/CopyButton";
+import TokenCaChip from "@/components/TokenCaChip";
 import { IconTwitterX, IconArrow } from "@/components/icons";
 import { TWITTER_URL } from "@/lib/links";
-
-const TOKEN_CA = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() ?? "";
 
 export default function DocsHeader() {
   return (
@@ -22,20 +20,7 @@ export default function DocsHeader() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <div
-            className="hidden items-center gap-2 rounded-xl border border-line bg-surface/40 px-2 py-1.5 lg:flex"
-            title="Token contract address"
-          >
-            <span className="text-[10px] font-bold tracking-wide text-faint">CA</span>
-            {TOKEN_CA ? (
-              <>
-                <span className="max-w-[140px] truncate font-mono text-[10px] text-muted">{TOKEN_CA}</span>
-                <CopyButton value={TOKEN_CA} label="Copy" />
-              </>
-            ) : (
-              <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[10px] text-faint">TBA</span>
-            )}
-          </div>
+          <TokenCaChip className="hidden shrink-0 md:flex" />
 
           <a
             href={TWITTER_URL}

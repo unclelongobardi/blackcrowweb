@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import Logo from "@/components/Logo";
+import TokenCaChip from "@/components/TokenCaChip";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import Onboarding from "./Onboarding";
@@ -95,6 +96,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           >
             Back home
           </Link>
+        </div>
+        <div className="mt-6 w-full max-w-md">
+          <TokenCaChip variant="panel" />
         </div>
       </div>
     );

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { usePrivy } from "@privy-io/react-auth";
 import { IconArrow } from "./icons";
 import OnlineCounter from "./OnlineCounter";
+import TokenCaChip from "./TokenCaChip";
 import { pct, shortLabel } from "@/lib/format";
 import type { Market } from "@/lib/types";
 
@@ -180,6 +181,15 @@ A social network to meet people obsessed with prediction markets —
             >
               EXPLORE BLACKCROW
             </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease }}
+            className="mt-5 max-w-md"
+          >
+            <TokenCaChip variant="panel" />
           </motion.div>
 
           {/* Avatars + counter */}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import TokenCaChip from "@/components/TokenCaChip";
 import { TWITTER_URL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
@@ -88,9 +89,11 @@ export default function TermsContent() {
       <H2>5. $CROW token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">$CROW</strong>. When live, the contract address (&ldquo;CA&rdquo;) may
-        appear in the site header and documentation. Unless we publish a separate, signed token utility statement:
+        <strong className="text-foreground">$CROW</strong>. The contract address (&ldquo;CA&rdquo;) is published in the
+        site header, footer, documentation, and legal pages. Unless we publish a separate, signed token utility
+        statement:
       </P>
+      <TokenCaChip variant="panel" className="my-4" />
       <Ul
         items={[
           "$CROW is not an investment contract, security, or promise of profit.",

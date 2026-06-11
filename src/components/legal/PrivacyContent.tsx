@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { TWITTER_URL } from "@/lib/links";
+import TokenCaChip from "@/components/TokenCaChip";
+import { TWITTER_URL, TOKEN_CA } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -113,9 +114,11 @@ export default function PrivacyContent() {
       <P>
         Blockchain transactions are public and permanent. If you buy, sell, or transfer $CROW or interact with bounty
         escrow, those actions are visible on Solana explorers (e.g. Solscan) and analytics sites (e.g. Dexscreener).
-        Contract addresses displayed in the UI come from environment configuration; always verify on-chain before
-        interacting.
+        The official $CROW mint is{" "}
+        <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px] text-foreground">{TOKEN_CA}</code> —
+        always verify on-chain before interacting.
       </P>
+      <TokenCaChip variant="panel" className="my-4" />
 
       <H2>7. Cookies & local storage</H2>
       <P>

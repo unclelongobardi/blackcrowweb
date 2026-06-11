@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { IconArrow, IconTwitterX, IconDexscreener } from "./icons";
+import TokenCaChip from "./TokenCaChip";
 import { TWITTER_URL, DEXSCREENER_URL } from "@/lib/links";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -44,6 +45,7 @@ export default function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
               Coordinate market plays, fund bounties in SOL, and rank on The Roost.
             </p>
+            <TokenCaChip variant="panel" className="mt-5 max-w-md" />
           </div>
 
           <div className="w-full max-w-md">
