@@ -37,11 +37,6 @@ await writePng(path.join(root, "public", "images", "blackcrow-favicon.png"), 512
 
 const icon32 = await sharp(path.join(root, "src", "app", "icon.png")).png().toBuffer();
 const ico = await toIco([icon32], { resize: false });
-const icoTargets = [
-  path.join(root, "public", "favicon.ico"),
-  path.join(root, "src", "app", "favicon.ico"),
-];
-for (const target of icoTargets) {
-  fs.writeFileSync(target, ico);
-  console.log("wrote", path.relative(root, target));
-}
+const icoPath = path.join(root, "src", "app", "favicon.ico");
+fs.writeFileSync(icoPath, ico);
+console.log("wrote", path.relative(root, icoPath));
