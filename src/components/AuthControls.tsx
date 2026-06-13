@@ -29,7 +29,7 @@ export default function AuthControls() {
   }, [ready, authenticated, pathname, router]);
 
   if (!ready) {
-    return <div className="h-9 w-36 animate-pulse rounded-lg bg-white/[0.06]" />;
+    return <div className="h-9 w-36 animate-pulse rounded-lg bg-black/[0.05]" />;
   }
 
   if (!authenticated) {
@@ -37,13 +37,13 @@ export default function AuthControls() {
       <>
         <button
           onClick={login}
-          className="hidden rounded-lg border border-line px-4 py-2 text-[12px] font-semibold tracking-[0.12em] text-muted transition-colors hover:border-white/25 hover:text-foreground sm:block"
+          className="hidden rounded-lg border border-line px-4 py-2 text-[12px] font-semibold tracking-[0.12em] text-muted transition-colors hover:border-black/20 hover:text-foreground sm:block"
         >
           LOGIN
         </button>
         <button
           onClick={login}
-          className="group inline-flex min-h-10 items-center gap-2 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]"
+          className="group inline-flex min-h-10 items-center gap-2 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold tracking-[0.08em] text-background transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]"
         >
           <span className="sm:hidden">JOIN</span>
           <span className="hidden sm:inline">JOIN THE NETWORK</span>
@@ -57,9 +57,9 @@ export default function AuthControls() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="group flex items-center gap-2 rounded-lg border border-line bg-surface/60 py-1.5 pl-1.5 pr-3 transition-colors hover:border-white/25"
+        className="group flex items-center gap-2 rounded-lg border border-line bg-surface/60 py-1.5 pl-1.5 pr-3 transition-colors hover:border-black/20"
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-sky-400/50 to-cyan-600/50 text-[11px] font-bold text-white ring-1 ring-white/10">
+        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-sky-400/50 to-cyan-600/50 text-[11px] font-bold text-white ring-1 ring-black/10">
           {getUserInitials(user)}
         </span>
         <span className="max-w-[120px] truncate text-[12px] font-medium text-foreground">
@@ -69,7 +69,7 @@ export default function AuthControls() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-12 w-56 overflow-hidden rounded-xl glass p-1.5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
+        <div className="absolute right-0 top-12 w-56 overflow-hidden rounded-xl glass p-1.5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.12)]">
           <div className="border-b border-line px-3 py-2.5">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-faint">Connected</p>
             <p className="mt-0.5 truncate text-[13px] font-medium text-foreground">{getUserHandle(user)}</p>
@@ -77,21 +77,21 @@ export default function AuthControls() {
           <Link
             href="/app"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-black/[0.05] hover:text-foreground"
           >
             <IconTarget className="h-4 w-4" /> Home
           </Link>
           <Link
             href="/app/profile"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-black/[0.05] hover:text-foreground"
           >
             <IconUser className="h-4 w-4" /> My profile
           </Link>
           <Link
             href="/account"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground"
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] text-muted transition-colors hover:bg-black/[0.05] hover:text-foreground"
           >
             <IconWallet className="h-4 w-4" /> Wallet & account
           </Link>

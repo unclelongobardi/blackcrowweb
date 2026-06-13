@@ -41,7 +41,7 @@ export function WorldCupBountiesCompact({
           <li key={b.id}>
             <Link
               href={`/app/bounties#bounty-${b.id}`}
-              className="block px-4 py-3 hover:bg-white/[0.03]"
+              className="block px-4 py-3 hover:bg-black/[0.04]"
             >
               <p className="line-clamp-2 text-[12px] font-semibold text-foreground">{b.title}</p>
               <p className="mt-1 flex items-center gap-1.5 text-[10px] text-bull">
@@ -55,7 +55,7 @@ export function WorldCupBountiesCompact({
       {worldCup.length > limit && (
         <Link
           href="/app/bounties#world-cup-bounties"
-          className="block px-4 py-2.5 text-center text-[10px] font-bold text-bull hover:bg-white/[0.02]"
+          className="block px-4 py-2.5 text-center text-[10px] font-bold text-bull hover:bg-black/[0.03]"
         >
           VIEW ALL {worldCup.length} →
         </Link>

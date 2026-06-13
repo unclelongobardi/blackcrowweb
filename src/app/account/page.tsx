@@ -127,14 +127,14 @@ export default function AccountPage() {
           <div className="mt-7 flex gap-3">
             <button
               onClick={login}
-              className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
+              className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-background transition-transform hover:scale-[1.03]"
             >
               LOG IN / SIGN UP
               <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
             <Link
               href="/"
-              className="inline-flex items-center rounded-xl border border-line px-6 py-3.5 text-[13px] font-semibold text-foreground transition-colors hover:border-white/25"
+              className="inline-flex items-center rounded-xl border border-line px-6 py-3.5 text-[13px] font-semibold text-foreground transition-colors hover:border-black/20"
             >
               Back home
             </Link>
@@ -189,7 +189,7 @@ export default function AccountPage() {
         {/* Header */}
         <div className="flex flex-col gap-5 border-b border-line pb-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400/50 to-cyan-600/50 text-lg font-bold text-white ring-1 ring-white/10">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400/50 to-cyan-600/50 text-lg font-bold text-white ring-1 ring-black/10">
               {getUserInitials(user)}
             </span>
             <div>
@@ -255,7 +255,7 @@ export default function AccountPage() {
                   ) : (
                     <button
                       onClick={() => p.link()}
-                      className="rounded-md border border-line px-3 py-1.5 text-[11px] font-medium text-muted transition-colors hover:border-white/25 hover:text-foreground"
+                      className="rounded-md border border-line px-3 py-1.5 text-[11px] font-medium text-muted transition-colors hover:border-black/20 hover:text-foreground"
                     >
                       Link
                     </button>
@@ -284,7 +284,7 @@ export default function AccountPage() {
                   <p className="text-[13px] text-muted">No Solana wallet connected.</p>
                   <button
                     onClick={() => linkWallet()}
-                    className="mt-3 rounded-lg bg-foreground px-3 py-2 text-[12px] font-bold text-black transition-transform hover:scale-[1.03]"
+                    className="mt-3 rounded-lg bg-foreground px-3 py-2 text-[12px] font-bold text-background transition-transform hover:scale-[1.03]"
                   >
                     Connect wallet
                   </button>
@@ -327,7 +327,7 @@ export default function AccountPage() {
               <p className="mt-1 text-[12px] text-faint">Back a market to start building your track record.</p>
               <Link
                 href="/#feed"
-                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-[12px] font-semibold text-foreground transition-colors hover:border-white/25"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-[12px] font-semibold text-foreground transition-colors hover:border-black/20"
               >
                 Explore markets <IconArrow className="h-3.5 w-3.5" />
               </Link>
@@ -359,7 +359,7 @@ export default function AccountPage() {
               )}
               <button
                 onClick={verifySession}
-                className="mt-2 rounded-lg border border-line px-3 py-2 text-[12px] font-sans font-semibold text-muted transition-colors hover:border-white/25 hover:text-foreground"
+                className="mt-2 rounded-lg border border-line px-3 py-2 text-[12px] font-sans font-semibold text-muted transition-colors hover:border-black/20 hover:text-foreground"
               >
                 Re-verify
               </button>

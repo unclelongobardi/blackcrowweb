@@ -95,7 +95,7 @@ function ParticipantProof({
           type="button"
           onClick={onApprove}
           disabled={busy}
-          className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-3 py-2 text-[11px] font-bold text-black disabled:opacity-60`}
+          className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-3 py-2 text-[11px] font-bold text-background disabled:opacity-60`}
         >
           Approve & pay pool
         </button>
@@ -362,7 +362,7 @@ export default function BountyCard({
             <Link
               href={`/app/u/${bounty.creator.codename}`}
               onClick={(e) => e.stopPropagation()}
-              className="flex min-w-0 max-w-[58%] items-center gap-1.5 rounded-md bg-white/5 py-0.5 pl-0.5 pr-2"
+              className="flex min-w-0 max-w-[58%] items-center gap-1.5 rounded-md bg-black/[0.04] py-0.5 pl-0.5 pr-2"
             >
               <Avatar
                 seed={bounty.creator.avatar_seed}
@@ -389,7 +389,7 @@ export default function BountyCard({
             </span>
           )}
           {!compact && (
-            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
               {KIND_LABEL[bounty.kind] ?? bounty.kind}
             </span>
           )}
@@ -399,22 +399,22 @@ export default function BountyCard({
                 bounty.status === "open"
                   ? "bg-bull/10 text-bull"
                   : bounty.status === "paid"
-                    ? "bg-white/10 text-foreground"
+                    ? "bg-black/[0.06] text-foreground"
                     : expired
                       ? "bg-bear/10 text-bear"
-                      : "bg-white/5 text-faint"
+                      : "bg-black/[0.04] text-faint"
               }`}
             >
               {expired ? "Expired" : (STATUS_LABEL[bounty.status] ?? bounty.status)}
             </span>
           )}
           {!compact && expiryLabel && !expired && (
-            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-faint">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 text-[10px] font-semibold text-faint">
               {expiryLabel}
             </span>
           )}
           {!compact && (bounty.participant_count ?? 0) > 0 && (
-            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-faint">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 text-[10px] text-faint">
               {bounty.participant_count} joined
             </span>
           )}
@@ -426,7 +426,7 @@ export default function BountyCard({
                 WC
               </span>
             )}
-            <span className="rounded-md bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-faint">
+            <span className="rounded-md bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-faint">
               {KIND_LABEL[bounty.kind] ?? bounty.kind}
             </span>
             <span
@@ -435,13 +435,13 @@ export default function BountyCard({
                   ? "bg-bull/10 text-bull"
                   : expired
                     ? "bg-bear/10 text-bear"
-                    : "bg-white/5 text-faint"
+                    : "bg-black/[0.04] text-faint"
               }`}
             >
               {expired ? "Expired" : (STATUS_LABEL[bounty.status] ?? bounty.status)}
             </span>
             {expiryLabel && !expired && (
-              <span className="rounded-md bg-white/5 px-1.5 py-0.5 text-[9px] font-semibold text-faint">
+              <span className="rounded-md bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-semibold text-faint">
                 {expiryLabel}
               </span>
             )}
@@ -561,7 +561,7 @@ export default function BountyCard({
             <span
               key={p.id}
               className={`rounded-md px-2 py-0.5 text-[10px] ${
-                p.status === "submitted" ? "bg-bull/10 text-bull" : "bg-white/5 text-faint"
+                p.status === "submitted" ? "bg-bull/10 text-bull" : "bg-black/[0.04] text-faint"
               }`}
             >
               @{p.profile?.codename ?? "…"}
@@ -634,7 +634,7 @@ export default function BountyCard({
                 fund();
               }}
               disabled={busy || !escrowReady}
-              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
+              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60`}
             >
               {fundStep === "signing"
                 ? "Sign in wallet…"
@@ -704,7 +704,7 @@ export default function BountyCard({
                   contribute();
                 }}
                 disabled={busy}
-                className={`${uiBtnPrimary} flex-1 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold text-black disabled:opacity-60`}
+                className={`${uiBtnPrimary} flex-1 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold text-background disabled:opacity-60`}
               >
                 {busy ? "…" : (
                   <span className="inline-flex items-center justify-center gap-1">
@@ -731,7 +731,7 @@ export default function BountyCard({
               accept();
             }}
             disabled={busy}
-            className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
+            className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60`}
           >
             {busy ? "…" : "JOIN CHALLENGE"}
           </button>
@@ -752,7 +752,7 @@ export default function BountyCard({
               onClick={(e) => e.stopPropagation()}
               placeholder="What you did, links, context…"
               rows={3}
-              className="w-full resize-none rounded-xl border border-line bg-surface/60 px-3 py-2 text-[12px] text-foreground placeholder:text-faint outline-none focus:border-white/25"
+              className="w-full resize-none rounded-xl border border-line bg-surface/60 px-3 py-2 text-[12px] text-foreground placeholder:text-faint outline-none focus:border-black/20"
             />
             <input
               ref={fileRef}
@@ -793,7 +793,7 @@ export default function BountyCard({
                 submitProof();
               }}
               disabled={busy || uploading || (proof.length < 10 && media.length === 0 && !videoUrl)}
-              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60`}
+              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60`}
             >
               {busy ? "…" : "SUBMIT PROOF"}
             </button>

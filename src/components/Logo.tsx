@@ -10,7 +10,7 @@ export default function Logo({ className = "", showText = true }: LogoProps) {
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
       <Image
-        src="/images/blackcrow-mark-white.png"
+        src="/images/blackcrow-favicon.png"
         alt="BLACKCROW"
         width={40}
         height={40}

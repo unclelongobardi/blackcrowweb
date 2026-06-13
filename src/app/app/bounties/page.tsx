@@ -101,7 +101,7 @@ function BountiesContent() {
             <button
               type="button"
               onClick={() => setShowCreate(true)}
-              className="rounded-xl bg-foreground px-4 py-2.5 text-[11px] font-bold text-black"
+              className="rounded-xl bg-foreground px-4 py-2.5 text-[11px] font-bold text-background"
             >
               + POST BOUNTY
             </button>
@@ -131,7 +131,7 @@ function BountiesContent() {
             key={f.id}
             onClick={() => setStatus(f.id)}
             className={`rounded-lg px-3 py-1.5 text-[11px] font-bold tracking-wide ${
-              statusFilter === f.id ? "bg-bull text-black" : "border border-line text-muted hover:border-bull/30"
+              statusFilter === f.id ? "bg-bull text-white" : "border border-line text-muted hover:border-bull/30"
             }`}
           >
             {f.label.toUpperCase()}
@@ -167,7 +167,7 @@ function BountiesContent() {
           <button
             type="button"
             onClick={() => setShowCreate(true)}
-            className="mt-4 rounded-xl bg-foreground px-5 py-2.5 text-[12px] font-bold text-black"
+            className="mt-4 rounded-xl bg-foreground px-5 py-2.5 text-[12px] font-bold text-background"
           >
             POST A BOUNTY
           </button>

@@ -64,14 +64,14 @@ function RankBadge({ rank }: { rank: number }) {
   }
   if (rank === 2) {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/10 font-mono text-[12px] font-bold text-foreground">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-black/[0.06] font-mono text-[12px] font-bold text-foreground">
         2
       </span>
     );
   }
   if (rank === 3) {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/5 font-mono text-[12px] font-bold text-muted">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-black/[0.04] font-mono text-[12px] font-bold text-muted">
         3
       </span>
     );
@@ -173,7 +173,7 @@ export default function LeaderboardPage() {
                   <Link
                     key={o.id}
                     href={`/app/u/${o.codename}`}
-                    className={`${uiRow} flex items-center gap-3 px-4 py-3 sm:px-5 hover:bg-white/[0.02]`}
+                    className={`${uiRow} flex items-center gap-3 px-4 py-3 sm:px-5 hover:bg-black/[0.03]`}
                   >
                     <RankBadge rank={i + 1} />
                     <Avatar
@@ -212,7 +212,7 @@ export default function LeaderboardPage() {
                   <Link
                     key={c.id}
                     href={`/app/cabals/${c.slug}`}
-                    className={`${uiRow} flex items-center gap-3 px-4 py-3 sm:px-5 hover:bg-white/[0.02]`}
+                    className={`${uiRow} flex items-center gap-3 px-4 py-3 sm:px-5 hover:bg-black/[0.03]`}
                   >
                     <RankBadge rank={i + 1} />
                     <Avatar seed={c.emblem_seed} label={c.name} size={36} />
@@ -220,7 +220,7 @@ export default function LeaderboardPage() {
                       <p className="truncate text-[13px] font-semibold text-foreground">{c.name}</p>
                       {c.motto && <p className="truncate text-[11px] italic text-faint">{c.motto}</p>}
                     </div>
-                    <span className="shrink-0 rounded-lg bg-white/5 px-2 py-1 font-mono text-[11px] font-bold text-foreground">
+                    <span className="shrink-0 rounded-lg bg-black/[0.04] px-2 py-1 font-mono text-[11px] font-bold text-foreground">
                       {c.member_count}
                     </span>
                   </Link>
@@ -253,7 +253,7 @@ export default function LeaderboardPage() {
             {EARN_RULES.map((rule) => (
               <div
                 key={rule.action}
-                className="rounded-xl border border-line/80 bg-black/20 px-3.5 py-3 sm:px-4"
+                className="rounded-xl border border-line/80 bg-black/[0.04] px-3.5 py-3 sm:px-4"
               >
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-[12.5px] font-semibold leading-snug text-foreground sm:text-[13px]">

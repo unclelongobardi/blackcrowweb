@@ -51,7 +51,7 @@ export default function PostPoll({
             disabled={busy}
             onClick={() => vote(i)}
             className={`relative w-full overflow-hidden rounded-lg border px-3 py-2 text-left transition-colors ${
-              selected ? "border-bull/40 bg-bull/10" : "border-line bg-surface/30 hover:border-white/20"
+              selected ? "border-bull/40 bg-bull/10" : "border-line bg-surface/30 hover:border-black/15"
             }`}
           >
             {total > 0 && (

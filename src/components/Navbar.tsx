@@ -39,7 +39,7 @@ export default function Navbar() {
       <div
         className={`mx-auto transition-all duration-500 ${
           scrolled
-            ? "mt-3 max-w-6xl rounded-2xl glass px-4 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.9)]"
+            ? "mt-3 max-w-6xl rounded-2xl glass px-4 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.12)]"
             : "mt-0 max-w-7xl border-b border-line/60 bg-transparent px-6"
         }`}
       >
@@ -81,7 +81,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X (Twitter)"
-              className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-white/25 hover:text-foreground sm:flex"
+              className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-black/20 hover:text-foreground sm:flex"
             >
               <IconTwitterX className="h-4 w-4" />
             </a>
@@ -117,7 +117,7 @@ export default function Navbar() {
                     key={l.label}
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-white/5 hover:text-foreground"
+                    className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-black/[0.04] hover:text-foreground"
                   >
                     {l.label}
                   </a>
@@ -125,7 +125,7 @@ export default function Navbar() {
                 <Link
                   href={DOCS_HREF}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-white/5 hover:text-foreground"
+                  className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-black/[0.04] hover:text-foreground"
                 >
                   DOCS
                 </Link>
@@ -134,7 +134,7 @@ export default function Navbar() {
                   href={TWITTER_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-white/5 hover:text-foreground"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-black/[0.04] hover:text-foreground"
                 >
                   <IconTwitterX className="h-4 w-4" /> X / Twitter
                 </a>

@@ -103,7 +103,7 @@ export default function CabalDetailPage() {
                 <span className="text-[13px] font-semibold">@{r.profile.codename}</span>
               </Link>
               <div className="flex gap-2">
-                <button onClick={() => handleRequest(r.profile.id, "approve")} className="rounded-lg bg-bull px-3 py-1 text-[11px] font-bold text-black">APPROVE</button>
+                <button onClick={() => handleRequest(r.profile.id, "approve")} className="rounded-lg bg-bull px-3 py-1 text-[11px] font-bold text-background">APPROVE</button>
                 <button onClick={() => handleRequest(r.profile.id, "reject")} className="rounded-lg border border-line px-3 py-1 text-[11px] text-muted">REJECT</button>
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function CabalDetailPage() {
       <h2 className="mt-8 mb-3 text-[11px] font-bold tracking-[0.16em] text-muted">MEMBERS</h2>
       <div className="flex flex-wrap gap-3">
         {(cabal.members ?? []).map((m) => (
-          <Link key={m.profile.id} href={`/app/u/${m.profile.codename}`} className="glass flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-white/[0.02]">
+          <Link key={m.profile.id} href={`/app/u/${m.profile.codename}`} className="glass flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-black/[0.03]">
             <Avatar seed={m.profile.avatar_seed} avatarUrl={m.profile.avatar_url} label={m.profile.codename} size={28} verified={m.profile.is_verified} />
             <span className="text-[12px]">@{m.profile.codename}</span>
             {m.role === "leader" && <span className="text-[10px] text-bull">leader</span>}

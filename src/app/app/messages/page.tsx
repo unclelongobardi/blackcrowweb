@@ -105,8 +105,8 @@ function MessagesContent() {
               <a
                 key={c.id}
                 href={`/app/messages?c=${c.id}`}
-                className={`flex min-h-[60px] items-center gap-3 border-b border-line px-4 py-3 transition-colors hover:bg-white/[0.02] ${
-                  activeId === c.id ? "bg-white/[0.04]" : ""
+                className={`flex min-h-[60px] items-center gap-3 border-b border-line px-4 py-3 transition-colors hover:bg-black/[0.03] ${
+                  activeId === c.id ? "bg-black/[0.04]" : ""
                 }`}
               >
                 <Avatar
@@ -181,7 +181,7 @@ function MessagesContent() {
               <button
                 onClick={send}
                 disabled={busy}
-                className="min-h-11 shrink-0 rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-black disabled:opacity-60"
+                className="min-h-11 shrink-0 rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60"
               >
                 Send
               </button>
@@ -210,7 +210,7 @@ function MessagesContent() {
             <button
               onClick={send}
               disabled={busy}
-              className="mt-3 min-h-11 rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-black"
+              className="mt-3 min-h-11 rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-background"
             >
               Send
             </button>

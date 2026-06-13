@@ -104,7 +104,7 @@ export default function AvatarPicker({
               className={`group flex flex-col items-center gap-1 rounded-xl border p-1.5 transition-colors ${
                 selected
                   ? "border-bull bg-bull/10"
-                  : "border-line bg-surface/30 hover:border-white/20 hover:bg-surface/50"
+                  : "border-line bg-surface/30 hover:border-black/15 hover:bg-surface/50"
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -113,7 +113,7 @@ export default function AvatarPicker({
                 alt={av.label}
                 width={48}
                 height={48}
-                className="h-12 w-12 rounded-full bg-surface object-cover ring-1 ring-white/10"
+                className="h-12 w-12 rounded-full bg-surface object-cover ring-1 ring-black/10"
               />
               <span
                 className={`max-w-full truncate text-[9px] font-medium ${

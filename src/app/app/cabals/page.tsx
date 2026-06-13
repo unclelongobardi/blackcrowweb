@@ -48,10 +48,10 @@ function CabalCard({
             {c.name}
           </Link>
           <div className="mt-1 flex flex-wrap gap-1.5">
-            <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
+            <span className="rounded bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
               {c.kind ? KIND_LABEL[c.kind] : "Group"}
             </span>
-            <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
+            <span className="rounded bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-bold uppercase text-faint">
               {c.visibility === "private" ? "Private" : "Public"}
             </span>
           </div>
@@ -71,8 +71,8 @@ function CabalCard({
             : c.pending_request
               ? "border border-bull/30 text-bull"
               : isOfficial
-                ? "bg-bull text-black hover:bg-bull/90"
-                : "bg-foreground text-black"
+                ? "bg-bull text-white hover:bg-bull/90"
+                : "bg-foreground text-background"
         }`}
       >
         {busy === c.slug
@@ -166,7 +166,7 @@ export default function CabalsPage() {
         </div>
         <button
           onClick={() => setCreating(true)}
-          className="min-h-11 w-full shrink-0 rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-black sm:w-auto"
+          className="min-h-11 w-full shrink-0 rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-background sm:w-auto"
         >
           + CREATE CABAL
         </button>
@@ -178,7 +178,7 @@ export default function CabalsPage() {
             key={k}
             onClick={() => setKindFilter(k)}
             className={`rounded-lg px-3 py-1.5 text-[11px] font-bold ${
-              kindFilter === k ? "bg-foreground text-black" : "border border-line text-muted"
+              kindFilter === k ? "bg-foreground text-background" : "border border-line text-muted"
             }`}
           >
             {k === "all" ? "ALL TYPES" : KIND_LABEL[k].toUpperCase()}
@@ -187,7 +187,7 @@ export default function CabalsPage() {
         <button
           onClick={() => setVisFilter(visFilter === "public" ? "all" : "public")}
           className={`rounded-lg px-3 py-1.5 text-[11px] font-bold ${
-            visFilter === "public" ? "bg-foreground text-black" : "border border-line text-muted"
+            visFilter === "public" ? "bg-foreground text-background" : "border border-line text-muted"
           }`}
         >
           PUBLIC ONLY
@@ -270,7 +270,7 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-6 backdrop-blur-sm">
       <div className="glass max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6">
         <p className="text-[11px] font-semibold tracking-[0.18em] text-faint">CREATE CABAL</p>
         <div className="mt-4 space-y-3">
@@ -281,7 +281,7 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
             <p className="mb-2 text-[11px] font-bold text-faint">TYPE</p>
             <div className="flex gap-2">
               {(["tipsters", "manipulation", "discussion"] as const).map((k) => (
-                <button key={k} onClick={() => setKind(k)} className={`flex-1 rounded-lg border px-2 py-2 text-[10px] font-bold ${kind === k ? "border-foreground/40 bg-white/10" : "border-line text-faint"}`}>
+                <button key={k} onClick={() => setKind(k)} className={`flex-1 rounded-lg border px-2 py-2 text-[10px] font-bold ${kind === k ? "border-foreground/40 bg-black/[0.06]" : "border-line text-faint"}`}>
                   {KIND_LABEL[k].toUpperCase()}
                 </button>
               ))}
@@ -291,7 +291,7 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
             <p className="mb-2 text-[11px] font-bold text-faint">VISIBILITY</p>
             <div className="flex gap-2">
               {(["public", "private"] as const).map((v) => (
-                <button key={v} onClick={() => setVisibility(v)} className={`flex-1 rounded-lg border px-2 py-2 text-[10px] font-bold ${visibility === v ? "border-foreground/40 bg-white/10" : "border-line text-faint"}`}>
+                <button key={v} onClick={() => setVisibility(v)} className={`flex-1 rounded-lg border px-2 py-2 text-[10px] font-bold ${visibility === v ? "border-foreground/40 bg-black/[0.06]" : "border-line text-faint"}`}>
                   {v.toUpperCase()}
                 </button>
               ))}
@@ -301,7 +301,7 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
         </div>
         <div className="mt-5 flex gap-2">
           <button onClick={onClose} className="flex-1 rounded-xl border border-line px-4 py-3 text-[13px] font-semibold text-muted">Cancel</button>
-          <button onClick={create} disabled={loading} className="flex-1 rounded-xl bg-foreground px-4 py-3 text-[13px] font-bold text-black disabled:opacity-60">
+          <button onClick={create} disabled={loading} className="flex-1 rounded-xl bg-foreground px-4 py-3 text-[13px] font-bold text-background disabled:opacity-60">
             {loading ? "…" : "CREATE"}
           </button>
         </div>

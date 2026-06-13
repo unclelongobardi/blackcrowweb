@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, JetBrains_Mono, Syne } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
@@ -30,6 +30,10 @@ export const metadata: Metadata = {
     description: "Manipulate markets. Earn rewards. Start your cabal.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({

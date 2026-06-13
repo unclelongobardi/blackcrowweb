@@ -214,7 +214,7 @@ function MarketsContent() {
         />
         <button
           onClick={applySearch}
-          className="rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-black"
+          className="rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-background"
         >
           SEARCH
         </button>
@@ -256,12 +256,12 @@ function MarketsContent() {
               key={c.id}
               onClick={() => setFilter("category", c.id)}
               className={`rounded-lg px-3 py-1.5 text-[11px] font-bold tracking-wide ${
-                category === c.id ? "bg-bull text-black" : "border border-line text-muted hover:border-bull/30"
+                category === c.id ? "bg-bull text-white" : "border border-line text-muted hover:border-bull/30"
               }`}
             >
               {c.label.toUpperCase()}
               {count != null && c.id !== "all" && (
-                <span className={`ml-1.5 font-mono text-[10px] ${category === c.id ? "text-black/70" : "text-faint"}`}>
+                <span className={`ml-1.5 font-mono text-[10px] ${category === c.id ? "text-white/80" : "text-faint"}`}>
                   {count}
                 </span>
               )}

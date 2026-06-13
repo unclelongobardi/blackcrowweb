@@ -37,10 +37,10 @@ export default function RightPanel({ markets }: { markets: Market[] }) {
         </p>
         {watch.length > 0 && (
           <div className="mt-2.5 flex flex-wrap gap-1.5">
-            <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[10px] text-muted">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 font-mono text-[10px] text-muted">
               {thinCount || watch.length} thin
             </span>
-            <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[10px] text-muted">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 font-mono text-[10px] text-muted">
               Vol {compactNumber(totalVol)}
             </span>
             {avgYes != null && (
@@ -62,7 +62,7 @@ export default function RightPanel({ markets }: { markets: Market[] }) {
             <Link
               key={m.id}
               href="/app/markets"
-              className="ui-row block px-4 py-3 hover:bg-white/[0.02]"
+              className="ui-row block px-4 py-3 hover:bg-black/[0.03]"
             >
               <div className="flex items-start gap-2.5">
                 <IconFlame

@@ -117,7 +117,7 @@ export default function PublicProfilePage() {
           {is_self ? (
             <Link
               href="/app/profile"
-              className="flex-1 rounded-xl bg-foreground px-4 py-2.5 text-center text-[12px] font-bold text-black"
+              className="flex-1 rounded-xl bg-foreground px-4 py-2.5 text-center text-[12px] font-bold text-background"
             >
               EDIT PROFILE
             </Link>
@@ -127,14 +127,14 @@ export default function PublicProfilePage() {
                 onClick={toggleFollow}
                 disabled={busy}
                 className={`flex-1 rounded-xl px-4 py-2.5 text-[12px] font-bold ${
-                  is_following ? "border border-line text-muted" : "bg-foreground text-black"
+                  is_following ? "border border-line text-muted" : "bg-foreground text-background"
                 }`}
               >
                 {is_following ? "FOLLOWING" : "FOLLOW"}
               </button>
               <Link
                 href={`/app/messages?to=${profile.codename}`}
-                className="flex-1 rounded-xl border border-line px-4 py-2.5 text-center text-[12px] font-bold text-foreground hover:border-white/25"
+                className="flex-1 rounded-xl border border-line px-4 py-2.5 text-center text-[12px] font-bold text-foreground hover:border-black/20"
               >
                 Message
               </Link>

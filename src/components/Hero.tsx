@@ -36,7 +36,7 @@ function StatCard({
       transition={{ duration: 0.7, delay, ease }}
       className={`absolute z-20 ${className}`}
     >
-      <div className={`glass glass-hover ${float} rounded-xl p-3 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.95)]`}>
+      <div className={`glass glass-hover ${float} rounded-xl p-3 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.1)]`}>
         <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-faint">{label}</p>
         {question && <p className="mt-0.5 max-w-[150px] text-[11px] font-medium text-muted">{question}</p>}
         <div className="mt-2 flex items-center gap-3">
@@ -96,7 +96,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
       <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-70" />
       {/* Ambient glows */}
       <div className="pointer-events-none absolute -top-40 left-1/4 h-[480px] w-[480px] rounded-full bg-sky-500/5 blur-[120px]" />
-      <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-white/[0.03] blur-[120px]" />
+      <div className="pointer-events-none absolute right-0 top-20 h-[420px] w-[420px] rounded-full bg-black/[0.03] blur-[120px]" />
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 pb-12 lg:h-[calc(100svh-3rem)] lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-4 lg:pb-0 lg:pt-16">
         {/* LEFT */}
@@ -160,7 +160,7 @@ A social network to meet people obsessed with prediction markets —
             {authenticated ? (
               <Link
                 href="/app"
-                className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03]"
+                className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-background transition-transform hover:scale-[1.03]"
               >
                 OPEN HOME
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -169,7 +169,7 @@ A social network to meet people obsessed with prediction markets —
               <button
                 onClick={() => login()}
                 disabled={!ready}
-                className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-black transition-transform hover:scale-[1.03] disabled:opacity-60"
+                className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-background transition-transform hover:scale-[1.03] disabled:opacity-60"
               >
                 JOIN THE NETWORK
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -177,7 +177,7 @@ A social network to meet people obsessed with prediction markets —
             )}
             <Link
               href="/app/markets"
-              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-white/25 hover:bg-surface"
+              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-black/20 hover:bg-surface"
             >
               EXPLORE BLACKCROW
             </Link>
@@ -207,7 +207,7 @@ A social network to meet people obsessed with prediction markets —
                   src={src}
                   alt=""
                   loading="lazy"
-                  className="h-9 w-9 rounded-full border-2 border-background bg-surface object-cover ring-1 ring-white/10"
+                  className="h-9 w-9 rounded-full border-2 border-background bg-surface object-cover ring-1 ring-black/10"
                 />
               ))}
             </div>
@@ -224,14 +224,14 @@ A social network to meet people obsessed with prediction markets —
             className="relative aspect-[3/2] w-full lg:aspect-auto lg:h-full"
           >
             {/* Soft glow behind the crow for depth */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.05] blur-[120px]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/[0.04] blur-[120px]" />
             <Image
               src="/images/raven-hero-cutout.png"
               alt="BLACKCROW raven"
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 56vw"
-              className="object-contain object-bottom brightness-95 contrast-[1.08] saturate-[0.92] drop-shadow-[0_40px_80px_rgba(0,0,0,0.95)]"
+              className="object-contain object-bottom brightness-95 contrast-[1.08] saturate-[0.92] drop-shadow-[0_40px_80px_rgba(0,0,0,0.15)]"
             />
             {/* Grounding fade so the crow melts into the page / ticker */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/4 bg-gradient-to-t from-background via-background/70 to-transparent" />

@@ -28,7 +28,7 @@ export default function TokenCaChip({
         title="Token contract address"
       >
         <span className="text-[10px] font-bold tracking-wide text-faint">{label}</span>
-        <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[10px] text-faint">TBA</span>
+        <span className="rounded-md bg-black/[0.04] px-2 py-0.5 font-mono text-[10px] text-faint">TBA</span>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function TokenCaChip({
             href={PUMP_FUN_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-line px-3 py-1.5 text-[11px] font-semibold text-muted hover:border-white/25 hover:text-foreground"
+            className="rounded-lg border border-line px-3 py-1.5 text-[11px] font-semibold text-muted hover:border-black/20 hover:text-foreground"
           >
             Pump.fun →
           </a>
@@ -54,7 +54,7 @@ export default function TokenCaChip({
             href={DEXSCREENER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-line px-3 py-1.5 text-[11px] font-semibold text-muted hover:border-white/25 hover:text-foreground"
+            className="rounded-lg border border-line px-3 py-1.5 text-[11px] font-semibold text-muted hover:border-black/20 hover:text-foreground"
           >
             Dexscreener →
           </a>
@@ -62,7 +62,7 @@ export default function TokenCaChip({
             href={SOLSCAN_TOKEN_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-line px-3 py-1.5 text-[11px] font-semibold text-muted hover:border-white/25 hover:text-foreground"
+            className="rounded-lg border border-line px-3 py-1.5 text-[11px] font-semibold text-muted hover:border-black/20 hover:text-foreground"
           >
             Solscan →
           </a>

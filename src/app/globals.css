@@ -1,26 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #050506;
-  --color-surface: #0a0a0c;
-  --color-surface-2: #101013;
-  --color-foreground: #ededed;
-  --color-muted: #8a8a92;
-  --color-faint: #56565c;
-  --color-line: #1c1c20;
-  --color-accent: #00b4ff;
-  --color-bull: #00b4ff;
-  --color-bear: #f0506e;
+  --color-background: #ffffff;
+  --color-surface: #f6f6f8;
+  --color-surface-2: #ececef;
+  --color-foreground: #0c0c0e;
+  --color-muted: #5c5c66;
+  --color-faint: #8a8a94;
+  --color-line: #e2e2e8;
+  --color-accent: #0088cc;
+  --color-bull: #0088cc;
+  --color-bear: #d63a56;
   --font-sans: var(--font-dm-sans);
   --font-mono: var(--font-jetbrains);
   --font-display: var(--font-syne);
 }
 
 :root {
-  --background: #050506;
-  --foreground: #ededed;
+  --background: #ffffff;
+  --foreground: #0c0c0e;
   --press-scale: 0.965;
   --press-ms: 90ms;
+  color-scheme: light;
 }
 
 * {
@@ -87,15 +88,15 @@ button:disabled,
 
 .ui-btn-primary:active:not(:disabled) {
   transform: scale(0.96) translateY(1px);
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.12);
 }
 
 .ui-nav:active {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .ui-row:active {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .ui-btn {
@@ -106,7 +107,7 @@ button:disabled,
 .ui-nav:focus-visible,
 .ui-row:focus-visible,
 .ui-press:focus-visible {
-  outline: 2px solid rgba(0, 180, 255, 0.45);
+  outline: 2px solid rgba(0, 136, 204, 0.45);
   outline-offset: 2px;
 }
 
@@ -118,27 +119,25 @@ button:disabled,
   color: var(--color-muted);
 }
 
-/* Selection */
 ::selection {
-  background: rgba(0, 180, 255, 0.22);
-  color: #fff;
+  background: rgba(0, 136, 204, 0.18);
+  color: var(--color-foreground);
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #050506;
+  background: #f3f3f6;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1c1c20;
+  background: #d4d4dc;
   border-radius: 999px;
-  border: 2px solid #050506;
+  border: 2px solid #f3f3f6;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a2a30;
+  background: #b8b8c2;
 }
 
 .font-display {
@@ -151,11 +150,10 @@ button:disabled,
   font-variant-numeric: tabular-nums;
 }
 
-/* Animated background grid */
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.045) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
@@ -164,29 +162,28 @@ button:disabled,
   mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
 }
 
-/* Glass card */
 .glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(12px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .glass-hover {
   transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 .glass-hover:hover {
-  border-color: rgba(255, 255, 255, 0.14);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-  box-shadow: 0 8px 32px -16px rgba(0, 0, 0, 0.55);
+  border-color: rgba(0, 0, 0, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%);
+  box-shadow: 0 12px 40px -20px rgba(0, 0, 0, 0.12);
 }
 
-/* Glow */
 .glow-accent {
-  box-shadow: 0 0 0 1px rgba(0, 180, 255, 0), 0 0 40px -8px rgba(0, 180, 255, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 136, 204, 0), 0 0 40px -8px rgba(0, 136, 204, 0.22);
 }
 
 .text-glow {
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 @keyframes float {
@@ -212,4 +209,3 @@ button:disabled,
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-

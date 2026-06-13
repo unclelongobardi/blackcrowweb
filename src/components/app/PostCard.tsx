@@ -199,7 +199,7 @@ export default function PostCard({
   }
 
   return (
-    <article id={`post-${post.id}`} className="scroll-mt-24 border-b border-line px-4 py-3.5 transition-colors hover:bg-white/[0.015] sm:px-5">
+    <article id={`post-${post.id}`} className="scroll-mt-24 border-b border-line px-4 py-3.5 transition-colors hover:bg-black/[0.03] sm:px-5">
       {reposted && (
         <p className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold text-muted">
           <IconRepeat className="h-3.5 w-3.5 text-bull" /> You reposted
@@ -236,13 +236,13 @@ export default function PostCard({
             {post.cabal?.name && (
               <Link
                 href={`/app/cabals/${post.cabal.slug}`}
-                className="rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-bull hover:bg-bull/10"
+                className="rounded-md bg-black/[0.04] px-1.5 py-0.5 text-[10px] font-semibold text-bull hover:bg-bull/10"
               >
                 {post.cabal.name}
               </Link>
             )}
             {isThreadPost && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-bull">
+              <span className="inline-flex items-center gap-1 rounded-md bg-black/[0.04] px-1.5 py-0.5 text-[10px] font-semibold text-bull">
                 <IconThread className="h-3 w-3" /> Thread
               </span>
             )}
@@ -370,7 +370,7 @@ export default function PostCard({
                 type="button"
                 onClick={toggleBookmark}
                 disabled={pending}
-                className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/[0.05] hover:text-foreground ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/[0.05] hover:text-foreground ${
                   bookmarked ? "text-bull" : ""
                 }`}
                 title={bookmarked ? "Remove bookmark" : "Bookmark"}
@@ -381,7 +381,7 @@ export default function PostCard({
                 <button
                   type="button"
                   onClick={() => setMenuOpen((v) => !v)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/[0.05] hover:text-foreground"
+                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/[0.05] hover:text-foreground"
                 >
                   <IconDots className="h-[17px] w-[17px]" />
                 </button>
@@ -390,7 +390,7 @@ export default function PostCard({
                     <button
                       type="button"
                       onClick={copyLink}
-                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] text-muted hover:bg-white/[0.04] hover:text-foreground"
+                      className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] text-muted hover:bg-black/[0.05] hover:text-foreground"
                     >
                       <IconShare className="h-3.5 w-3.5" />
                       {copied ? "Copied!" : "Copy link"}
@@ -398,7 +398,7 @@ export default function PostCard({
                     {me?.profile.id === post.author_id && (
                       <Link
                         href={`/app/u/${post.author?.codename}`}
-                        className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] text-muted hover:bg-white/[0.04] hover:text-foreground"
+                        className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] text-muted hover:bg-black/[0.05] hover:text-foreground"
                         onClick={() => setMenuOpen(false)}
                       >
                         View profile
@@ -424,7 +424,7 @@ export default function PostCard({
                 type="button"
                 onClick={submitReply}
                 disabled={!replyText.trim() || replyBusy}
-                className="self-end rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold text-black disabled:opacity-40"
+                className="self-end rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold text-background disabled:opacity-40"
               >
                 {replyBusy ? "…" : "Reply"}
               </button>

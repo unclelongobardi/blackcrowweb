@@ -76,7 +76,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
   const previewUrl = avatarMode === "custom" ? customPreview : null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 px-6 py-8 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 px-6 py-8 backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -115,7 +115,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
               value={codename}
               onChange={(e) => setCodename(e.target.value)}
               placeholder="night_raven"
-              className="mt-1 w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-white/25"
+              className="mt-1 w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-black/20"
             />
           </div>
           <div>
@@ -124,7 +124,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="The Nightjar"
-              className="mt-1 w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-white/25"
+              className="mt-1 w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-black/20"
             />
           </div>
           <div>
@@ -134,7 +134,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
               onChange={(e) => setBio(e.target.value)}
               placeholder="Narratives are cheap. I buy them in bulk."
               rows={2}
-              className="mt-1 w-full resize-none rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-white/25"
+              className="mt-1 w-full resize-none rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-black/20"
             />
           </div>
 
@@ -143,7 +143,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
           <button
             type="submit"
             disabled={loading || uploading}
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] text-black transition-transform hover:scale-[1.02] disabled:opacity-60"
+            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] text-background transition-transform hover:scale-[1.02] disabled:opacity-60"
           >
             {loading ? "ENLISTING…" : "ENTER THE NETWORK"}
             <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />

@@ -31,7 +31,7 @@ export default function MarketPostCard({
   const spark = genSpark(market.id, 36, 0.04);
 
   return (
-    <article className="border-b border-line px-4 py-3.5 transition-colors hover:bg-white/[0.015] sm:px-5">
+    <article className="border-b border-line px-4 py-3.5 transition-colors hover:bg-black/[0.03] sm:px-5">
       <div className="flex items-center gap-2 text-[13px]">
         <Avatar seed={authorHandle} label={authorName} size={28} />
         <span className="text-faint">
@@ -79,7 +79,7 @@ export default function MarketPostCard({
         <button className="flex items-center gap-1.5 text-[12.5px] transition-colors hover:text-foreground">
           <IconViews className="h-[17px] w-[17px]" /> 8.7K
         </button>
-        <button className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/[0.05] hover:text-foreground">
+        <button className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-black/[0.05] hover:text-foreground">
           <IconBookmark className="h-[17px] w-[17px]" />
         </button>
       </div>

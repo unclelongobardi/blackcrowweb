@@ -79,7 +79,7 @@ export default function MarketCard({
       <div className="flex flex-1 flex-col p-4">
         {!market.image && (
           <div className="mb-3 flex flex-wrap items-center gap-1.5">
-            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-faint">
               {market.category ?? "Market"}
             </span>
             {market.liquidity_tier === "thin" && (
@@ -87,7 +87,7 @@ export default function MarketCard({
                 <IconFlame className="h-3 w-3" /> THIN
               </span>
             )}
-            <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-mono text-muted">
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 text-[10px] font-mono text-muted">
               {tierLabel(market.liquidity_tier)}
             </span>
           </div>
@@ -108,7 +108,7 @@ export default function MarketCard({
           </div>
         </div>
 
-        <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/5">
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-black/[0.04]">
           <div className="flex h-full">
             <div className="bg-bull/80 transition-all" style={{ width: `${yes}%` }} />
             <div className="bg-bear/70 transition-all" style={{ width: `${no}%` }} />
@@ -123,7 +123,7 @@ export default function MarketCard({
           <div className="rounded-xl border border-line bg-surface/30 px-3 py-2">
             <p className="text-[9px] font-semibold uppercase tracking-wide text-faint">Volume</p>
             <p className="mt-0.5 font-mono text-[13px] font-bold text-foreground">${compactNumber(vol)}</p>
-            <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/5">
+            <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-black/[0.04]">
               <div className="h-full rounded-full bg-bull/60" style={{ width: `${volPct}%` }} />
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function MarketCard({
 
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-faint">
           {ends && (
-            <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono">{ends}</span>
+            <span className="rounded-md bg-black/[0.04] px-2 py-0.5 font-mono">{ends}</span>
           )}
           {market.liquidity_tier && (
             <span className="inline-flex items-center gap-1">
@@ -159,7 +159,7 @@ export default function MarketCard({
           <button
             type="button"
             onClick={() => onPostBounty(market)}
-            className="ui-btn flex-1 rounded-xl bg-foreground px-3 py-2.5 text-[11px] font-bold tracking-wide text-black"
+            className="ui-btn flex-1 rounded-xl bg-foreground px-3 py-2.5 text-[11px] font-bold tracking-wide text-background"
           >
             POST BOUNTY
           </button>
@@ -168,7 +168,7 @@ export default function MarketCard({
               href={market.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="ui-nav rounded-xl border border-line px-3 py-2.5 text-[11px] font-semibold text-muted hover:border-white/25 hover:text-foreground"
+              className="ui-nav rounded-xl border border-line px-3 py-2.5 text-[11px] font-semibold text-muted hover:border-black/20 hover:text-foreground"
             >
               PM →
             </Link>

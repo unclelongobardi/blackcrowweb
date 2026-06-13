@@ -30,13 +30,13 @@ export default function OpenBountiesSidebar({
           <button
             type="button"
             onClick={onPostBounty}
-            className={`${uiBtnPrimary} rounded-xl bg-foreground px-4 py-2.5 text-[11px] font-bold text-black`}
+            className={`${uiBtnPrimary} rounded-xl bg-foreground px-4 py-2.5 text-[11px] font-bold text-background`}
           >
             + POST A BOUNTY
           </button>
           <Link
             href="/app/markets"
-            className="ui-nav rounded-xl border border-line px-4 py-2.5 text-center text-[11px] font-semibold text-foreground hover:border-white/25"
+            className="ui-nav rounded-xl border border-line px-4 py-2.5 text-center text-[11px] font-semibold text-foreground hover:border-black/20"
           >
             FIND THIN MARKETS
           </Link>
@@ -74,7 +74,7 @@ export default function OpenBountiesSidebar({
                 <li key={b.id}>
                   <a
                     href={`/app/bounties#bounty-${b.id}`}
-                    className={`${uiRow} block px-4 py-3 hover:bg-white/[0.03]`}
+                    className={`${uiRow} block px-4 py-3 hover:bg-black/[0.04]`}
                   >
                     {creator ? (
                       <div className="mb-2 flex items-center gap-2">
@@ -116,7 +116,7 @@ export default function OpenBountiesSidebar({
         </Link>
         <Link
           href="/app/markets"
-          className="ui-nav block rounded-lg border border-line px-3 py-2 text-center text-[11px] font-semibold text-muted hover:border-white/20 hover:text-foreground"
+          className="ui-nav block rounded-lg border border-line px-3 py-2 text-center text-[11px] font-semibold text-muted hover:border-black/15 hover:text-foreground"
         >
           Browse markets →
         </Link>

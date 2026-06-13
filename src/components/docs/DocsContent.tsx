@@ -97,7 +97,7 @@ export default function DocsContent() {
             key={s.id}
             href={`#${s.id}`}
             className={`shrink-0 rounded-lg px-3 py-2 text-[11px] font-semibold transition-colors ${
-              active === s.id ? "bg-bull/10 text-bull" : "text-faint hover:bg-white/[0.03] hover:text-muted"
+              active === s.id ? "bg-bull/10 text-bull" : "text-faint hover:bg-black/[0.04] hover:text-muted"
             }`}
           >
             {s.label}
@@ -114,7 +114,7 @@ export default function DocsContent() {
               key={s.id}
               href={`#${s.id}`}
               className={`block rounded-lg px-3 py-2 text-[12px] font-medium transition-colors ${
-                active === s.id ? "bg-bull/10 text-bull" : "text-faint hover:bg-white/[0.03] hover:text-muted"
+                active === s.id ? "bg-bull/10 text-bull" : "text-faint hover:bg-black/[0.04] hover:text-muted"
               }`}
             >
               {s.label}
@@ -140,7 +140,7 @@ export default function DocsContent() {
             BLACKCROW is a Solana-native coordination layer for operators who want to move prediction-market
             odds—not just watch them. Connect a wallet (Phantom or Solflare), pick a codename, and enter{" "}
             <strong className="text-foreground">The Nest</strong> at{" "}
-            <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">/app</code>.
+            <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">/app</code>.
           </p>
           <p>
             The workflow is built around four loops: <strong className="text-foreground">Market intel</strong> (thin
@@ -318,7 +318,7 @@ export default function DocsContent() {
 
         <DocSection id="home" title="Home">
           <p>
-            Home at <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">/app</code> is
+            Home at <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">/app</code> is
             your public timeline—where operators surface reads, flag targets, and align before a move. Not a private
             channel; use cabals or Chat for closed coordination.
           </p>
@@ -485,7 +485,7 @@ export default function DocsContent() {
           <TokenCaChip variant="panel" className="my-5" />
           <p>
             You can override the mint via{" "}
-            <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
+            <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
             environment variables if needed for staging.
           </p>
         </DocSection>
@@ -518,7 +518,7 @@ export default function DocsContent() {
           </p>
           <Link
             href="/app"
-            className="mt-4 inline-flex rounded-xl bg-foreground px-6 py-3 text-[12px] font-bold text-black"
+            className="mt-4 inline-flex rounded-xl bg-foreground px-6 py-3 text-[12px] font-bold text-background"
           >
             OPEN THE NEST →
           </Link>

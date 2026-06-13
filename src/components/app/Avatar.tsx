@@ -31,7 +31,7 @@ export default function Avatar({
         width={size}
         height={size}
         style={{ width: size, height: size }}
-        className={`rounded-full ring-1 ring-white/10 ${
+        className={`rounded-full ring-1 ring-black/10 ${
           official ? "bg-white object-contain p-1" : "bg-surface object-cover"
         } ${className}`}
       />

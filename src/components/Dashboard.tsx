@@ -95,7 +95,7 @@ export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
 
   return (
     <section id="feed" className="relative scroll-mt-24 px-6 py-20 lg:py-28">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-black/10 to-transparent" />
 
       <div className="mx-auto max-w-7xl">
         <motion.div
@@ -103,7 +103,7 @@ export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease }}
-          className="glass overflow-hidden rounded-2xl shadow-[0_40px_120px_-50px_rgba(0,0,0,1)]"
+          className="glass overflow-hidden rounded-2xl shadow-[0_40px_120px_-50px_rgba(0,0,0,0.12)]"
         >
           <div className="grid grid-cols-1 lg:grid-cols-[220px_1.4fr_1fr]">
             {/* Sidebar */}
@@ -116,15 +116,15 @@ export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
                   key={item.label}
                   className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors ${
                     item.active
-                      ? "bg-white/[0.06] text-foreground"
-                      : "text-faint hover:bg-white/[0.03] hover:text-muted"
+                      ? "bg-black/[0.05] text-foreground"
+                      : "text-faint hover:bg-black/[0.04] hover:text-muted"
                   }`}
                 >
                   <item.icon className="h-4 w-4" />
                   {item.label}
                 </button>
               ))}
-              <button className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2.5 text-[12px] font-semibold tracking-wide text-foreground transition-colors hover:border-white/25">
+              <button className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2.5 text-[12px] font-semibold tracking-wide text-foreground transition-colors hover:border-black/20">
                 <IconWallet className="h-4 w-4" />
                 Connect Wallet
               </button>
@@ -148,10 +148,10 @@ export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.08, ease }}
-                    className="group px-5 py-4 transition-colors hover:bg-white/[0.02]"
+                    className="group px-5 py-4 transition-colors hover:bg-black/[0.03]"
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`h-9 w-9 shrink-0 rounded-full bg-gradient-to-br ${post.color} ring-1 ring-white/10`} />
+                      <div className={`h-9 w-9 shrink-0 rounded-full bg-gradient-to-br ${post.color} ring-1 ring-black/10`} />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="text-[13px] font-semibold text-foreground">{post.name}</span>
@@ -205,7 +205,7 @@ export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.06, ease }}
-                    className="group flex items-center gap-3 border-b border-line px-5 py-3.5 text-left transition-colors hover:bg-white/[0.02]"
+                    className="group flex items-center gap-3 border-b border-line px-5 py-3.5 text-left transition-colors hover:bg-black/[0.03]"
                   >
                     <span className="text-base">{m.up ? "🔥" : "⚡"}</span>
                     <div className="min-w-0 flex-1">

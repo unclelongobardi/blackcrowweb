@@ -46,7 +46,7 @@ export default function MobileBountiesPanel({
           <button
             type="button"
             onClick={onPostBounty}
-            className={`${uiBtnPrimary} min-h-11 flex-1 rounded-xl bg-foreground px-4 py-3 text-[12px] font-bold text-black`}
+            className={`${uiBtnPrimary} min-h-11 flex-1 rounded-xl bg-foreground px-4 py-3 text-[12px] font-bold text-background`}
           >
             + POST A BOUNTY
           </button>
@@ -89,7 +89,7 @@ export default function MobileBountiesPanel({
                       onSelect(b);
                       document.getElementById(`bounty-${b.id}`)?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className={`${uiRow} w-full px-4 py-3.5 text-left hover:bg-white/[0.03]`}
+                    className={`${uiRow} w-full px-4 py-3.5 text-left hover:bg-black/[0.04]`}
                   >
                     {creator ? (
                       <div className="mb-2 flex items-center gap-2">

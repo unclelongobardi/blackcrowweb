@@ -16,7 +16,7 @@ export default function CopyButton({ value, label }: { value: string; label?: st
           /* clipboard unavailable */
         }
       }}
-      className="rounded-md border border-line px-2 py-1 text-[11px] font-medium text-muted transition-colors hover:border-white/25 hover:text-foreground"
+      className="rounded-md border border-line px-2 py-1 text-[11px] font-medium text-muted transition-colors hover:border-black/20 hover:text-foreground"
     >
       {copied ? "Copied" : label ?? "Copy"}
     </button>

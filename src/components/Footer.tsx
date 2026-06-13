@@ -62,11 +62,11 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="flex-1 rounded-xl border border-line bg-surface/60 px-4 py-3.5 text-sm text-foreground placeholder:text-faint outline-none transition-colors focus:border-white/25"
+                className="flex-1 rounded-xl border border-line bg-surface/60 px-4 py-3.5 text-sm text-foreground placeholder:text-faint outline-none transition-colors focus:border-black/20"
               />
               <button
                 type="submit"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] text-black transition-transform hover:scale-[1.03]"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] text-background transition-transform hover:scale-[1.03]"
               >
                 {sent ? "JOINED" : "JOIN THE NETWORK"}
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -80,7 +80,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-foreground transition-colors hover:border-white/25 hover:text-bull"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-foreground transition-colors hover:border-black/20 hover:text-bull"
                 >
                   {s.render()}
                 </a>

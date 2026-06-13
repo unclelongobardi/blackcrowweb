@@ -108,7 +108,7 @@ export default function ProfilePage() {
           </div>
           <button
             onClick={() => setEditing((v) => !v)}
-            className="rounded-lg border border-line px-4 py-2 text-[12px] font-semibold text-muted transition-colors hover:border-white/25 hover:text-foreground"
+            className="rounded-lg border border-line px-4 py-2 text-[12px] font-semibold text-muted transition-colors hover:border-black/20 hover:text-foreground"
           >
             {editing ? "Close" : "Edit"}
           </button>
@@ -131,26 +131,26 @@ export default function ProfilePage() {
               value={codename}
               onChange={(e) => setCodename(e.target.value)}
               placeholder="Codename"
-              className="w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground outline-none focus:border-white/25"
+              className="w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground outline-none focus:border-black/20"
             />
             <input
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="Display name"
-              className="w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground outline-none focus:border-white/25"
+              className="w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground outline-none focus:border-black/20"
             />
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Bio"
               rows={3}
-              className="w-full resize-none rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground outline-none focus:border-white/25"
+              className="w-full resize-none rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground outline-none focus:border-black/20"
             />
             {error && <p className="text-[12px] text-bear">{error}</p>}
             <button
               onClick={save}
               disabled={loading || uploading}
-              className="rounded-xl bg-foreground px-5 py-3 text-[13px] font-bold text-black transition-transform hover:scale-[1.02] disabled:opacity-60"
+              className="rounded-xl bg-foreground px-5 py-3 text-[13px] font-bold text-background transition-transform hover:scale-[1.02] disabled:opacity-60"
             >
               {loading ? "SAVING…" : "SAVE"}
             </button>

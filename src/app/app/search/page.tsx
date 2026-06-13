@@ -53,7 +53,7 @@ function SearchContent() {
           <h2 className="mb-3 text-[11px] font-bold tracking-[0.16em] text-muted">USERS</h2>
           <div className="space-y-2">
             {users.map((u) => (
-              <Link key={u.id} href={`/app/u/${u.codename}`} className="glass flex items-center gap-3 rounded-xl p-3 hover:bg-white/[0.02]">
+              <Link key={u.id} href={`/app/u/${u.codename}`} className="glass flex items-center gap-3 rounded-xl p-3 hover:bg-black/[0.03]">
                 <Avatar seed={u.avatar_seed} avatarUrl={u.avatar_url} label={u.codename} size={40} verified={u.is_verified} />
                 <div>
                   <p className="text-[14px] font-semibold">{u.display_name || u.codename}</p>
@@ -70,7 +70,7 @@ function SearchContent() {
           <h2 className="mb-3 text-[11px] font-bold tracking-[0.16em] text-muted">CABALS</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {cabals.map((c) => (
-              <Link key={c.id} href={`/app/cabals/${c.slug}`} className="glass rounded-xl p-4 hover:bg-white/[0.02]">
+              <Link key={c.id} href={`/app/cabals/${c.slug}`} className="glass rounded-xl p-4 hover:bg-black/[0.03]">
                 <p className="font-bold">{c.name}</p>
                 <p className="text-[12px] text-faint">{c.member_count} members · {c.kind}</p>
               </Link>
@@ -84,7 +84,7 @@ function SearchContent() {
           <h2 className="mb-3 text-[11px] font-bold tracking-[0.16em] text-muted">MARKETS</h2>
           <div className="space-y-2">
             {markets.map((m) => (
-              <Link key={m.id} href={`/app/markets?q=${encodeURIComponent(m.question.slice(0, 40))}`} className="glass block rounded-xl p-4 hover:bg-white/[0.02]">
+              <Link key={m.id} href={`/app/markets?q=${encodeURIComponent(m.question.slice(0, 40))}`} className="glass block rounded-xl p-4 hover:bg-black/[0.03]">
                 <p className="text-[14px] font-medium">{m.question}</p>
                 <p className="mt-1 text-[12px] text-faint">
                   {pct(m.yes_price)} YES · Vol {compactNumber(m.volume)}

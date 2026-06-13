@@ -27,7 +27,7 @@ export default function Providers({ children }: { children: ReactNode }) {
         // Login is restricted to Solana wallets — only Phantom and Solflare.
         loginMethods: ["wallet"],
         appearance: {
-          // Theme/colors/logo are still managed from the Privy dashboard.
+          theme: "light",
           walletChainType: "solana-only",
           walletList: ["phantom", "solflare"],
         },

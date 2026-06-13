@@ -57,8 +57,8 @@ export default function Sidebar() {
               href={item.href}
               className={`${uiNav} group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium ${
                 active
-                  ? "bg-white/[0.06] text-foreground"
-                  : "text-muted hover:bg-white/[0.03] hover:text-foreground"
+                  ? "bg-black/[0.05] text-foreground"
+                  : "text-muted hover:bg-black/[0.04] hover:text-foreground"
               }`}
             >
               <item.icon className={`h-[18px] w-[18px] ${active ? "text-foreground" : "text-faint group-hover:text-muted"}`} />
@@ -75,7 +75,7 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={() => connectWallet()}
-          className={`${uiBtn} flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-3 py-3 text-[12.5px] font-semibold text-foreground hover:border-white/25`}
+          className={`${uiBtn} flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-3 py-3 text-[12.5px] font-semibold text-foreground hover:border-black/20`}
         >
           <IconWallet className="h-4 w-4" />
           {wallet ? truncateAddress(wallet, 4) : "Connect Wallet"}

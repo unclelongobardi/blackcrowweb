@@ -327,7 +327,7 @@ export default function CreatePost({
                           key={m.id}
                           type="button"
                           onClick={() => setSelectedMarket(m)}
-                          className="block w-full border-b border-line px-2 py-2 text-left last:border-0 hover:bg-white/[0.04]"
+                          className="block w-full border-b border-line px-2 py-2 text-left last:border-0 hover:bg-black/[0.05]"
                         >
                           <p className="line-clamp-2 text-[12px] font-medium text-foreground">{m.question}</p>
                           {m.yes_price != null && (
@@ -408,7 +408,7 @@ export default function CreatePost({
                 className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12.5px] font-medium transition-colors ${
                   mode === t.id
                     ? "bg-bull/15 text-bull"
-                    : "text-muted hover:bg-white/[0.04] hover:text-foreground"
+                    : "text-muted hover:bg-black/[0.05] hover:text-foreground"
                 }`}
               >
                 <t.icon className="h-4 w-4" />
@@ -425,7 +425,7 @@ export default function CreatePost({
                     onClick={() => setSentiment(s.id)}
                     title={s.label}
                     className={`${uiPress} flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium ${
-                      sentiment === s.id ? "bg-white/[0.06] text-foreground" : "text-faint hover:text-muted"
+                      sentiment === s.id ? "bg-black/[0.05] text-foreground" : "text-faint hover:text-muted"
                     }`}
                   >
                     <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
@@ -438,7 +438,7 @@ export default function CreatePost({
                 <button
                   type="button"
                   onClick={() => setMenuOpen((v) => !v)}
-                  className="flex max-w-[160px] items-center gap-1 rounded-lg border border-line px-2 py-1.5 text-[12px] font-medium text-muted transition-colors hover:border-white/20 hover:text-foreground"
+                  className="flex max-w-[160px] items-center gap-1 rounded-lg border border-line px-2 py-1.5 text-[12px] font-medium text-muted transition-colors hover:border-black/15 hover:text-foreground"
                 >
                   {audience.scope === "cabal" ? (
                     <IconCabal className="h-3.5 w-3.5 shrink-0 text-bull" />
@@ -457,8 +457,8 @@ export default function CreatePost({
                         setAudience({ scope: "everyone" });
                         setMenuOpen(false);
                       }}
-                      className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] hover:bg-white/[0.04] ${
-                        audience.scope === "everyone" ? "bg-white/[0.06] font-semibold text-foreground" : "text-muted"
+                      className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] hover:bg-black/[0.05] ${
+                        audience.scope === "everyone" ? "bg-black/[0.05] font-semibold text-foreground" : "text-muted"
                       }`}
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-faint" />
@@ -478,7 +478,7 @@ export default function CreatePost({
                               setAudience({ scope: "cabal", cabal: c });
                               setMenuOpen(false);
                             }}
-                            className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] hover:bg-white/[0.04] ${
+                            className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-[12px] hover:bg-black/[0.05] ${
                               audience.scope === "cabal" && audience.cabal.id === c.id
                                 ? "bg-bull/10 font-semibold text-foreground"
                                 : "text-muted"
@@ -503,7 +503,7 @@ export default function CreatePost({
                 type="button"
                 onClick={submit}
                 disabled={!canSubmit() || loading || uploadingImage}
-                className={`${uiBtnPrimary} rounded-lg bg-foreground px-5 py-2 text-[13px] font-bold text-black disabled:opacity-40`}
+                className={`${uiBtnPrimary} rounded-lg bg-foreground px-5 py-2 text-[13px] font-bold text-background disabled:opacity-40`}
               >
                 {loading || uploadingImage ? "…" : "Post"}
               </button>

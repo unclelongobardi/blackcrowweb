@@ -34,14 +34,14 @@ function RankBadge({ rank }: { rank: number }) {
   }
   if (rank === 2) {
     return (
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 font-mono text-[12px] font-bold text-foreground">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/[0.06] font-mono text-[12px] font-bold text-foreground">
         2
       </span>
     );
   }
   if (rank === 3) {
     return (
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/5 font-mono text-[12px] font-bold text-muted">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/[0.04] font-mono text-[12px] font-bold text-muted">
         3
       </span>
     );
@@ -71,7 +71,7 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
       >
         <span
           className={`mb-3 flex items-center justify-center rounded-full font-mono text-[11px] font-bold ${
-            isFirst ? "h-7 w-7 bg-bull/15 text-bull" : "h-6 w-6 bg-white/8 text-muted"
+            isFirst ? "h-7 w-7 bg-bull/15 text-bull" : "h-6 w-6 bg-black/[0.06] text-muted"
           }`}
         >
           #{rank}
@@ -197,7 +197,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
                 </p>
                 <Link
                   href="/app"
-                  className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-black"
+                  className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-background"
                 >
                   ENTER THE NEST
                 </Link>

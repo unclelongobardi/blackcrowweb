@@ -55,7 +55,7 @@ export default function TopBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search…"
-          className="h-10 w-full rounded-xl border border-line bg-surface/60 pl-10 pr-3 text-[13px] text-foreground placeholder:text-faint outline-none transition-colors focus:border-white/20 sm:pr-4"
+          className="h-10 w-full rounded-xl border border-line bg-surface/60 pl-10 pr-3 text-[13px] text-foreground placeholder:text-faint outline-none transition-colors focus:border-black/15 sm:pr-4"
           aria-label="Search markets, users, cabals"
         />
       </form>
@@ -66,7 +66,7 @@ export default function TopBar() {
           type="button"
           aria-label="Notifications"
           onClick={() => router.push("/app/notifications")}
-          className={`${uiPress} relative hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground lg:flex`}
+          className={`${uiPress} relative hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-black/15 hover:text-foreground lg:flex`}
         >
           <IconBell className="h-[18px] w-[18px]" />
           {unread > 0 && (
@@ -79,7 +79,7 @@ export default function TopBar() {
           type="button"
           aria-label="Chat"
           onClick={() => router.push("/app/messages")}
-          className={`${uiPress} hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-white/20 hover:text-foreground lg:flex`}
+          className={`${uiPress} hidden h-10 w-10 items-center justify-center rounded-xl border border-line text-muted hover:border-black/15 hover:text-foreground lg:flex`}
         >
           <IconMail className="h-[18px] w-[18px]" />
         </button>
@@ -88,7 +88,7 @@ export default function TopBar() {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className={`${uiPress} flex items-center gap-2 rounded-xl border border-line py-1.5 pl-1.5 pr-2.5 hover:border-white/20`}
+            className={`${uiPress} flex items-center gap-2 rounded-xl border border-line py-1.5 pl-1.5 pr-2.5 hover:border-black/15`}
           >
             <Avatar
               seed={me?.profile.avatar_seed}
@@ -107,30 +107,30 @@ export default function TopBar() {
           </button>
 
           {open && (
-            <div className="absolute right-0 top-12 z-50 w-52 overflow-hidden rounded-xl border border-white/12 bg-[#0a0a0c]/95 p-1.5 shadow-[0_24px_64px_-16px_rgba(0,0,0,0.95)] backdrop-blur-xl">
+            <div className="absolute right-0 top-12 z-50 w-52 overflow-hidden rounded-xl border border-line bg-white/95 p-1.5 shadow-[0_24px_64px_-16px_rgba(0,0,0,0.12)] backdrop-blur-xl">
               <Link
                 href="/app/profile"
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-white/[0.08] hover:text-foreground"
+                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-black/[0.06] hover:text-foreground"
               >
                 Profile
               </Link>
               <Link
                 href="/app/search"
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-white/[0.08] hover:text-foreground"
+                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-black/[0.06] hover:text-foreground"
               >
                 Search
               </Link>
-              <div className="my-1 border-t border-white/10" />
+              <div className="my-1 border-t border-line" />
               <Link
                 href="/"
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-white/[0.08] hover:text-foreground"
+                className="block rounded-lg px-3 py-2.5 text-[13px] font-medium text-foreground/90 transition-colors hover:bg-black/[0.06] hover:text-foreground"
               >
                 Home
               </Link>
-              <div className="my-1 border-t border-white/10" />
+              <div className="my-1 border-t border-line" />
               <button
                 onClick={() => {
                   setOpen(false);
