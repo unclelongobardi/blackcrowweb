@@ -226,17 +226,15 @@ A social network to meet people obsessed with prediction markets —
             {/* Soft glow behind the crow for depth */}
             <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/[0.04] blur-[120px]" />
             <Image
-              src="/images/raven-hero-cutout.png"
+              src="/images/raven-hero-transparent.png"
               alt="BLACKCROW raven"
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 56vw"
-              className="object-contain object-bottom brightness-95 contrast-[1.08] saturate-[0.92] drop-shadow-[0_40px_80px_rgba(0,0,0,0.15)]"
+              className="object-contain object-bottom contrast-[1.06] saturate-[0.95] drop-shadow-[0_28px_56px_rgba(0,0,0,0.12)]"
             />
-            {/* Grounding fade so the crow melts into the page / ticker */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/4 bg-gradient-to-t from-background via-background/70 to-transparent" />
-            {/* Subtle side vignette to blend edges into the dark UI */}
-            <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(5,5,6,0.55)_100%)]" />
+            {/* Grounding fade so the crow melts into the page */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/5 bg-gradient-to-t from-background via-background/80 to-transparent" />
           </motion.div>
 
           {cards.map((c, i) => (

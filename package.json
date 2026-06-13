@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "favicon": "node scripts/generate-favicon.mjs",
-    "prebuild": "node scripts/generate-favicon.mjs",
+    "raven": "node scripts/generate-raven-transparent.mjs",
+    "prebuild": "node scripts/generate-favicon.mjs && node scripts/generate-raven-transparent.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
