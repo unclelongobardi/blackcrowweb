@@ -223,18 +223,20 @@ A social network to meet people obsessed with prediction markets —
             transition={{ duration: 1, ease }}
             className="relative aspect-[3/2] w-full lg:aspect-auto lg:h-full"
           >
-            {/* Soft glow behind the crow for depth */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/[0.04] blur-[120px]" />
-            <Image
-              src="/images/raven-hero-transparent.png"
-              alt="BLACKCROW raven"
-              fill
-              priority
-              sizes="(max-width: 1024px) 92vw, 56vw"
-              className="object-contain object-bottom contrast-[1.06] saturate-[0.95] drop-shadow-[0_28px_56px_rgba(0,0,0,0.12)]"
-            />
-            {/* Grounding fade so the crow melts into the page */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/5 bg-gradient-to-t from-background via-background/80 to-transparent" />
+            <div
+              className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_72%_68%_at_52%_58%,#000_42%,transparent_100%)]"
+              style={{ WebkitMaskImage: "radial-gradient(ellipse 72% 68% at 52% 58%, #000 42%, transparent 100%)" }}
+            >
+              <Image
+                src="/images/raven-hero-transparent.png"
+                alt="BLACKCROW raven"
+                fill
+                priority
+                sizes="(max-width: 1024px) 92vw, 56vw"
+                className="object-contain object-bottom contrast-[1.05] saturate-[0.96] drop-shadow-[0_20px_44px_rgba(0,0,0,0.1)]"
+              />
+            </div>
+            <div className="pointer-events-none absolute inset-x-[8%] bottom-0 z-10 h-[18%] bg-gradient-to-t from-background via-background/85 to-transparent" />
           </motion.div>
 
           {cards.map((c, i) => (
