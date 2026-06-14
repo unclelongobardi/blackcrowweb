@@ -102,7 +102,7 @@ export default function TopBar() {
             <div className="hidden text-left leading-tight sm:block">
               <p className="max-w-[110px] truncate text-[12px] font-semibold text-foreground">{displayName}</p>
               <p className="max-w-[110px] truncate text-[11px] text-faint">
-                {isGuest ? "read-only preview" : `@${handle}`}
+                {isGuest ? "browse-only" : `@${handle}`}
               </p>
             </div>
             <IconChevronDown className={`h-4 w-4 text-faint transition-transform ${open ? "rotate-180" : ""}`} />
@@ -113,8 +113,8 @@ export default function TopBar() {
               {isGuest ? (
                 <>
                   <div className="border-b border-line px-3 py-2.5">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">Guest mode</p>
-                    <p className="mt-0.5 text-[12px] text-muted">Browse only — connect to participate.</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">Guest access</p>
+                    <p className="mt-0.5 text-[12px] text-muted">Browse-only — connect to participate.</p>
                   </div>
                   <button
                     type="button"

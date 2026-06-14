@@ -21,7 +21,7 @@ export default function GuestLoginPrompt({
         compact ? "p-4" : "p-6 sm:p-8"
       }`}
     >
-      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">Guest preview</p>
+      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">Guest access</p>
       <h2 className={`mt-2 font-display font-extrabold tracking-tight text-foreground ${compact ? "text-lg" : "text-xl sm:text-2xl"}`}>
         {title}
       </h2>

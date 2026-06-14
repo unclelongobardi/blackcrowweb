@@ -137,7 +137,7 @@ export default function TermsContent() {
 
       <H2>9. Third-party services</H2>
       <P>
-        The product integrates Privy (auth), Solana RPC providers, Neon Postgres, Vercel hosting, Polymarket public APIs,
+        The platform integrates Privy (auth), Solana RPC providers, Neon Postgres, Vercel hosting, Polymarket public APIs,
         and other vendors. Their terms and privacy policies apply to those interactions. We are not responsible for
         third-party downtime, policy changes, or asset loss on external platforms.
       </P>

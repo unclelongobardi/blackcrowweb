@@ -111,10 +111,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="bg-grid bg-grid-fade flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <Logo />
         <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-          Live product preview
+          Open platform access
         </p>
         <h1 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-          SEE VEXORA BEFORE YOU BUY
+          EXPLORE VEXORA NETWORK
         </h1>
         <p className="mt-3 max-w-md text-sm text-muted">
           Browse markets, bounties, cabals, and the feed as a guest — no wallet, no signup. Connect when you&apos;re
@@ -138,7 +138,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             CONNECT WALLET
           </button>
         </div>
-        <p className="mt-4 text-[11px] text-faint">Guest mode is read-only — connect to post, vote, and earn VEX.</p>
+        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VEX.</p>
         <div className="mt-6 w-full max-w-md">
           <TokenCaChip variant="panel" />
         </div>

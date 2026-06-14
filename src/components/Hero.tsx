@@ -170,7 +170,7 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
                   <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
                 <span className="mt-1 text-[11px] font-medium tracking-wide text-white/85">
-                  No wallet · explore the full app · see before you buy $VEXORA
+                  No wallet · explore the full platform · markets, bounties & cabals
                 </span>
               </span>
             </Link>

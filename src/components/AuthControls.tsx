@@ -54,7 +54,7 @@ export default function AuthControls() {
           className={`${uiBtnPrimary} group inline-flex min-h-10 items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-bold tracking-[0.08em] transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]`}
         >
           <span className="sm:hidden">GUEST</span>
-          <span className="hidden sm:inline">TRY AS GUEST</span>
+          <span className="hidden sm:inline">ENTER AS GUEST</span>
           <IconArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </>

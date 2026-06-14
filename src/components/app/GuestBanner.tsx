@@ -17,9 +17,9 @@ export default function GuestBanner() {
     <div className="border-b border-primary/20 bg-gradient-to-r from-primary/[0.08] via-primary/[0.04] to-background px-3 py-2.5 sm:px-6">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Guest mode</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Guest access</p>
           <p className="mt-0.5 text-[13px] text-foreground sm:text-sm">
-            Full product preview — no wallet required. Connect to post, trade bounties, and earn{" "}
+            Browse the platform without a wallet. Connect to post, trade bounties, and earn{" "}
             <span className="font-semibold">$VEXORA</span>.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function GuestBanner() {
             disabled={!ready}
             className={`${uiBtnPrimary} group inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[11px] font-bold tracking-[0.08em] disabled:opacity-60 sm:text-[12px]`}
           >
-            GET $VEXORA
+            CONNECT WALLET
             <IconArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
           </button>
           <Link

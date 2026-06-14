@@ -230,7 +230,7 @@ export default function CreatePost({
         <GuestLoginPrompt
           compact
           title="Connect to join the conversation"
-          message="Guest mode is read-only. Connect your wallet to post takes, attach markets, and climb the leaderboard."
+          message="Guest access is browse-only. Connect your wallet to post takes, attach markets, and climb the leaderboard."
         />
       </div>
     );
