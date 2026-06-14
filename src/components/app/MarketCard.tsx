@@ -8,6 +8,7 @@ import { genSpark } from "@/lib/spark";
 import { compactNumber, pct } from "@/lib/format";
 import { IconFlame, IconGrid } from "@/components/icons";
 import type { Market } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 function daysUntil(iso: string | null): string | null {
   if (!iso) return null;
@@ -159,7 +160,7 @@ export default function MarketCard({
           <button
             type="button"
             onClick={() => onPostBounty(market)}
-            className="ui-btn flex-1 rounded-xl bg-foreground px-3 py-2.5 text-[11px] font-bold tracking-wide text-background"
+            className={`${uiBtnPrimary} ui-btn flex-1 rounded-xl px-3 py-2.5 text-[11px] font-bold tracking-wide`}
           >
             POST BOUNTY
           </button>

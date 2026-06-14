@@ -95,7 +95,7 @@ function ParticipantProof({
           type="button"
           onClick={onApprove}
           disabled={busy}
-          className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-3 py-2 text-[11px] font-bold text-background disabled:opacity-60`}
+          className={`${uiBtnPrimary} flex-1 rounded-lg bg-bull px-3 py-2 text-[11px] font-bold disabled:opacity-60`}
         >
           Approve & pay pool
         </button>
@@ -369,9 +369,9 @@ export default function BountyCard({
                 avatarUrl={bounty.creator.avatar_url}
                 label={bounty.creator.codename}
                 size={20}
-                verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
+                verified={bounty.creator.is_verified || bounty.creator.codename === "vexora_official"}
               />
-              <span className="truncate text-[10px] font-semibold text-foreground">blackcrow_official</span>
+              <span className="truncate text-[10px] font-semibold text-foreground">vexora_official</span>
             </Link>
           )}
           {compact && (
@@ -579,7 +579,7 @@ export default function BountyCard({
               avatarUrl={bounty.creator.avatar_url}
               label={bounty.creator.codename}
               size={18}
-              verified={bounty.creator.is_verified || bounty.creator.codename === "blackcrow_official"}
+              verified={bounty.creator.is_verified || bounty.creator.codename === "vexora_official"}
             />
             {bounty.creator.codename}
           </Link>
@@ -611,7 +611,7 @@ export default function BountyCard({
         {bounty.status === "funding" && role === "creator" && (
           <>
             <p className="text-[11px] text-faint">
-              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} Feathers
+              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} VEX
             </p>
             {escrow?.address && (
               <p className="text-[10px] text-faint">
@@ -634,7 +634,7 @@ export default function BountyCard({
                 fund();
               }}
               disabled={busy || !escrowReady}
-              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60`}
+              className={`${uiBtnPrimary} rounded-lg px-4 py-2.5 text-[12px] font-bold disabled:opacity-60`}
             >
               {fundStep === "signing"
                 ? "Sign in wallet…"
@@ -704,7 +704,7 @@ export default function BountyCard({
                   contribute();
                 }}
                 disabled={busy}
-                className={`${uiBtnPrimary} flex-1 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold text-background disabled:opacity-60`}
+                className={`${uiBtnPrimary} flex-1 rounded-lg px-3 py-2 text-[11px] font-bold disabled:opacity-60`}
               >
                 {busy ? "…" : (
                   <span className="inline-flex items-center justify-center gap-1">
@@ -731,7 +731,7 @@ export default function BountyCard({
               accept();
             }}
             disabled={busy}
-            className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60`}
+            className={`${uiBtnPrimary} rounded-lg px-4 py-2.5 text-[12px] font-bold disabled:opacity-60`}
           >
             {busy ? "…" : "JOIN CHALLENGE"}
           </button>
@@ -793,7 +793,7 @@ export default function BountyCard({
                 submitProof();
               }}
               disabled={busy || uploading || (proof.length < 10 && media.length === 0 && !videoUrl)}
-              className={`${uiBtnPrimary} rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60`}
+              className={`${uiBtnPrimary} rounded-lg px-4 py-2.5 text-[12px] font-bold disabled:opacity-60`}
             >
               {busy ? "…" : "SUBMIT PROOF"}
             </button>

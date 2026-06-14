@@ -213,7 +213,7 @@ export default function PostCard({
               avatarUrl={post.author.avatar_url}
               label={post.author.codename}
               size={42}
-              verified={post.author.is_verified || post.author.codename === "blackcrow_official"}
+              verified={post.author.is_verified || post.author.codename === "vexora_official"}
             />
           </Link>
         ) : (
@@ -225,7 +225,7 @@ export default function PostCard({
               <UserName
                 codename={post.author.codename}
                 displayName={post.author.display_name}
-                verified={post.author.is_verified || post.author.codename === "blackcrow_official"}
+                verified={post.author.is_verified || post.author.codename === "vexora_official"}
                 className="truncate text-[14px]"
               />
             ) : (
@@ -424,7 +424,7 @@ export default function PostCard({
                 type="button"
                 onClick={submitReply}
                 disabled={!replyText.trim() || replyBusy}
-                className="self-end rounded-lg bg-foreground px-4 py-2 text-[12px] font-bold text-background disabled:opacity-40"
+                className="self-end rounded-lg px-4 py-2 text-[12px] font-bold disabled:opacity-40"
               >
                 {replyBusy ? "…" : "Reply"}
               </button>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { getUserHandle, getUserInitials } from "@/lib/user";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 import { IconArrow, IconUser, IconTarget, IconWallet } from "./icons";
 
 export default function AuthControls() {
@@ -43,7 +44,7 @@ export default function AuthControls() {
         </button>
         <button
           onClick={login}
-          className="group inline-flex min-h-10 items-center gap-2 rounded-lg bg-foreground px-3 py-2 text-[11px] font-bold tracking-[0.08em] text-background transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]"
+          className={`${uiBtnPrimary} group inline-flex min-h-10 items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-bold tracking-[0.08em] transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]`}
         >
           <span className="sm:hidden">JOIN</span>
           <span className="hidden sm:inline">JOIN THE NETWORK</span>

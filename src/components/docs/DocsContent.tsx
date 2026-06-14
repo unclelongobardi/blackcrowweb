@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import TokenCaChip from "@/components/TokenCaChip";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -12,11 +13,11 @@ const SECTIONS = [
   { id: "sol-pools", label: "SOL & pools" },
   { id: "home", label: "Home" },
   { id: "markets", label: "Markets" },
-  { id: "feathers", label: "Feathers" },
+  { id: "vex", label: "VEX" },
   { id: "cabals", label: "Cabals" },
   { id: "social", label: "Social layer" },
   { id: "official", label: "Official account" },
-  { id: "token", label: "Token ($CROW)" },
+  { id: "token", label: "Token ($VEXORA)" },
   { id: "glossary", label: "Glossary" },
 ] as const;
 
@@ -125,7 +126,7 @@ export default function DocsContent() {
 
       <article className="min-w-0 flex-1 pb-16 sm:pb-20">
         <header className="mb-8">
-          <p className="section-label">BLACKCROW documentation</p>
+          <p className="section-label">VEXORA documentation</p>
           <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             How the platform works
           </h1>
@@ -137,9 +138,9 @@ export default function DocsContent() {
 
         <DocSection id="overview" title="Overview">
           <p>
-            BLACKCROW is a Solana-native coordination layer for operators who want to move prediction-market
+            VEXORA is a Solana-native coordination layer for operators who want to move prediction-market
             odds—not just watch them. Connect a wallet (Phantom or Solflare), pick a codename, and enter{" "}
-            <strong className="text-foreground">The Nest</strong> at{" "}
+            <strong className="text-foreground">Home</strong> at{" "}
             <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">/app</code>.
           </p>
           <p>
@@ -151,8 +152,8 @@ export default function DocsContent() {
           </p>
           <p>
             Payouts and rank are separate: SOL settles on-chain when a bounty is approved;{" "}
-            <strong className="text-foreground">Feathers</strong> track who is consistently sourcing intel and
-            running plays—visible on The Roost and in search.
+            <strong className="text-foreground">VEX</strong> track who is consistently sourcing intel and
+            running plays—visible on Leaderboard and in search.
           </p>
         </DocSection>
 
@@ -283,9 +284,9 @@ export default function DocsContent() {
           </p>
           <Sub title="Initial deposit">
             <p>
-              The creator signs a Solana transfer to the BLACKCROW escrow wallet. Each deposit includes an on-chain memo
+              The creator signs a Solana transfer to the VEXORA escrow wallet. Each deposit includes an on-chain memo
               tying the transaction to that bounty ID. After confirmation, the bounty goes live and the creator earns
-              Feathers (see Feathers section). Deposits are disabled if the server escrow wallet is not configured.
+              VEX (see VEX section). Deposits are disabled if the server escrow wallet is not configured.
             </p>
           </Sub>
           <Sub title="Collaborative pool">
@@ -295,7 +296,7 @@ export default function DocsContent() {
                 "Minimum contribution: 0.01 SOL per transaction (up to 50 SOL per tx).",
                 "Pool total increases the helper payout on approval.",
                 "Only the original creator can approve or reject — contributors do not gain moderation power.",
-                "Official bounties (blackcrow_official) do not accept pool contributions.",
+                "Official bounties (vexora_official) do not accept pool contributions.",
               ]}
             />
           </Sub>
@@ -329,7 +330,7 @@ export default function DocsContent() {
                 "Choose audience: Everyone (public timeline) or a cabal you belong to.",
                 "Tag sentiment: Bullish, Bearish, or Neutral on the market you are pushing.",
                 "Attach an open bounty so the feed shows the job and the target in one embed.",
-                "Each post grants +2 Feathers—consistent intel sources climb The Roost.",
+                "Each post grants +2 VEX—consistent intel sources climb Leaderboard.",
               ]}
             />
           </Sub>
@@ -373,27 +374,27 @@ export default function DocsContent() {
           </Sub>
         </DocSection>
 
-        <DocSection id="feathers" title="Feathers & leaderboard">
+        <DocSection id="vex" title="VEX & leaderboard">
           <p>
-            Feathers (<code className="font-mono text-[12px]">influence</code>) measure who is consistently bringing
+            VEX (<code className="font-mono text-[12px]">influence</code>) measure who is consistently bringing
             intel and running plays—not who holds the most SOL. They do not decay. Cabals rank by member count, not
-            Feathers.
+            VEX.
           </p>
           <Sub title="How to earn">
             <List
               items={[
-                "Home post — +2 Feathers each.",
+                "Home post — +2 VEX each.",
                 "Found a cabal — +20 one-time.",
-                "Bounty goes live — initial deposit SOL × 5 Feathers (max 300).",
-                "Bounty approved (helper) — total pool SOL × 10 Feathers (max 500).",
-                "Pool contributions — 0 Feathers (SOL only).",
+                "Bounty goes live — initial deposit SOL × 5 VEX (max 300).",
+                "Bounty approved (helper) — total pool SOL × 10 VEX (max 500).",
+                "Pool contributions — 0 VEX (SOL only).",
               ]}
             />
           </Sub>
           <Sub title="Example">
             <p>
-              Post 1 SOL bounty → up to 5 Feathers when live. Others add 0.5 SOL → pool is 1.5 SOL. Helper receives
-              1.5 SOL + up to 15 Feathers on approval.
+              Post 1 SOL bounty → up to 5 VEX when live. Others add 0.5 SOL → pool is 1.5 SOL. Helper receives
+              1.5 SOL + up to 15 VEX on approval.
             </p>
           </Sub>
           <p>
@@ -438,7 +439,7 @@ export default function DocsContent() {
           <Sub title="Profiles">
             <p>
               Public profiles at <code className="font-mono text-[12px]">/app/u/[codename]</code> show track record:
-              Feathers, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
+              VEX, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
               Verified accounts display a blue check on avatar and username.
             </p>
           </Sub>
@@ -463,23 +464,23 @@ export default function DocsContent() {
           </Sub>
         </DocSection>
 
-        <DocSection id="official" title="Official account (blackcrow_official)">
+        <DocSection id="official" title="Official account (vexora_official)">
           <p>
-            The platform operator account uses codename <strong className="text-foreground">blackcrow_official</strong>,
+            The platform operator account uses codename <strong className="text-foreground">vexora_official</strong>,
             a verified blue badge, and the official crow avatar image — not a generic green label.
           </p>
           <List
             items={[
               "Official bounties are seeded on real Polymarket questions.",
               "They do not use collaborative pools — only the official creator approves.",
-              "UI shows avatar + blackcrow_official, never a generic 'BlackCrow Official' pill.",
+              "UI shows avatar + vexora_official, never a generic 'BlackCrow Official' pill.",
             ]}
           />
         </DocSection>
 
-        <DocSection id="token" title="Token ($CROW)">
+        <DocSection id="token" title="Token ($VEXORA)">
           <p>
-            The project token on Solana is <strong className="text-foreground">$CROW</strong>. The contract address
+            The project token on Solana is <strong className="text-foreground">$VEXORA</strong>. The contract address
             (CA) is shown in the site header, footer, hero, and app shell — always verify on-chain before trading.
           </p>
           <TokenCaChip variant="panel" className="my-5" />
@@ -496,12 +497,12 @@ export default function DocsContent() {
               ["Home", "Your public timeline—surface reads and align operators before a push."],
               ["Chat", "Direct messages for 1:1 coordination without posting publicly."],
               ["Thin book", "Low-liquidity market where coordinated size or narrative can move odds."],
-              ["Feathers", "Reputation for intel and execution; ranks operators on The Roost."],
+              ["VEX", "Reputation for intel and execution; ranks operators on Leaderboard."],
               ["Pool", "Extra SOL stacked on a bounty so the helper payout scales with the play."],
               ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
-              ["The Nest", "Authenticated app shell (/app and children)."],
-              ["The Roost", "Leaderboard—who is consistently moving markets with the crew."],
-              ["$CROW", "Solana SPL token for the BLACKCROW project; CA shown across the site and in docs."],
+              ["Home", "Authenticated app shell (/app and children)."],
+              ["Leaderboard", "Leaderboard—who is consistently moving markets with the crew."],
+              ["$VEXORA", "Solana SPL token for the VEXORA project; CA shown across the site and in docs."],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>
@@ -518,7 +519,7 @@ export default function DocsContent() {
           </p>
           <Link
             href="/app"
-            className="mt-4 inline-flex rounded-xl bg-foreground px-6 py-3 text-[12px] font-bold text-background"
+            className={`${uiBtnPrimary} mt-4 inline-flex rounded-xl px-6 py-3 text-[12px] font-bold`}
           >
             OPEN THE NEST →
           </Link>

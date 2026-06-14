@@ -46,7 +46,7 @@ export default function MobileBountiesPanel({
           <button
             type="button"
             onClick={onPostBounty}
-            className={`${uiBtnPrimary} min-h-11 flex-1 rounded-xl bg-foreground px-4 py-3 text-[12px] font-bold text-background`}
+            className={`${uiBtnPrimary} min-h-11 flex-1 rounded-xl px-4 py-3 text-[12px] font-bold`}
           >
             + POST A BOUNTY
           </button>
@@ -80,7 +80,7 @@ export default function MobileBountiesPanel({
             {open.map((b) => {
               const creator = b.creator;
               const verified =
-                creator?.is_verified || creator?.codename === "blackcrow_official";
+                creator?.is_verified || creator?.codename === "vexora_official";
               return (
                 <li key={b.id}>
                   <button
@@ -94,13 +94,13 @@ export default function MobileBountiesPanel({
                     {creator ? (
                       <div className="mb-2 flex items-center gap-2">
                         <Avatar
-                          seed={b.is_official ? "blackcrow_official" : creator.avatar_seed}
-                          label={b.is_official ? "blackcrow_official" : creator.codename}
+                          seed={b.is_official ? "vexora_official" : creator.avatar_seed}
+                          label={b.is_official ? "vexora_official" : creator.codename}
                           size={24}
                           verified={verified}
                         />
                         <span className="truncate text-[11px] font-semibold text-foreground">
-                          {b.is_official ? "blackcrow_official" : creator.display_name || creator.codename}
+                          {b.is_official ? "vexora_official" : creator.display_name || creator.codename}
                         </span>
                       </div>
                     ) : null}

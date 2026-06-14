@@ -7,6 +7,7 @@ import { useApi } from "@/lib/useApi";
 import Avatar from "@/components/app/Avatar";
 import PostCard from "@/components/app/PostCard";
 import type { Post, Profile } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 type ProfileData = {
   profile: Profile;
@@ -76,7 +77,7 @@ export default function PublicProfilePage() {
   }
 
   const { profile, stats, posts, is_following, is_self } = data;
-  const verified = profile.is_verified || profile.codename === "blackcrow_official";
+  const verified = profile.is_verified || profile.codename === "vexora_official";
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-6">
@@ -117,7 +118,7 @@ export default function PublicProfilePage() {
           {is_self ? (
             <Link
               href="/app/profile"
-              className="flex-1 rounded-xl bg-foreground px-4 py-2.5 text-center text-[12px] font-bold text-background"
+              className={`${uiBtnPrimary} flex-1 rounded-xl px-4 py-2.5 text-center text-[12px] font-bold`}
             >
               EDIT PROFILE
             </Link>
@@ -127,7 +128,7 @@ export default function PublicProfilePage() {
                 onClick={toggleFollow}
                 disabled={busy}
                 className={`flex-1 rounded-xl px-4 py-2.5 text-[12px] font-bold ${
-                  is_following ? "border border-line text-muted" : "bg-foreground text-background"
+                  is_following ? "border border-line text-muted" : "bg-primary text-white"
                 }`}
               >
                 {is_following ? "FOLLOWING" : "FOLLOW"}

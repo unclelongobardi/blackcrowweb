@@ -6,6 +6,7 @@ import { MAX_BOUNTY_REWARD_SOL, MIN_BOUNTY_REWARD_SOL } from "@/lib/bountyRules"
 import { useApi } from "@/lib/useApi";
 import { IconSolana } from "@/components/icons";
 import type { Bounty, Market } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 export default function CreateBountyModal({
   market,
@@ -150,7 +151,7 @@ export default function CreateBountyModal({
           <button
             onClick={create}
             disabled={loading || !wallet?.address}
-            className="flex-1 rounded-xl bg-foreground px-4 py-3 text-[13px] font-bold text-background disabled:opacity-60"
+            className={`${uiBtnPrimary} flex-1 rounded-xl px-4 py-3 text-[13px] font-bold disabled:opacity-60`}
           >
             {loading ? "…" : "CREATE BOUNTY"}
           </button>

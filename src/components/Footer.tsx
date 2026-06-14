@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import { IconArrow, IconTwitterX, IconDexscreener } from "./icons";
 import TokenCaChip from "./TokenCaChip";
 import { TWITTER_URL, DEXSCREENER_URL } from "@/lib/links";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -43,7 +44,7 @@ export default function Footer() {
           <div>
             <Logo className="text-foreground" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-              Coordinate market plays, fund bounties in SOL, and rank on The Roost.
+              Coordinate market plays, fund bounties in SOL, and rank on Leaderboard.
             </p>
             <TokenCaChip variant="panel" className="mt-5 max-w-md" />
           </div>
@@ -66,7 +67,7 @@ export default function Footer() {
               />
               <button
                 type="submit"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] text-background transition-transform hover:scale-[1.03]"
+                className={`${uiBtnPrimary} group inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] transition-transform hover:scale-[1.03]`}
               >
                 {sent ? "JOINED" : "JOIN THE NETWORK"}
                 <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -91,7 +92,7 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 sm:flex-row">
           <p className="text-[11px] tracking-[0.12em] text-faint">
-            © 2026 BLACKCROW. ALL RIGHTS RESERVED.
+            © 2026 VEXORA NETWORK. ALL RIGHTS RESERVED.
           </p>
           <div className="flex items-center gap-7 text-[11px] font-medium tracking-[0.12em] text-faint">
             <Link href="/terms" className="transition-colors hover:text-foreground">

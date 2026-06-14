@@ -503,7 +503,7 @@ export default function CreatePost({
                 type="button"
                 onClick={submit}
                 disabled={!canSubmit() || loading || uploadingImage}
-                className={`${uiBtnPrimary} rounded-lg bg-foreground px-5 py-2 text-[13px] font-bold text-background disabled:opacity-40`}
+                className={`${uiBtnPrimary} rounded-lg px-5 py-2 text-[13px] font-bold disabled:opacity-40`}
               >
                 {loading || uploadingImage ? "…" : "Post"}
               </button>

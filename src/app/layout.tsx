@@ -22,11 +22,11 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "BLACKCROW — Manipulate Markets. Earn Rewards. Start Your Cabal.",
+  title: "VEXORA NETWORK — Manipulate Markets. Earn Rewards. Start Your Cabal.",
   description:
-    "A social network to meet people obsessed with prediction markets — the kind who want to control the game, not be controlled by someone else's. Anonymous, on Solana.",
+    "VEXORA NETWORK is a social layer for prediction-market operators — coordinate plays, fund bounties in SOL, and rank on the leaderboard. Anonymous, on Solana.",
   openGraph: {
-    title: "BLACKCROW",
+    title: "VEXORA NETWORK",
     description: "Manipulate markets. Earn rewards. Start your cabal.",
     type: "website",
   },

@@ -19,7 +19,7 @@ export default function Avatar({
 }) {
   const s = seed || label || "crow";
   const src = avatarImageUrl(s, avatarUrl);
-  const official = s === "blackcrow_official" || s === "blackcrow";
+  const official = s === "vexora_official" || s === "blackcrow";
 
   return (
     <span className="relative inline-flex shrink-0">

@@ -45,7 +45,7 @@ export default function TopBar() {
     if (query.trim()) router.push(`/app/search?q=${encodeURIComponent(query.trim())}`);
   }
 
-  const verified = me?.profile.is_verified || me?.profile.codename === "blackcrow_official";
+  const verified = me?.profile.is_verified || me?.profile.codename === "vexora_official";
 
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center gap-2 border-b border-line bg-background/70 px-3 backdrop-blur-xl sm:h-16 sm:gap-4 sm:px-6">

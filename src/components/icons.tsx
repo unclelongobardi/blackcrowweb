@@ -365,27 +365,16 @@ export function IconDexscreener({ className }: { className?: string }) {
   );
 }
 
-/** Reputation / feathers — brand asset tinted via currentColor */
+/** Reputation / VEX score */
 export function IconFeather(props: SVGProps<SVGSVGElement>) {
-  const { className, style, ...rest } = props;
-  const maskStyle = {
-    WebkitMaskImage: "url(/images/feather-icon.png)",
-    maskImage: "url(/images/feather-icon.png)",
-    WebkitMaskSize: "contain",
-    maskSize: "contain",
-    WebkitMaskRepeat: "no-repeat",
-    maskRepeat: "no-repeat",
-    WebkitMaskPosition: "center",
-    maskPosition: "center",
-    ...style,
-  } as CSSProperties;
-
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden {...rest}>
-      <rect width="24" height="24" fill="currentColor" style={maskStyle} />
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden {...props}>
+      <path d="M6 7 L12 17 L18 7 H15.5 L12 13 L8.5 7 H6 Z" fill="currentColor" />
     </svg>
   );
 }
+
+export const IconVex = IconFeather;
 
 /** Cabal — linked operatives in angular frame */
 export function IconCabal(props: SVGProps<SVGSVGElement>) {
@@ -411,7 +400,7 @@ export function IconRoost(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Anonymous operator — BLACKCROW angular frame + crow profile */
+/** Anonymous operator — VEXORA angular frame + crow profile */
 export function IconOperator(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={1.5} {...props}>

@@ -23,11 +23,11 @@ import {
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const NAV = [
-  { label: "The Nest", icon: IconFeed, active: true },
+  { label: "Home", icon: IconFeed, active: true },
   { label: "Markets", icon: IconGrid },
   { label: "Operations", icon: IconPlus },
   { label: "Cabals", icon: IconUsers },
-  { label: "The Roost", icon: IconChart2 },
+  { label: "Leaderboard", icon: IconChart2 },
   { label: "Bounties", icon: IconWallet },
   { label: "Notifications", icon: IconBell },
   { label: "Profile", icon: IconUser },

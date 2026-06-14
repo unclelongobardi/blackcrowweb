@@ -85,7 +85,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={login}
-            className={`${uiBtnPrimary} group inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold text-background`}
+            className={`${uiBtnPrimary} group inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[13px] font-bold`}
           >
             CONNECT WALLET
             <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />

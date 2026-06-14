@@ -9,6 +9,7 @@ import CreateBountyModal from "@/components/app/CreateBountyModal";
 import WorldCupBountiesSection, { splitWorldCupBounties } from "@/components/app/WorldCupBountiesSection";
 import { IconTarget } from "@/components/icons";
 import type { Bounty } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const STATUS_FILTERS = [
   { id: "all", label: "All" },
@@ -101,7 +102,7 @@ function BountiesContent() {
             <button
               type="button"
               onClick={() => setShowCreate(true)}
-              className="rounded-xl bg-foreground px-4 py-2.5 text-[11px] font-bold text-background"
+              className={`${uiBtnPrimary} rounded-xl px-4 py-2.5 text-[11px] font-bold`}
             >
               + POST BOUNTY
             </button>
@@ -167,7 +168,7 @@ function BountiesContent() {
           <button
             type="button"
             onClick={() => setShowCreate(true)}
-            className="mt-4 rounded-xl bg-foreground px-5 py-2.5 text-[12px] font-bold text-background"
+            className={`${uiBtnPrimary} mt-4 rounded-xl px-5 py-2.5 text-[12px] font-bold`}
           >
             POST A BOUNTY
           </button>

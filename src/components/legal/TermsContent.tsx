@@ -28,18 +28,18 @@ export default function TermsContent() {
   return (
     <>
       <P>
-        These Terms of Service (&ldquo;Terms&rdquo;) govern access to BLACKCROW — the website, authenticated app
-        (&ldquo;The Nest&rdquo; at <code className="font-mono text-[12px] text-foreground/80">/app</code>), and
-        related services operated under the BLACKCROW brand. By connecting a wallet or using the platform, you agree to
+        These Terms of Service (&ldquo;Terms&rdquo;) govern access to VEXORA — the website, authenticated app
+        (&ldquo;Home&rdquo; at <code className="font-mono text-[12px] text-foreground/80">/app</code>), and
+        related services operated under the VEXORA brand. By connecting a wallet or using the platform, you agree to
         these Terms. If you do not agree, do not use the service.
       </P>
 
-      <H2>1. What BLACKCROW is</H2>
+      <H2>1. What VEXORA is</H2>
       <P>
-        BLACKCROW is a Solana-native coordination layer for prediction-market operators. The platform provides market
+        VEXORA is a Solana-native coordination layer for prediction-market operators. The platform provides market
         intelligence (including thin-book rankings sourced from third-party APIs), a public Home feed, SOL-funded
-        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;Feathers&rdquo;), and related
-        social features. BLACKCROW does not operate a centralized exchange, custody user funds beyond programmatic
+        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VEX&rdquo;), and related
+        social features. VEXORA does not operate a centralized exchange, custody user funds beyond programmatic
         bounty escrow flows you explicitly authorize, or guarantee any market outcome.
       </P>
 
@@ -81,22 +81,22 @@ export default function TermsContent() {
         discussion). Leaders may approve private join requests.
       </P>
       <P>
-        <strong className="text-foreground">Feathers</strong> — off-chain reputation points (&ldquo;influence&rdquo;)
-        earned through documented platform activity. Feathers are not currency, do not represent equity, and are not
+        <strong className="text-foreground">VEX</strong> — off-chain reputation points (&ldquo;influence&rdquo;)
+        earned through documented platform activity. VEX are not currency, do not represent equity, and are not
         redeemable for SOL except indirectly through platform visibility and rank.
       </P>
 
-      <H2>5. $CROW token</H2>
+      <H2>5. $VEXORA token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">$CROW</strong>. The contract address (&ldquo;CA&rdquo;) is published in the
+        <strong className="text-foreground">$VEXORA</strong>. The contract address (&ldquo;CA&rdquo;) is published in the
         site header, footer, documentation, and legal pages. Unless we publish a separate, signed token utility
         statement:
       </P>
       <TokenCaChip variant="panel" className="my-4" />
       <Ul
         items={[
-          "$CROW is not an investment contract, security, or promise of profit.",
+          "$VEXORA is not an investment contract, security, or promise of profit.",
           "Token ownership does not grant governance over user bounties, escrow, or third-party markets.",
           "Token value can go to zero; only interact with contracts you have verified on-chain.",
           "Nothing on this site constitutes an offer to sell or solicitation to buy tokens in any jurisdiction where unlawful.",
@@ -118,12 +118,12 @@ export default function TermsContent() {
           "Fraud, stolen funds, money laundering, or sanctions evasion.",
           "Harassment, doxing, threats, or posting others' private information without consent.",
           "Spam, bot abuse, exploit attempts on our APIs or smart-contract flows.",
-          "Misrepresenting bounty proof, impersonating blackcrow_official, or phishing wallet signatures.",
+          "Misrepresenting bounty proof, impersonating vexora_official, or phishing wallet signatures.",
           "Scraping or reselling platform data at scale without written permission.",
         ]}
       />
       <P>
-        We may suspend or terminate access, remove content, or withhold Feathers for violations — without refund of
+        We may suspend or terminate access, remove content, or withhold VEX for violations — without refund of
         off-chain status and without liability for on-chain assets already transferred.
       </P>
 
@@ -131,7 +131,7 @@ export default function TermsContent() {
       <P>
         Bounty deposits and payouts use Solana transactions you sign. Escrow is operated server-side per published flows.
         Smart-contract, RPC, or indexer failures can delay or prevent settlement. Disputes between creators and helpers
-        are primarily between those parties; BLACKCROW is not an arbiter of off-chain work quality except where we
+        are primarily between those parties; VEXORA is not an arbiter of off-chain work quality except where we
         intervene for abuse or legal compliance.
       </P>
 
@@ -144,7 +144,7 @@ export default function TermsContent() {
 
       <H2>10. Intellectual property</H2>
       <P>
-        BLACKCROW branding, UI, and original content are owned by the project or licensors. You retain rights to content
+        VEXORA branding, UI, and original content are owned by the project or licensors. You retain rights to content
         you post but grant us a non-exclusive license to display, store, and distribute it within the service for
         operation and promotion of the platform.
       </P>
@@ -158,7 +158,7 @@ export default function TermsContent() {
 
       <H2>12. Limitation of liability</H2>
       <P>
-        TO THE MAXIMUM EXTENT PERMITTED BY LAW, BLACKCROW AND ITS OPERATORS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL,
+        TO THE MAXIMUM EXTENT PERMITTED BY LAW, VEXORA AND ITS OPERATORS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL,
         SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, DATA, GOODWILL, OR DIGITAL ASSETS, ARISING
         FROM YOUR USE OF THE SERVICE — INCLUDING WALLET COMPROMISE, MARKET LOSSES, OR TOKEN PRICE CHANGES — EVEN IF
         ADVISED OF THE POSSIBILITY. OUR AGGREGATE LIABILITY FOR ANY CLAIM RELATING TO THE SERVICE IS LIMITED TO THE

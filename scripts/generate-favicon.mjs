@@ -8,13 +8,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 
 const candidates = [
-  path.join(root, "public", "images", "blackcrow-favicon-source.png"),
-  path.join(root, "public", "images", "blackcrow-favicon.png"),
+  path.join(root, "public", "images", "vexora-favicon-source.png"),
+  path.join(root, "public", "images", "vexora-favicon.png"),
 ];
 
 const source = candidates.find((p) => fs.existsSync(p));
 if (!source) {
-  console.error("Missing favicon source (blackcrow-favicon-source.png or blackcrow-favicon.png).");
+  console.error("Missing favicon source (vexora-favicon-source.png). Run: node scripts/generate-vexora-favicon-source.mjs");
   process.exit(1);
 }
 
@@ -33,7 +33,8 @@ console.log("favicon source:", path.relative(root, source));
 
 await writePng(path.join(root, "src", "app", "icon.png"), 32);
 await writePng(path.join(root, "src", "app", "apple-icon.png"), 180);
-await writePng(path.join(root, "public", "images", "blackcrow-favicon.png"), 512);
+await writePng(path.join(root, "public", "images", "vexora-favicon.png"), 512);
+await sharp(source).resize(256, 256).png().toFile(path.join(root, "public", "images", "vexora-official.png"));
 
 const icon32 = await sharp(path.join(root, "src", "app", "icon.png")).png().toBuffer();
 const ico = await toIco([icon32], { resize: false });

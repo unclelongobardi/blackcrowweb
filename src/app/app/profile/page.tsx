@@ -9,6 +9,7 @@ import Avatar, { resolveAvatarId, type AvatarId } from "@/components/app/Avatar"
 import AvatarPicker, { type AvatarMode } from "@/components/app/AvatarPicker";
 import CopyButton from "@/components/CopyButton";
 import { truncateAddress } from "@/lib/user";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 export default function ProfilePage() {
   const api = useApi();
@@ -42,7 +43,7 @@ export default function ProfilePage() {
 
   if (!me) return null;
   const p = me.profile;
-  const verified = p.is_verified || p.codename === "blackcrow_official";
+  const verified = p.is_verified || p.codename === "vexora_official";
 
   async function uploadAvatar(file: File) {
     setUploading(true);
@@ -150,7 +151,7 @@ export default function ProfilePage() {
             <button
               onClick={save}
               disabled={loading || uploading}
-              className="rounded-xl bg-foreground px-5 py-3 text-[13px] font-bold text-background transition-transform hover:scale-[1.02] disabled:opacity-60"
+              className={`${uiBtnPrimary} rounded-xl px-5 py-3 text-[13px] font-bold transition-transform hover:scale-[1.02] disabled:opacity-60`}
             >
               {loading ? "SAVING…" : "SAVE"}
             </button>
@@ -159,7 +160,7 @@ export default function ProfilePage() {
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
           {[
-            { label: "Feathers", value: p.influence.toLocaleString() },
+            { label: "VEX", value: p.influence.toLocaleString() },
             { label: "Rank", value: `#${me.stats.rank}` },
             { label: "Bounties", value: String(me.stats.bounties_posted) },
             { label: "Completed", value: String(me.stats.bounties_done) },

@@ -36,7 +36,7 @@ const FEATURES = [
   {
     icon: IconFeather,
     title: "GET CLOUT",
-    desc: "Stack Feathers from intel, bounty work, and cabals you found. Climb The Roost—reputation separate from SOL payouts.",
+    desc: "Stack VEX from intel, bounty work, and cabals you found. Climb Leaderboard—reputation separate from SOL payouts.",
   },
 ] as const;
 
@@ -65,7 +65,7 @@ export default function Features() {
           </p>
           <p className="mx-auto mt-5 max-w-lg text-[14px] leading-relaxed text-faint">
             Connect a Solana wallet, open Home, and run coordinated plays on prediction
-            markets—bounties in SOL, cabals for alignment, Feathers for rank.
+            markets—bounties in SOL, cabals for alignment, VEX for rank.
           </p>
         </motion.div>
 

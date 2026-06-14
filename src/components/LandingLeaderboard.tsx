@@ -6,13 +6,14 @@ import Avatar from "@/components/app/Avatar";
 import { compactNumber } from "@/lib/format";
 import type { LeaderboardOperative } from "@/lib/leaderboard";
 import { IconFeather, IconRoost } from "./icons";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const EXPLAIN = [
   {
     title: "Reputation score",
-    body: "Feathers track verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
+    body: "VEX track verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
   },
   {
     title: "Live rankings",
@@ -20,7 +21,7 @@ const EXPLAIN = [
   },
   {
     title: "Not your payout",
-    body: "Bounty rewards settle in SOL on-chain. Feathers are status: they control visibility on The Roost and in search.",
+    body: "Bounty rewards settle in SOL on-chain. VEX are status: they control visibility on Leaderboard and in search.",
   },
 ] as const;
 
@@ -55,7 +56,7 @@ function RankBadge({ rank }: { rank: number }) {
 
 function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank: 1 | 2 | 3 }) {
   const isFirst = rank === 1;
-  const verified = operative.is_verified || operative.codename === "blackcrow_official";
+  const verified = operative.is_verified || operative.codename === "vexora_official";
 
   return (
     <motion.div
@@ -99,7 +100,7 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
 }
 
 function OperativeRow({ operative, rank }: { operative: LeaderboardOperative; rank: number }) {
-  const verified = operative.is_verified || operative.codename === "blackcrow_official";
+  const verified = operative.is_verified || operative.codename === "vexora_official";
 
   return (
     <motion.div
@@ -139,10 +140,10 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
         <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-14 lg:items-start">
           {/* Explanation */}
           <div>
-            <p className="section-label">The Roost</p>
+            <p className="section-label">Leaderboard</p>
             <h2 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">LEADERBOARD</h2>
             <p className="mt-3 max-w-md text-[14px] leading-relaxed text-muted">
-              The Roost ranks operators by <strong className="font-semibold text-foreground">Feathers</strong>—an
+              Leaderboard ranks operators by <strong className="font-semibold text-foreground">VEX</strong>—an
               on-platform reputation score built from real activity. It is the public record of who is moving markets,
               funding bounties, and running cabals.
             </p>
@@ -193,11 +194,11 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
               <div className="mt-6 rounded-2xl border border-dashed border-line bg-surface/20 px-6 py-14 text-center">
                 <p className="text-[15px] font-semibold text-foreground">Rankings start with the first operator</p>
                 <p className="mx-auto mt-2 max-w-xs text-[13px] text-faint">
-                  Connect a wallet, post intel, or fund a bounty to appear on The Roost.
+                  Connect a wallet, post intel, or fund a bounty to appear on Leaderboard.
                 </p>
                 <Link
                   href="/app"
-                  className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-background"
+                  className={`${uiBtnPrimary} mt-5 inline-flex min-h-11 items-center rounded-xl px-6 py-2.5 text-[12px] font-bold`}
                 >
                   ENTER THE NEST
                 </Link>

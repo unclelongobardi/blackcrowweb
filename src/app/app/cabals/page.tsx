@@ -6,6 +6,7 @@ import { useApi } from "@/lib/useApi";
 import Avatar from "@/components/app/Avatar";
 import { useAppContext } from "@/components/app/appContext";
 import type { Cabal, CabalKind, CabalVisibility } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const KIND_LABEL: Record<CabalKind, string> = {
   tipsters: "Tipsters",
@@ -13,7 +14,7 @@ const KIND_LABEL: Record<CabalKind, string> = {
   discussion: "Discussion",
 };
 
-const OFFICIAL_SLUG = "blackcrow-official";
+const OFFICIAL_SLUG = "vexora-official";
 
 function CabalCard({
   c,
@@ -72,7 +73,7 @@ function CabalCard({
               ? "border border-bull/30 text-bull"
               : isOfficial
                 ? "bg-bull text-white hover:bg-bull/90"
-                : "bg-foreground text-background"
+                : "bg-primary text-white"
         }`}
       >
         {busy === c.slug
@@ -166,7 +167,7 @@ export default function CabalsPage() {
         </div>
         <button
           onClick={() => setCreating(true)}
-          className="min-h-11 w-full shrink-0 rounded-lg bg-foreground px-4 py-2.5 text-[12px] font-bold tracking-wide text-background sm:w-auto"
+          className="min-h-11 w-full shrink-0 rounded-lg px-4 py-2.5 text-[12px] font-bold tracking-wide sm:w-auto"
         >
           + CREATE CABAL
         </button>
@@ -178,7 +179,7 @@ export default function CabalsPage() {
             key={k}
             onClick={() => setKindFilter(k)}
             className={`rounded-lg px-3 py-1.5 text-[11px] font-bold ${
-              kindFilter === k ? "bg-foreground text-background" : "border border-line text-muted"
+              kindFilter === k ? "bg-primary text-white" : "border border-line text-muted"
             }`}
           >
             {k === "all" ? "ALL TYPES" : KIND_LABEL[k].toUpperCase()}
@@ -187,7 +188,7 @@ export default function CabalsPage() {
         <button
           onClick={() => setVisFilter(visFilter === "public" ? "all" : "public")}
           className={`rounded-lg px-3 py-1.5 text-[11px] font-bold ${
-            visFilter === "public" ? "bg-foreground text-background" : "border border-line text-muted"
+            visFilter === "public" ? "bg-primary text-white" : "border border-line text-muted"
           }`}
         >
           PUBLIC ONLY
@@ -209,7 +210,7 @@ export default function CabalsPage() {
               <>
                 {official && (
                   <div className="mb-6">
-                    <p className="mb-3 text-[11px] font-bold tracking-[0.16em] text-bull">BLACKCROW OFFICIAL</p>
+                    <p className="mb-3 text-[11px] font-bold tracking-[0.16em] text-bull">VEXORA OFFICIAL</p>
                     <CabalCard c={official} busy={busy} onJoin={join} featured />
                   </div>
                 )}
@@ -301,7 +302,7 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
         </div>
         <div className="mt-5 flex gap-2">
           <button onClick={onClose} className="flex-1 rounded-xl border border-line px-4 py-3 text-[13px] font-semibold text-muted">Cancel</button>
-          <button onClick={create} disabled={loading} className="flex-1 rounded-xl bg-foreground px-4 py-3 text-[13px] font-bold text-background disabled:opacity-60">
+          <button onClick={create} disabled={loading} className={`${uiBtnPrimary} flex-1 rounded-xl px-4 py-3 text-[13px] font-bold disabled:opacity-60`}>
             {loading ? "…" : "CREATE"}
           </button>
         </div>

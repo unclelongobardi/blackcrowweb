@@ -7,6 +7,7 @@ import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import Navbar from "@/components/Navbar";
 import CopyButton from "@/components/CopyButton";
 import { getUserHandle, getUserInitials, truncateAddress } from "@/lib/user";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 import {
   IconArrow,
   IconWallet,
@@ -127,7 +128,7 @@ export default function AccountPage() {
           <div className="mt-7 flex gap-3">
             <button
               onClick={login}
-              className="group inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] text-background transition-transform hover:scale-[1.03]"
+              className={`${uiBtnPrimary} group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] transition-transform hover:scale-[1.03]`}
             >
               LOG IN / SIGN UP
               <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -284,7 +285,7 @@ export default function AccountPage() {
                   <p className="text-[13px] text-muted">No Solana wallet connected.</p>
                   <button
                     onClick={() => linkWallet()}
-                    className="mt-3 rounded-lg bg-foreground px-3 py-2 text-[12px] font-bold text-background transition-transform hover:scale-[1.03]"
+                    className="mt-3 rounded-lg px-3 py-2 text-[12px] font-bold transition-transform hover:scale-[1.03]"
                   >
                     Connect wallet
                   </button>

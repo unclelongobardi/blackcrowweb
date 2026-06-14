@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+  async redirects() {
+    return [
+      {
+        source: "/app/cabals/blackcrow-official",
+        destination: "/app/cabals/vexora-official",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

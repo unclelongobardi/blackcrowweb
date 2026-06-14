@@ -10,6 +10,7 @@ import MarketCard from "@/components/app/MarketCard";
 import { IconFlame, IconGrid, IconRepeat } from "@/components/icons";
 import { MARKET_CATEGORIES } from "@/lib/marketFilters";
 import type { Market } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const REFRESH_MS = 45_000;
 
@@ -214,7 +215,7 @@ function MarketsContent() {
         />
         <button
           onClick={applySearch}
-          className="rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-background"
+          className={`${uiBtnPrimary} rounded-xl px-4 py-2.5 text-[12px] font-bold`}
         >
           SEARCH
         </button>

@@ -56,7 +56,7 @@ export default function Navbar() {
                   className="group relative text-[12px] font-medium tracking-[0.14em] text-muted transition-colors hover:text-foreground"
                 >
                   {l.label}
-                  <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 bg-foreground transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 transition-all duration-300 group-hover:w-full" />
                 </a>
               </li>
             ))}
@@ -66,7 +66,7 @@ export default function Navbar() {
                 className="group relative text-[12px] font-medium tracking-[0.14em] text-muted transition-colors hover:text-foreground"
               >
                 DOCS
-                <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 bg-foreground transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 transition-all duration-300 group-hover:w-full" />
               </Link>
             </li>
           </ul>

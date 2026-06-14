@@ -8,6 +8,7 @@ import { useAppContext } from "@/components/app/appContext";
 import Avatar from "@/components/app/Avatar";
 import { timeAgo } from "@/lib/format";
 import type { DmConversation, DmMessage, Profile } from "@/lib/types";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 function MessagesContent() {
   const api = useApi();
@@ -114,7 +115,7 @@ function MessagesContent() {
                   avatarUrl={c.other?.avatar_url}
                   label={c.other?.codename}
                   size={40}
-                  verified={c.other?.is_verified || c.other?.codename === "blackcrow_official"}
+                  verified={c.other?.is_verified || c.other?.codename === "vexora_official"}
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-semibold">{c.other?.codename ?? "…"}</p>
@@ -181,7 +182,7 @@ function MessagesContent() {
               <button
                 onClick={send}
                 disabled={busy}
-                className="min-h-11 shrink-0 rounded-xl bg-foreground px-4 py-2.5 text-[12px] font-bold text-background disabled:opacity-60"
+                className={`${uiBtnPrimary} min-h-11 shrink-0 rounded-xl px-4 py-2.5 text-[12px] font-bold disabled:opacity-60`}
               >
                 Send
               </button>
@@ -210,7 +211,7 @@ function MessagesContent() {
             <button
               onClick={send}
               disabled={busy}
-              className="mt-3 min-h-11 rounded-xl bg-foreground px-6 py-2.5 text-[12px] font-bold text-background"
+              className={`${uiBtnPrimary} mt-3 min-h-11 rounded-xl px-6 py-2.5 text-[12px] font-bold`}
             >
               Send
             </button>

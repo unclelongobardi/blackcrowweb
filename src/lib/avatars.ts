@@ -59,8 +59,8 @@ export function avatarImageUrl(
   avatarUrl?: string | null,
 ): string {
   if (avatarUrl) return avatarUrl;
-  if (seed === "blackcrow_official" || seed === "blackcrow") {
-    return "/images/blackcrow-official.png";
+  if (seed === "vexora_official" || seed === "blackcrow") {
+    return "/images/vexora-official.png";
   }
   if (isAvatarId(seed)) return avatarSrcById(seed);
   return avatarSrcById(resolveAvatarId(seed));

@@ -69,7 +69,7 @@ export default function CabalDetailPage() {
     );
   }
 
-  const isOfficial = cabal.slug === "blackcrow-official";
+  const isOfficial = cabal.slug === "vexora-official";
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-6">
@@ -77,7 +77,7 @@ export default function CabalDetailPage() {
       <div className={`mt-4 rounded-2xl p-6 ${isOfficial ? "border border-bull/30 bg-gradient-to-br from-bull/10 via-surface/40 to-surface/20" : "glass"}`}>
         {isOfficial && (
           <span className="mb-3 inline-flex items-center rounded-full bg-bull/15 px-2.5 py-0.5 text-[9px] font-bold tracking-[0.14em] text-bull">
-            OFFICIAL BLACKCROW CABAL
+            OFFICIAL VEXORA CABAL
           </span>
         )}
         <div className="flex items-center gap-4">
@@ -103,7 +103,7 @@ export default function CabalDetailPage() {
                 <span className="text-[13px] font-semibold">@{r.profile.codename}</span>
               </Link>
               <div className="flex gap-2">
-                <button onClick={() => handleRequest(r.profile.id, "approve")} className="rounded-lg bg-bull px-3 py-1 text-[11px] font-bold text-background">APPROVE</button>
+                <button onClick={() => handleRequest(r.profile.id, "approve")} className="rounded-lg bg-bull px-3 py-1 text-[11px] font-bold">APPROVE</button>
                 <button onClick={() => handleRequest(r.profile.id, "reject")} className="rounded-lg border border-line px-3 py-1 text-[11px] text-muted">REJECT</button>
               </div>
             </div>

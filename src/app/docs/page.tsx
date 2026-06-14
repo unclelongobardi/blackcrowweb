@@ -3,9 +3,9 @@ import DocsHeader from "@/components/docs/DocsHeader";
 import DocsContent from "@/components/docs/DocsContent";
 
 export const metadata: Metadata = {
-  title: "BLACKCROW Docs — Platform guide",
+  title: "VEXORA Docs — Platform guide",
   description:
-    "Detailed documentation for BLACKCROW: bounties, Home feed, markets, Feathers, cabals, and Solana payouts.",
+    "Detailed documentation for VEXORA: bounties, Home feed, markets, VEX, cabals, and Solana payouts.",
 };
 
 export default function DocsPage() {

@@ -30,7 +30,7 @@ export default function OpenBountiesSidebar({
           <button
             type="button"
             onClick={onPostBounty}
-            className={`${uiBtnPrimary} rounded-xl bg-foreground px-4 py-2.5 text-[11px] font-bold text-background`}
+            className={`${uiBtnPrimary} rounded-xl px-4 py-2.5 text-[11px] font-bold`}
           >
             + POST A BOUNTY
           </button>
@@ -68,7 +68,7 @@ export default function OpenBountiesSidebar({
             {open.map((b) => {
               const creator = b.creator;
               const verified =
-                creator?.is_verified || creator?.codename === "blackcrow_official";
+                creator?.is_verified || creator?.codename === "vexora_official";
 
               return (
                 <li key={b.id}>
@@ -79,13 +79,13 @@ export default function OpenBountiesSidebar({
                     {creator ? (
                       <div className="mb-2 flex items-center gap-2">
                         <Avatar
-                          seed={b.is_official ? "blackcrow_official" : creator.avatar_seed}
-                          label={b.is_official ? "blackcrow_official" : creator.codename}
+                          seed={b.is_official ? "vexora_official" : creator.avatar_seed}
+                          label={b.is_official ? "vexora_official" : creator.codename}
                           size={22}
                           verified={verified}
                         />
                         <span className="truncate text-[11px] font-semibold text-foreground">
-                          {b.is_official ? "blackcrow_official" : creator.display_name || creator.codename}
+                          {b.is_official ? "vexora_official" : creator.display_name || creator.codename}
                         </span>
                       </div>
                     ) : (

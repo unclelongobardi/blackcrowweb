@@ -68,10 +68,15 @@ export function getEscrowAddress(): string | null {
   return kp?.publicKey.toBase58() ?? null;
 }
 
-const MEMO_PREFIX = "BLACKCROW:bounty:";
+const MEMO_PREFIX = "VEXORA:bounty:";
+const LEGACY_MEMO_PREFIX = "BLACKCROW:bounty:";
 
 export function bountyMemo(bountyId: string): string {
   return `${MEMO_PREFIX}${bountyId}`;
+}
+
+function isExpectedBountyMemo(memo: string, bountyId: string): boolean {
+  return memo === bountyMemo(bountyId) || memo === `${LEGACY_MEMO_PREFIX}${bountyId}`;
 }
 
 export type EscrowStatus = {
@@ -222,14 +227,15 @@ export async function verifyDepositTx(
     }
 
     const memo = bountyMemo(bountyId);
+    const legacyMemo = `${LEGACY_MEMO_PREFIX}${bountyId}`;
     const logs = tx.meta?.logMessages ?? [];
-    let memoOk = logs.some((l) => l.includes(memo));
+    let memoOk = logs.some((l) => l.includes(memo) || l.includes(legacyMemo));
     if (!memoOk) {
       for (const ix of tx.transaction.message.instructions) {
         if (!("programId" in ix) || !ix.programId.equals(MEMO_PROGRAM_ID)) continue;
         if ("data" in ix && typeof ix.data === "string") {
           const text = Buffer.from(ix.data, "base64").toString("utf8");
-          if (text === memo) memoOk = true;
+          if (isExpectedBountyMemo(text, bountyId)) memoOk = true;
         }
       }
     }

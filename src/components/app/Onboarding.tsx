@@ -10,6 +10,7 @@ import { IconArrow } from "@/components/icons";
 import Logo from "@/components/Logo";
 import Avatar from "@/components/app/Avatar";
 import AvatarPicker, { type AvatarMode } from "@/components/app/AvatarPicker";
+import { uiBtnPrimary } from "@/lib/uiClasses";
 
 export default function Onboarding({ onDone }: { onDone: () => void }) {
   const api = useApi();
@@ -143,7 +144,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
           <button
             type="submit"
             disabled={loading || uploading}
-            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] text-background transition-transform hover:scale-[1.02] disabled:opacity-60"
+            className={`${uiBtnPrimary} group flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[13px] font-bold tracking-[0.06em] transition-transform hover:scale-[1.02] disabled:opacity-60`}
           >
             {loading ? "ENLISTING…" : "ENTER THE NETWORK"}
             <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
