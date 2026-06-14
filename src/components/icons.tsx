@@ -75,7 +75,7 @@ export function IconFlame(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
       <path d="M12 3c1 3 4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 1-2.5C9 9 9 7 12 3Z" />
-      <path d="M12 21a5 5 0 0 1-5-5c0-3 2-4 2.5-5 .8 2 2 2.5 2.5 4 .5-1 1-1.5 1-2.5 2 1.5 4 3 4 5.5a5 5 0 0 1-5 3Z" opacity="0.0" />
+      <path d="M12 22c-3.5 0-6-2.5-6-6 0-2.5 1.5-4 2-5.5.5 1.5 2 2.5 2.5 4 .5-1 1-1.5 1-2.5 2 1.5 4 3 4 5.5 0 3.5-2.5 6-6 6Z" />
     </svg>
   );
 }
@@ -400,15 +400,13 @@ export function IconRoost(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Anonymous operator — VEXORA angular frame + crow profile */
+/** Anonymous operator — VEXORA angular frame */
 export function IconOperator(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={1.5} {...props}>
       <path d="M4 5.5 20 5.5 15.5 12 20 18.5 4 18.5 8.5 12 4 5.5Z" />
-      <path d="M9.5 14.5c1.2-2.2 3.8-2.8 5.5-1.2" />
-      <path d="M14.5 13.2 16.5 12.8" />
-      <circle cx="11.2" cy="12.8" r="0.85" fill="currentColor" stroke="none" />
-      <path d="M12 5.5v2" />
+      <circle cx="12" cy="11.5" r="2.5" />
+      <path d="M9.5 16.5h5" />
     </svg>
   );
 }

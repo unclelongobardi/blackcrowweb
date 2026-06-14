@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getAuthedProfile, getProfileId } from "@/lib/auth";
 import { getBountyById, listBounties } from "@/lib/bounties";
 import { isDbConfigured, query, queryOne } from "@/lib/db";
-import { notify } from "@/lib/notifications";
 import { helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { isValidBountyRewardSol, MAX_BOUNTY_REWARD_SOL, MIN_BOUNTY_REWARD_SOL } from "@/lib/bountyRules";
 import { solToLamports } from "@/lib/solanaFormat";

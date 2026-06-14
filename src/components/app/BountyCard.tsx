@@ -15,7 +15,7 @@ import { pct } from "@/lib/format";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import SolAmount from "./SolAmount";
 import Avatar from "./Avatar";
-import { IconFeather, IconSolana } from "@/components/icons";
+import { IconVex, IconSolana } from "@/components/icons";
 import type { Bounty, BountyParticipant, BountyProofMedia } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -457,7 +457,7 @@ export default function BountyCard({
               {!isOfficial && (
                 <>
                   +{helperFeathers}
-                  <IconFeather className="h-3 w-3 text-bull" /> winner
+                  <IconVex className="h-3 w-3 text-bull" /> VEX
                 </>
               )}
             </p>

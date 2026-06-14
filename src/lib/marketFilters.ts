@@ -14,7 +14,6 @@ export type MarketCategoryId = "all" | "weather" | "crypto" | "economy" | "polit
 
 export const MARKET_CATEGORIES: { id: MarketCategoryId; label: string }[] = [
   { id: "all", label: "All" },
-  { id: "world_cup", label: "World Cup" },
   { id: "weather", label: "Weather" },
   { id: "crypto", label: "Crypto" },
   { id: "economy", label: "Economy" },
@@ -136,7 +135,7 @@ export function filterMarkets(pool: Market[], opts: MarketFilterOpts): Market[] 
       (a, b) =>
         Math.abs(0.5 - (a.yes_price ?? 0.5)) - Math.abs(0.5 - (b.yes_price ?? 0.5)),
     );
-  } else if (opts.mode === "exploitable" || opts.sort === "exploitable") {
+  } else if (opts.mode === "exploitable" || opts.sort === "exploitable" || opts.sort === "exploit") {
     markets.sort((a, b) => (a.exploit_score ?? 0) - (b.exploit_score ?? 0));
   } else {
     markets.sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0));

@@ -28,7 +28,7 @@ export default function RightPanel({ markets }: { markets: Market[] }) {
       <div className="border-b border-line px-4 py-3">
         <div className="flex items-center justify-between gap-2">
           <h2 className="section-label">Thin books</h2>
-          <Link href="/app/markets" className="text-[11px] font-medium text-faint hover:text-foreground">
+          <Link href="/app/markets?mode=exploitable&sort=exploitable" className="text-[11px] font-medium text-faint hover:text-foreground">
             View all
           </Link>
         </div>
@@ -58,10 +58,12 @@ export default function RightPanel({ markets }: { markets: Market[] }) {
           const no = m.no_price != null ? Math.round(m.no_price * 100) : 100 - yes;
           const up = yes >= 50;
           const tier = m.liquidity_tier ?? "medium";
+          const opScore =
+            m.exploit_score != null ? Math.max(0, Math.min(100, 100 - m.exploit_score * 2)) : null;
           return (
             <Link
               key={m.id}
-              href="/app/markets"
+              href="/app/markets?mode=exploitable&sort=exploitable"
               className="ui-row block px-4 py-3 hover:bg-black/[0.03]"
             >
               <div className="flex items-start gap-2.5">
@@ -76,9 +78,9 @@ export default function RightPanel({ markets }: { markets: Market[] }) {
                     </span>
                     {m.category && <span>{m.category}</span>}
                     <span className="font-mono">Vol {compactNumber(m.volume)}</span>
-                    {m.exploit_score != null && m.exploit_score > 0.5 && (
+                    {opScore != null && opScore >= 40 && (
                       <span className="rounded bg-amber-500/15 px-1 py-px font-mono text-amber-400">
-                        Score {(m.exploit_score * 100).toFixed(0)}
+                        Op {Math.round(opScore)}
                       </span>
                     )}
                   </div>

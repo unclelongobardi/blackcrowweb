@@ -28,7 +28,7 @@ const MOBILE_NAV = [
   { label: "Home", href: "/app", icon: IconHome },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
   { label: "Cabals", href: "/app/cabals", icon: IconCabal },
-  { label: "Roost", href: "/app/leaderboard", icon: IconRoost },
+  { label: "Rank", href: "/app/leaderboard", icon: IconRoost },
   { label: "Chat", href: "/app/messages", icon: IconMail },
   { label: "Alerts", href: "/app/notifications", icon: IconBell },
 ];

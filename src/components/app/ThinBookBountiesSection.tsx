@@ -111,7 +111,7 @@ export default function ThinBookBountiesSection({
             />
             <p className="mt-1 text-[10px] text-faint">{thinBook.length} open jobs</p>
             <Link
-              href="/app/markets?sort=exploit"
+              href="/app/markets?mode=exploitable&sort=exploitable"
               className="mt-2 inline-block text-[11px] font-semibold text-bull hover:underline"
             >
               Browse thin markets →

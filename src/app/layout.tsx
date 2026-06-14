@@ -22,6 +22,7 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://black-crow.xyz"),
   title: "VEXORA NETWORK — Manipulate Markets. Earn Rewards. Start Your Cabal.",
   description:
     "VEXORA NETWORK is a social layer for prediction-market operators — coordinate plays, fund bounties in SOL, and rank on the leaderboard. Anonymous, on Solana.",

@@ -23,7 +23,7 @@ export const PROFILE_AVATARS: { id: AvatarId; label: string; src: string }[] = [
   { id: "av4", label: "Cipher", src: "/images/avatars/av4.png" },
   { id: "av5", label: "Oracle", src: "/images/avatars/av5.png" },
   { id: "av6", label: "Phantom", src: "/images/avatars/av6.png" },
-  { id: "av7", label: "Raven", src: "/images/avatars/av7.svg" },
+  { id: "av7", label: "Shard", src: "/images/avatars/av7.svg" },
   { id: "av8", label: "Glitch", src: "/images/avatars/av8.svg" },
   { id: "av9", label: "Wire", src: "/images/avatars/av9.svg" },
   { id: "av10", label: "Cold", src: "/images/avatars/av10.svg" },
