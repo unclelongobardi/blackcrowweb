@@ -1,4 +1,4 @@
-import type { CSSProperties, SVGProps } from "react";
+import type { SVGProps } from "react";
 
 const base = {
   fill: "none",
