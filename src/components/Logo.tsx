@@ -1,5 +1,5 @@
-import type { SVGProps } from "react";
-import { BRAND_NAME } from "@/lib/links";
+import Image from "next/image";
+import { BRAND_NAME, VEXORA_LOGO_SRC } from "@/lib/links";
 
 type LogoProps = {
   className?: string;
@@ -9,28 +9,29 @@ type LogoProps = {
   showNetwork?: boolean;
 };
 
-export function VexoraMark({ className = "h-9 w-9 sm:h-10 sm:w-10" }: { className?: string }) {
+export function VexoraMark({
+  className = "h-9 w-9 sm:h-10 sm:w-10",
+  alt = "",
+}: {
+  className?: string;
+  alt?: string;
+}) {
   return (
-    <svg
-      viewBox="0 0 40 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      aria-hidden
-    >
-      <rect width="40" height="40" rx="10" fill="#1652F0" />
-      <path
-        d="M11 12 L20 28 L29 12 H25.2 L20 22.5 L14.8 12 H11 Z"
-        fill="#ffffff"
-      />
-    </svg>
+    <Image
+      src={VEXORA_LOGO_SRC}
+      alt={alt}
+      width={40}
+      height={40}
+      className={`shrink-0 object-contain ${className}`}
+      priority
+    />
   );
 }
 
 export default function Logo({ className = "", showText = true, showNetwork = false }: LogoProps) {
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <VexoraMark />
+      <VexoraMark alt={showText ? "" : BRAND_NAME} />
       {showText && (
         <div className="flex flex-col leading-none">
           <span className="font-display text-[17px] font-extrabold tracking-[0.14em] text-foreground">
@@ -45,13 +46,4 @@ export default function Logo({ className = "", showText = true, showNetwork = fa
   );
 }
 
-export function IconVex(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M6 7 L12 17 L18 7 H15.5 L12 13 L8.5 7 H6 Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
+export { VEXORA_LOGO_SRC };

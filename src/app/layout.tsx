@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     title: "VEXORA NETWORK",
     description: "Manipulate markets. Earn rewards. Start your cabal.",
     type: "website",
+    images: [{ url: "/images/vexora-logo.png", width: 512, height: 512, alt: "VEXORA" }],
+  },
+  twitter: {
+    card: "summary",
+    images: ["/images/vexora-logo.png"],
   },
 };
 

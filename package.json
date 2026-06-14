@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-vexora-favicon-source.mjs && node scripts/generate-favicon.mjs",
+    "prebuild": "node scripts/process-vexora-logo.mjs && node scripts/generate-favicon.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

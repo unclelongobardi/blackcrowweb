@@ -3,6 +3,7 @@
 export const BRAND_NAME = "VEXORA";
 export const BRAND_FULL = "VEXORA NETWORK";
 export const TOKEN_SYMBOL = "VEXORA";
+export const VEXORA_LOGO_SRC = "/images/vexora-logo.png";
 
 /** Official X / Twitter profile */
 export const TWITTER_URL =

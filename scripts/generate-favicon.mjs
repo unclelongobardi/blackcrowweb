@@ -9,20 +9,21 @@ const root = path.join(__dirname, "..");
 
 const candidates = [
   path.join(root, "public", "images", "vexora-favicon-source.png"),
-  path.join(root, "public", "images", "vexora-favicon.png"),
+  path.join(root, "public", "images", "vexora-logo-source.png"),
+  path.join(root, "public", "images", "vexora-logo.png"),
 ];
 
 const source = candidates.find((p) => fs.existsSync(p));
 if (!source) {
-  console.error("Missing favicon source (vexora-favicon-source.png). Run: node scripts/generate-vexora-favicon-source.mjs");
+  console.error("Missing favicon source. Run: node scripts/process-vexora-logo.mjs");
   process.exit(1);
 }
 
-async function writePng(outPath, size) {
+async function writePng(outPath, size, background = { r: 255, g: 255, b: 255, alpha: 1 }) {
   await sharp(source)
     .resize(size, size, {
       fit: "contain",
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
+      background,
     })
     .png({ compressionLevel: 9, adaptiveFiltering: true })
     .toFile(outPath);
@@ -34,7 +35,10 @@ console.log("favicon source:", path.relative(root, source));
 await writePng(path.join(root, "src", "app", "icon.png"), 32);
 await writePng(path.join(root, "src", "app", "apple-icon.png"), 180);
 await writePng(path.join(root, "public", "images", "vexora-favicon.png"), 512);
-await sharp(source).resize(256, 256).png().toFile(path.join(root, "public", "images", "vexora-official.png"));
+await sharp(source)
+  .resize(256, 256, { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 1 } })
+  .png()
+  .toFile(path.join(root, "public", "images", "vexora-official.png"));
 
 const icon32 = await sharp(path.join(root, "src", "app", "icon.png")).png().toBuffer();
 const ico = await toIco([icon32], { resize: false });
