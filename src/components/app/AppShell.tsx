@@ -2,15 +2,17 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import Logo from "@/components/Logo";
 import TokenCaChip from "@/components/TokenCaChip";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import Onboarding from "./Onboarding";
+import GuestBanner from "./GuestBanner";
 import { AppContext, type Me } from "./appContext";
 import { useApi } from "@/lib/useApi";
+import { GUEST_APP_HREF, readGuestMode, writeGuestMode } from "@/lib/guestMode";
 import { uiNav, uiBtnPrimary } from "@/lib/uiClasses";
 import {
   IconArrow,
@@ -35,8 +37,40 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const { ready, authenticated, login } = usePrivy();
   const api = useApi();
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [me, setMe] = useState<Me | null>(null);
   const [loadingMe, setLoadingMe] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
+  const [guestReady, setGuestReady] = useState(false);
+
+  const enterGuestMode = useCallback(() => {
+    writeGuestMode(true);
+    setIsGuest(true);
+  }, []);
+
+  const exitGuestMode = useCallback(() => {
+    writeGuestMode(false);
+    setIsGuest(false);
+  }, []);
+
+  useEffect(() => {
+    if (searchParams.get("guest") === "1") {
+      writeGuestMode(true);
+      setIsGuest(true);
+      router.replace(pathname, { scroll: false });
+    } else {
+      setIsGuest(readGuestMode());
+    }
+    setGuestReady(true);
+  }, [searchParams, pathname, router]);
+
+  useEffect(() => {
+    if (authenticated) {
+      writeGuestMode(false);
+      setIsGuest(false);
+    }
+  }, [authenticated]);
 
   const refreshMe = useCallback(async () => {
     setLoadingMe(true);
@@ -62,7 +96,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     else if (ready && !authenticated) setLoadingMe(false);
   }, [ready, authenticated, refreshMe]);
 
-  if (!ready || (authenticated && loadingMe)) {
+  const canEnterApp = authenticated || isGuest;
+
+  if (!ready || !guestReady || (authenticated && loadingMe)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-line border-t-foreground" />
@@ -70,36 +106,45 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!authenticated) {
+  if (!canEnterApp) {
     return (
       <div className="bg-grid bg-grid-fade flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <Logo />
-        <h1 className="mt-8 font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-          MEMBERS ONLY (KIND OF)
-        </h1>
-        <p className="mt-3 max-w-sm text-sm text-muted">
-          Connect a Solana wallet (Phantom or Solflare) to get in. No email, no
-          name, no awkward small talk.
+        <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
+          Live product preview
         </p>
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+        <h1 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
+          SEE VEXORA BEFORE YOU BUY
+        </h1>
+        <p className="mt-3 max-w-md text-sm text-muted">
+          Browse markets, bounties, cabals, and the feed as a guest — no wallet, no signup. Connect when you&apos;re
+          ready to participate.
+        </p>
+        <div className="mt-8 flex w-full max-w-lg flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href={GUEST_APP_HREF}
+            onClick={enterGuestMode}
+            className={`${uiBtnPrimary} group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-2xl px-8 py-4 text-[13px] font-bold tracking-[0.1em] shadow-[0_20px_50px_-20px_rgba(22,82,240,0.55)] transition-transform hover:scale-[1.02]`}
+          >
+            <span className="pointer-events-none absolute inset-0 animate-pulse bg-white/10" />
+            EXPLORE AS GUEST
+            <IconArrow className="relative h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
           <button
             type="button"
             onClick={login}
-            className={`${uiBtnPrimary} group inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[13px] font-bold`}
+            className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-line px-8 py-4 text-[13px] font-semibold text-foreground transition-colors hover:border-primary/30 hover:bg-primary/5"
           >
             CONNECT WALLET
-            <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </button>
-          <Link
-            href="/"
-            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-line px-6 py-3.5 text-[13px] font-semibold text-foreground transition-colors hover:border-black/20"
-          >
-            Back home
-          </Link>
         </div>
+        <p className="mt-4 text-[11px] text-faint">Guest mode is read-only — connect to post, vote, and earn VEX.</p>
         <div className="mt-6 w-full max-w-md">
           <TokenCaChip variant="panel" />
         </div>
+        <Link href="/" className="mt-6 text-[12px] font-medium text-muted transition-colors hover:text-foreground">
+          ← Back to landing
+        </Link>
       </div>
     );
   }
@@ -107,11 +152,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const needsOnboarding = me && !me.profile.is_onboarded;
 
   return (
-    <AppContext.Provider value={{ me, refreshMe }}>
+    <AppContext.Provider value={{ me, refreshMe, isGuest, enterGuestMode, exitGuestMode }}>
       {needsOnboarding && <Onboarding onDone={refreshMe} />}
       <div className="flex min-h-screen bg-background">
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col">
+          <GuestBanner />
           <TopBar />
           <main className="mobile-main-pad flex-1 lg:pb-0">{children}</main>
         </div>

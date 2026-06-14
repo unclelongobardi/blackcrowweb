@@ -8,9 +8,11 @@ import AuthControls from "./AuthControls";
 import TokenCaChip from "./TokenCaChip";
 import { IconTwitterX } from "./icons";
 import { TWITTER_URL } from "@/lib/links";
+import { GUEST_APP_HREF } from "@/lib/guestMode";
 
 const LINKS = [
   { label: "HOME", href: "#home" },
+  { label: "APP", href: GUEST_APP_HREF, isRoute: true as const },
   { label: "FEED", href: "#feed" },
   { label: "LEADERBOARD", href: "#leaderboard" },
   { label: "ABOUT", href: "#about" },
@@ -51,13 +53,23 @@ export default function Navbar() {
           <ul className="hidden items-center gap-7 xl:flex">
             {LINKS.map((l) => (
               <li key={l.label}>
-                <a
-                  href={l.href}
-                  className="group relative text-[12px] font-medium tracking-[0.14em] text-muted transition-colors hover:text-foreground"
-                >
-                  {l.label}
-                  <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 transition-all duration-300 group-hover:w-full" />
-                </a>
+                {"isRoute" in l && l.isRoute ? (
+                  <Link
+                    href={l.href}
+                    className="group relative text-[12px] font-bold tracking-[0.14em] text-primary transition-colors hover:text-primary-hover"
+                  >
+                    {l.label}
+                    <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 bg-primary transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                ) : (
+                  <a
+                    href={l.href}
+                    className="group relative text-[12px] font-medium tracking-[0.14em] text-muted transition-colors hover:text-foreground"
+                  >
+                    {l.label}
+                    <span className="absolute -bottom-1.5 left-1/2 h-px w-0 -translate-x-1/2 transition-all duration-300 group-hover:w-full" />
+                  </a>
+                )}
               </li>
             ))}
             <li>
@@ -112,16 +124,27 @@ export default function Navbar() {
               className="overflow-hidden xl:hidden"
             >
               <div className="flex flex-col gap-1 border-t border-line pb-4 pt-2">
-                {LINKS.map((l) => (
-                  <a
-                    key={l.label}
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-black/[0.04] hover:text-foreground"
-                  >
-                    {l.label}
-                  </a>
-                ))}
+                {LINKS.map((l) =>
+                  "isRoute" in l && l.isRoute ? (
+                    <Link
+                      key={l.label}
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2.5 text-[13px] font-bold tracking-[0.12em] text-primary hover:bg-primary/5"
+                    >
+                      {l.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={l.label}
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2.5 text-[13px] font-medium tracking-[0.12em] text-muted hover:bg-black/[0.04] hover:text-foreground"
+                    >
+                      {l.label}
+                    </a>
+                  ),
+                )}
                 <Link
                   href={DOCS_HREF}
                   onClick={() => setOpen(false)}

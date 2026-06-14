@@ -6,6 +6,7 @@ import Avatar from "@/components/app/Avatar";
 import { compactNumber } from "@/lib/format";
 import type { LeaderboardOperative } from "@/lib/leaderboard";
 import { IconFeather, IconRoost } from "./icons";
+import { guestHref } from "@/lib/guestMode";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -165,7 +166,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
             </div>
 
             <Link
-              href="/app/leaderboard"
+              href={guestHref("/app/leaderboard")}
               className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-xl border border-line px-5 py-2.5 text-[12px] font-bold text-muted transition-colors hover:border-bull/40 hover:text-foreground"
             >
               <IconRoost className="h-4 w-4 text-bull" />
@@ -197,7 +198,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
                   Connect a wallet, post intel, or fund a bounty to appear on Leaderboard.
                 </p>
                 <Link
-                  href="/app"
+                  href={guestHref("/app")}
                   className={`${uiBtnPrimary} mt-5 inline-flex min-h-11 items-center rounded-xl px-6 py-2.5 text-[12px] font-bold`}
                 >
                   ENTER THE NEST

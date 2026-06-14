@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
+import GuestLoginPrompt from "./GuestLoginPrompt";
 import { useApi } from "@/lib/useApi";
 import { uiBtnPrimary, uiPress } from "@/lib/uiClasses";
 import { lamportsToSol } from "@/lib/solanaFormat";
@@ -60,7 +61,7 @@ export default function CreatePost({
 }) {
   const api = useApi();
   const { getAccessToken } = usePrivy();
-  const { me } = useAppContext();
+  const { me, isGuest } = useAppContext();
   const [content, setContent] = useState("");
   const [sentiment, setSentiment] = useState<Sentiment>("neutral");
   const [loading, setLoading] = useState(false);
@@ -222,6 +223,18 @@ export default function CreatePost({
 
   const active = SENTIMENTS.find((s) => s.id === sentiment)!;
   const audienceLabel = audience.scope === "everyone" ? "Everyone" : audience.cabal.name;
+
+  if (isGuest || !me) {
+    return (
+      <div className="border-b border-line px-4 py-4 sm:px-5">
+        <GuestLoginPrompt
+          compact
+          title="Connect to join the conversation"
+          message="Guest mode is read-only. Connect your wallet to post takes, attach markets, and climb the leaderboard."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="border-b border-line px-4 py-4 sm:px-5">

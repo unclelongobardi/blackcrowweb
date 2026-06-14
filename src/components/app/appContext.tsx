@@ -15,11 +15,17 @@ export type Me = {
 type AppContextValue = {
   me: Me | null;
   refreshMe: () => Promise<void>;
+  isGuest: boolean;
+  enterGuestMode: () => void;
+  exitGuestMode: () => void;
 };
 
 export const AppContext = createContext<AppContextValue>({
   me: null,
   refreshMe: async () => {},
+  isGuest: false,
+  enterGuestMode: () => {},
+  exitGuestMode: () => {},
 });
 
 export function useAppContext() {

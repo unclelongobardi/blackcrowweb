@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { getUserHandle, getUserInitials } from "@/lib/user";
+import { GUEST_APP_HREF } from "@/lib/guestMode";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import { IconArrow, IconUser, IconTarget, IconWallet } from "./icons";
 
@@ -36,20 +37,26 @@ export default function AuthControls() {
   if (!authenticated) {
     return (
       <>
+        <Link
+          href={GUEST_APP_HREF}
+          className="hidden rounded-lg border border-primary/25 bg-primary/5 px-3 py-2 text-[11px] font-bold tracking-[0.1em] text-primary transition-colors hover:border-primary/40 hover:bg-primary/10 sm:block"
+        >
+          GUEST
+        </Link>
         <button
           onClick={login}
-          className="hidden rounded-lg border border-line px-4 py-2 text-[12px] font-semibold tracking-[0.12em] text-muted transition-colors hover:border-black/20 hover:text-foreground sm:block"
+          className="hidden rounded-lg border border-line px-4 py-2 text-[12px] font-semibold tracking-[0.12em] text-muted transition-colors hover:border-black/20 hover:text-foreground lg:block"
         >
           LOGIN
         </button>
-        <button
-          onClick={login}
+        <Link
+          href={GUEST_APP_HREF}
           className={`${uiBtnPrimary} group inline-flex min-h-10 items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-bold tracking-[0.08em] transition-transform hover:scale-[1.03] sm:px-4 sm:text-[12px] sm:tracking-[0.1em]`}
         >
-          <span className="sm:hidden">JOIN</span>
-          <span className="hidden sm:inline">JOIN THE NETWORK</span>
+          <span className="sm:hidden">DEMO</span>
+          <span className="hidden sm:inline">TRY AS GUEST</span>
           <IconArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-        </button>
+        </Link>
       </>
     );
   }

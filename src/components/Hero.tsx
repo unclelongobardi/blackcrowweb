@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePrivy } from "@privy-io/react-auth";
+import { GUEST_APP_HREF } from "@/lib/guestMode";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import { IconArrow } from "./icons";
 import OnlineCounter from "./OnlineCounter";
@@ -156,33 +157,53 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45, ease }}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-8 flex flex-col gap-4"
           >
-            {authenticated ? (
-              <Link
-                href="/app"
-                className={`${uiBtnPrimary} group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] transition-transform hover:scale-[1.03]`}
-              >
-                OPEN HOME
-                <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            ) : (
-              <button
-                type="button"
-                onClick={() => login()}
-                disabled={!ready}
-                className={`${uiBtnPrimary} group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[13px] font-bold tracking-[0.08em] transition-transform hover:scale-[1.03] disabled:opacity-60`}
-              >
-                JOIN THE NETWORK
-                <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            )}
             <Link
-              href="/app/markets"
-              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-primary/30 hover:bg-primary/5"
+              href={GUEST_APP_HREF}
+              className={`${uiBtnPrimary} group relative inline-flex w-full max-w-md flex-col items-start gap-1 overflow-hidden rounded-2xl px-6 py-4 text-left shadow-[0_24px_60px_-24px_rgba(22,82,240,0.65)] ring-2 ring-primary/25 ring-offset-2 ring-offset-background transition-transform hover:scale-[1.02] sm:flex-row sm:items-center sm:gap-3 sm:py-4`}
             >
-              EXPLORE VEXORA
+              <span className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/15 blur-2xl" />
+              <span className="relative flex flex-1 flex-col">
+                <span className="flex items-center gap-2 text-[14px] font-bold tracking-[0.12em] sm:text-[15px]">
+                  EXPLORE AS GUEST
+                  <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+                <span className="mt-1 text-[11px] font-medium tracking-wide text-white/85">
+                  No wallet · full app preview · see before you buy $VEXORA
+                </span>
+              </span>
+              <span className="relative hidden rounded-lg bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white sm:inline-flex">
+                Live demo
+              </span>
             </Link>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {authenticated ? (
+                <Link
+                  href="/app"
+                  className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-primary/30 hover:bg-primary/5"
+                >
+                  OPEN HOME
+                  <IconArrow className="h-4 w-4" />
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => login()}
+                  disabled={!ready}
+                  className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-6 py-3.5 text-[13px] font-semibold tracking-[0.08em] text-foreground transition-colors hover:border-primary/30 hover:bg-primary/5 disabled:opacity-60"
+                >
+                  CONNECT WALLET
+                </button>
+              )}
+              <Link
+                href={GUEST_APP_HREF}
+                className="text-[12px] font-semibold tracking-[0.08em] text-primary transition-colors hover:text-primary-hover"
+              >
+                Jump to markets →
+              </Link>
+            </div>
           </motion.div>
 
           <motion.div

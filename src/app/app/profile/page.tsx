@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useApi } from "@/lib/useApi";
 import { useAppContext } from "@/components/app/appContext";
+import GuestLoginPrompt from "@/components/app/GuestLoginPrompt";
 import Avatar, { resolveAvatarId, type AvatarId } from "@/components/app/Avatar";
 import AvatarPicker, { type AvatarMode } from "@/components/app/AvatarPicker";
 import CopyButton from "@/components/CopyButton";
@@ -41,7 +42,16 @@ export default function ProfilePage() {
     }
   }, [me]);
 
-  if (!me) return null;
+  if (!me) {
+    return (
+      <div className="mx-auto max-w-lg p-6">
+        <GuestLoginPrompt
+          title="Your profile lives on-chain"
+          message="Connect a Solana wallet to set your codename, avatar, and start earning VEX on bounties."
+        />
+      </div>
+    );
+  }
   const p = me.profile;
   const verified = p.is_verified || p.codename === "vexora_official";
 
