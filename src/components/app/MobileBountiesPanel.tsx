@@ -6,8 +6,7 @@ import { lamportsToSol } from "@/lib/solanaFormat";
 import { uiBtnPrimary, uiRow } from "@/lib/uiClasses";
 import Avatar from "./Avatar";
 import SolAmount from "./SolAmount";
-import WorldCupBountiesButton from "./WorldCupBountiesButton";
-import { splitWorldCupBounties } from "./WorldCupBountiesSection";
+import { splitThinBookBounties } from "./ThinBookBountiesSection";
 import type { Bounty } from "@/lib/types";
 
 export default function MobileBountiesPanel({
@@ -28,13 +27,22 @@ export default function MobileBountiesPanel({
   onUpdate: (b: Bounty) => void;
 }) {
   const open = bounties.filter((b) => b.status === "open");
-  const { worldCup } = splitWorldCupBounties(bounties);
+  const { thinBook } = splitThinBookBounties(bounties);
 
   return (
     <div className="pb-6">
-      {worldCup.length > 0 && (
-        <div className="mx-4 mt-4">
-          <WorldCupBountiesButton />
+      {thinBook.length > 0 && (
+        <div className="mx-4 mt-4 rounded-xl border border-bull/25 bg-bull/[0.06] px-4 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-bull">Thin book ops</p>
+          <p className="mt-1 text-[12px] text-muted">
+            {thinBook.length} official jobs on low-volume Polymarket books.
+          </p>
+          <Link
+            href="/app/bounties#thin-book-bounties"
+            className="mt-2 inline-block text-[11px] font-bold text-bull hover:underline"
+          >
+            View official ops →
+          </Link>
         </div>
       )}
       <div className="border-b border-line p-4">

@@ -5,7 +5,7 @@ import { lamportsToSol } from "@/lib/solanaFormat";
 import SolAmount from "./SolAmount";
 import { uiBtnPrimary, uiRow } from "@/lib/uiClasses";
 import Avatar from "./Avatar";
-import { WorldCupBountiesCompact } from "./WorldCupBountiesSection";
+import { ThinBookBountiesCompact } from "./ThinBookBountiesSection";
 import type { Bounty } from "@/lib/types";
 
 export default function OpenBountiesSidebar({
@@ -48,7 +48,7 @@ export default function OpenBountiesSidebar({
         )}
       </div>
 
-      <WorldCupBountiesCompact bounties={bounties} limit={4} />
+      <ThinBookBountiesCompact bounties={bounties} limit={4} />
 
       <div className="flex items-center justify-between border-b border-line px-4 py-3">
         <h3 className="section-label">Open bounties</h3>

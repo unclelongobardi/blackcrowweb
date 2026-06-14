@@ -162,7 +162,7 @@ export default function BountyCard({
   const myParticipant = bounty.my_participant;
   const expired = isBountyExpired(bounty) || bounty.status === "expired";
   const expiryLabel = expiresInLabel(bounty.expires_at);
-  const isWorldCup = bounty.collection === "world_cup";
+  const isThinBook = bounty.collection === "thin_book";
   const isOfficial = !!bounty.is_official;
   const pendingSubmissions =
     bounty.participants?.filter((p) => p.status === "submitted") ?? [];
@@ -387,9 +387,9 @@ export default function BountyCard({
               />
             </div>
           )}
-          {!compact && isWorldCup && (
+          {!compact && isThinBook && (
             <span className="rounded-md bg-bull/15 px-2 py-0.5 text-[10px] font-bold tracking-wide text-bull">
-              WC SPECIAL
+              THIN BOOK
             </span>
           )}
           {!compact && (
@@ -425,9 +425,9 @@ export default function BountyCard({
         </div>
         {compact ? (
           <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-            {isWorldCup && (
+            {isThinBook && (
               <span className="rounded-md bg-bull/15 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-bull">
-                WC
+                THIN
               </span>
             )}
             <span className="rounded-md bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-faint">

@@ -7,7 +7,7 @@ import { useApi } from "@/lib/useApi";
 import { useGuestGuard } from "@/hooks/useGuestGuard";
 import BountyCard from "@/components/app/BountyCard";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
-import WorldCupBountiesSection, { splitWorldCupBounties } from "@/components/app/WorldCupBountiesSection";
+import ThinBookBountiesSection, { splitThinBookBounties } from "@/components/app/ThinBookBountiesSection";
 import { IconTarget } from "@/components/icons";
 import type { Bounty } from "@/lib/types";
 import { uiBtnPrimary } from "@/lib/uiClasses";
@@ -57,7 +57,7 @@ function BountiesContent() {
     });
   }, [bounties, statusFilter]);
 
-  const { worldCup, rest } = useMemo(() => splitWorldCupBounties(bounties), [bounties]);
+  const { thinBook, rest } = useMemo(() => splitThinBookBounties(bounties), [bounties]);
 
   const filtered = useMemo(() => {
     const base = rest;
@@ -65,10 +65,10 @@ function BountiesContent() {
     return base.filter((b) => b.status === statusFilter);
   }, [rest, statusFilter]);
 
-  const filteredWorldCup = useMemo(() => {
-    if (statusFilter === "all") return worldCup;
-    return worldCup.filter((b) => b.status === statusFilter);
-  }, [worldCup, statusFilter]);
+  const filteredThinBook = useMemo(() => {
+    if (statusFilter === "all") return thinBook;
+    return thinBook.filter((b) => b.status === statusFilter);
+  }, [thinBook, statusFilter]);
 
   const openCount = bounties.filter((b) => b.status === "open").length;
 
@@ -142,9 +142,9 @@ function BountiesContent() {
         ))}
       </div>
 
-      {!loading && filteredWorldCup.length > 0 && (
+      {!loading && filteredThinBook.length > 0 && (
         <div className="mb-8">
-          <WorldCupBountiesSection
+          <ThinBookBountiesSection
             bounties={bounties}
             onUpdate={(updated) => setBounties((prev) => prev.map((x) => (x.id === updated.id ? updated : x)))}
             onShare={handleShareToWarRoom}
@@ -152,8 +152,8 @@ function BountiesContent() {
         </div>
       )}
 
-      {!loading && filteredWorldCup.length > 0 && (
-        <h2 className="mb-4 text-[11px] font-bold tracking-[0.18em] text-muted">ALL BOUNTIES</h2>
+      {!loading && filteredThinBook.length > 0 && rest.length > 0 && (
+        <h2 className="mb-4 text-[11px] font-bold tracking-[0.18em] text-muted">COMMUNITY BOUNTIES</h2>
       )}
 
       {loading ? (
@@ -162,7 +162,7 @@ function BountiesContent() {
             <div key={i} className="h-64 animate-pulse rounded-2xl border border-line bg-surface/30" />
           ))}
         </div>
-      ) : filtered.length === 0 && filteredWorldCup.length === 0 ? (
+      ) : filtered.length === 0 && filteredThinBook.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-line py-20 text-center">
           <IconTarget className="mx-auto h-8 w-8 text-faint" />
           <p className="mt-3 text-[15px] font-bold text-foreground">No bounties here</p>
