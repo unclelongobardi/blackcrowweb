@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TokenCaChip from "@/components/TokenCaChip";
-import { TWITTER_URL } from "@/lib/links";
+import { TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -100,7 +100,7 @@ export default function TermsContent() {
           "Token ownership does not grant governance over user bounties, escrow, or third-party markets.",
           "Token value can go to zero; only interact with contracts you have verified on-chain.",
           "Nothing on this site constitutes an offer to sell or solicitation to buy tokens in any jurisdiction where unlawful.",
-          "Team allocation, liquidity, and launch details will be disclosed through official channels (e.g. X @blkcrow_ofc) when applicable.",
+          `Team allocation, liquidity, and launch details will be disclosed through official channels (e.g. X @${TWITTER_HANDLE}) when applicable.`,
         ]}
       />
 
@@ -177,7 +177,7 @@ export default function TermsContent() {
       <P>
         Legal and support inquiries:{" "}
         <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
-          @blkcrow_ofc on X
+          @{TWITTER_HANDLE} on X
         </a>
         . No separate contact form is provided.
       </P>

@@ -7,8 +7,9 @@ export const VEXORA_LOGO_SRC = "/images/vexora-logo.png";
 export const VEXORA_HERO_ILLUSTRATION_SRC = "/images/vexora-hero-illustration.png";
 
 /** Official X / Twitter profile */
+export const TWITTER_HANDLE = "VEXORANetwork";
 export const TWITTER_URL =
-  process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || "https://x.com/blkcrow_ofc";
+  process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || `https://x.com/${TWITTER_HANDLE}`;
 
 /** $VEXORA SPL mint — set via NEXT_PUBLIC_TOKEN_CA when live. */
 export const VEXORA_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || "";

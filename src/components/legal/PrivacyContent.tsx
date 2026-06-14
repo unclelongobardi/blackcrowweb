@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TokenCaChip from "@/components/TokenCaChip";
-import { TWITTER_URL, TOKEN_CA } from "@/lib/links";
+import { TWITTER_HANDLE, TWITTER_URL, TOKEN_CA } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -164,7 +164,7 @@ export default function PrivacyContent() {
         We may update this Privacy Policy. The &ldquo;Last updated&rdquo; date will change accordingly. Material updates
         may also be announced on{" "}
         <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
-          X @blkcrow_ofc
+          X @{TWITTER_HANDLE}
         </a>
         .
       </P>
@@ -173,7 +173,7 @@ export default function PrivacyContent() {
       <P>
         Privacy questions:{" "}
         <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
-          https://x.com/blkcrow_ofc
+          {TWITTER_URL}
         </a>
         .
       </P>
