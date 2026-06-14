@@ -170,11 +170,8 @@ export default function Hero({ markets = [] }: { markets?: Market[] }) {
                   <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
                 <span className="mt-1 text-[11px] font-medium tracking-wide text-white/85">
-                  No wallet · full app preview · see before you buy $VEXORA
+                  No wallet · explore the full app · see before you buy $VEXORA
                 </span>
-              </span>
-              <span className="relative hidden rounded-lg bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white sm:inline-flex">
-                Live demo
               </span>
             </Link>
 
