@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import { useAppContext } from "@/components/app/appContext";
 import Avatar from "@/components/app/Avatar";
 import { timeAgo } from "@/lib/format";
@@ -13,6 +14,7 @@ import { uiBtnPrimary } from "@/lib/uiClasses";
 function MessagesContent() {
   const api = useApi();
   const { me } = useAppContext();
+  const { requireAuth } = useGuestGuard();
   const searchParams = useSearchParams();
   const activeId = searchParams.get("c");
   const toCodename = searchParams.get("to");
@@ -53,6 +55,7 @@ function MessagesContent() {
   }, [loadConversations, loadThread, activeId]);
 
   async function send() {
+    if (!requireAuth()) return;
     if (!text.trim() || busy) return;
     setBusy(true);
     try {

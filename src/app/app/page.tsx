@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import { useAppContext } from "@/components/app/appContext";
 import CreatePost from "@/components/app/CreatePost";
 import PostCard from "@/components/app/PostCard";
@@ -26,6 +27,7 @@ export default function HomePage() {
   const api = useApi();
   const router = useRouter();
   const { refreshMe } = useAppContext();
+  const { requireAuth } = useGuestGuard();
   const composeRef = useRef<HTMLDivElement>(null);
   const [bounties, setBounties] = useState<Bounty[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -111,6 +113,7 @@ export default function HomePage() {
       threadParts?: string[];
     },
   ) {
+    if (!requireAuth()) return;
     await api("/api/feed", {
       method: "POST",
       body: JSON.stringify({
@@ -162,7 +165,7 @@ export default function HomePage() {
       <OpenBountiesSidebar
         bounties={bounties}
         openCount={openCount}
-        onPostBounty={() => setShowCreate(true)}
+        onPostBounty={() => requireAuth(() => setShowCreate(true))}
       />
 
       <div className="min-w-0 flex-1">
@@ -250,7 +253,7 @@ export default function HomePage() {
             bounties={bounties}
             openCount={openCount}
             selectedId={selectedBountyId}
-            onPostBounty={() => setShowCreate(true)}
+            onPostBounty={() => requireAuth(() => setShowCreate(true))}
             onSelect={handleSelectBounty}
             onShareToWarRoom={handleShareToWarRoom}
             onUpdate={handleBountyUpdate}

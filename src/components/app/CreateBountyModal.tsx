@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { MAX_BOUNTY_REWARD_SOL, MIN_BOUNTY_REWARD_SOL } from "@/lib/bountyRules";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
+import GuestBlockedModal from "./GuestBlockedModal";
 import { IconSolana } from "@/components/icons";
 import type { Bounty, Market } from "@/lib/types";
 import { uiBtnPrimary } from "@/lib/uiClasses";
@@ -18,6 +20,7 @@ export default function CreateBountyModal({
   onCreated: (b: Bounty) => void;
 }) {
   const api = useApi();
+  const { blocked } = useGuestGuard();
   const { wallets } = useSolanaWallets();
   const wallet = wallets[0];
   const [title, setTitle] = useState(market ? `Move: ${market.question.slice(0, 60)}` : "");
@@ -29,6 +32,7 @@ export default function CreateBountyModal({
   const [error, setError] = useState<string | null>(null);
 
   async function create() {
+    if (blocked) return;
     if (!wallet?.address) {
       setError("Connect your Solana wallet before posting a bounty.");
       return;
@@ -61,6 +65,16 @@ export default function CreateBountyModal({
     } finally {
       setLoading(false);
     }
+  }
+
+  if (blocked) {
+    return (
+      <GuestBlockedModal
+        title="Log in to post a bounty"
+        message="Guest access is browse-only. Connect a wallet to create and fund bounties."
+        onClose={onClose}
+      />
+    );
   }
 
   return (

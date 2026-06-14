@@ -32,7 +32,7 @@ export default function GuestLoginPrompt({
         disabled={!ready}
         className={`${uiBtnPrimary} group mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[12px] font-bold tracking-[0.08em] disabled:opacity-60`}
       >
-        CONNECT WALLET
+        LOG IN
         <IconArrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </button>
     </div>

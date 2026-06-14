@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import BountyCard from "@/components/app/BountyCard";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
 import WorldCupBountiesSection, { splitWorldCupBounties } from "@/components/app/WorldCupBountiesSection";
@@ -23,6 +24,7 @@ const STATUS_FILTERS = [
 function BountiesContent() {
   const api = useApi();
   const router = useRouter();
+  const { requireAuth } = useGuestGuard();
   const searchParams = useSearchParams();
   const [bounties, setBounties] = useState<Bounty[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +103,7 @@ function BountiesContent() {
             </Link>
             <button
               type="button"
-              onClick={() => setShowCreate(true)}
+              onClick={() => requireAuth(() => setShowCreate(true))}
               className={`${uiBtnPrimary} rounded-xl px-4 py-2.5 text-[11px] font-bold`}
             >
               + POST BOUNTY
@@ -167,7 +169,7 @@ function BountiesContent() {
           <p className="mt-1 text-[13px] text-faint">Post the first job or check another filter.</p>
           <button
             type="button"
-            onClick={() => setShowCreate(true)}
+            onClick={() => requireAuth(() => setShowCreate(true))}
             className={`${uiBtnPrimary} mt-4 rounded-xl px-5 py-2.5 text-[12px] font-bold`}
           >
             POST A BOUNTY

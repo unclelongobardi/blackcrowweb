@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import { canAcceptBounty, canContributeToPool, expiresInLabel, isBountyExpired } from "@/lib/bountyRules";
 import { creatorPostInfluenceFromLamports, helperInfluenceFromLamports } from "@/lib/bountyInfluence";
 import { lamportsToSol } from "@/lib/solanaFormat";
@@ -128,6 +129,7 @@ export default function BountyCard({
   onShareToWarRoom?: () => void;
 }) {
   const api = useApi();
+  const { requireAuth } = useGuestGuard();
   const { sendDeposit } = useSolanaDeposit();
   const { wallets } = useSolanaWallets();
   const wallet = wallets[0];
@@ -174,6 +176,7 @@ export default function BountyCard({
       : null;
 
   async function run<T>(fn: () => Promise<T>): Promise<T | null> {
+    if (!requireAuth()) return null;
     setBusy(true);
     setError(null);
     try {
@@ -270,6 +273,7 @@ export default function BountyCard({
   }
 
   async function uploadMedia(file: File) {
+    if (!requireAuth()) return;
     setUploading(true);
     setError(null);
     try {

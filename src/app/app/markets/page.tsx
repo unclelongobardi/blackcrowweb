@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import { compactNumber } from "@/lib/format";
 import CreateBountyModal from "@/components/app/CreateBountyModal";
 import MarketCard from "@/components/app/MarketCard";
@@ -44,6 +45,7 @@ function secondsAgo(iso: string | null): number {
 function MarketsContent() {
   const api = useApi();
   const router = useRouter();
+  const { requireAuth } = useGuestGuard();
   const searchParams = useSearchParams();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [meta, setMeta] = useState<MarketsMeta | null>(null);
@@ -293,7 +295,7 @@ function MarketsContent() {
               market={m}
               maxVolume={maxVolume}
               index={i}
-              onPostBounty={setBountyTarget}
+              onPostBounty={(market) => requireAuth(() => setBountyTarget(market))}
             />
           ))}
         </div>

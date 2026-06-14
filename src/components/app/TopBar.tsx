@@ -125,7 +125,7 @@ export default function TopBar() {
                     disabled={!ready}
                     className={`${uiBtnPrimary} mx-1.5 mt-1.5 flex w-[calc(100%-12px)] items-center justify-center rounded-lg px-3 py-2.5 text-[12px] font-bold disabled:opacity-60`}
                   >
-                    Connect wallet
+                    LOG IN
                   </button>
                   <Link
                     href="/"

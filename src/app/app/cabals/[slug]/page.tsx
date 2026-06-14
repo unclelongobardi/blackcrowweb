@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import { useAppContext } from "@/components/app/appContext";
 import Avatar from "@/components/app/Avatar";
 import PostCard from "@/components/app/PostCard";
@@ -15,6 +16,7 @@ type RequestRow = { profile: Profile; created_at: string };
 export default function CabalDetailPage() {
   const api = useApi();
   const { me } = useAppContext();
+  const { requireAuth } = useGuestGuard();
   const params = useParams();
   const slug = params.slug as string;
   const [cabal, setCabal] = useState<(Cabal & { is_member?: boolean; is_leader?: boolean; members?: MemberRow[] }) | null>(null);
@@ -23,7 +25,6 @@ export default function CabalDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!me?.profile.id) return;
     setLoading(true);
     (async () => {
       try {
@@ -32,7 +33,7 @@ export default function CabalDetailPage() {
         );
         setCabal(data.cabal);
         setPosts(data.posts);
-        if (data.cabal.is_leader) {
+        if (data.cabal.is_leader && me?.profile.id) {
           const req = await api<{ requests: RequestRow[] }>(`/api/cabals/${slug}/requests`);
           setRequests(req.requests);
         }
@@ -45,6 +46,7 @@ export default function CabalDetailPage() {
   }, [api, slug, me?.profile.id]);
 
   async function handleRequest(profileId: string, action: "approve" | "reject") {
+    if (!requireAuth()) return;
     await api(`/api/cabals/${slug}/requests`, {
       method: "POST",
       body: JSON.stringify({ profile_id: profileId, action }),

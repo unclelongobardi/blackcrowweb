@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import Avatar from "@/components/app/Avatar";
 import PostCard from "@/components/app/PostCard";
 import type { Post, Profile } from "@/lib/types";
@@ -27,6 +28,7 @@ type ProfileData = {
 
 export default function PublicProfilePage() {
   const api = useApi();
+  const { requireAuth } = useGuestGuard();
   const params = useParams();
   const codename = params.codename as string;
   const [data, setData] = useState<ProfileData | null>(null);
@@ -47,7 +49,7 @@ export default function PublicProfilePage() {
   }, [api, codename]);
 
   async function toggleFollow() {
-    if (!data) return;
+    if (!requireAuth() || !data) return;
     setBusy(true);
     try {
       const res = await api<{ following: boolean }>(`/api/follows/${codename}`, { method: "POST" });

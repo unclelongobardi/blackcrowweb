@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import type { Post } from "@/lib/types";
 
 export default function PostPoll({
@@ -14,9 +15,11 @@ export default function PostPoll({
   onUpdate: (poll: NonNullable<Post["poll"]>) => void;
 }) {
   const api = useApi();
+  const { requireAuth } = useGuestGuard();
   const [busy, setBusy] = useState(false);
 
   async function vote(index: number) {
+    if (!requireAuth()) return;
     if (busy) return;
     setBusy(true);
     try {

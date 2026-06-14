@@ -135,7 +135,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             onClick={login}
             className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-line px-8 py-4 text-[13px] font-semibold text-foreground transition-colors hover:border-primary/30 hover:bg-primary/5"
           >
-            CONNECT WALLET
+            LOG IN
           </button>
         </div>
         <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VEX.</p>

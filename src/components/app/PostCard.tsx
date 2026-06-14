@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Avatar from "./Avatar";
 import UserName from "./UserName";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import { useAppContext } from "./appContext";
 import { timeAgo, compactNumber, pct } from "@/lib/format";
 import { lamportsToSol } from "@/lib/solanaFormat";
@@ -36,6 +37,7 @@ export default function PostCard({
 }) {
   const api = useApi();
   const { me } = useAppContext();
+  const { blocked, requireAuth } = useGuestGuard();
   const viewedRef = useRef(false);
 
   const [likeCount, setLikeCount] = useState(post.like_count ?? Math.max(0, post.score ?? 0));
@@ -67,12 +69,12 @@ export default function PostCard({
   const commentCount = isThreadPost ? 0 : replyCount;
 
   useEffect(() => {
-    if (viewedRef.current) return;
+    if (viewedRef.current || blocked) return;
     viewedRef.current = true;
     void api<{ view_count: number }>(`/api/posts/${post.id}/view`, { method: "POST" })
       .then((d) => setViewCount(d.view_count))
       .catch(() => {});
-  }, [api, post.id]);
+  }, [api, post.id, blocked]);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -107,6 +109,7 @@ export default function PostCard({
   }
 
   async function toggleLike() {
+    if (!requireAuth()) return;
     if (pending) return;
     setPending(true);
     const next = !liked;
@@ -128,6 +131,7 @@ export default function PostCard({
   }
 
   async function toggleRepost() {
+    if (!requireAuth()) return;
     if (pending) return;
     setPending(true);
     const next = !reposted;
@@ -149,6 +153,7 @@ export default function PostCard({
   }
 
   async function toggleBookmark() {
+    if (!requireAuth()) return;
     if (pending) return;
     setPending(true);
     const next = !bookmarked;
@@ -166,6 +171,7 @@ export default function PostCard({
   }
 
   async function submitReply() {
+    if (!requireAuth()) return;
     const text = replyText.trim();
     if (!text || replyBusy) return;
     setReplyBusy(true);

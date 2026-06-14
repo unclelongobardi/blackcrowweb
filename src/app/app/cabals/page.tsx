@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useApi } from "@/lib/useApi";
+import { useGuestGuard } from "@/hooks/useGuestGuard";
 import Avatar from "@/components/app/Avatar";
 import { useAppContext } from "@/components/app/appContext";
 import type { Cabal, CabalKind, CabalVisibility } from "@/lib/types";
 import { uiBtnPrimary } from "@/lib/uiClasses";
+import GuestBlockedModal from "@/components/app/GuestBlockedModal";
 
 const KIND_LABEL: Record<CabalKind, string> = {
   tipsters: "Tipsters",
@@ -95,6 +97,7 @@ function CabalCard({
 export default function CabalsPage() {
   const api = useApi();
   const { me, refreshMe } = useAppContext();
+  const { requireAuth } = useGuestGuard();
   const [cabals, setCabals] = useState<Cabal[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -118,19 +121,17 @@ export default function CabalsPage() {
   }
 
   useEffect(() => {
-    if (!me?.profile.id) {
-      setLoading(false);
-      return;
-    }
     (async () => {
       try {
         await load();
+      } catch {
+        /* guests can browse public cabals */
       } finally {
         setLoading(false);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kindFilter, visFilter, me?.profile.id, me?.member_cabals]);
+  }, [kindFilter, visFilter, me?.member_cabals]);
 
   useEffect(() => {
     if (!me?.profile.id) return;
@@ -143,6 +144,7 @@ export default function CabalsPage() {
   }, [me?.profile.id]);
 
   async function join(slug: string) {
+    if (!requireAuth()) return;
     setBusy(slug);
     try {
       const res = await api<{ joined: boolean; requested: boolean }>(`/api/cabals/${slug}/join`, {
@@ -166,7 +168,7 @@ export default function CabalsPage() {
           </p>
         </div>
         <button
-          onClick={() => setCreating(true)}
+          onClick={() => requireAuth(() => setCreating(true))}
           className="min-h-11 w-full shrink-0 rounded-lg px-4 py-2.5 text-[12px] font-bold tracking-wide sm:w-auto"
         >
           + CREATE CABAL
@@ -243,6 +245,7 @@ export default function CabalsPage() {
 
 function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreated: () => void }) {
   const api = useApi();
+  const { blocked } = useGuestGuard();
   const [name, setName] = useState("");
   const [motto, setMotto] = useState("");
   const [description, setDescription] = useState("");
@@ -252,6 +255,7 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
   const [error, setError] = useState<string | null>(null);
 
   async function create() {
+    if (blocked) return;
     if (name.trim().length < 3) {
       setError("Name must be at least 3 characters.");
       return;
@@ -268,6 +272,16 @@ function CreateCabalModal({ onClose, onCreated }: { onClose: () => void; onCreat
       setError(err instanceof Error ? err.message : "Failed.");
       setLoading(false);
     }
+  }
+
+  if (blocked) {
+    return (
+      <GuestBlockedModal
+        title="Log in to create a cabal"
+        message="Guest access is browse-only. Connect a wallet to start your own cabal."
+        onClose={onClose}
+      />
+    );
   }
 
   return (
