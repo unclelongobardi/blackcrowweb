@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePrivy } from "@privy-io/react-auth";
 import { GUEST_APP_HREF } from "@/lib/guestMode";
-import { VEXORA_LOGO_SRC } from "@/lib/links";
+import { VEXORA_HERO_ILLUSTRATION_SRC } from "@/lib/links";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import { IconArrow } from "./icons";
 import OnlineCounter from "./OnlineCounter";
@@ -22,31 +22,28 @@ const AVATAR_IMAGES = [
   "/images/avatars/av6.png",
 ];
 
-function HeroLogoMark() {
+function HeroIllustration() {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.94, y: 16 }}
+      initial={{ opacity: 0, scale: 0.96, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.9, delay: 0.15, ease }}
-      className="relative mx-auto flex w-full max-w-[min(92vw,520px)] items-center justify-center lg:max-w-none lg:h-full"
+      className="relative mx-auto flex w-full items-center justify-center lg:h-full lg:min-h-[420px]"
     >
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[min(88vw,440px)] w-[min(88vw,440px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.06] blur-[90px]" />
-      <div className="pointer-events-none absolute left-1/2 top-[54%] h-[min(56vw,300px)] w-[min(56vw,300px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.08] blur-[70px]" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[min(74vw,390px)] w-[min(74vw,390px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[min(62vw,330px)] w-[min(62vw,330px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-primary/15" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[min(70vw,380px)] w-[min(70vw,380px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.05] blur-[80px]" />
 
       <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-10 px-4 py-8 sm:px-8 lg:py-0"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="relative z-10 w-full px-2 sm:px-4"
       >
         <Image
-          src={VEXORA_LOGO_SRC}
-          alt="VEXORA"
-          width={520}
-          height={520}
+          src={VEXORA_HERO_ILLUSTRATION_SRC}
+          alt="Prediction markets network — YES / NO decisions, charts, and operators"
+          width={640}
+          height={640}
           priority
-          className="h-auto w-[min(76vw,440px)] object-contain drop-shadow-[0_32px_64px_rgba(22,82,240,0.16)] lg:w-[min(36vw,480px)] xl:w-[min(34vw,520px)]"
+          className="mx-auto h-auto w-full max-w-[min(92vw,560px)] object-contain drop-shadow-[0_28px_56px_rgba(22,82,240,0.12)] lg:max-w-[min(44vw,620px)]"
         />
       </motion.div>
     </motion.div>
@@ -195,7 +192,7 @@ export default function Hero() {
         </div>
 
         <div className="relative lg:self-stretch lg:-mr-2 xl:-mr-8">
-          <HeroLogoMark />
+          <HeroIllustration />
         </div>
       </div>
     </section>
