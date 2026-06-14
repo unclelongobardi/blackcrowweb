@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <main className="relative">
       <Navbar />
-      <Hero markets={markets} />
+      <Hero />
       <SocialProof markets={markets} />
       <Dashboard markets={markets} />
       <LandingLeaderboard operatives={operatives} />
