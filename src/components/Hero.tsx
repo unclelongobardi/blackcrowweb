@@ -61,18 +61,6 @@ export default function Hero() {
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 pb-12 lg:h-[calc(100svh-3rem)] lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-8 lg:pb-0 lg:pt-16">
         <div className="lg:self-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-3 py-1.5"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-dot" />
-            <span className="text-[11px] font-medium tracking-[0.14em] text-muted">
-              VEXORA NETWORK · PREDICTION MARKETS
-            </span>
-          </motion.div>
-
           <h1 className="font-display text-[clamp(1.75rem,3.6vw,3rem)] font-extrabold leading-[1.02] tracking-tight">
             <motion.span
               initial={{ opacity: 0, y: 24 }}
