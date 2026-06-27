@@ -14,7 +14,7 @@ function walk(dir, files = []) {
 
 const replacements = [
   ["BLACKCROW", "VEXORA"],
-  ["$CROW", "$VEXORA"],
+  ["$CROW", "$VEX"],
   ["blackcrow_official", "vexora_official"],
   ["blackcrow-official", "vexora-official"],
   ["EXPLORE VEXORA", "EXPLORE VEXORA"], // idempotent
@@ -26,7 +26,7 @@ const replacements = [
   ["The Nest", "Home"],
   ["blackcrow-favicon.png", "vexora-favicon.png"],
   ["blackcrow-official.png", "vexora-official.png"],
-  ["CROW_TOKEN_MINT", "VEXORA_TOKEN_MINT"],
+  ["CROW_TOKEN_MINT", "VEX_TOKEN_MINT"],
 ];
 
 for (const file of walk(ROOT)) {

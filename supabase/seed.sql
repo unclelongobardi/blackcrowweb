@@ -1,2 +1,2 @@
--- BLACKCROW — minimal seed (no fake users, posts, or bounties).
+-- VEXORA — minimal seed (no fake users, posts, or bounties).
 -- Real users and content are created through the app.

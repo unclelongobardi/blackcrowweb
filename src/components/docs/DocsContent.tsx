@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import TokenCaChip from "@/components/TokenCaChip";
+import { TOKEN_SYMBOL } from "@/lib/links";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const SECTIONS = [
@@ -17,7 +18,7 @@ const SECTIONS = [
   { id: "cabals", label: "Cabals" },
   { id: "social", label: "Social layer" },
   { id: "official", label: "Official account" },
-  { id: "token", label: "Token ($VEXORA)" },
+  { id: "token", label: "Token ($VEX)" },
   { id: "glossary", label: "Glossary" },
 ] as const;
 
@@ -151,8 +152,8 @@ export default function DocsContent() {
             (aligned crews—especially MARKET OPS—for private coordination).
           </p>
           <p>
-            Payouts and rank are separate: SOL settles on-chain when a bounty is approved;{" "}
-            <strong className="text-foreground">VEX</strong> track who is consistently sourcing intel and
+            Payouts and rank are separate: SOL settles on-chain when a bounty is approved; the{" "}
+            <strong className="text-foreground">VEX score</strong> tracks who is consistently sourcing intel and
             running plays—visible on Leaderboard and in search.
           </p>
         </DocSection>
@@ -286,7 +287,7 @@ export default function DocsContent() {
             <p>
               The creator signs a Solana transfer to the VEXORA escrow wallet. Each deposit includes an on-chain memo
               tying the transaction to that bounty ID. After confirmation, the bounty goes live and the creator earns
-              VEX (see VEX section). Deposits are disabled if the server escrow wallet is not configured.
+              VEX score (see VEX section). Deposits are disabled if the server escrow wallet is not configured.
             </p>
           </Sub>
           <Sub title="Collaborative pool">
@@ -330,7 +331,7 @@ export default function DocsContent() {
                 "Choose audience: Everyone (public timeline) or a cabal you belong to.",
                 "Tag sentiment: Bullish, Bearish, or Neutral on the market you are pushing.",
                 "Attach an open bounty so the feed shows the job and the target in one embed.",
-                "Each post grants +2 VEX—consistent intel sources climb Leaderboard.",
+                "Each post grants +2 VEX score—consistent intel sources climb Leaderboard.",
               ]}
             />
           </Sub>
@@ -374,27 +375,27 @@ export default function DocsContent() {
           </Sub>
         </DocSection>
 
-        <DocSection id="vex" title="VEX & leaderboard">
+        <DocSection id="vex" title="VEX score & leaderboard">
           <p>
-            VEX (<code className="font-mono text-[12px]">influence</code>) measure who is consistently bringing
-            intel and running plays—not who holds the most SOL. They do not decay. Cabals rank by member count, not
-            VEX.
+            VEX score (<code className="font-mono text-[12px]">influence</code>) measures who is consistently bringing
+            intel and running plays—not who holds the most SOL or the most ${TOKEN_SYMBOL}. It does not decay. Cabals
+            rank by member count, not VEX score.
           </p>
           <Sub title="How to earn">
             <List
               items={[
-                "Home post — +2 VEX each.",
+                "Home post — +2 VEX score each.",
                 "Found a cabal — +20 one-time.",
-                "Bounty goes live — initial deposit SOL × 5 VEX (max 300).",
-                "Bounty approved (helper) — total pool SOL × 10 VEX (max 500).",
-                "Pool contributions — 0 VEX (SOL only).",
+                "Bounty goes live — initial deposit SOL × 5 VEX score (max 300).",
+                "Bounty approved (helper) — total pool SOL × 10 VEX score (max 500).",
+                "Pool contributions — 0 VEX score (SOL only).",
               ]}
             />
           </Sub>
           <Sub title="Example">
             <p>
-              Post 1 SOL bounty → up to 5 VEX when live. Others add 0.5 SOL → pool is 1.5 SOL. Helper receives
-              1.5 SOL + up to 15 VEX on approval.
+              Post 1 SOL bounty → up to 5 VEX score when live. Others add 0.5 SOL → pool is 1.5 SOL. Helper receives
+              1.5 SOL + up to 15 VEX score on approval.
             </p>
           </Sub>
           <p>
@@ -439,7 +440,7 @@ export default function DocsContent() {
           <Sub title="Profiles">
             <p>
               Public profiles at <code className="font-mono text-[12px]">/app/u/[codename]</code> show track record:
-              VEX, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
+              VEX score, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
               Verified accounts display a blue check on avatar and username.
             </p>
           </Sub>
@@ -473,14 +474,14 @@ export default function DocsContent() {
             items={[
               "Official bounties are seeded on real Polymarket questions.",
               "They do not use collaborative pools — only the official creator approves.",
-              "UI shows avatar + vexora_official, never a generic 'BlackCrow Official' pill.",
+              "UI shows avatar + vexora_official, never a generic legacy-official pill.",
             ]}
           />
         </DocSection>
 
-        <DocSection id="token" title="Token ($VEXORA)">
+        <DocSection id="token" title={`Token ($${TOKEN_SYMBOL})`}>
           <p>
-            The project token on Solana is <strong className="text-foreground">$VEXORA</strong>. The contract address
+            The project token on Solana is <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address
             (CA) is shown in the site header, footer, hero, and app shell — always verify on-chain before trading.
           </p>
           <TokenCaChip variant="panel" className="my-5" />
@@ -497,12 +498,12 @@ export default function DocsContent() {
               ["Home", "Your public timeline—surface reads and align operators before a push."],
               ["Chat", "Direct messages for 1:1 coordination without posting publicly."],
               ["Thin book", "Low-liquidity market where coordinated size or narrative can move odds."],
-              ["VEX", "Reputation for intel and execution; ranks operators on Leaderboard."],
+              ["VEX score", "Off-chain reputation for intel and execution; ranks operators on Leaderboard."],
               ["Pool", "Extra SOL stacked on a bounty so the helper payout scales with the play."],
               ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
               ["Home", "Authenticated app shell (/app and children)."],
               ["Leaderboard", "Leaderboard—who is consistently moving markets with the crew."],
-              ["$VEXORA", "Solana SPL token for the VEXORA project; CA shown across the site and in docs."],
+              [`$${TOKEN_SYMBOL}`, "Solana SPL token for the VEXORA project; CA shown across the site and in docs."],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>

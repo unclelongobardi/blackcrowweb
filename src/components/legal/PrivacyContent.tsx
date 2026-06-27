@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TokenCaChip from "@/components/TokenCaChip";
-import { TWITTER_HANDLE, TWITTER_URL, TOKEN_CA } from "@/lib/links";
+import { TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL, TOKEN_CA } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -49,7 +49,7 @@ export default function PrivacyContent() {
       </P>
       <P>
         <strong className="text-foreground">Profile</strong> — Codename, optional display name, bio, avatar seed,
-        VEX (influence score), verification flags, and onboarding timestamps stored in our database.
+        VEX score (influence), verification flags, and onboarding timestamps stored in our database.
       </P>
       <P>
         <strong className="text-foreground">Content & social</strong> — Home posts, sentiment tags, bounty
@@ -75,10 +75,10 @@ export default function PrivacyContent() {
         items={[
           "Operate accounts, feeds, bounties, cabals, chat, and leaderboards.",
           "Process SOL bounty escrow flows you authorize.",
-          "Compute VEX, rankings, exploit scores, and market caches.",
+          "Compute VEX score, rankings, exploit scores, and market caches.",
           "Moderate abuse, enforce Terms, and protect platform integrity.",
           "Improve reliability, debug errors, and analyze aggregate usage.",
-          "Communicate launch updates (including $VEXORA token) via official channels or optional email list.",
+          `Communicate launch updates (including $${TOKEN_SYMBOL} token) via official channels or optional email list.`,
         ]}
       />
 
@@ -110,11 +110,11 @@ export default function PrivacyContent() {
         for details.
       </P>
 
-      <H2>6. $VEXORA token & on-chain privacy</H2>
+      <H2>6. ${TOKEN_SYMBOL} token & on-chain privacy</H2>
       <P>
-        Blockchain transactions are public and permanent. If you buy, sell, or transfer $VEXORA or interact with bounty
+        Blockchain transactions are public and permanent. If you buy, sell, or transfer ${TOKEN_SYMBOL} or interact with bounty
         escrow, those actions are visible on Solana explorers (e.g. Solscan) and analytics sites (e.g. Dexscreener).
-        The official $VEXORA mint is{" "}
+        The official ${TOKEN_SYMBOL} mint is{" "}
         <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px] text-foreground">{TOKEN_CA}</code> —
         always verify on-chain before interacting.
       </P>

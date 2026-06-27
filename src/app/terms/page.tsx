@@ -5,7 +5,7 @@ import TermsContent from "@/components/legal/TermsContent";
 export const metadata: Metadata = {
   title: "Terms of Service — VEXORA",
   description:
-    "Terms of Service for VEXORA: wallet access, bounties, Home feed, VEX, cabals, and $VEXORA token.",
+    "Terms of Service for VEXORA: wallet access, bounties, Home feed, VEX score, cabals, and $VEX token.",
 };
 
 const UPDATED = "June 9, 2026";

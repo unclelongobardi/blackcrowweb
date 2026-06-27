@@ -1,6 +1,5 @@
-import Link from "next/link";
 import TokenCaChip from "@/components/TokenCaChip";
-import { TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
+import { TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -38,7 +37,7 @@ export default function TermsContent() {
       <P>
         VEXORA is a Solana-native coordination layer for prediction-market operators. The platform provides market
         intelligence (including thin-book rankings sourced from third-party APIs), a public Home feed, SOL-funded
-        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VEX&rdquo;), and related
+        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VEX score&rdquo;), and related
         social features. VEXORA does not operate a centralized exchange, custody user funds beyond programmatic
         bounty escrow flows you explicitly authorize, or guarantee any market outcome.
       </P>
@@ -81,22 +80,22 @@ export default function TermsContent() {
         discussion). Leaders may approve private join requests.
       </P>
       <P>
-        <strong className="text-foreground">VEX</strong> — off-chain reputation points (&ldquo;influence&rdquo;)
-        earned through documented platform activity. VEX are not currency, do not represent equity, and are not
-        redeemable for SOL except indirectly through platform visibility and rank.
+        <strong className="text-foreground">VEX score</strong> — off-chain reputation points
+        (&ldquo;influence&rdquo;) earned through documented platform activity. VEX score is not currency, does not
+        represent equity, and is separate from the ${TOKEN_SYMBOL} token.
       </P>
 
-      <H2>5. $VEXORA token</H2>
+      <H2>5. ${TOKEN_SYMBOL} token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">$VEXORA</strong>. The contract address (&ldquo;CA&rdquo;) is published in the
+        <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address (&ldquo;CA&rdquo;) is published in the
         site header, footer, documentation, and legal pages. Unless we publish a separate, signed token utility
         statement:
       </P>
       <TokenCaChip variant="panel" className="my-4" />
       <Ul
         items={[
-          "$VEXORA is not an investment contract, security, or promise of profit.",
+          `$${TOKEN_SYMBOL} is not an investment contract, security, or promise of profit.`,
           "Token ownership does not grant governance over user bounties, escrow, or third-party markets.",
           "Token value can go to zero; only interact with contracts you have verified on-chain.",
           "Nothing on this site constitutes an offer to sell or solicitation to buy tokens in any jurisdiction where unlawful.",
@@ -123,7 +122,7 @@ export default function TermsContent() {
         ]}
       />
       <P>
-        We may suspend or terminate access, remove content, or withhold VEX for violations — without refund of
+        We may suspend or terminate access, remove content, or withhold VEX score for violations — without refund of
         off-chain status and without liability for on-chain assets already transferred.
       </P>
 

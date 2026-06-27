@@ -6,6 +6,7 @@ import { useAppContext } from "./appContext";
 import TokenCaChip from "@/components/TokenCaChip";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import { IconArrow } from "@/components/icons";
+import { TOKEN_SYMBOL } from "@/lib/links";
 
 export default function GuestBanner() {
   const { isGuest, exitGuestMode } = useAppContext();
@@ -20,7 +21,7 @@ export default function GuestBanner() {
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Guest access</p>
           <p className="mt-0.5 text-[13px] text-foreground sm:text-sm">
             Browse the platform without a wallet. Connect to post, trade bounties, and earn{" "}
-            <span className="font-semibold">$VEXORA</span>.
+            <span className="font-semibold">${TOKEN_SYMBOL}</span>.
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">

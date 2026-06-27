@@ -2,7 +2,7 @@
 
 export const BRAND_NAME = "VEXORA";
 export const BRAND_FULL = "VEXORA NETWORK";
-export const TOKEN_SYMBOL = "VEXORA";
+export const TOKEN_SYMBOL = "VEX";
 export const VEXORA_LOGO_SRC = "/images/vexora-logo.png";
 export const VEXORA_HERO_ILLUSTRATION_SRC = "/images/vexora-hero-illustration.png";
 
@@ -11,10 +11,10 @@ export const TWITTER_HANDLE = "VEXORANetwork";
 export const TWITTER_URL =
   process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || `https://x.com/${TWITTER_HANDLE}`;
 
-/** $VEXORA SPL mint — set via NEXT_PUBLIC_TOKEN_CA when live. */
-export const VEXORA_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || "";
+/** $VEX SPL mint — set via NEXT_PUBLIC_TOKEN_CA when live. */
+export const VEX_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || "";
 
-export const TOKEN_CA = VEXORA_TOKEN_MINT;
+export const TOKEN_CA = VEX_TOKEN_MINT;
 
 /** Dexscreener chart — defaults to Solana pair when CA is configured. */
 export const DEXSCREENER_URL =

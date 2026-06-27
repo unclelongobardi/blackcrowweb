@@ -1,4 +1,4 @@
--- BLACKCROW — internal social network schema
+-- VEXORA — internal social network schema
 -- Run this in the Supabase SQL editor (or via the provided sync script).
 -- All access happens server-side with the service role key, so RLS is left off.
 
