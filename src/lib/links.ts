@@ -11,10 +11,8 @@ export const TWITTER_HANDLE = "VEXORANetwork";
 export const TWITTER_URL =
   process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || `https://x.com/${TWITTER_HANDLE}`;
 
-export const DEFAULT_TOKEN_CA = "ALnRAb8VGj4hXwbiJqQpjYUm8RpDSE1tRCnLg1nnpump";
-
 /** $VEX SPL mint — set via NEXT_PUBLIC_TOKEN_CA when live. */
-export const VEX_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || DEFAULT_TOKEN_CA;
+export const VEX_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || "";
 
 export const TOKEN_CA = VEX_TOKEN_MINT;
 

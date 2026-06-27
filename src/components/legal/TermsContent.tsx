@@ -1,4 +1,3 @@
-import TokenCaChip from "@/components/TokenCaChip";
 import { TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
@@ -88,11 +87,9 @@ export default function TermsContent() {
       <H2>5. ${TOKEN_SYMBOL} token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address (&ldquo;CA&rdquo;) is published in the
-        site header, footer, documentation, and legal pages. Unless we publish a separate, signed token utility
-        statement:
+        <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address (&ldquo;CA&rdquo;) is hidden from the
+        site right now. Unless we publish a separate, signed token utility statement:
       </P>
-      <TokenCaChip variant="panel" className="my-4" />
       <Ul
         items={[
           `$${TOKEN_SYMBOL} is not an investment contract, security, or promise of profit.`,

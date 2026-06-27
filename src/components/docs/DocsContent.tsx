@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import TokenCaChip from "@/components/TokenCaChip";
 import { TOKEN_SYMBOL } from "@/lib/links";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
@@ -482,13 +481,12 @@ export default function DocsContent() {
         <DocSection id="token" title={`Token ($${TOKEN_SYMBOL})`}>
           <p>
             The project token on Solana is <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address
-            (CA) is shown in the site header, footer, hero, and app shell — always verify on-chain before trading.
+            is not shown on the site right now. Always verify any address through official channels before trading.
           </p>
-          <TokenCaChip variant="panel" className="my-5" />
           <p>
             You can override the mint via{" "}
             <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
-            environment variables if needed for staging.
+            environment variables when the CA should be displayed again.
           </p>
         </DocSection>
 
@@ -503,7 +501,7 @@ export default function DocsContent() {
               ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
               ["Home", "Authenticated app shell (/app and children)."],
               ["Leaderboard", "Leaderboard—who is consistently moving markets with the crew."],
-              [`$${TOKEN_SYMBOL}`, "Solana SPL token for the VEXORA project; CA shown across the site and in docs."],
+              [`$${TOKEN_SYMBOL}`, "Solana SPL token for the VEXORA project; CA currently hidden from the site."],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>

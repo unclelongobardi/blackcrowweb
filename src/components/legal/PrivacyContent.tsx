@@ -1,6 +1,5 @@
 import Link from "next/link";
-import TokenCaChip from "@/components/TokenCaChip";
-import { TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL, TOKEN_CA } from "@/lib/links";
+import { TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -114,11 +113,9 @@ export default function PrivacyContent() {
       <P>
         Blockchain transactions are public and permanent. If you buy, sell, or transfer ${TOKEN_SYMBOL} or interact with bounty
         escrow, those actions are visible on Solana explorers (e.g. Solscan) and analytics sites (e.g. Dexscreener).
-        The official ${TOKEN_SYMBOL} mint is{" "}
-        <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px] text-foreground">{TOKEN_CA}</code> —
-        always verify on-chain before interacting.
+        The official ${TOKEN_SYMBOL} contract address is hidden from the site right now. Always verify any address
+        through official channels before interacting.
       </P>
-      <TokenCaChip variant="panel" className="my-4" />
 
       <H2>7. Cookies & local storage</H2>
       <P>

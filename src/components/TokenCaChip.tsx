@@ -21,22 +21,7 @@ export default function TokenCaChip({
   label?: string;
 }) {
   if (!TOKEN_CA) {
-    if (variant === "panel") {
-      return (
-        <div className={`rounded-xl border border-dashed border-line px-4 py-3 text-center ${className}`}>
-          <p className="text-[11px] text-faint">${TOKEN_SYMBOL} contract address coming soon.</p>
-        </div>
-      );
-    }
-    return (
-      <div
-        className={`flex items-center gap-2 rounded-xl border border-line bg-surface/40 px-2 py-1.5 ${className}`}
-        title="Token contract address"
-      >
-        <span className="text-[10px] font-bold tracking-wide text-faint">{label}</span>
-        <span className="rounded-md bg-black/[0.04] px-2 py-0.5 font-mono text-[10px] text-faint">TBA</span>
-      </div>
-    );
+    return null;
   }
 
   if (variant === "panel") {
