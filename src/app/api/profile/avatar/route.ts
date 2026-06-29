@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { getAuthedProfile } from "@/lib/auth";
+import { DEFAULT_AVATAR_ID } from "@/lib/avatars";
 import { enforceUploadRateLimit } from "@/lib/financialRateLimit";
 import { queryOne } from "@/lib/db";
 import type { Profile } from "@/lib/types";
@@ -69,10 +70,10 @@ export async function DELETE(request: Request) {
   const profile = await queryOne<Profile>(
     `update profiles
        set avatar_url = null,
-           avatar_seed = case when avatar_seed = 'custom' then 'av1' else avatar_seed end
-     where id = $1
+           avatar_seed = case when avatar_seed = 'custom' then $1 else avatar_seed end
+     where id = $2
      returning *`,
-    [ctx.profile.id],
+    [DEFAULT_AVATAR_ID, ctx.profile.id],
   );
 
   return NextResponse.json({ profile });

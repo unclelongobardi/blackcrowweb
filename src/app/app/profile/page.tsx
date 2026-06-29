@@ -9,6 +9,7 @@ import GuestLoginPrompt from "@/components/app/GuestLoginPrompt";
 import Avatar, { resolveAvatarId, type AvatarId } from "@/components/app/Avatar";
 import AvatarPicker, { type AvatarMode } from "@/components/app/AvatarPicker";
 import CopyButton from "@/components/CopyButton";
+import { DEFAULT_AVATAR_ID } from "@/lib/avatars";
 import { truncateAddress } from "@/lib/user";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
@@ -21,7 +22,7 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState(me?.profile.display_name ?? "");
   const [bio, setBio] = useState(me?.profile.bio ?? "");
   const [avatarMode, setAvatarMode] = useState<AvatarMode>("preset");
-  const [avatarId, setAvatarId] = useState<AvatarId>("av1");
+  const [avatarId, setAvatarId] = useState<AvatarId>(DEFAULT_AVATAR_ID);
   const [customPreview, setCustomPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -20,6 +20,11 @@ export default function Avatar({
   const s = seed || label || "crow";
   const src = avatarImageUrl(s, avatarUrl);
   const official = s === "vexora_official" || s === "blackcrow";
+  const imageClass = official
+    ? "bg-white object-contain p-1"
+    : avatarUrl
+      ? "bg-surface object-cover"
+      : "bg-surface object-contain p-0.5";
 
   return (
     <span className="relative inline-flex shrink-0">
@@ -31,9 +36,7 @@ export default function Avatar({
         width={size}
         height={size}
         style={{ width: size, height: size }}
-        className={`rounded-full ring-1 ring-black/10 ${
-          official ? "bg-white object-contain p-1" : "bg-surface object-cover"
-        } ${className}`}
+        className={`rounded-full ring-1 ring-black/10 ${imageClass} ${className}`}
       />
       {verified && (
         <span className="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-sky-500 ring-2 ring-background">

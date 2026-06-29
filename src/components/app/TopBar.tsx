@@ -7,6 +7,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import Avatar from "./Avatar";
 import { useAppContext } from "./appContext";
 import { useApi } from "@/lib/useApi";
+import { DEFAULT_AVATAR_ID } from "@/lib/avatars";
 import { uiPress, uiBtnPrimary } from "@/lib/uiClasses";
 import TokenCaChip from "@/components/TokenCaChip";
 import { IconSearch, IconBell, IconMail, IconChevronDown } from "@/components/icons";
@@ -93,7 +94,7 @@ export default function TopBar() {
             className={`${uiPress} flex items-center gap-2 rounded-xl border border-line py-1.5 pl-1.5 pr-2.5 hover:border-black/15`}
           >
             <Avatar
-              seed={isGuest ? "av1" : me?.profile.avatar_seed}
+              seed={isGuest ? DEFAULT_AVATAR_ID : me?.profile.avatar_seed}
               avatarUrl={isGuest ? undefined : me?.profile.avatar_url}
               label={handle}
               size={30}

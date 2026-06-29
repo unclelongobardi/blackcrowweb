@@ -14,12 +14,12 @@ import TokenCaChip from "./TokenCaChip";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const AVATAR_IMAGES = [
-  "/images/avatars/av1.png",
-  "/images/avatars/av2.png",
-  "/images/avatars/av3.png",
-  "/images/avatars/av4.png",
-  "/images/avatars/av5.png",
-  "/images/avatars/av6.png",
+  "/images/avatars/presets/normal/vex-normal-01.png",
+  "/images/avatars/presets/normal/vex-normal-02.png",
+  "/images/avatars/presets/normal/vex-normal-03.png",
+  "/images/avatars/presets/vip/vex-vip-01.png",
+  "/images/avatars/presets/election/vex-election-02.png",
+  "/images/avatars/presets/normal/vex-normal-10.png",
 ];
 
 function HeroIllustration() {
@@ -171,7 +171,7 @@ export default function Hero() {
                   src={src}
                   alt=""
                   loading="lazy"
-                  className="h-9 w-9 rounded-full border-2 border-background bg-surface object-cover ring-1 ring-primary/10"
+                  className="h-9 w-9 rounded-full border-2 border-background bg-surface object-contain p-0.5 ring-1 ring-primary/10"
                 />
               ))}
             </div>

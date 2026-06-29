@@ -1,44 +1,175 @@
-/** Selectable profile avatars — id stored in profiles.avatar_seed */
+/** Selectable compact profile avatars. The id is stored in profiles.avatar_seed. */
+
+type NormalAvatarNo =
+  | "01"
+  | "02"
+  | "03"
+  | "04"
+  | "05"
+  | "06"
+  | "07"
+  | "08"
+  | "09"
+  | "10"
+  | "11"
+  | "12"
+  | "13"
+  | "14"
+  | "15"
+  | "16"
+  | "17"
+  | "18"
+  | "19"
+  | "20"
+  | "21"
+  | "22"
+  | "23"
+  | "24"
+  | "25";
+
+type VipAvatarNo =
+  | "01"
+  | "02"
+  | "03"
+  | "04"
+  | "05"
+  | "06"
+  | "07"
+  | "08"
+  | "09"
+  | "10"
+  | "11"
+  | "12"
+  | "13"
+  | "14"
+  | "15";
+
+type ElectionAvatarNo = "01" | "02" | "03" | "04" | "05" | "06" | "07" | "08" | "09" | "10";
 
 export type AvatarId =
-  | "av1"
-  | "av2"
-  | "av3"
-  | "av4"
-  | "av5"
-  | "av6"
-  | "av7"
-  | "av8"
-  | "av9"
-  | "av10"
-  | "av11"
-  | "av12";
+  | `vex-normal-${NormalAvatarNo}`
+  | `vex-vip-${VipAvatarNo}`
+  | `vex-election-${ElectionAvatarNo}`;
 
-export const DEFAULT_AVATAR_ID: AvatarId = "av1";
+export type AvatarTier = "normal" | "vip";
+export type AvatarCollection = "core" | "election";
 
-export const PROFILE_AVATARS: { id: AvatarId; label: string; src: string }[] = [
-  { id: "av1", label: "Night ops", src: "/images/avatars/av1.png" },
-  { id: "av2", label: "Signal", src: "/images/avatars/av2.png" },
-  { id: "av3", label: "Ghost", src: "/images/avatars/av3.png" },
-  { id: "av4", label: "Cipher", src: "/images/avatars/av4.png" },
-  { id: "av5", label: "Oracle", src: "/images/avatars/av5.png" },
-  { id: "av6", label: "Phantom", src: "/images/avatars/av6.png" },
-  { id: "av7", label: "Shard", src: "/images/avatars/av7.svg" },
-  { id: "av8", label: "Glitch", src: "/images/avatars/av8.svg" },
-  { id: "av9", label: "Wire", src: "/images/avatars/av9.svg" },
-  { id: "av10", label: "Cold", src: "/images/avatars/av10.svg" },
-  { id: "av11", label: "Pulse", src: "/images/avatars/av11.svg" },
-  { id: "av12", label: "Static", src: "/images/avatars/av12.svg" },
+export type ProfileAvatar = {
+  id: AvatarId;
+  label: string;
+  src: string;
+  tier: AvatarTier;
+  collection: AvatarCollection;
+};
+
+export const DEFAULT_AVATAR_ID: AvatarId = "vex-normal-01";
+
+const NORMAL_LABELS = [
+  "Signal Bomber",
+  "Utility Analyst",
+  "Code Jacket",
+  "Platinum Trader",
+  "Field Scout",
+  "Protocol Vest",
+  "Yellow Trim",
+  "Quant Coat",
+  "Data Beanie",
+  "Security Lead",
+  "Chore Jacket",
+  "Community Lead",
+  "Varsity Signal",
+  "Product Desk",
+  "DAO Moderator",
+  "Governance Coat",
+  "Liquidity Hunter",
+  "Market Maker",
+  "Chart Reader",
+  "Protocol Hoodie",
+  "Prediction Desk",
+  "Alpha Jacket",
+  "Macro Coat",
+  "Risk Manager",
+  "Tech Vest",
+] as const;
+
+const VIP_LABELS = [
+  "Black Tie",
+  "Velvet Founder",
+  "Obsidian Coat",
+  "Ivory Venture",
+  "Dark Pool",
+  "Private Alpha",
+  "Emerald Signal",
+  "OTC Desk",
+  "Vault Keeper",
+  "Burgundy Elite",
+  "Protocol Patron",
+  "Treasury Lead",
+  "Arbitrage Suit",
+  "Cabal Leader",
+  "Cape Operator",
+] as const;
+
+const ELECTION_LABELS = [
+  "Ballot Jacket",
+  "Checkmark Tee",
+  "Vote Mark",
+  "Ballot Blazer",
+  "Gold Check",
+  "Vote Shield",
+  "Burgundy Ballot",
+  "Green Ballot",
+  "Navy Check",
+  "Cream Ballot",
+] as const;
+
+function makeAvatars(
+  kind: "normal" | "vip" | "election",
+  labels: readonly string[],
+): ProfileAvatar[] {
+  return labels.map((label, index) => {
+    const no = String(index + 1).padStart(2, "0");
+    const id = `vex-${kind}-${no}` as AvatarId;
+    return {
+      id,
+      label,
+      src: `/images/avatars/presets/${kind}/${id}.png`,
+      tier: kind === "vip" ? "vip" : "normal",
+      collection: kind === "election" ? "election" : "core",
+    };
+  });
+}
+
+export const PROFILE_AVATARS: ProfileAvatar[] = [
+  ...makeAvatars("normal", NORMAL_LABELS),
+  ...makeAvatars("vip", VIP_LABELS),
+  ...makeAvatars("election", ELECTION_LABELS),
 ];
 
-const AVATAR_ID_SET = new Set<string>(PROFILE_AVATARS.map((a) => a.id));
+const AVATAR_BY_ID = new Map(PROFILE_AVATARS.map((avatar) => [avatar.id, avatar]));
+const AVATAR_ID_SET = new Set<string>(PROFILE_AVATARS.map((avatar) => avatar.id));
+
+const LEGACY_AVATAR_MAP: Record<string, AvatarId> = {
+  av1: "vex-normal-01",
+  av2: "vex-normal-02",
+  av3: "vex-normal-03",
+  av4: "vex-normal-04",
+  av5: "vex-normal-05",
+  av6: "vex-normal-06",
+  av7: "vex-normal-07",
+  av8: "vex-normal-08",
+  av9: "vex-normal-09",
+  av10: "vex-normal-10",
+  av11: "vex-normal-11",
+  av12: "vex-normal-12",
+};
 
 export function isAvatarId(value: string | null | undefined): value is AvatarId {
   return Boolean(value && AVATAR_ID_SET.has(value));
 }
 
 export function avatarSrcById(id: AvatarId): string {
-  return PROFILE_AVATARS.find((a) => a.id === id)!.src;
+  return AVATAR_BY_ID.get(id)?.src ?? AVATAR_BY_ID.get(DEFAULT_AVATAR_ID)!.src;
 }
 
 function hash(seed: string): number {
@@ -47,10 +178,11 @@ function hash(seed: string): number {
   return Math.abs(h);
 }
 
-/** Map legacy random seeds to a stable picker avatar. */
+/** Map legacy/random seeds to a stable picker avatar. */
 export function resolveAvatarId(seed: string | null | undefined): AvatarId {
   if (isAvatarId(seed)) return seed;
-  const s = seed || "crow";
+  if (seed && LEGACY_AVATAR_MAP[seed]) return LEGACY_AVATAR_MAP[seed];
+  const s = seed || "vexora";
   return PROFILE_AVATARS[hash(s) % PROFILE_AVATARS.length]!.id;
 }
 
@@ -62,6 +194,5 @@ export function avatarImageUrl(
   if (seed === "vexora_official" || seed === "blackcrow") {
     return "/images/vexora-official.png";
   }
-  if (isAvatarId(seed)) return avatarSrcById(seed);
   return avatarSrcById(resolveAvatarId(seed));
 }
