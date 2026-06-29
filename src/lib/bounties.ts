@@ -1,6 +1,7 @@
 import { query, queryOne } from "./db";
 import { helperInfluenceFromLamports } from "./bountyInfluence";
 import { canContributeToPool } from "./bountyRules";
+import { fetchPolymarketMarketsByIds } from "./polymarket";
 import type { Bounty, BountyContribution, BountyParticipant, BountyProofMedia, Profile, Market } from "./types";
 
 export { canContributeToPool };
@@ -18,6 +19,56 @@ const BOUNTY_SELECT = `
   left join profiles helper on helper.id = b.helper_id
   left join markets m on m.id = b.market_id
 `;
+
+type BountyRow = Bounty & { creator: Profile | null; helper: Profile | null; market: Market | null };
+
+async function refreshLinkedMarkets<T extends BountyRow>(rows: T[]): Promise<T[]> {
+  const ids = [...new Set(rows.map((r) => r.market_id).filter((id): id is string => !!id))];
+  if (!ids.length) return rows;
+
+  try {
+    const liveMarkets = await fetchPolymarketMarketsByIds(ids);
+    if (!liveMarkets.length) return rows;
+
+    const values: string[] = [];
+    const params: unknown[] = [];
+    liveMarkets.forEach((m, i) => {
+      const b = i * 10;
+      values.push(
+        `($${b + 1},$${b + 2},$${b + 3},$${b + 4},$${b + 5},$${b + 6},$${b + 7},$${b + 8},$${b + 9},$${b + 10}, now())`,
+      );
+      params.push(
+        m.id, m.slug, m.question, m.category, m.image,
+        m.yes_price, m.no_price, m.volume, m.end_date, m.url,
+      );
+    });
+
+    await query(
+      `insert into markets (id, slug, question, category, image, yes_price, no_price, volume, end_date, url, last_synced)
+       values ${values.join(",")}
+       on conflict (id) do update set
+         slug = excluded.slug,
+         question = excluded.question,
+         category = excluded.category,
+         image = excluded.image,
+         yes_price = excluded.yes_price,
+         no_price = excluded.no_price,
+         volume = excluded.volume,
+         end_date = excluded.end_date,
+         url = excluded.url,
+         last_synced = now()`,
+      params,
+    );
+
+    const liveById = new Map(liveMarkets.map((m) => [m.id, m]));
+    return rows.map((row) => {
+      const live = row.market_id ? liveById.get(row.market_id) : null;
+      return live ? { ...row, market: live } : row;
+    });
+  } catch {
+    return rows;
+  }
+}
 
 export async function expireStaleBounties(): Promise<void> {
   await query(
@@ -58,10 +109,9 @@ function normalizeParticipant(
 
 export async function getBountyById(id: string, myId?: string | null): Promise<Bounty | null> {
   await expireStaleBounties();
-  const row = await queryOne<
-    Bounty & { creator: Profile | null; helper: Profile | null; market: Market | null }
-  >(`${BOUNTY_SELECT} where b.id = $1`, [id]);
+  let row = await queryOne<BountyRow>(`${BOUNTY_SELECT} where b.id = $1`, [id]);
   if (!row) return null;
+  [row] = await refreshLinkedMarkets([row]);
 
   const [contributions, participants] = await Promise.all([
     query<BountyContribution & { contributor: Profile | null }>(
@@ -128,11 +178,12 @@ export async function listBounties(
     where = "where b.status not in ('cancelled', 'funding', 'expired')";
   }
   const rows = await query<
-    Bounty & { creator: Profile | null; helper: Profile | null; market: Market | null }
+    BountyRow
   >(`${BOUNTY_SELECT} ${where} order by b.reward_sol_lamports desc, b.created_at desc`, params);
 
-  const participantsByBounty = await loadParticipantsForBounties(rows.map((r) => r.id));
-  return rows.map((r) =>
+  const refreshedRows = await refreshLinkedMarkets(rows);
+  const participantsByBounty = await loadParticipantsForBounties(refreshedRows.map((r) => r.id));
+  return refreshedRows.map((r) =>
     attachRole({ ...r, participants: participantsByBounty.get(r.id) ?? [] }, myId),
   );
 }

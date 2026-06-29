@@ -301,6 +301,25 @@ export type PolymarketPoolResult = {
   poolSize: number;
 };
 
+/** Fetch specific Gamma markets by Polymarket id, preserving the same shape used by the UI. */
+export async function fetchPolymarketMarketsByIds(ids: string[]): Promise<Market[]> {
+  const uniqueIds = [...new Set(ids.map((id) => id.trim()).filter(Boolean))].slice(0, 40);
+  if (!uniqueIds.length) return [];
+
+  const results = await Promise.all(
+    uniqueIds.map(async (id) => {
+      const data = await fetchJson<GammaMarket | GammaMarket[]>(
+        `${GAMMA}/markets/${encodeURIComponent(id)}`,
+      );
+      const market = Array.isArray(data) ? data[0] : data;
+      if (!market || market.active === false || market.closed === true) return null;
+      return mapMarket(market);
+    }),
+  );
+
+  return dedupeMarkets(results.filter((m): m is Market => m !== null));
+}
+
 /** Fetch a wide pool of live Polymarket markets (paginated, real Gamma data). */
 export async function fetchPolymarketPool(opts?: {
   minCount?: number;

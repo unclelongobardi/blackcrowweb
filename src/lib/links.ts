@@ -7,9 +7,8 @@ export const VALORE_LOGO_SRC = "/images/valore-logo.png";
 export const VALORE_HERO_ILLUSTRATION_SRC = "/images/valore-hero-illustration.png";
 
 /** Official X / Twitter profile */
-export const TWITTER_HANDLE = "VALORENetwork";
-export const TWITTER_URL =
-  process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || `https://x.com/${TWITTER_HANDLE}`;
+export const TWITTER_HANDLE = "VALOREnet";
+export const TWITTER_URL = `https://x.com/${TWITTER_HANDLE}`;
 
 /** $VLRE SPL mint — set via NEXT_PUBLIC_TOKEN_CA when live. */
 export const VLRE_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || "";

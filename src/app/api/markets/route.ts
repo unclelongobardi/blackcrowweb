@@ -50,8 +50,16 @@ export async function GET(request: Request) {
         `insert into markets (id, slug, question, category, image, yes_price, no_price, volume, end_date, url, last_synced)
          values ${values.join(",")}
          on conflict (id) do update set
-           yes_price = excluded.yes_price, no_price = excluded.no_price,
-           volume = excluded.volume, last_synced = now()`,
+           slug = excluded.slug,
+           question = excluded.question,
+           category = excluded.category,
+           image = excluded.image,
+           yes_price = excluded.yes_price,
+           no_price = excluded.no_price,
+           volume = excluded.volume,
+           end_date = excluded.end_date,
+           url = excluded.url,
+           last_synced = now()`,
         params,
       );
     } catch {
