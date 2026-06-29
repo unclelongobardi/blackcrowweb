@@ -47,9 +47,9 @@ type VipAvatarNo =
 type ElectionAvatarNo = "01" | "02" | "03" | "04" | "05" | "06" | "07" | "08" | "09" | "10";
 
 export type AvatarId =
-  | `vex-normal-${NormalAvatarNo}`
-  | `vex-vip-${VipAvatarNo}`
-  | `vex-election-${ElectionAvatarNo}`;
+  | `vlre-normal-${NormalAvatarNo}`
+  | `vlre-vip-${VipAvatarNo}`
+  | `vlre-election-${ElectionAvatarNo}`;
 
 export type AvatarTier = "normal" | "vip";
 export type AvatarCollection = "core" | "election";
@@ -62,7 +62,7 @@ export type ProfileAvatar = {
   collection: AvatarCollection;
 };
 
-export const DEFAULT_AVATAR_ID: AvatarId = "vex-normal-01";
+export const DEFAULT_AVATAR_ID: AvatarId = "vlre-normal-01";
 
 const NORMAL_LABELS = [
   "Signal Bomber",
@@ -129,7 +129,7 @@ function makeAvatars(
 ): ProfileAvatar[] {
   return labels.map((label, index) => {
     const no = String(index + 1).padStart(2, "0");
-    const id = `vex-${kind}-${no}` as AvatarId;
+    const id = `vlre-${kind}-${no}` as AvatarId;
     return {
       id,
       label,
@@ -150,18 +150,18 @@ const AVATAR_BY_ID = new Map(PROFILE_AVATARS.map((avatar) => [avatar.id, avatar]
 const AVATAR_ID_SET = new Set<string>(PROFILE_AVATARS.map((avatar) => avatar.id));
 
 const LEGACY_AVATAR_MAP: Record<string, AvatarId> = {
-  av1: "vex-normal-01",
-  av2: "vex-normal-02",
-  av3: "vex-normal-03",
-  av4: "vex-normal-04",
-  av5: "vex-normal-05",
-  av6: "vex-normal-06",
-  av7: "vex-normal-07",
-  av8: "vex-normal-08",
-  av9: "vex-normal-09",
-  av10: "vex-normal-10",
-  av11: "vex-normal-11",
-  av12: "vex-normal-12",
+  av1: "vlre-normal-01",
+  av2: "vlre-normal-02",
+  av3: "vlre-normal-03",
+  av4: "vlre-normal-04",
+  av5: "vlre-normal-05",
+  av6: "vlre-normal-06",
+  av7: "vlre-normal-07",
+  av8: "vlre-normal-08",
+  av9: "vlre-normal-09",
+  av10: "vlre-normal-10",
+  av11: "vlre-normal-11",
+  av12: "vlre-normal-12",
 };
 
 export function isAvatarId(value: string | null | undefined): value is AvatarId {
@@ -182,7 +182,7 @@ function hash(seed: string): number {
 export function resolveAvatarId(seed: string | null | undefined): AvatarId {
   if (isAvatarId(seed)) return seed;
   if (seed && LEGACY_AVATAR_MAP[seed]) return LEGACY_AVATAR_MAP[seed];
-  const s = seed || "vexora";
+  const s = seed || "valore";
   return PROFILE_AVATARS[hash(s) % PROFILE_AVATARS.length]!.id;
 }
 
@@ -191,8 +191,8 @@ export function avatarImageUrl(
   avatarUrl?: string | null,
 ): string {
   if (avatarUrl) return avatarUrl;
-  if (seed === "vexora_official" || seed === "blackcrow") {
-    return "/images/vexora-official.png";
+  if (seed === "valore_official" || seed === "valore") {
+    return "/images/valore-official.png";
   }
   return avatarSrcById(resolveAvatarId(seed));
 }

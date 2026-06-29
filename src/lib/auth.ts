@@ -73,7 +73,7 @@ export async function getProfileId(request: Request): Promise<string | null> {
 }
 
 function randomCodename(): string {
-  return "crow_" + Math.random().toString(36).slice(2, 8);
+  return "valore_" + Math.random().toString(36).slice(2, 8);
 }
 
 export type AuthedContext = {

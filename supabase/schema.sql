@@ -1,10 +1,10 @@
--- VEXORA — internal social network schema
+-- VALORE — internal social network schema
 -- Run this in the Supabase SQL editor (or via the provided sync script).
 -- All access happens server-side with the service role key, so RLS is left off.
 
 create extension if not exists "pgcrypto";
 
--- ───────────────────────────── PROFILES (the Crows) ─────────────────────────
+-- ───────────────────────────── PROFILES (operators) ─────────────────────────
 create table if not exists profiles (
   id            uuid primary key default gen_random_uuid(),
   privy_did     text unique not null,
@@ -13,7 +13,7 @@ create table if not exists profiles (
   display_name  text,
   bio           text,
   avatar_seed   text,
-  influence     integer not null default 0,   -- reputation ("Feathers")
+  influence     integer not null default 0,   -- reputation (VLRE score)
   is_onboarded  boolean not null default false,
   created_at    timestamptz not null default now()
 );

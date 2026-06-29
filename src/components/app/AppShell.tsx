@@ -19,7 +19,7 @@ import {
   IconHome,
   IconGrid,
   IconCabal,
-  IconRoost,
+  IconRank,
   IconMail,
   IconBell,
 } from "@/components/icons";
@@ -28,7 +28,7 @@ const MOBILE_NAV = [
   { label: "Home", href: "/app", icon: IconHome },
   { label: "Markets", href: "/app/markets", icon: IconGrid },
   { label: "Cabals", href: "/app/cabals", icon: IconCabal },
-  { label: "Rank", href: "/app/leaderboard", icon: IconRoost },
+  { label: "Rank", href: "/app/leaderboard", icon: IconRank },
   { label: "Chat", href: "/app/messages", icon: IconMail },
   { label: "Alerts", href: "/app/notifications", icon: IconBell },
 ];
@@ -114,7 +114,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           Open platform access
         </p>
         <h1 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-          EXPLORE VEXORA NETWORK
+          EXPLORE VALORE
         </h1>
         <p className="mt-3 max-w-md text-sm text-muted">
           Browse markets, bounties, cabals, and the feed as a guest — no wallet, no signup. Connect when you&apos;re
@@ -138,7 +138,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             LOG IN
           </button>
         </div>
-        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VEX.</p>
+        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VLRE.</p>
         <div className="mt-6 w-full max-w-md">
           <TokenCaChip variant="panel" />
         </div>

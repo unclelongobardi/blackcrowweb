@@ -40,8 +40,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · France to win FIFA 2026 · YES ~16% · ~$43M volume · flagship macro book.',
     'Run a 7-day coord campaign on Home: 5+ original threads tagging this market with a France YES thesis (form, depth, knockout path). Rally 3+ operators to post or take YES exposure. Submit links, screenshots, and wallet proof if you traded.',
     100000000000, 500, 'coord', 'open',
-    'WcRow014France100SolBcRowOfficialWorldCup2026PushCampaign',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T00:00:00+00', 'world_cup'
+    'WcRow014France100SolVlreOfficialWorldCup2026PushCampaign',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T00:00:00+00', 'world_cup'
   ),
   (
     'bc000015-0000-0000-0000-000000000015',
@@ -51,8 +51,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Mexico tops Group A · YES ~58% · host-nation narrative book before June 27.',
     'Create fan-zone or watch-party content in Mexico (or diaspora) pushing Group A YES: photo/video with date, city, and crowd. Post 2+ Home threads tagging the market. Note any YES position. Proof = media + post links.',
     90000000000, 500, 'action', 'open',
-    'WcRow015Mexico90SolGroupABlackCrowOfficialHostPush',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow015Mexico90SolGroupAValoreOfficialHostPush',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   ),
   (
     'bc000016-0000-0000-0000-000000000016',
@@ -62,8 +62,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · USA tops Group D · YES ~39% · co-host storyline vs Türkiye & Paraguay.',
     'On-site at a USMNT World Cup watch party or official fan zone. Submit timestamped photo/video + short write-up of the crowd sentiment. Post 1 Home thread tagging Group D YES. Include city and date in proof.',
     80000000000, 500, 'action', 'open',
-    'WcRow016USA80SolGroupDHostNationBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow016USA80SolGroupDHostNationValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   ),
   (
     'bc000017-0000-0000-0000-000000000017',
@@ -73,8 +73,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Korea wins Group A · YES ~21% · thin upset lane vs Mexico & Czechia.',
     'Monitor Korean football press, forums, and lineup rumors (English summary required). Post 3 intel drops on Home before Mexico''s first group match, each tagging this market. Submit links + screenshots of source material.',
     70000000000, 500, 'intel', 'open',
-    'WcRow017Korea70SolGroupAUpsetIntelBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow017Korea70SolGroupAUpsetIntelValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   ),
   (
     'bc000018-0000-0000-0000-000000000018',
@@ -84,8 +84,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Morocco wins Group C · YES ~21% · Brazil favorite at ~72% — contrarian group play.',
     'Coordinate a 48h narrative push: 4+ Home posts on Morocco''s group path, tag this market, recruit 2 operators in MENA/EU time zones. Submit thread links + engagement screenshots. Bonus: note if you took YES exposure.',
     60000000000, 500, 'coord', 'open',
-    'WcRow018Morocco60SolGroupCContrarianBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow018Morocco60SolGroupCContrarianValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   ),
   (
     'bc000019-0000-0000-0000-000000000019',
@@ -95,8 +95,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Türkiye tops Group D · YES ~37% · three-way heat with USA & Paraguay.',
     'Field intel: photo/video from a Türkiye national-team watch event or training-camp rumor source (public area only). Pair with a 200+ char write-up on why Group D YES is mispriced. Submit media + analysis.',
     50000000000, 500, 'action', 'open',
-    'WcRow019Turkiye50SolGroupDFieldIntelBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow019Turkiye50SolGroupDFieldIntelValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   ),
   (
     'bc000020-0000-0000-0000-000000000020',
@@ -106,8 +106,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Netherlands win FIFA 2026 · YES ~4% · massive longshot book (~$37M vol).',
     'Publish a data-driven dark-horse thread on Home (squad depth, path, xG thesis) tagging this market. Get 2+ operators to reply with substantive takes. Submit links. Goal: move crowd attention before the knockout stage.',
     40000000000, 500, 'coord', 'open',
-    'WcRow020Netherlands40SolWinnerLongshotBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T00:00:00+00', 'world_cup'
+    'WcRow020Netherlands40SolWinnerLongshotValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T00:00:00+00', 'world_cup'
   ),
   (
     'bc000021-0000-0000-0000-000000000021',
@@ -117,8 +117,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Scotland win Group C · YES ~8% · low-priced upset vs Brazil & Morocco.',
     'Before Scotland''s first group match: capture lineup-leak or press-conference intel (screenshots + source URLs). Post 2 Home updates tagging this market as news breaks. Time-sensitive — proof must be dated within 24h of the event.',
     30000000000, 500, 'intel', 'open',
-    'WcRow021Scotland30SolGroupCLeakIntelBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow021Scotland30SolGroupCLeakIntelValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   ),
   (
     'bc000022-0000-0000-0000-000000000022',
@@ -128,8 +128,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Portugal win FIFA 2026 · YES ~11% · Ronaldo-era closing chapter book.',
     'Run a 3-post Home mini-campaign: thesis, rebuttal to skeptics, operator roll-call tagging this market. Include one chart or stat image. Submit all links in one proof bundle.',
     20000000000, 500, 'coord', 'open',
-    'WcRow022Portugal20SolWinnerNarrativeBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T00:00:00+00', 'world_cup'
+    'WcRow022Portugal20SolWinnerNarrativeValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T00:00:00+00', 'world_cup'
   ),
   (
     'bc000023-0000-0000-0000-000000000023',
@@ -139,8 +139,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Canada tops Group B · YES ~31% · co-host underdog lane.',
     'Document a Canada fan rally or bar watch-party (photo/video + city/date). Post 1 Home thread tagging Group B YES with your take on Canada''s path. Proof = media + post link.',
     10000000000, 500, 'action', 'open',
-    'WcRow023Canada10SolGroupBFanRallyBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
+    'WcRow023Canada10SolGroupBFanRallyValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-27T00:00:00+00', 'world_cup'
   )
 on conflict (id) do update set
   title = excluded.title,

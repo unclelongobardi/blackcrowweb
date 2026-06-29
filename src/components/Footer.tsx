@@ -92,7 +92,7 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 sm:flex-row">
           <p className="text-[11px] tracking-[0.12em] text-faint">
-            © 2026 VEXORA NETWORK. ALL RIGHTS RESERVED.
+            © 2026 VALORE. ALL RIGHTS RESERVED.
           </p>
           <div className="flex items-center gap-7 text-[11px] font-medium tracking-[0.12em] text-faint">
             <Link href="/terms" className="transition-colors hover:text-foreground">

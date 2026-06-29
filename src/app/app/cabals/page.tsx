@@ -16,7 +16,7 @@ const KIND_LABEL: Record<CabalKind, string> = {
   discussion: "Discussion",
 };
 
-const OFFICIAL_SLUG = "vexora-official";
+const OFFICIAL_SLUG = "valore-official";
 
 function CabalCard({
   c,
@@ -212,7 +212,7 @@ export default function CabalsPage() {
               <>
                 {official && (
                   <div className="mb-6">
-                    <p className="mb-3 text-[11px] font-bold tracking-[0.16em] text-bull">VEXORA OFFICIAL</p>
+                    <p className="mb-3 text-[11px] font-bold tracking-[0.16em] text-bull">VALORE OFFICIAL</p>
                     <CabalCard c={official} busy={busy} onJoin={join} featured />
                   </div>
                 )}

@@ -26,18 +26,18 @@ export default function TermsContent() {
   return (
     <>
       <P>
-        These Terms of Service (&ldquo;Terms&rdquo;) govern access to VEXORA — the website, authenticated app
+        These Terms of Service (&ldquo;Terms&rdquo;) govern access to VALORE — the website, authenticated app
         (&ldquo;Home&rdquo; at <code className="font-mono text-[12px] text-foreground/80">/app</code>), and
-        related services operated under the VEXORA brand. By connecting a wallet or using the platform, you agree to
+        related services operated under the VALORE brand. By connecting a wallet or using the platform, you agree to
         these Terms. If you do not agree, do not use the service.
       </P>
 
-      <H2>1. What VEXORA is</H2>
+      <H2>1. What VALORE is</H2>
       <P>
-        VEXORA is a Solana-native coordination layer for prediction-market operators. The platform provides market
+        VALORE is a Solana-native coordination layer for prediction-market operators. The platform provides market
         intelligence (including thin-book rankings sourced from third-party APIs), a public Home feed, SOL-funded
-        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VEX score&rdquo;), and related
-        social features. VEXORA does not operate a centralized exchange, custody user funds beyond programmatic
+        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VLRE score&rdquo;), and related
+        social features. VALORE does not operate a centralized exchange, custody user funds beyond programmatic
         bounty escrow flows you explicitly authorize, or guarantee any market outcome.
       </P>
 
@@ -79,8 +79,8 @@ export default function TermsContent() {
         discussion). Leaders may approve private join requests.
       </P>
       <P>
-        <strong className="text-foreground">VEX score</strong> — off-chain reputation points
-        (&ldquo;influence&rdquo;) earned through documented platform activity. VEX score is not currency, does not
+        <strong className="text-foreground">VLRE score</strong> — off-chain reputation points
+        (&ldquo;influence&rdquo;) earned through documented platform activity. VLRE score is not currency, does not
         represent equity, and is separate from the ${TOKEN_SYMBOL} token.
       </P>
 
@@ -114,12 +114,12 @@ export default function TermsContent() {
           "Fraud, stolen funds, money laundering, or sanctions evasion.",
           "Harassment, doxing, threats, or posting others' private information without consent.",
           "Spam, bot abuse, exploit attempts on our APIs or smart-contract flows.",
-          "Misrepresenting bounty proof, impersonating vexora_official, or phishing wallet signatures.",
+          "Misrepresenting bounty proof, impersonating valore_official, or phishing wallet signatures.",
           "Scraping or reselling platform data at scale without written permission.",
         ]}
       />
       <P>
-        We may suspend or terminate access, remove content, or withhold VEX score for violations — without refund of
+        We may suspend or terminate access, remove content, or withhold VLRE score for violations — without refund of
         off-chain status and without liability for on-chain assets already transferred.
       </P>
 
@@ -127,7 +127,7 @@ export default function TermsContent() {
       <P>
         Bounty deposits and payouts use Solana transactions you sign. Escrow is operated server-side per published flows.
         Smart-contract, RPC, or indexer failures can delay or prevent settlement. Disputes between creators and helpers
-        are primarily between those parties; VEXORA is not an arbiter of off-chain work quality except where we
+        are primarily between those parties; VALORE is not an arbiter of off-chain work quality except where we
         intervene for abuse or legal compliance.
       </P>
 
@@ -140,7 +140,7 @@ export default function TermsContent() {
 
       <H2>10. Intellectual property</H2>
       <P>
-        VEXORA branding, UI, and original content are owned by the project or licensors. You retain rights to content
+        VALORE branding, UI, and original content are owned by the project or licensors. You retain rights to content
         you post but grant us a non-exclusive license to display, store, and distribute it within the service for
         operation and promotion of the platform.
       </P>
@@ -154,7 +154,7 @@ export default function TermsContent() {
 
       <H2>12. Limitation of liability</H2>
       <P>
-        TO THE MAXIMUM EXTENT PERMITTED BY LAW, VEXORA AND ITS OPERATORS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL,
+        TO THE MAXIMUM EXTENT PERMITTED BY LAW, VALORE AND ITS OPERATORS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL,
         SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, DATA, GOODWILL, OR DIGITAL ASSETS, ARISING
         FROM YOUR USE OF THE SERVICE — INCLUDING WALLET COMPROMISE, MARKET LOSSES, OR TOKEN PRICE CHANGES — EVEN IF
         ADVISED OF THE POSSIBILITY. OUR AGGREGATE LIABILITY FOR ANY CLAIM RELATING TO THE SERVICE IS LIMITED TO THE

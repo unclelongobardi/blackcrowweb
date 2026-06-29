@@ -115,7 +115,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
             <input
               value={codename}
               onChange={(e) => setCodename(e.target.value)}
-              placeholder="night_raven"
+              placeholder="night_valor"
               className="mt-1 w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-black/20"
             />
           </div>
@@ -124,7 +124,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
             <input
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="The Nightjar"
+              placeholder="The Operator"
               className="mt-1 w-full rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-faint outline-none focus:border-black/20"
             />
           </div>

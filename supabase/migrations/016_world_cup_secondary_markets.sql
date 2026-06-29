@@ -35,8 +35,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Trump attends USMNT opener vs Paraguay · YES ~13% · SoFi June 12 · spectacle book.',
     'Run a 5-day coord push to flip attendance odds: map motorcade windows, rally 4+ operators to post credible sighting intel on Home, tag this market, and document VIP-rail activity at SoFi (photos from public areas only). Submit thread links + timestamped media.',
     100000000000, 500, 'coord', 'open',
-    'WcRow014Trump100SolOpeningSpectacleBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-12T03:59:00+00', 'world_cup'
+    'WcRow014Trump100SolOpeningSpectacleValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-12T03:59:00+00', 'world_cup'
   ),
   (
     'bc000015-0000-0000-0000-000000000015',
@@ -46,8 +46,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Trump" on FOX English feed · YES ~49% · USA–Paraguay opener · broadcast micro-book.',
     'Stadium op at SoFi during live FOX coverage (kickoff → final whistle): deploy 3+ visible TRUMP signs or a coordinated chant block aimed at the broadcast mics. Proof = clip/screenshot with timestamp + your seat section photo. Post 1 Home thread tagging this market before match day.',
     90000000000, 500, 'action', 'open',
-    'WcRow015FoxTrump90SolBroadcastOpBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow015FoxTrump90SolBroadcastOpValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000016-0000-0000-0000-000000000016',
@@ -57,8 +57,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Mexico" on FOX · YES ~51% · co-host narrative bleed into USA opener.',
     'Organize a 50+ person "México" chant section for the FOX broadcast window. Provide section map, 2 rehearsal timestamps, and match-day video from the stands. Post coord plan on Home tagging this market. Legal crowd behavior only.',
     80000000000, 500, 'coord', 'open',
-    'WcRow016FoxMexico80SolChantBlockBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow016FoxMexico80SolChantBlockValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000017-0000-0000-0000-000000000017',
@@ -68,8 +68,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Canada" on FOX · YES ~56% · tri-host storyline at LA opener.',
     'Deploy maple-leaf / co-host signage in 2+ SoFi sections visible to the main broadcast camera during play. Submit wide-shot photos + a short write-up of placement strategy. Tag this market on Home with your layout sketch.',
     70000000000, 500, 'action', 'open',
-    'WcRow017FoxCanada70SolSignageBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow017FoxCanada70SolSignageValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000018-0000-0000-0000-000000000018',
@@ -79,8 +79,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Ronaldo" on FOX · YES ~50% · thin broadcast mention lane.',
     'Run a CR7 banner wave timed for FOX live segments (pre-arranged 10-banner rotation). Proof = stadium photo set + note which minute windows you targeted. One Home thread tagging this market with operator roll-call.',
     60000000000, 500, 'coord', 'open',
-    'WcRow018FoxRonaldo60SolBannerBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow018FoxRonaldo60SolBannerValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000019-0000-0000-0000-000000000019',
@@ -90,8 +90,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Legend" on FOX · YES ~50% · narrative hook for USMNT vets.',
     'Coordinate tribute signs for 2 named USMNT veterans (last name on banner) during live play. Submit photos + a 150-word script of what announcers are likely to pick up. Post on Home tagging this market.',
     50000000000, 500, 'action', 'open',
-    'WcRow019FoxLegend50SolTributeBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow019FoxLegend50SolTributeValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000020-0000-0000-0000-000000000020',
@@ -101,8 +101,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Penalty" on FOX · YES ~58% · game-event + broadcast book.',
     'Pre-match intel op: scout likely penalty-box flashpoints (set-piece assignments, ref tendencies). Live-post 3 timestamped Home updates during the match tagging this market as drama unfolds. Submit screenshots + clip if "Penalty" hits.',
     40000000000, 500, 'intel', 'open',
-    'WcRow020FoxPenalty40SolBoxIntelBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow020FoxPenalty40SolBoxIntelValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000021-0000-0000-0000-000000000021',
@@ -112,8 +112,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Announcers say "Red Card" on FOX · YES ~48% · controversy micro-book.',
     'Monitor ref assignment + foul profile for USA–Paraguay. Publish a pre-match controversy brief on Home, then live-react with 2+ posts if card pressure builds. Proof = analysis links + broadcast capture if "Red Card" is said.',
     30000000000, 500, 'intel', 'open',
-    'WcRow021FoxRedCard30SolControversyBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
+    'WcRow021FoxRedCard30SolControversyValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-06-13T03:59:00+00', 'world_cup'
   ),
   (
     'bc000022-0000-0000-0000-000000000022',
@@ -123,8 +123,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Trump attends July 19 final · YES ~89% · MetLife spectacle book.',
     'Build a final-week motorcade + security-perimeter map for MetLife. Post 4 intel drops on Home tagging this market as logistics firm up. Submit dated screenshots from credible local reporting + your synthesis thread.',
     20000000000, 500, 'intel', 'open',
-    'WcRow022TrumpFinal20SolMotorcadeBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T03:59:00+00', 'world_cup'
+    'WcRow022TrumpFinal20SolMotorcadeValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T03:59:00+00', 'world_cup'
   ),
   (
     'bc000023-0000-0000-0000-000000000023',
@@ -134,8 +134,8 @@ insert into bounties (
     'WORLD CUP SPECIAL · Trump in winners photo frame · YES ~33% · post-final culture book.',
     'Track protocol for trophy-lift photo lines (who stands where). Publish a positioning diagram + 2 sourced precedents from prior tournaments. Tag this market on Home; update once after the semi-finals with revised odds thesis.',
     10000000000, 500, 'intel', 'open',
-    'WcRow023TrumpPhoto10SolPodiumBlackCrow',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T03:59:00+00', 'world_cup'
+    'WcRow023TrumpPhoto10SolPodiumValore',
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-20T03:59:00+00', 'world_cup'
   )
 on conflict (id) do update set
   title = excluded.title,

@@ -51,7 +51,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   );
   if (!verified.ok) return NextResponse.json({ error: verified.error }, { status: 400 });
 
-  const creatorFeathers = creatorPostInfluenceFromLamports(bounty.reward_sol_lamports);
+  const creatorVlre = creatorPostInfluenceFromLamports(bounty.reward_sol_lamports);
   const escrowAddress = getEscrowAddress();
 
   const funded = await queryOne<{ id: string }>(
@@ -77,9 +77,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   await query("update profiles set influence = influence + $2 where id = $1", [
     ctx.profile.id,
-    creatorFeathers,
+    creatorVlre,
   ]);
 
   const updated = await getBountyById(id, ctx.profile.id);
-  return NextResponse.json({ funded: true, status: "open", creator_feathers: creatorFeathers, bounty: updated });
+  return NextResponse.json({ funded: true, status: "open", creator_vlre: creatorVlre, bounty: updated });
 }

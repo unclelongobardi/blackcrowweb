@@ -36,8 +36,8 @@ const NAV = [
 
 const FEED = [
   {
-    name: "CrowTrader",
-    handle: "@insider_crow",
+    name: "ValoreTrader",
+    handle: "@insider_valore",
     time: "2m",
     sentiment: "Bullish",
     bull: true,
@@ -58,8 +58,8 @@ const FEED = [
     stats: { c: 15, r: 43, l: 198 },
   },
   {
-    name: "MarketGoblin",
-    handle: "@goblinmode",
+    name: "MarketMaven",
+    handle: "@market_maven",
     time: "7m",
     sentiment: "Bullish",
     bull: true,
@@ -133,7 +133,7 @@ export default function Dashboard({ markets = [] }: { markets?: Market[] }) {
             {/* Feed */}
             <div className="border-line lg:border-r">
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">THE NEST</h3>
+                <h3 className="text-[12px] font-bold tracking-[0.18em] text-muted">HOME FEED</h3>
                 <button className="flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1 text-[11px] font-medium text-muted transition-colors hover:text-foreground">
                   Trending
                   <span className="text-faint">▾</span>

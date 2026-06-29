@@ -16,15 +16,15 @@ const outputSize = 512;
 const items = [
   ...Array.from({ length: 25 }, (_, i) => ({
     kind: "normal",
-    id: `vex-normal-${String(i + 1).padStart(2, "0")}`,
+    id: `vlre-normal-${String(i + 1).padStart(2, "0")}`,
   })),
   ...Array.from({ length: 15 }, (_, i) => ({
     kind: "vip",
-    id: `vex-vip-${String(i + 1).padStart(2, "0")}`,
+    id: `vlre-vip-${String(i + 1).padStart(2, "0")}`,
   })),
   ...Array.from({ length: 10 }, (_, i) => ({
     kind: "election",
-    id: `vex-election-${String(i + 1).padStart(2, "0")}`,
+    id: `vlre-election-${String(i + 1).padStart(2, "0")}`,
   })),
 ];
 

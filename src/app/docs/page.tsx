@@ -3,9 +3,9 @@ import DocsHeader from "@/components/docs/DocsHeader";
 import DocsContent from "@/components/docs/DocsContent";
 
 export const metadata: Metadata = {
-  title: "VEXORA Docs — Platform guide",
+  title: "VALORE Docs — Platform guide",
   description:
-    "Detailed documentation for VEXORA: bounties, Home feed, markets, VEX, cabals, and Solana payouts.",
+    "Detailed documentation for VALORE: bounties, Home feed, markets, VLRE, cabals, and Solana payouts.",
 };
 
 export default function DocsPage() {

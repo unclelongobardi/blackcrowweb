@@ -3,8 +3,8 @@ import path from "node:path";
 import sharp from "sharp";
 
 const root = process.cwd();
-const input = path.join(root, "public/images/vexora-hero-illustration-source.png");
-const output = path.join(root, "public/images/vexora-hero-illustration.png");
+const input = path.join(root, "public/images/valore-hero-illustration-source.png");
+const output = path.join(root, "public/images/valore-hero-illustration.png");
 
 if (!fs.existsSync(input)) {
   console.log("skip: no hero illustration source");
@@ -38,4 +38,4 @@ await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 }
   .png({ compressionLevel: 9, adaptiveFiltering: true })
   .toFile(output);
 
-console.log("wrote public/images/vexora-hero-illustration.png");
+console.log("wrote public/images/valore-hero-illustration.png");

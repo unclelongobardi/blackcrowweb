@@ -1,10 +1,10 @@
 {
-  "name": "vexora",
+  "name": "valore",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/process-vexora-logo.mjs && node scripts/process-hero-illustration.mjs && node scripts/generate-favicon.mjs",
+    "prebuild": "node scripts/process-valore-logo.mjs && node scripts/process-hero-illustration.mjs && node scripts/generate-favicon.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

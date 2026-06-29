@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const input =
   process.argv[2] ||
-  path.join(root, "public", "images", "blackcrow-mark-source.png");
+  path.join(root, "public", "images", "valore-mark-source.png");
 
 /** Dark / opaque pixels → white; existing transparency preserved. */
 async function toWhiteTransparent(inputPath, outputPath, size) {
@@ -57,4 +57,4 @@ async function toWhiteTransparent(inputPath, outputPath, size) {
 }
 
 console.log("source", input);
-await toWhiteTransparent(input, path.join(root, "public", "images", "blackcrow-mark-white.png"), 512);
+await toWhiteTransparent(input, path.join(root, "public", "images", "valore-mark-white.png"), 512);

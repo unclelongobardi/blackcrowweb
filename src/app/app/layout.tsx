@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import AppShell from "@/components/app/AppShell";
 
 export const metadata: Metadata = {
-  title: "VEXORA NETWORK — Home",
+  title: "VALORE — Home",
   description: "Coordinate. Debate. Move markets.",
 };
 

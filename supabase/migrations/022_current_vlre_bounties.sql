@@ -1,5 +1,5 @@
--- Refresh official VEXORA bounties with active markets as of 2026-06-27.
--- Project name: VEXORA. Token ticker: $VEX.
+-- Refresh official VALORE bounties with active markets as of 2026-06-27.
+-- Project name: VALORE. Token ticker: $VLRE.
 
 alter table bounties add column if not exists collection text;
 
@@ -117,121 +117,121 @@ insert into bounties (
     '00000000-0000-0000-0000-0000000000bc',
     '573647',
     'GPT-6 before GTA VI - release watch',
-    'Official VEXORA - GPT-6 before GTA VI - YES ~51% - live through July 31, 2026.',
+    'Official VALORE - GPT-6 before GTA VI - YES ~51% - live through July 31, 2026.',
     'Publish a sourced release-watch brief on Home: model release signals, OpenAI product hints, credible journalist notes, and counterarguments. Submit 3 links or screenshots plus your final YES/NO read. No rumors without source context.',
     1200000000, 120, 'intel', 'open',
     'VxRow001Gpt6BeforeGtaViReleaseWatch2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-31T12:00:00+00', 'current_ops', 1200000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-31T12:00:00+00', 'current_ops', 1200000000
   ),
   (
     'bc000002-0000-0000-0000-000000000002',
     '00000000-0000-0000-0000-0000000000bc',
     '540820',
     'Trump before GTA VI - legal calendar monitor',
-    'Official VEXORA - Trump out as President before GTA VI - YES ~50% - high-volume July 2026 book.',
+    'Official VALORE - Trump out as President before GTA VI - YES ~50% - high-volume July 2026 book.',
     'Build a calendar tracker covering court dates, official White House schedule, GTA VI release timing, and credible legal/political catalysts. Post one concise Home thread with sources and a risk table; submit the thread link and source screenshots.',
     1000000000, 100, 'intel', 'open',
     'VxRow002TrumpGtaViLegalCalendar2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-31T12:00:00+00', 'current_ops', 1000000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-31T12:00:00+00', 'current_ops', 1000000000
   ),
   (
     'bc000003-0000-0000-0000-000000000003',
     '00000000-0000-0000-0000-0000000000bc',
     '540818',
     'Carti album before GTA VI - signal board',
-    'Official VEXORA - new Playboi Carti album before GTA VI - YES ~53% - culture market with live catalysts.',
+    'Official VALORE - new Playboi Carti album before GTA VI - YES ~53% - culture market with live catalysts.',
     'Track DSP pre-save pages, label posts, tour dates, and credible music press. Post a Home brief with a dated signal board and tag the market. Submit screenshots of at least 4 signals and one paragraph explaining the implied timing.',
     900000000, 90, 'intel', 'open',
     'VxRow003CartiAlbumSignalBoard2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-31T12:00:00+00', 'current_ops', 900000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-07-31T12:00:00+00', 'current_ops', 900000000
   ),
   (
     'bc000014-0000-0000-0000-000000000014',
     '00000000-0000-0000-0000-0000000000bc',
     '599304',
     'Michigan primary - Haley Stevens field read',
-    'Official VEXORA - Haley Stevens 2026 Michigan Democratic Primary - YES ~15% - August 4 close.',
+    'Official VALORE - Haley Stevens 2026 Michigan Democratic Primary - YES ~15% - August 4 close.',
     'Collect campaign-ad buys, endorsement updates, polling, and local press for Haley Stevens. Post a Home thread with 3 sourced bullets and one mispricing thesis. Submit source links/screenshots and the post link.',
     800000000, 80, 'intel', 'open',
     'VxRow014MichiganHaleyStevensFieldRead2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-08-04T00:00:00+00', 'current_ops', 800000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-08-04T00:00:00+00', 'current_ops', 800000000
   ),
   (
     'bc000015-0000-0000-0000-000000000015',
     '00000000-0000-0000-0000-0000000000bc',
     '599305',
     'Michigan primary - Abdul El-Sayed counterread',
-    'Official VEXORA - Abdul El-Sayed 2026 Michigan Democratic Primary - YES ~84% - favorite-risk brief.',
+    'Official VALORE - Abdul El-Sayed 2026 Michigan Democratic Primary - YES ~84% - favorite-risk brief.',
     'Write the strongest countercase to the market favorite: turnout risks, opponent endorsements, fundraising, and recent polling. Post it on Home with the market tagged. Submit the thread plus at least 3 source captures.',
     750000000, 75, 'intel', 'open',
     'VxRow015MichiganAbdulCounterread2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-08-04T00:00:00+00', 'current_ops', 750000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-08-04T00:00:00+00', 'current_ops', 750000000
   ),
   (
     'bc000016-0000-0000-0000-000000000016',
     '00000000-0000-0000-0000-0000000000bc',
     '601920',
     'Brazil 2026 - first-round outright tracker',
-    'Official VEXORA - Brazil election first-round outright winner - YES ~16% - October 4 close.',
+    'Official VALORE - Brazil election first-round outright winner - YES ~16% - October 4 close.',
     'Build a polling digest with first-round thresholds, fragmented candidate share, and runoff assumptions. Post a Home thread with chart or table. Submit source links, screenshot proof, and your final probability band.',
     700000000, 70, 'intel', 'open',
     'VxRow016BrazilFirstRoundTracker2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-10-04T00:00:00+00', 'current_ops', 700000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-10-04T00:00:00+00', 'current_ops', 700000000
   ),
   (
     'bc000017-0000-0000-0000-000000000017',
     '00000000-0000-0000-0000-0000000000bc',
     '601922',
     'Brazil 2026 - Lula runoff risk brief',
-    'Official VEXORA - Lula runoff qualification - YES ~90% - consensus check before October.',
+    'Official VALORE - Lula runoff qualification - YES ~90% - consensus check before October.',
     'Produce a downside-risk brief: health, eligibility, coalition shifts, and polling variance. Post one Home analysis with sources and a base/bear case split. Submit the post link and screenshots of cited data.',
     650000000, 65, 'intel', 'open',
     'VxRow017BrazilLulaRunoffRisk2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-10-04T00:00:00+00', 'current_ops', 650000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-10-04T00:00:00+00', 'current_ops', 650000000
   ),
   (
     'bc000018-0000-0000-0000-000000000018',
     '00000000-0000-0000-0000-0000000000bc',
     '593972',
     'Bernie x Talarico - endorsement radar',
-    'Official VEXORA - Bernie endorses James Talarico by Nov 2 - YES ~68% - source-watch market.',
+    'Official VALORE - Bernie endorses James Talarico by Nov 2 - YES ~68% - source-watch market.',
     'Monitor campaign calendars, joint appearances, FEC-style fundraising signals, and Bernie/Talarico channels. Post a Home update with a dated timeline and confidence score. Submit at least 4 source captures.',
     600000000, 60, 'intel', 'open',
     'VxRow018BernieTalaricoEndorsementRadar2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-11-03T00:00:00+00', 'current_ops', 600000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2026-11-03T00:00:00+00', 'current_ops', 600000000
   ),
   (
     'bc000019-0000-0000-0000-000000000019',
     '00000000-0000-0000-0000-0000000000bc',
     '2467359',
     'ETH 2250 - year-end path map',
-    'Official VEXORA - Ethereum reaches $2,250 by Dec 31, 2026 - YES ~42% - low-volume crypto book.',
+    'Official VALORE - Ethereum reaches $2,250 by Dec 31, 2026 - YES ~42% - low-volume crypto book.',
     'Post a 5-signal crypto path map: spot flows, ETF data, ETH/BTC trend, stablecoin liquidity, and macro calendar. Submit the Home thread plus chart screenshots. Keep it analytical; no coordinated trade instructions.',
     550000000, 55, 'intel', 'open',
     'VxRow019Eth2250PathMap2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2027-01-01T05:00:00+00', 'current_ops', 550000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2027-01-01T05:00:00+00', 'current_ops', 550000000
   ),
   (
     'bc000020-0000-0000-0000-000000000020',
     '00000000-0000-0000-0000-0000000000bc',
     '2467362',
     'ETH 1250 dip - bear-case dossier',
-    'Official VEXORA - Ethereum dips to $1,250 by Dec 31, 2026 - YES ~57% - contested downside book.',
+    'Official VALORE - Ethereum dips to $1,250 by Dec 31, 2026 - YES ~57% - contested downside book.',
     'Prepare a bear-case dossier with liquidation levels, macro shock windows, protocol/event risk, and invalidation points. Post the dossier on Home and submit the post link with 3 chart/source screenshots.',
     450000000, 45, 'intel', 'open',
     'VxRow020Eth1250BearCaseDossier2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2027-01-01T05:00:00+00', 'current_ops', 450000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2027-01-01T05:00:00+00', 'current_ops', 450000000
   ),
   (
     'bc000021-0000-0000-0000-000000000021',
     '00000000-0000-0000-0000-0000000000bc',
     '2467358',
     'ETH 2500 - upside catalyst board',
-    'Official VEXORA - Ethereum reaches $2,500 by Dec 31, 2026 - YES ~33% - thin upside target.',
+    'Official VALORE - Ethereum reaches $2,500 by Dec 31, 2026 - YES ~33% - thin upside target.',
     'Build an upside catalyst board with dated catalysts and a simple probability tree. Post it on Home with the market tagged. Submit the post link and source screenshots for every catalyst listed.',
     350000000, 35, 'intel', 'open',
     'VxRow021Eth2500UpsideCatalystBoard2026',
-    'BcRow7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2027-01-01T05:00:00+00', 'current_ops', 350000000
+    'Vlre7vKp2mN9xQ4wR8tY3uI6oP1sL5nM0bV7xZ2wQ9kH', true, now(), '2027-01-01T05:00:00+00', 'current_ops', 350000000
   )
 on conflict (id) do update set
   created_by = excluded.created_by,

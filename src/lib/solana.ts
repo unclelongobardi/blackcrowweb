@@ -68,8 +68,8 @@ export function getEscrowAddress(): string | null {
   return kp?.publicKey.toBase58() ?? null;
 }
 
-const MEMO_PREFIX = "VEXORA:bounty:";
-const LEGACY_MEMO_PREFIX = "BLACKCROW:bounty:";
+const MEMO_PREFIX = "VALORE:bounty:";
+const LEGACY_MEMO_PREFIX = "VALORE:bounty:";
 
 export function bountyMemo(bountyId: string): string {
   return `${MEMO_PREFIX}${bountyId}`;

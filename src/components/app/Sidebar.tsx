@@ -14,7 +14,7 @@ import {
   IconCabal,
   IconMail,
   IconBell,
-  IconRoost,
+  IconRank,
   IconUser,
   IconWallet,
   IconSolana,
@@ -26,7 +26,7 @@ const NAV = [
   { label: "Cabals", href: "/app/cabals", icon: IconCabal },
   { label: "Chat", href: "/app/messages", icon: IconMail },
   { label: "Notifications", href: "/app/notifications", icon: IconBell },
-  { label: "Leaderboard", href: "/app/leaderboard", icon: IconRoost },
+  { label: "Leaderboard", href: "/app/leaderboard", icon: IconRank },
   { label: "Profile", href: "/app/profile", icon: IconUser },
 ];
 

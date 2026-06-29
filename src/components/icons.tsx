@@ -365,8 +365,8 @@ export function IconDexscreener({ className }: { className?: string }) {
   );
 }
 
-/** Reputation / VEX score */
-export function IconFeather(props: SVGProps<SVGSVGElement>) {
+/** Reputation / VLRE score */
+export function IconVlre(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden {...props}>
       <path d="M6 7 L12 17 L18 7 H15.5 L12 13 L8.5 7 H6 Z" fill="currentColor" />
@@ -374,7 +374,6 @@ export function IconFeather(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export const IconVex = IconFeather;
 
 /** Cabal — linked operatives in angular frame */
 export function IconCabal(props: SVGProps<SVGSVGElement>) {
@@ -389,8 +388,8 @@ export function IconCabal(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Leaderboard roost */
-export function IconRoost(props: SVGProps<SVGSVGElement>) {
+/** Leaderboard rank */
+export function IconRank(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
       <path d="M6 20V10l6-4 6 4v10" />
@@ -400,7 +399,7 @@ export function IconRoost(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Anonymous operator — VEXORA angular frame */
+/** Anonymous operator — VALORE angular frame */
 export function IconOperator(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={1.5} {...props}>

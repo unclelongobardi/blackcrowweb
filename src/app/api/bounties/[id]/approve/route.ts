@@ -134,10 +134,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       profileId: participant.profile_id,
     });
 
-    const vex = helperInfluenceFromLamports(bounty.reward_sol_lamports);
+    const vlre = helperInfluenceFromLamports(bounty.reward_sol_lamports);
     await query("update profiles set influence = influence + $2 where id = $1", [
       participant.profile_id,
-      vex,
+      vlre,
     ]);
 
     await notify(

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Avatar from "@/components/app/Avatar";
 import { compactNumber } from "@/lib/format";
 import type { LeaderboardOperative } from "@/lib/leaderboard";
-import { IconFeather, IconRoost } from "./icons";
+import { IconRank, IconVlre } from "./icons";
 import { guestHref } from "@/lib/guestMode";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
@@ -14,7 +14,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const EXPLAIN = [
   {
     title: "Reputation score",
-    body: "VEX track verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
+    body: "VLRE track verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
   },
   {
     title: "Live rankings",
@@ -22,7 +22,7 @@ const EXPLAIN = [
   },
   {
     title: "Not your payout",
-    body: "Bounty rewards settle in SOL on-chain. VEX are status: they control visibility on Leaderboard and in search.",
+    body: "Bounty rewards settle in SOL on-chain. VLRE are status: they control visibility on Leaderboard and in search.",
   },
 ] as const;
 
@@ -57,7 +57,7 @@ function RankBadge({ rank }: { rank: number }) {
 
 function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank: 1 | 2 | 3 }) {
   const isFirst = rank === 1;
-  const verified = operative.is_verified || operative.codename === "vexora_official";
+  const verified = operative.is_verified || operative.codename === "valore_official";
 
   return (
     <motion.div
@@ -93,7 +93,7 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
         )}
         <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[13px] font-bold text-bull">
           {compactNumber(operative.influence)}
-          <IconFeather className="h-3.5 w-3.5" />
+          <IconVlre className="h-3.5 w-3.5" />
         </span>
       </Link>
     </motion.div>
@@ -101,7 +101,7 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
 }
 
 function OperativeRow({ operative, rank }: { operative: LeaderboardOperative; rank: number }) {
-  const verified = operative.is_verified || operative.codename === "vexora_official";
+  const verified = operative.is_verified || operative.codename === "valore_official";
 
   return (
     <motion.div
@@ -124,7 +124,7 @@ function OperativeRow({ operative, rank }: { operative: LeaderboardOperative; ra
         </div>
         <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[13px] font-bold text-bull">
           {compactNumber(operative.influence)}
-          <IconFeather className="h-3.5 w-3.5" />
+          <IconVlre className="h-3.5 w-3.5" />
         </span>
       </Link>
     </motion.div>
@@ -144,7 +144,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
             <p className="section-label">Leaderboard</p>
             <h2 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">LEADERBOARD</h2>
             <p className="mt-3 max-w-md text-[14px] leading-relaxed text-muted">
-              Leaderboard ranks operators by <strong className="font-semibold text-foreground">VEX</strong>—an
+              Leaderboard ranks operators by <strong className="font-semibold text-foreground">VLRE</strong>—an
               on-platform reputation score built from real activity. It is the public record of who is moving markets,
               funding bounties, and running cabals.
             </p>
@@ -169,7 +169,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
               href={guestHref("/app/leaderboard")}
               className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-xl border border-line px-5 py-2.5 text-[12px] font-bold text-muted transition-colors hover:border-bull/40 hover:text-foreground"
             >
-              <IconRoost className="h-4 w-4 text-bull" />
+              <IconRank className="h-4 w-4 text-bull" />
               VIEW FULL RANKINGS
             </Link>
           </div>
@@ -201,7 +201,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
                   href={guestHref("/app")}
                   className={`${uiBtnPrimary} mt-5 inline-flex min-h-11 items-center rounded-xl px-6 py-2.5 text-[12px] font-bold`}
                 >
-                  ENTER THE NEST
+                  ENTER VALORE
                 </Link>
               </div>
             ) : (

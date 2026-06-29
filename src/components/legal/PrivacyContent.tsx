@@ -27,7 +27,7 @@ export default function PrivacyContent() {
   return (
     <>
       <P>
-        This Privacy Policy explains how VEXORA (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses, and shares
+        This Privacy Policy explains how VALORE (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses, and shares
         information when you use our website, app at{" "}
         <code className="font-mono text-[12px] text-foreground/80">/app</code>, and related services. By using the
         platform, you agree to this policy.
@@ -35,7 +35,7 @@ export default function PrivacyContent() {
 
       <H2>1. Overview</H2>
       <P>
-        VEXORA is a wallet-first coordination platform. We minimize traditional identity collection: no email is
+        VALORE is a wallet-first coordination platform. We minimize traditional identity collection: no email is
         required to use Home. Most activity is pseudonymous (codename + avatar), but your Solana wallet address,
         on-chain transactions, and public posts are inherently visible in ways described below.
       </P>
@@ -48,7 +48,7 @@ export default function PrivacyContent() {
       </P>
       <P>
         <strong className="text-foreground">Profile</strong> — Codename, optional display name, bio, avatar seed,
-        VEX score (influence), verification flags, and onboarding timestamps stored in our database.
+        VLRE score (influence), verification flags, and onboarding timestamps stored in our database.
       </P>
       <P>
         <strong className="text-foreground">Content & social</strong> — Home posts, sentiment tags, bounty
@@ -74,7 +74,7 @@ export default function PrivacyContent() {
         items={[
           "Operate accounts, feeds, bounties, cabals, chat, and leaderboards.",
           "Process SOL bounty escrow flows you authorize.",
-          "Compute VEX score, rankings, exploit scores, and market caches.",
+          "Compute VLRE score, rankings, exploit scores, and market caches.",
           "Moderate abuse, enforce Terms, and protect platform integrity.",
           "Improve reliability, debug errors, and analyze aggregate usage.",
           `Communicate launch updates (including $${TOKEN_SYMBOL} token) via official channels or optional email list.`,
@@ -101,7 +101,7 @@ export default function PrivacyContent() {
       <H2>5. Third-party market data</H2>
       <P>
         Market listings and prices are sourced from public Polymarket APIs, cached in our database, and re-ranked for
-        operator insights. We do not send your wallet to Polymarket through VEXORA unless you independently visit their
+        operator insights. We do not send your wallet to Polymarket through VALORE unless you independently visit their
         site. See{" "}
         <Link href="/docs#markets" className="text-bull hover:underline">
           Markets documentation

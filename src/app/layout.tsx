@@ -22,19 +22,19 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://black-crow.xyz"),
-  title: "VEXORA NETWORK — Manipulate Markets. Earn Rewards. Start Your Cabal.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://valore.network"),
+  title: "VALORE — Manipulate Markets. Earn Rewards. Start Your Cabal.",
   description:
-    "VEXORA NETWORK is a social layer for prediction-market operators — coordinate plays, fund bounties in SOL, and rank on the leaderboard. Anonymous, on Solana.",
+    "VALORE is a social layer for prediction-market operators — coordinate plays, fund bounties in SOL, and rank on the leaderboard. Anonymous, on Solana.",
   openGraph: {
-    title: "VEXORA NETWORK",
+    title: "VALORE",
     description: "Manipulate markets. Earn rewards. Start your cabal.",
     type: "website",
-    images: [{ url: "/images/vexora-logo.png", width: 512, height: 512, alt: "VEXORA" }],
+    images: [{ url: "/images/valore-logo.png", width: 512, height: 512, alt: "VALORE" }],
   },
   twitter: {
     card: "summary",
-    images: ["/images/vexora-logo.png"],
+    images: ["/images/valore-logo.png"],
   },
 };
 

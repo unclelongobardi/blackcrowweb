@@ -1,4 +1,4 @@
--- Social upgrade: cabal visibility, DMs, verified profiles, blackcrow rename.
+-- Social upgrade: cabal visibility, DMs, verified profiles, valore rename.
 
 alter table profiles add column if not exists is_verified boolean not null default false;
 
@@ -38,18 +38,18 @@ create index if not exists idx_dm_messages_conv on dm_messages(conversation_id, 
 create index if not exists idx_dm_participants_profile on dm_participants(profile_id);
 create index if not exists idx_cabal_join_requests on cabal_join_requests(cabal_id, status);
 
--- BlackCrow official account
+-- VALORE official account
 update profiles set
-  codename = 'blackcrow_official',
-  display_name = 'BlackCrow',
-  avatar_seed = 'blackcrow_official',
+  codename = 'valore_official',
+  display_name = 'VALORE',
+  avatar_seed = 'valore_official',
   is_verified = true,
-  bio = 'Official bounties from the nest. Real Polymarket targets. SOL rewards in escrow.'
-where privy_did = 'seed:blackcrow_official';
+  bio = 'Official bounties from the network. Real Polymarket targets. SOL rewards in escrow.'
+where privy_did = 'seed:valore_official';
 
 update profiles set
-  codename = 'blackcrow_official',
-  display_name = 'BlackCrow',
-  avatar_seed = 'blackcrow_official',
+  codename = 'valore_official',
+  display_name = 'VALORE',
+  avatar_seed = 'valore_official',
   is_verified = true
-where codename = 'blackcrow' and privy_did like 'seed:%';
+where codename = 'valore' and privy_did like 'seed:%';
