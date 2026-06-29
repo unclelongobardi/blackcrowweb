@@ -13,8 +13,17 @@ if (!fs.existsSync(input)) {
 
 const HARD = 246;
 const SOFT = 228;
+const TRANSPARENT = { r: 0, g: 0, b: 0, alpha: 0 };
 
 const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+
+const strayWidth = Math.min(info.width, 120);
+const strayHeight = Math.min(info.height, 60);
+for (let y = 0; y < strayHeight; y++) {
+  for (let x = 0; x < strayWidth; x++) {
+    data[(y * info.width + x) * 4 + 3] = 0;
+  }
+}
 
 for (let i = 0; i < data.length; i += 4) {
   const r = data[i];
@@ -35,6 +44,7 @@ for (let i = 0; i < data.length; i += 4) {
 
 await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } })
   .trim({ threshold: 12 })
+  .extend({ top: 24, right: 24, bottom: 24, left: 24, background: TRANSPARENT })
   .png({ compressionLevel: 9, adaptiveFiltering: true })
   .toFile(output);
 

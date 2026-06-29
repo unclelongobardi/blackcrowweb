@@ -26,8 +26,6 @@ async function writeLogo(outPath, size) {
 // UI mark + favicon source — transparent only, no canvas padding
 await writeLogo(path.join(images, "valore-logo.png"), 512);
 await writeLogo(path.join(images, "valore-favicon-source.png"), 512);
-await writeLogo(path.join(images, "valore-hero-illustration.png"), 1024);
 
 console.log("wrote public/images/valore-logo.png");
 console.log("wrote public/images/valore-favicon-source.png");
-console.log("wrote public/images/valore-hero-illustration.png");
