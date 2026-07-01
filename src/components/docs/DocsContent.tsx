@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { TOKEN_SYMBOL } from "@/lib/links";
+import { TOKEN_CA, TOKEN_SYMBOL } from "@/lib/links";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
 const SECTIONS = [
@@ -13,11 +13,11 @@ const SECTIONS = [
   { id: "sol-pools", label: "SOL & pools" },
   { id: "home", label: "Home" },
   { id: "markets", label: "Markets" },
-  { id: "vlre", label: "VLRE" },
+  { id: "vlre", label: "VALORE score" },
   { id: "cabals", label: "Cabals" },
   { id: "social", label: "Social layer" },
   { id: "official", label: "Official account" },
-  { id: "token", label: "Token ($VLRE)" },
+  { id: "token", label: `Token ($${TOKEN_SYMBOL})` },
   { id: "glossary", label: "Glossary" },
 ] as const;
 
@@ -152,7 +152,7 @@ export default function DocsContent() {
           </p>
           <p>
             Payouts and rank are separate: SOL settles on-chain when a bounty is approved; the{" "}
-            <strong className="text-foreground">VLRE score</strong> tracks who is consistently sourcing intel and
+            <strong className="text-foreground">VALORE score</strong> tracks who is consistently sourcing intel and
             running plays—visible on Leaderboard and in search.
           </p>
         </DocSection>
@@ -286,7 +286,7 @@ export default function DocsContent() {
             <p>
               The creator signs a Solana transfer to the VALORE escrow wallet. Each deposit includes an on-chain memo
               tying the transaction to that bounty ID. After confirmation, the bounty goes live and the creator earns
-              VLRE score (see VLRE section). Deposits are disabled if the server escrow wallet is not configured.
+              VALORE score (see VALORE score section). Deposits are disabled if the server escrow wallet is not configured.
             </p>
           </Sub>
           <Sub title="Collaborative pool">
@@ -330,7 +330,7 @@ export default function DocsContent() {
                 "Choose audience: Everyone (public timeline) or a cabal you belong to.",
                 "Tag sentiment: Bullish, Bearish, or Neutral on the market you are pushing.",
                 "Attach an open bounty so the feed shows the job and the target in one embed.",
-                "Each post grants +2 VLRE score—consistent intel sources climb Leaderboard.",
+                "Each post grants +2 VALORE score—consistent intel sources climb Leaderboard.",
               ]}
             />
           </Sub>
@@ -374,27 +374,27 @@ export default function DocsContent() {
           </Sub>
         </DocSection>
 
-        <DocSection id="vlre" title="VLRE score & leaderboard">
+        <DocSection id="vlre" title="VALORE score & leaderboard">
           <p>
-            VLRE score (<code className="font-mono text-[12px]">influence</code>) measures who is consistently bringing
+            VALORE score (<code className="font-mono text-[12px]">influence</code>) measures who is consistently bringing
             intel and running plays—not who holds the most SOL or the most ${TOKEN_SYMBOL}. It does not decay. Cabals
-            rank by member count, not VLRE score.
+            rank by member count, not VALORE score.
           </p>
           <Sub title="How to earn">
             <List
               items={[
-                "Home post — +2 VLRE score each.",
+                "Home post — +2 VALORE score each.",
                 "Found a cabal — +20 one-time.",
-                "Bounty goes live — initial deposit SOL × 5 VLRE score (max 300).",
-                "Bounty approved (helper) — total pool SOL × 10 VLRE score (max 500).",
-                "Pool contributions — 0 VLRE score (SOL only).",
+                "Bounty goes live — initial deposit SOL × 5 VALORE score (max 300).",
+                "Bounty approved (helper) — total pool SOL × 10 VALORE score (max 500).",
+                "Pool contributions — 0 VALORE score (SOL only).",
               ]}
             />
           </Sub>
           <Sub title="Example">
             <p>
-              Post 1 SOL bounty → up to 5 VLRE score when live. Others add 0.5 SOL → pool is 1.5 SOL. Helper receives
-              1.5 SOL + up to 15 VLRE score on approval.
+              Post 1 SOL bounty → up to 5 VALORE score when live. Others add 0.5 SOL → pool is 1.5 SOL. Helper receives
+              1.5 SOL + up to 15 VALORE score on approval.
             </p>
           </Sub>
           <p>
@@ -439,7 +439,7 @@ export default function DocsContent() {
           <Sub title="Profiles">
             <p>
               Public profiles at <code className="font-mono text-[12px]">/app/u/[codename]</code> show track record:
-              VLRE score, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
+              VALORE score, posts, bounties run, and cabal membership—so you can vet who is worth following into a play.
               Verified accounts display a blue check on avatar and username.
             </p>
           </Sub>
@@ -480,13 +480,15 @@ export default function DocsContent() {
 
         <DocSection id="token" title={`Token ($${TOKEN_SYMBOL})`}>
           <p>
-            The project token on Solana is <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address
-            is not shown on the site right now. Always verify any address through official channels before trading.
+            The project token on Solana is <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The official contract
+            address (CA) is{" "}
+            <code className="break-all rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">{TOKEN_CA}</code>.
+            Always verify any address through official channels before trading.
           </p>
           <p>
-            You can override the mint via{" "}
+            The mint can be configured via{" "}
             <code className="rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">NEXT_PUBLIC_TOKEN_CA</code> in
-            environment variables when the CA should be displayed again.
+            environment variables for deployments that need an explicit public CA.
           </p>
         </DocSection>
 
@@ -496,12 +498,12 @@ export default function DocsContent() {
               ["Home", "Your public timeline—surface reads and align operators before a push."],
               ["Chat", "Direct messages for 1:1 coordination without posting publicly."],
               ["Thin book", "Low-liquidity market where coordinated size or narrative can move odds."],
-              ["VLRE score", "Off-chain reputation for intel and execution; ranks operators on Leaderboard."],
+              ["VALORE score", "Off-chain reputation for intel and execution; ranks operators on Leaderboard."],
               ["Pool", "Extra SOL stacked on a bounty so the helper payout scales with the play."],
               ["Op score", "Exploitability index—lower = thinner, more actionable for coordination."],
               ["Home", "Authenticated app shell (/app and children)."],
               ["Leaderboard", "Leaderboard—who is consistently moving markets with the crew."],
-              [`$${TOKEN_SYMBOL}`, "Solana SPL token for the VALORE project; CA currently hidden from the site."],
+              [`$${TOKEN_SYMBOL}`, `Solana SPL token for the VALORE project; official CA: ${TOKEN_CA}.`],
             ].map(([term, def]) => (
               <div key={term}>
                 <dt className="font-semibold text-foreground">{term}</dt>

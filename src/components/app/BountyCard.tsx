@@ -15,7 +15,7 @@ import { pct } from "@/lib/format";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import SolAmount from "./SolAmount";
 import Avatar from "./Avatar";
-import { IconSolana, IconVlre } from "@/components/icons";
+import { IconSolana, IconValore } from "@/components/icons";
 import type { Bounty, BountyParticipant, BountyProofMedia } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -457,7 +457,7 @@ export default function BountyCard({
               {!isOfficial && (
                 <>
                   +{helperVlre}
-                  <IconVlre className="h-3 w-3 text-bull" /> VLRE
+                  <IconValore className="h-3 w-3 text-bull" /> VALORE
                 </>
               )}
             </p>
@@ -615,7 +615,7 @@ export default function BountyCard({
         {bounty.status === "funding" && role === "creator" && (
           <>
             <p className="text-[11px] text-faint">
-              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} VLRE
+              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} VALORE score
             </p>
             {escrow?.address && (
               <p className="text-[10px] text-faint">

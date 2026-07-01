@@ -3,7 +3,7 @@
 Light-mode social coordination layer for prediction-market operators on Solana.
 
 - **Stack:** Next.js 16, Privy (Solana wallets), Neon Postgres
-- **Token:** `$VLRE` (CA hidden until public)
+- **Token:** `$VALORE` (CA: `DxbU8EpEjHm1AWyzPtAXw3FGoGGo4PbNeJcmtaFQpump`)
 - **Theme:** White + Polymarket blue (`#1652F0`)
 
 ## Develop

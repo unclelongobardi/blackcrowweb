@@ -1,5 +1,5 @@
 -- Refresh official VALORE bounties with active markets as of 2026-06-27.
--- Project name: VALORE. Token ticker: $VLRE.
+-- Project name: VALORE. Token ticker: $VALORE.
 
 alter table bounties add column if not exists collection text;
 

@@ -5,10 +5,10 @@ import PrivacyContent from "@/components/legal/PrivacyContent";
 export const metadata: Metadata = {
   title: "Privacy Policy — VALORE",
   description:
-    "Privacy Policy for VALORE: wallet data, profiles, Home feed, bounties, and $VLRE token interactions.",
+    "Privacy Policy for VALORE: wallet data, profiles, Home feed, bounties, and $VALORE token interactions.",
 };
 
-const UPDATED = "June 9, 2026";
+const UPDATED = "July 1, 2026";
 
 export default function PrivacyPage() {
   return (

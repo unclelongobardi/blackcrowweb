@@ -6,7 +6,7 @@ import { useApi } from "@/lib/useApi";
 import { compactNumber } from "@/lib/format";
 import { uiNav, uiRow } from "@/lib/uiClasses";
 import Avatar from "@/components/app/Avatar";
-import { IconChevronDown, IconVlre } from "@/components/icons";
+import { IconChevronDown, IconValore } from "@/components/icons";
 
 type Operative = {
   id: string;
@@ -29,27 +29,27 @@ type CabalRow = {
 const EARN_RULES = [
   {
     action: "Post on Home",
-    vlre: "+2",
+    valore: "+2",
     detail: "Every intel drop, thesis, or coordination post on the feed.",
   },
   {
     action: "Found a cabal",
-    vlre: "+20",
+    valore: "+20",
     detail: "One-time bonus when you create a public or private group.",
   },
   {
     action: "Post a bounty (goes live)",
-    vlre: "Variable",
-    detail: "When you deposit SOL and the bounty opens: initial SOL × 5 VLRE (max 300).",
+    valore: "Variable",
+    detail: "When you deposit SOL and the bounty opens: initial SOL × 5 VALORE score (max 300).",
   },
   {
     action: "Complete a bounty",
-    vlre: "Variable",
-    detail: "When the creator approves your proof: total pool SOL × 10 VLRE (max 500).",
+    valore: "Variable",
+    detail: "When the creator approves your proof: total pool SOL × 10 VALORE score (max 500).",
   },
   {
     action: "Add SOL to someone's pool",
-    vlre: "0",
+    valore: "0",
     detail: "Boost the reward pool with SOL. Only the original creator approves or rejects proof.",
   },
 ];
@@ -105,7 +105,7 @@ function AccordionSection({
         aria-expanded={open}
       >
         <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-bull/10 text-bull">
-          <IconVlre className="h-4 w-4" />
+          <IconValore className="h-4 w-4" />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-[14px] font-semibold text-foreground">{title}</span>
@@ -149,7 +149,7 @@ export default function LeaderboardPage() {
       <header className="mb-5 sm:mb-6">
         <h1 className="font-display text-2xl font-extrabold tracking-tight sm:text-[1.65rem]">Leaderboard</h1>
         <p className="mt-1 max-w-lg text-[13px] leading-relaxed text-muted sm:text-[14px]">
-          Live rankings — then expand below if you want the full VLRE breakdown.
+          Live rankings — then expand below if you want the full VALORE score breakdown.
         </p>
       </header>
 
@@ -191,7 +191,7 @@ export default function LeaderboardPage() {
                     </div>
                     <span className="flex shrink-0 items-center gap-1 font-mono text-[13px] font-bold text-bull">
                       {compactNumber(o.influence)}
-                      <IconVlre className="h-3.5 w-3.5" />
+                      <IconValore className="h-3.5 w-3.5" />
                     </span>
                   </Link>
                 ))
@@ -236,17 +236,17 @@ export default function LeaderboardPage() {
         <p className="section-label px-1">How it works</p>
 
         <AccordionSection
-          title="What are VLRE?"
+          title="What is VALORE score?"
           summary="Reputation points on the leaderboard — separate from SOL bounties."
         >
           <p className="text-[13px] leading-relaxed text-muted">
-            VLRE measure activity and influence on VALORE. Bounty rewards are real on-chain payouts;
-            VLRE are status, rank, and visibility on Leaderboard and in search.
+            VALORE score measures activity and influence on VALORE. Bounty rewards are real on-chain payouts;
+            the score is status, rank, and visibility on Leaderboard and in search.
           </p>
         </AccordionSection>
 
         <AccordionSection
-          title="How to earn VLRE"
+          title="How to earn VALORE score"
           summary="Home posts, cabals, bounties, and more."
         >
           <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3">
@@ -259,7 +259,7 @@ export default function LeaderboardPage() {
                   <p className="text-[12.5px] font-semibold leading-snug text-foreground sm:text-[13px]">
                     {rule.action}
                   </p>
-                  <span className="shrink-0 font-mono text-[12px] font-bold text-bull">{rule.vlre}</span>
+                  <span className="shrink-0 font-mono text-[12px] font-bold text-bull">{rule.valore}</span>
                 </div>
                 <p className="mt-1.5 text-[11.5px] leading-relaxed text-faint">{rule.detail}</p>
               </div>
@@ -274,19 +274,19 @@ export default function LeaderboardPage() {
           <ul className="space-y-3 text-[12.5px] leading-relaxed text-muted sm:text-[13px]">
             <li>
               <span className="font-semibold text-foreground">Your rank</span> — position vs everyone by total
-              VLRE. VLRE do not decay today.
+              VALORE score. VALORE score does not decay today.
             </li>
             <li>
               <span className="font-semibold text-foreground">Bounty pool</span> — anyone can add SOL while a bounty
-              is open or in progress. Helper payout and helper VLRE scale with the full pool. Only the creator
+              is open or in progress. Helper payout and helper VALORE score scale with the full pool. Only the creator
               approves or rejects proof.
             </li>
             <li>
-              <span className="font-semibold text-foreground">Example</span> — post 1 SOL → up to 5 VLRE when
-              live. Others add 0.5 SOL → pool is 1.5 SOL. Helper gets 1.5 SOL + up to 15 VLRE on approval.
+              <span className="font-semibold text-foreground">Example</span> — post 1 SOL → up to 5 VALORE score when
+              live. Others add 0.5 SOL → pool is 1.5 SOL. Helper gets 1.5 SOL + up to 15 VALORE score on approval.
             </li>
             <li>
-              <span className="font-semibold text-foreground">Cabals</span> — ranked by member count, not VLRE.
+              <span className="font-semibold text-foreground">Cabals</span> — ranked by member count, not VALORE score.
               A large cabal does not mean high individual scores.
             </li>
           </ul>

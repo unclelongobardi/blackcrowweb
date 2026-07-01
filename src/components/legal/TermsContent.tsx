@@ -1,4 +1,4 @@
-import { TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
+import { TOKEN_CA, TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -36,7 +36,7 @@ export default function TermsContent() {
       <P>
         VALORE is a Solana-native coordination layer for prediction-market operators. The platform provides market
         intelligence (including thin-book rankings sourced from third-party APIs), a public Home feed, SOL-funded
-        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VLRE score&rdquo;), and related
+        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VALORE score&rdquo;), and related
         social features. VALORE does not operate a centralized exchange, custody user funds beyond programmatic
         bounty escrow flows you explicitly authorize, or guarantee any market outcome.
       </P>
@@ -79,16 +79,17 @@ export default function TermsContent() {
         discussion). Leaders may approve private join requests.
       </P>
       <P>
-        <strong className="text-foreground">VLRE score</strong> — off-chain reputation points
-        (&ldquo;influence&rdquo;) earned through documented platform activity. VLRE score is not currency, does not
+        <strong className="text-foreground">VALORE score</strong> — off-chain reputation points
+        (&ldquo;influence&rdquo;) earned through documented platform activity. VALORE score is not currency, does not
         represent equity, and is separate from the ${TOKEN_SYMBOL} token.
       </P>
 
       <H2>5. ${TOKEN_SYMBOL} token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The contract address (&ldquo;CA&rdquo;) is hidden from the
-        site right now. Unless we publish a separate, signed token utility statement:
+        <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The official contract address (&ldquo;CA&rdquo;) is{" "}
+        <code className="break-all rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">{TOKEN_CA}</code>.
+        Unless we publish a separate, signed token utility statement:
       </P>
       <Ul
         items={[
@@ -119,7 +120,7 @@ export default function TermsContent() {
         ]}
       />
       <P>
-        We may suspend or terminate access, remove content, or withhold VLRE score for violations — without refund of
+        We may suspend or terminate access, remove content, or withhold VALORE score for violations — without refund of
         off-chain status and without liability for on-chain assets already transferred.
       </P>
 

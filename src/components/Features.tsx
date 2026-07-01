@@ -7,7 +7,7 @@ import {
   IconCabal,
   IconSolana,
   IconWarRoom,
-  IconVlre,
+  IconValore,
 } from "./icons";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -34,9 +34,9 @@ const FEATURES = [
     desc: "Home feed with bullish / bearish / neutral tags. Attach open bounties to posts and coordinate from one thread.",
   },
   {
-    icon: IconVlre,
+    icon: IconValore,
     title: "GET CLOUT",
-    desc: "Stack VLRE from intel, bounty work, and cabals you found. Climb Leaderboard—reputation separate from SOL payouts.",
+    desc: "Stack VALORE score from intel, bounty work, and cabals you found. Climb Leaderboard—reputation separate from SOL payouts.",
   },
 ] as const;
 
@@ -65,7 +65,7 @@ export default function Features() {
           </p>
           <p className="mx-auto mt-5 max-w-lg text-[14px] leading-relaxed text-faint">
             Connect a Solana wallet, open Home, and run coordinated plays on prediction
-            markets—bounties in SOL, cabals for alignment, VLRE for rank.
+            markets—bounties in SOL, cabals for alignment, VALORE score for rank.
           </p>
         </motion.div>
 

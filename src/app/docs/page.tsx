@@ -5,7 +5,7 @@ import DocsContent from "@/components/docs/DocsContent";
 export const metadata: Metadata = {
   title: "VALORE Docs — Platform guide",
   description:
-    "Detailed documentation for VALORE: bounties, Home feed, markets, VLRE, cabals, and Solana payouts.",
+    "Detailed documentation for VALORE: bounties, Home feed, markets, VALORE score, cabals, and Solana payouts.",
 };
 
 export default function DocsPage() {

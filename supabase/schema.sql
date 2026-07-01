@@ -13,7 +13,7 @@ create table if not exists profiles (
   display_name  text,
   bio           text,
   avatar_seed   text,
-  influence     integer not null default 0,   -- reputation (VLRE score)
+  influence     integer not null default 0,   -- reputation (VALORE score)
   is_onboarded  boolean not null default false,
   created_at    timestamptz not null default now()
 );

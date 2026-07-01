@@ -2,7 +2,8 @@
 
 export const BRAND_NAME = "VALORE";
 export const BRAND_FULL = "VALORE";
-export const TOKEN_SYMBOL = "VLRE";
+export const TOKEN_SYMBOL = "VALORE";
+export const OFFICIAL_TOKEN_CA = "DxbU8EpEjHm1AWyzPtAXw3FGoGGo4PbNeJcmtaFQpump";
 export const VALORE_LOGO_SRC = "/images/valore-logo.png";
 export const VALORE_HERO_ILLUSTRATION_SRC = "/images/valore-hero-illustration.png";
 
@@ -10,10 +11,10 @@ export const VALORE_HERO_ILLUSTRATION_SRC = "/images/valore-hero-illustration.pn
 export const TWITTER_HANDLE = "VALOREnet";
 export const TWITTER_URL = `https://x.com/${TWITTER_HANDLE}`;
 
-/** $VLRE SPL mint — set via NEXT_PUBLIC_TOKEN_CA when live. */
-export const VLRE_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || "";
+/** $VALORE SPL mint. NEXT_PUBLIC_TOKEN_CA can override per deployment. */
+export const VALORE_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || OFFICIAL_TOKEN_CA;
 
-export const TOKEN_CA = VLRE_TOKEN_MINT;
+export const TOKEN_CA = VALORE_TOKEN_MINT;
 
 /** Dexscreener chart — defaults to Solana pair when CA is configured. */
 export const DEXSCREENER_URL =

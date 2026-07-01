@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Avatar from "@/components/app/Avatar";
 import { compactNumber } from "@/lib/format";
 import type { LeaderboardOperative } from "@/lib/leaderboard";
-import { IconRank, IconVlre } from "./icons";
+import { IconRank, IconValore } from "./icons";
 import { guestHref } from "@/lib/guestMode";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 
@@ -14,7 +14,7 @@ const ease = [0.16, 1, 0.3, 1] as const;
 const EXPLAIN = [
   {
     title: "Reputation score",
-    body: "VLRE track verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
+    body: "VALORE score tracks verified activity on the network: Home posts, bounties funded and completed, cabals founded.",
   },
   {
     title: "Live rankings",
@@ -22,7 +22,7 @@ const EXPLAIN = [
   },
   {
     title: "Not your payout",
-    body: "Bounty rewards settle in SOL on-chain. VLRE are status: they control visibility on Leaderboard and in search.",
+    body: "Bounty rewards settle in SOL on-chain. VALORE score is status: it controls visibility on Leaderboard and in search.",
   },
 ] as const;
 
@@ -93,7 +93,7 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
         )}
         <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[13px] font-bold text-bull">
           {compactNumber(operative.influence)}
-          <IconVlre className="h-3.5 w-3.5" />
+          <IconValore className="h-3.5 w-3.5" />
         </span>
       </Link>
     </motion.div>
@@ -124,7 +124,7 @@ function OperativeRow({ operative, rank }: { operative: LeaderboardOperative; ra
         </div>
         <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[13px] font-bold text-bull">
           {compactNumber(operative.influence)}
-          <IconVlre className="h-3.5 w-3.5" />
+          <IconValore className="h-3.5 w-3.5" />
         </span>
       </Link>
     </motion.div>
@@ -144,7 +144,7 @@ export default function LandingLeaderboard({ operatives }: { operatives: Leaderb
             <p className="section-label">Leaderboard</p>
             <h2 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">LEADERBOARD</h2>
             <p className="mt-3 max-w-md text-[14px] leading-relaxed text-muted">
-              Leaderboard ranks operators by <strong className="font-semibold text-foreground">VLRE</strong>—an
+              Leaderboard ranks operators by <strong className="font-semibold text-foreground">VALORE score</strong>—an
               on-platform reputation score built from real activity. It is the public record of who is moving markets,
               funding bounties, and running cabals.
             </p>

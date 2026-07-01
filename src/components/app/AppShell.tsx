@@ -138,7 +138,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             LOG IN
           </button>
         </div>
-        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VLRE.</p>
+        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VALORE score.</p>
         <div className="mt-6 w-full max-w-md">
           <TokenCaChip variant="panel" />
         </div>
