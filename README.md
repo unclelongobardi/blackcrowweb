@@ -3,7 +3,8 @@
 Light-mode social coordination layer for prediction-market operators on Solana.
 
 - **Stack:** Next.js 16, Privy (Solana wallets), Neon Postgres
-- **Token:** `$GLORIA` (CA: `DxbU8EpEjHm1AWyzPtAXw3FGoGGo4PbNeJcmtaFQpump`)
+- **Token:** `$GLORIA` (CA: `J2P4hNYcppjJ8B6SaJdCFzCL5BnfGUgBKPStGJZnpump`)
+- **Official X:** [@GLORIAFinance](https://x.com/GLORIAFinance)
 - **Theme:** White + Polymarket blue (`#1652F0`)
 
 ## Develop

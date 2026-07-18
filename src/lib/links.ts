@@ -3,15 +3,15 @@
 export const BRAND_NAME = "GLORIA";
 export const BRAND_FULL = "GLORIA";
 export const TOKEN_SYMBOL = "GLORIA";
-export const OFFICIAL_TOKEN_CA = "DxbU8EpEjHm1AWyzPtAXw3FGoGGo4PbNeJcmtaFQpump";
+export const OFFICIAL_TOKEN_CA = "J2P4hNYcppjJ8B6SaJdCFzCL5BnfGUgBKPStGJZnpump";
 export const GLORIA_LOGO_SRC = "/images/gloria-logo.png";
 export const GLORIA_HERO_ILLUSTRATION_SRC = "/images/gloria-hero-illustration.png";
 export const OFFICIAL_SITE_URL = "https://gloria.finance";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || OFFICIAL_SITE_URL;
 
 /** Official X / Twitter profile */
-export const TWITTER_HANDLE = process.env.NEXT_PUBLIC_TWITTER_HANDLE?.trim() || "GLORIA";
-export const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || "";
+export const TWITTER_HANDLE = process.env.NEXT_PUBLIC_TWITTER_HANDLE?.trim() || "GLORIAFinance";
+export const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL?.trim() || "https://x.com/GLORIAFinance";
 
 /** $GLORIA SPL mint. NEXT_PUBLIC_TOKEN_CA can override per deployment. */
 export const GLORIA_TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_CA?.trim() || OFFICIAL_TOKEN_CA;
