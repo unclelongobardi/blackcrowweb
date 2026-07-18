@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
 import { useGuestGuard } from "@/hooks/useGuestGuard";
 import Avatar from "@/components/app/Avatar";
-import AiBadge from "@/components/app/AiBadge";
 import PostCard from "@/components/app/PostCard";
 import type { Post, Profile } from "@/lib/types";
 import { uiBtnPrimary } from "@/lib/uiClasses";
@@ -95,7 +94,6 @@ export default function PublicProfilePage() {
                   <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                 </svg>
               )}
-              {profile.is_ai && <AiBadge className="text-[10px]" />}
             </div>
             <p className="text-[13px] text-faint">@{profile.codename}</p>
             {profile.bio && <p className="mt-2 text-[13px] leading-relaxed text-muted">{profile.bio}</p>}

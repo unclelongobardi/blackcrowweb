@@ -1,18 +1,15 @@
 import Link from "next/link";
-import AiBadge from "./AiBadge";
 
 export default function UserName({
   codename,
   displayName,
   verified,
-  aiManaged,
   className = "",
   link = true,
 }: {
   codename: string;
   displayName?: string | null;
   verified?: boolean;
-  aiManaged?: boolean;
   className?: string;
   link?: boolean;
 }) {
@@ -24,7 +21,6 @@ export default function UserName({
           <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
         </svg>
       )}
-      {aiManaged && <AiBadge />}
       <span className="font-normal text-faint">@{codename}</span>
     </span>
   );

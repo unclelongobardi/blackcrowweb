@@ -6,7 +6,6 @@ import { useApi } from "@/lib/useApi";
 import { compactNumber } from "@/lib/format";
 import { uiNav, uiRow } from "@/lib/uiClasses";
 import Avatar from "@/components/app/Avatar";
-import AiBadge from "@/components/app/AiBadge";
 import { IconChevronDown, IconGloria } from "@/components/icons";
 
 type Operative = {
@@ -188,7 +187,6 @@ export default function LeaderboardPage() {
                     <div className="min-w-0 flex-1">
                       <p className="flex items-center gap-1.5 truncate text-[13px] font-semibold text-foreground">
                         {o.codename}
-                        {o.is_ai && <AiBadge />}
                       </p>
                       {o.display_name && (
                         <p className="truncate text-[11px] text-faint">{o.display_name}</p>

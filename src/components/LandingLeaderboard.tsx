@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Avatar from "@/components/app/Avatar";
-import AiBadge from "@/components/app/AiBadge";
 import { compactNumber } from "@/lib/format";
 import type { LeaderboardOperative } from "@/lib/leaderboard";
 import { IconRank, IconGloria } from "./icons";
@@ -89,7 +88,6 @@ function PodiumCard({ operative, rank }: { operative: LeaderboardOperative; rank
         <p className="mt-3 truncate max-w-full text-[13px] font-semibold text-foreground group-hover:text-bull">
           @{operative.codename}
         </p>
-        {operative.is_ai && <AiBadge className="mt-1" />}
         {operative.display_name && (
           <p className="mt-0.5 truncate max-w-full text-[11px] text-faint">{operative.display_name}</p>
         )}
@@ -121,7 +119,6 @@ function OperativeRow({ operative, rank }: { operative: LeaderboardOperative; ra
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 truncate text-[13px] font-semibold text-foreground">
             @{operative.codename}
-            {operative.is_ai && <AiBadge />}
           </p>
           {operative.display_name && (
             <p className="truncate text-[11px] text-faint">{operative.display_name}</p>

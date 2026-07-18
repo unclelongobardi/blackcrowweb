@@ -232,7 +232,6 @@ export default function PostCard({
                 codename={post.author.codename}
                 displayName={post.author.display_name}
                 verified={post.author.is_verified || post.author.codename === "gloria_official"}
-                aiManaged={post.author.is_ai}
                 className="truncate text-[14px]"
               />
             ) : (
@@ -448,7 +447,6 @@ export default function PostCard({
                       codename={r.author?.codename ?? "anon"}
                       displayName={r.author?.display_name}
                       verified={r.author?.is_verified}
-                      aiManaged={r.author?.is_ai}
                       className="text-[12px]"
                       link={Boolean(r.author?.codename)}
                     />
