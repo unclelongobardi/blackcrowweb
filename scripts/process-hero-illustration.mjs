@@ -11,11 +11,11 @@ if (!fs.existsSync(input)) {
   process.exit(0);
 }
 
-// The supplied hero is a finished 3:2 composition. Preserve its canvas and
+// The supplied hero is a finished square composition. Preserve its canvas and
 // artwork exactly; prebuild only normalizes metadata and optimizes the PNG.
 await sharp(input)
   .rotate()
-  .resize(1536, 1024, { fit: "inside", withoutEnlargement: true })
+  .resize(1280, 1280, { fit: "inside", withoutEnlargement: true })
   .png({ compressionLevel: 9, adaptiveFiltering: true })
   .toFile(output);
 

@@ -39,10 +39,11 @@ function HeroIllustration() {
       >
         <Image
           src={GLORIA_HERO_ILLUSTRATION_SRC}
-          alt="Prediction markets network — YES / NO decisions, charts, and operators"
-          width={1536}
-          height={1024}
-          priority
+          alt="GLORIA connected to Polymarket, Kalshi, Manifold Markets, Metaculus, PredictIt, and Augur"
+          width={1254}
+          height={1254}
+          sizes="(max-width: 1023px) min(92vw, 560px), min(44vw, 620px)"
+          preload
           className="mx-auto h-auto w-full max-w-[min(92vw,560px)] object-contain drop-shadow-[0_28px_56px_rgba(22,82,240,0.12)] lg:max-w-[min(44vw,620px)]"
         />
       </motion.div>
