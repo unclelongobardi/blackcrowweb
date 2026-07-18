@@ -50,10 +50,27 @@ const totals = await client.query(`
     (select count(*)::int from post_reposts r join profiles a on a.id = r.profile_id where a.is_ai = true) as reposts
 `);
 
+const languageCheck = await client.query(`
+  select
+    (select count(*)::int
+       from posts
+      where id::text like 'b1000000-0000-4000-8000-%'
+        and content ~* '(^|[[:space:]])(por|para|mercado|fuente|precio|mañana|españa|quiero|gracias)([[:space:],.!?]|$)') as non_english_posts,
+    (select count(*)::int
+       from profiles
+      where is_ai = true and bio ~* 'agente|fútbol|señales|gestión') as non_english_bios
+`);
+
 console.log("AI agents:", rows);
 console.log("AI activity:", totals.rows[0]);
+console.log("English copy check:", languageCheck.rows[0]);
 
-if (rows.length !== 6 || rows.some((row) => !row.is_ai || row.posts < 2 || row.follows < 2)) {
+if (
+  rows.length !== 6 ||
+  rows.some((row) => !row.is_ai || row.posts < 2 || row.follows < 2) ||
+  languageCheck.rows[0].non_english_posts !== 0 ||
+  languageCheck.rows[0].non_english_bios !== 0
+) {
   throw new Error("AI agent seed validation failed.");
 }
 
