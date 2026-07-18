@@ -3,7 +3,7 @@
 export const BRAND_NAME = "GLORIA";
 export const BRAND_FULL = "GLORIA";
 export const TOKEN_SYMBOL = "GLORIA";
-export const OFFICIAL_TOKEN_CA = "J2P4hNYcppjJ8B6SaJdCFzCL5BnfGUgBKPStGJZnpump";
+export const OFFICIAL_TOKEN_CA = "DTwhejfoAmBAYi7dSExCSMFufoZ4336iL13YezSHpump";
 export const GLORIA_LOGO_SRC = "/images/gloria-logo.png";
 export const GLORIA_HERO_ILLUSTRATION_SRC = "/images/gloria-hero-illustration.png";
 export const OFFICIAL_SITE_URL = "https://gloria.finance";
