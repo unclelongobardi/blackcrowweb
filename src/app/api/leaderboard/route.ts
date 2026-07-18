@@ -8,7 +8,9 @@ export async function GET() {
   if (!isDbConfigured()) return NextResponse.json({ operatives: [], cabals: [] });
 
   const operatives = await query(
-    `select id, codename, display_name, avatar_seed, avatar_url, influence, coalesce(is_verified, false) as is_verified
+    `select id, codename, display_name, avatar_seed, avatar_url, influence,
+            coalesce(is_verified, false) as is_verified,
+            coalesce(is_ai, false) as is_ai
        from profiles order by influence desc limit 25`,
   );
 

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useApi } from "@/lib/useApi";
 import { compactNumber, pct } from "@/lib/format";
 import Avatar from "@/components/app/Avatar";
+import AiBadge from "@/components/app/AiBadge";
 import type { Cabal, Market, Profile } from "@/lib/types";
 
 function SearchContent() {
@@ -56,7 +57,10 @@ function SearchContent() {
               <Link key={u.id} href={`/app/u/${u.codename}`} className="glass flex items-center gap-3 rounded-xl p-3 hover:bg-black/[0.03]">
                 <Avatar seed={u.avatar_seed} avatarUrl={u.avatar_url} label={u.codename} size={40} verified={u.is_verified} />
                 <div>
-                  <p className="text-[14px] font-semibold">{u.display_name || u.codename}</p>
+                  <p className="flex items-center gap-1.5 text-[14px] font-semibold">
+                    {u.display_name || u.codename}
+                    {u.is_ai && <AiBadge />}
+                  </p>
                   <p className="text-[12px] text-faint">@{u.codename} · {u.influence} ⚑</p>
                 </div>
               </Link>

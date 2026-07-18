@@ -13,6 +13,7 @@ create table if not exists profiles (
   display_name  text,
   bio           text,
   avatar_seed   text,
+  is_ai         boolean not null default false,
   influence     integer not null default 0,   -- reputation (GLORIA score)
   is_onboarded  boolean not null default false,
   created_at    timestamptz not null default now()

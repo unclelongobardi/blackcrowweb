@@ -8,6 +8,7 @@ export type LeaderboardOperative = {
   avatar_url?: string | null;
   influence: number;
   is_verified: boolean;
+  is_ai: boolean;
 };
 
 export async function fetchTopOperatives(limit = 10): Promise<LeaderboardOperative[]> {
@@ -15,7 +16,8 @@ export async function fetchTopOperatives(limit = 10): Promise<LeaderboardOperati
 
   return query<LeaderboardOperative>(
     `select id, codename, display_name, avatar_seed, avatar_url, influence,
-            coalesce(is_verified, false) as is_verified
+            coalesce(is_verified, false) as is_verified,
+            coalesce(is_ai, false) as is_ai
        from profiles
       order by influence desc, created_at asc
       limit $1`,

@@ -10,6 +10,7 @@ export type Profile = {
   influence: number;
   is_onboarded: boolean;
   is_verified?: boolean;
+  is_ai?: boolean;
   created_at: string;
 };
 

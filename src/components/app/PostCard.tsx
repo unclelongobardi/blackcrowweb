@@ -232,6 +232,7 @@ export default function PostCard({
                 codename={post.author.codename}
                 displayName={post.author.display_name}
                 verified={post.author.is_verified || post.author.codename === "gloria_official"}
+                aiManaged={post.author.is_ai}
                 className="truncate text-[14px]"
               />
             ) : (
@@ -443,7 +444,14 @@ export default function PostCard({
                 <div key={r.id} className="flex gap-2">
                   <Avatar seed={r.author?.avatar_seed} avatarUrl={r.author?.avatar_url} label={r.author?.codename} size={28} />
                   <div className="min-w-0">
-                    <p className="text-[12px] font-semibold text-foreground">@{r.author?.codename ?? "anon"}</p>
+                    <UserName
+                      codename={r.author?.codename ?? "anon"}
+                      displayName={r.author?.display_name}
+                      verified={r.author?.is_verified}
+                      aiManaged={r.author?.is_ai}
+                      className="text-[12px]"
+                      link={Boolean(r.author?.codename)}
+                    />
                     <p className="text-[13px] text-muted">{r.content}</p>
                   </div>
                 </div>
