@@ -68,15 +68,18 @@ export function getEscrowAddress(): string | null {
   return kp?.publicKey.toBase58() ?? null;
 }
 
-const MEMO_PREFIX = "VALORE:bounty:";
-const LEGACY_MEMO_PREFIX = "VALORE:bounty:";
+const MEMO_PREFIX = "GLORIA:bounty:";
+const LEGACY_MEMO_PREFIXES = ["VALORE:bounty:"] as const;
 
 export function bountyMemo(bountyId: string): string {
   return `${MEMO_PREFIX}${bountyId}`;
 }
 
 function isExpectedBountyMemo(memo: string, bountyId: string): boolean {
-  return memo === bountyMemo(bountyId) || memo === `${LEGACY_MEMO_PREFIX}${bountyId}`;
+  return (
+    memo === bountyMemo(bountyId) ||
+    LEGACY_MEMO_PREFIXES.some((prefix) => memo === `${prefix}${bountyId}`)
+  );
 }
 
 export type EscrowStatus = {
@@ -227,9 +230,11 @@ export async function verifyDepositTx(
     }
 
     const memo = bountyMemo(bountyId);
-    const legacyMemo = `${LEGACY_MEMO_PREFIX}${bountyId}`;
+    const legacyMemos = LEGACY_MEMO_PREFIXES.map((prefix) => `${prefix}${bountyId}`);
     const logs = tx.meta?.logMessages ?? [];
-    let memoOk = logs.some((l) => l.includes(memo) || l.includes(legacyMemo));
+    let memoOk = logs.some(
+      (line) => line.includes(memo) || legacyMemos.some((legacyMemo) => line.includes(legacyMemo)),
+    );
     if (!memoOk) {
       for (const ix of tx.transaction.message.instructions) {
         if (!("programId" in ix) || !ix.programId.equals(MEMO_PROGRAM_ID)) continue;

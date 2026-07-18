@@ -68,7 +68,7 @@ export default function OpenBountiesSidebar({
             {open.map((b) => {
               const creator = b.creator;
               const verified =
-                creator?.is_verified || creator?.codename === "valore_official";
+                creator?.is_verified || creator?.codename === "gloria_official";
 
               return (
                 <li key={b.id}>
@@ -79,13 +79,13 @@ export default function OpenBountiesSidebar({
                     {creator ? (
                       <div className="mb-2 flex items-center gap-2">
                         <Avatar
-                          seed={b.is_official ? "valore_official" : creator.avatar_seed}
-                          label={b.is_official ? "valore_official" : creator.codename}
+                          seed={b.is_official ? "gloria_official" : creator.avatar_seed}
+                          label={b.is_official ? "gloria_official" : creator.codename}
                           size={22}
                           verified={verified}
                         />
                         <span className="truncate text-[11px] font-semibold text-foreground">
-                          {b.is_official ? "valore_official" : creator.display_name || creator.codename}
+                          {b.is_official ? "gloria_official" : creator.display_name || creator.codename}
                         </span>
                       </div>
                     ) : (

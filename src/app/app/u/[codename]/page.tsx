@@ -79,7 +79,7 @@ export default function PublicProfilePage() {
   }
 
   const { profile, stats, posts, is_following, is_self } = data;
-  const verified = profile.is_verified || profile.codename === "valore_official";
+  const verified = profile.is_verified || profile.codename === "gloria_official";
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-6">

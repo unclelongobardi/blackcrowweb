@@ -88,15 +88,17 @@ export default function Navbar() {
               <TokenCaChip />
             </div>
 
-            <a
-              href={TWITTER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X (Twitter)"
-              className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-black/20 hover:text-foreground sm:flex"
-            >
-              <IconTwitterX className="h-4 w-4" />
-            </a>
+            {TWITTER_URL && (
+              <a
+                href={TWITTER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X (Twitter)"
+                className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:border-black/20 hover:text-foreground sm:flex"
+              >
+                <IconTwitterX className="h-4 w-4" />
+              </a>
+            )}
 
             <AuthControls />
 
@@ -153,14 +155,16 @@ export default function Navbar() {
                   DOCS
                 </Link>
                 <TokenCaChip variant="inline" className="mt-2" />
-                <a
-                  href={TWITTER_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-black/[0.04] hover:text-foreground"
-                >
-                  <IconTwitterX className="h-4 w-4" /> X / Twitter
-                </a>
+                {TWITTER_URL && (
+                  <a
+                    href={TWITTER_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] text-muted hover:bg-black/[0.04] hover:text-foreground"
+                  >
+                    <IconTwitterX className="h-4 w-4" /> X / Twitter
+                  </a>
+                )}
               </div>
             </motion.div>
           )}

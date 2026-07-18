@@ -3,9 +3,9 @@ import LegalLayout from "@/components/legal/LegalLayout";
 import PrivacyContent from "@/components/legal/PrivacyContent";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — VALORE",
+  title: "Privacy Policy — GLORIA",
   description:
-    "Privacy Policy for VALORE: wallet data, profiles, Home feed, bounties, and $VALORE token interactions.",
+    "Privacy Policy for GLORIA: wallet data, profiles, Home feed, bounties, and $GLORIA token interactions.",
 };
 
 const UPDATED = "July 1, 2026";

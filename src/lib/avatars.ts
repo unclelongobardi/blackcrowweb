@@ -47,9 +47,9 @@ type VipAvatarNo =
 type ElectionAvatarNo = "01" | "02" | "03" | "04" | "05" | "06" | "07" | "08" | "09" | "10";
 
 export type AvatarId =
-  | `vlre-normal-${NormalAvatarNo}`
-  | `vlre-vip-${VipAvatarNo}`
-  | `vlre-election-${ElectionAvatarNo}`;
+  | `gloria-normal-${NormalAvatarNo}`
+  | `gloria-vip-${VipAvatarNo}`
+  | `gloria-election-${ElectionAvatarNo}`;
 
 export type AvatarTier = "normal" | "vip";
 export type AvatarCollection = "core" | "election";
@@ -62,7 +62,7 @@ export type ProfileAvatar = {
   collection: AvatarCollection;
 };
 
-export const DEFAULT_AVATAR_ID: AvatarId = "vlre-normal-01";
+export const DEFAULT_AVATAR_ID: AvatarId = "gloria-normal-01";
 
 const NORMAL_LABELS = [
   "Signal Bomber",
@@ -129,7 +129,7 @@ function makeAvatars(
 ): ProfileAvatar[] {
   return labels.map((label, index) => {
     const no = String(index + 1).padStart(2, "0");
-    const id = `vlre-${kind}-${no}` as AvatarId;
+    const id = `gloria-${kind}-${no}` as AvatarId;
     return {
       id,
       label,
@@ -150,18 +150,18 @@ const AVATAR_BY_ID = new Map(PROFILE_AVATARS.map((avatar) => [avatar.id, avatar]
 const AVATAR_ID_SET = new Set<string>(PROFILE_AVATARS.map((avatar) => avatar.id));
 
 const LEGACY_AVATAR_MAP: Record<string, AvatarId> = {
-  av1: "vlre-normal-01",
-  av2: "vlre-normal-02",
-  av3: "vlre-normal-03",
-  av4: "vlre-normal-04",
-  av5: "vlre-normal-05",
-  av6: "vlre-normal-06",
-  av7: "vlre-normal-07",
-  av8: "vlre-normal-08",
-  av9: "vlre-normal-09",
-  av10: "vlre-normal-10",
-  av11: "vlre-normal-11",
-  av12: "vlre-normal-12",
+  av1: "gloria-normal-01",
+  av2: "gloria-normal-02",
+  av3: "gloria-normal-03",
+  av4: "gloria-normal-04",
+  av5: "gloria-normal-05",
+  av6: "gloria-normal-06",
+  av7: "gloria-normal-07",
+  av8: "gloria-normal-08",
+  av9: "gloria-normal-09",
+  av10: "gloria-normal-10",
+  av11: "gloria-normal-11",
+  av12: "gloria-normal-12",
 };
 
 export function isAvatarId(value: string | null | undefined): value is AvatarId {
@@ -181,8 +181,12 @@ function hash(seed: string): number {
 /** Map legacy/random seeds to a stable picker avatar. */
 export function resolveAvatarId(seed: string | null | undefined): AvatarId {
   if (isAvatarId(seed)) return seed;
+  if (seed?.startsWith("vlre-")) {
+    const gloriaId = seed.replace(/^vlre-/, "gloria-");
+    if (isAvatarId(gloriaId)) return gloriaId;
+  }
   if (seed && LEGACY_AVATAR_MAP[seed]) return LEGACY_AVATAR_MAP[seed];
-  const s = seed || "valore";
+  const s = seed || "gloria";
   return PROFILE_AVATARS[hash(s) % PROFILE_AVATARS.length]!.id;
 }
 
@@ -191,8 +195,13 @@ export function avatarImageUrl(
   avatarUrl?: string | null,
 ): string {
   if (avatarUrl) return avatarUrl;
-  if (seed === "valore_official" || seed === "valore") {
-    return "/images/valore-official.png";
+  if (
+    seed === "gloria_official" ||
+    seed === "gloria" ||
+    seed === "valore_official" ||
+    seed === "valore"
+  ) {
+    return "/images/gloria-official.png";
   }
   return avatarSrcById(resolveAvatarId(seed));
 }

@@ -15,7 +15,7 @@ import { pct } from "@/lib/format";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import SolAmount from "./SolAmount";
 import Avatar from "./Avatar";
-import { IconSolana, IconValore } from "@/components/icons";
+import { IconSolana, IconGloria } from "@/components/icons";
 import type { Bounty, BountyParticipant, BountyProofMedia } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -169,7 +169,7 @@ export default function BountyCard({
   const canApprove = role === "creator" && pendingSubmissions.length > 0 && bounty.status !== "paid";
   const poolOpen = canContributeToPool(bounty.status, bounty.is_official, bounty.expires_at);
   const canJoin = canAcceptBounty(bounty) && !myParticipant && role !== "creator";
-  const helperVlre = helperInfluenceFromLamports(bounty.reward_sol_lamports);
+  const helperGloria = helperInfluenceFromLamports(bounty.reward_sol_lamports);
   const othersSol =
     bounty.contributions_lamports && bounty.contributions_lamports > 0
       ? lamportsToSol(bounty.contributions_lamports)
@@ -216,7 +216,7 @@ export default function BountyCard({
     }
     setFundStep("confirming");
     const res = await run(() =>
-      api<{ creator_vlre?: number; bounty?: Bounty }>(`/api/bounties/${bounty.id}/fund`, {
+      api<{ creator_gloria?: number; bounty?: Bounty }>(`/api/bounties/${bounty.id}/fund`, {
         method: "POST",
         body: JSON.stringify({ tx_signature: sig }),
       }),
@@ -228,7 +228,7 @@ export default function BountyCard({
         ...bounty,
         status: "open",
         deposit_tx: sig,
-        reward_influence: helperVlre,
+        reward_influence: helperGloria,
       });
     }
   }
@@ -373,9 +373,9 @@ export default function BountyCard({
                 avatarUrl={bounty.creator.avatar_url}
                 label={bounty.creator.codename}
                 size={20}
-                verified={bounty.creator.is_verified || bounty.creator.codename === "valore_official"}
+                verified={bounty.creator.is_verified || bounty.creator.codename === "gloria_official"}
               />
-              <span className="truncate text-[10px] font-semibold text-foreground">valore_official</span>
+              <span className="truncate text-[10px] font-semibold text-foreground">gloria_official</span>
             </Link>
           )}
           {compact && (
@@ -456,8 +456,8 @@ export default function BountyCard({
             <p className="flex items-center justify-end gap-1 text-[10px] text-faint">
               {!isOfficial && (
                 <>
-                  +{helperVlre}
-                  <IconValore className="h-3 w-3 text-bull" /> VALORE
+                  +{helperGloria}
+                  <IconGloria className="h-3 w-3 text-bull" /> GLORIA
                 </>
               )}
             </p>
@@ -583,7 +583,7 @@ export default function BountyCard({
               avatarUrl={bounty.creator.avatar_url}
               label={bounty.creator.codename}
               size={18}
-              verified={bounty.creator.is_verified || bounty.creator.codename === "valore_official"}
+              verified={bounty.creator.is_verified || bounty.creator.codename === "gloria_official"}
             />
             {bounty.creator.codename}
           </Link>
@@ -615,7 +615,7 @@ export default function BountyCard({
         {bounty.status === "funding" && role === "creator" && (
           <>
             <p className="text-[11px] text-faint">
-              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} VALORE score
+              Deposit to go live · earn up to {creatorPostInfluenceFromLamports(bounty.reward_sol_lamports)} GLORIA score
             </p>
             {escrow?.address && (
               <p className="text-[10px] text-faint">

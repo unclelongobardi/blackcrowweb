@@ -1,4 +1,4 @@
--- VALORE — internal social network schema
+-- GLORIA — internal social network schema
 -- Run this in the Supabase SQL editor (or via the provided sync script).
 -- All access happens server-side with the service role key, so RLS is left off.
 
@@ -13,7 +13,7 @@ create table if not exists profiles (
   display_name  text,
   bio           text,
   avatar_seed   text,
-  influence     integer not null default 0,   -- reputation (VALORE score)
+  influence     integer not null default 0,   -- reputation (GLORIA score)
   is_onboarded  boolean not null default false,
   created_at    timestamptz not null default now()
 );

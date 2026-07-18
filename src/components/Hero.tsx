@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePrivy } from "@privy-io/react-auth";
 import { GUEST_APP_HREF } from "@/lib/guestMode";
-import { VALORE_HERO_ILLUSTRATION_SRC } from "@/lib/links";
+import { GLORIA_HERO_ILLUSTRATION_SRC } from "@/lib/links";
 import { uiBtnPrimary } from "@/lib/uiClasses";
 import { IconArrow } from "./icons";
 import OnlineCounter from "./OnlineCounter";
@@ -14,12 +14,12 @@ import TokenCaChip from "./TokenCaChip";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const AVATAR_IMAGES = [
-  "/images/avatars/presets/normal/vlre-normal-01.png",
-  "/images/avatars/presets/normal/vlre-normal-02.png",
-  "/images/avatars/presets/normal/vlre-normal-03.png",
-  "/images/avatars/presets/vip/vlre-vip-01.png",
-  "/images/avatars/presets/election/vlre-election-02.png",
-  "/images/avatars/presets/normal/vlre-normal-10.png",
+  "/images/avatars/presets/normal/gloria-normal-01.png",
+  "/images/avatars/presets/normal/gloria-normal-02.png",
+  "/images/avatars/presets/normal/gloria-normal-03.png",
+  "/images/avatars/presets/vip/gloria-vip-01.png",
+  "/images/avatars/presets/election/gloria-election-02.png",
+  "/images/avatars/presets/normal/gloria-normal-10.png",
 ];
 
 function HeroIllustration() {
@@ -38,7 +38,7 @@ function HeroIllustration() {
         className="relative z-10 w-full px-2 sm:px-4"
       >
         <Image
-          src={VALORE_HERO_ILLUSTRATION_SRC}
+          src={GLORIA_HERO_ILLUSTRATION_SRC}
           alt="Prediction markets network — YES / NO decisions, charts, and operators"
           width={640}
           height={640}

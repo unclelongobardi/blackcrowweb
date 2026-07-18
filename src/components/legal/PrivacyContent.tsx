@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TOKEN_CA, TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
+import { OFFICIAL_SITE_URL, TOKEN_CA, TOKEN_SYMBOL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -27,7 +27,7 @@ export default function PrivacyContent() {
   return (
     <>
       <P>
-        This Privacy Policy explains how VALORE (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses, and shares
+        This Privacy Policy explains how GLORIA (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses, and shares
         information when you use our website, app at{" "}
         <code className="font-mono text-[12px] text-foreground/80">/app</code>, and related services. By using the
         platform, you agree to this policy.
@@ -35,7 +35,7 @@ export default function PrivacyContent() {
 
       <H2>1. Overview</H2>
       <P>
-        VALORE is a wallet-first coordination platform. We minimize traditional identity collection: no email is
+        GLORIA is a wallet-first coordination platform. We minimize traditional identity collection: no email is
         required to use Home. Most activity is pseudonymous (codename + avatar), but your Solana wallet address,
         on-chain transactions, and public posts are inherently visible in ways described below.
       </P>
@@ -48,7 +48,7 @@ export default function PrivacyContent() {
       </P>
       <P>
         <strong className="text-foreground">Profile</strong> — Codename, optional display name, bio, avatar seed,
-        VALORE score (influence), verification flags, and onboarding timestamps stored in our database.
+        GLORIA score (influence), verification flags, and onboarding timestamps stored in our database.
       </P>
       <P>
         <strong className="text-foreground">Content & social</strong> — Home posts, sentiment tags, bounty
@@ -74,7 +74,7 @@ export default function PrivacyContent() {
         items={[
           "Operate accounts, feeds, bounties, cabals, chat, and leaderboards.",
           "Process SOL bounty escrow flows you authorize.",
-          "Compute VALORE score, rankings, exploit scores, and market caches.",
+          "Compute GLORIA score, rankings, exploit scores, and market caches.",
           "Moderate abuse, enforce Terms, and protect platform integrity.",
           "Improve reliability, debug errors, and analyze aggregate usage.",
           `Communicate launch updates (including $${TOKEN_SYMBOL} token) via official channels or optional email list.`,
@@ -101,7 +101,7 @@ export default function PrivacyContent() {
       <H2>5. Third-party market data</H2>
       <P>
         Market listings and prices are sourced from public Polymarket APIs, cached in our database, and re-ranked for
-        operator insights. We do not send your wallet to Polymarket through VALORE unless you independently visit their
+        operator insights. We do not send your wallet to Polymarket through GLORIA unless you independently visit their
         site. See{" "}
         <Link href="/docs#markets" className="text-bull hover:underline">
           Markets documentation
@@ -109,11 +109,11 @@ export default function PrivacyContent() {
         for details.
       </P>
 
-      <H2>6. ${TOKEN_SYMBOL} token & on-chain privacy</H2>
+      <H2>6. {`$${TOKEN_SYMBOL}`} token & on-chain privacy</H2>
       <P>
-        Blockchain transactions are public and permanent. If you buy, sell, or transfer ${TOKEN_SYMBOL} or interact with bounty
+        Blockchain transactions are public and permanent. If you buy, sell, or transfer {`$${TOKEN_SYMBOL}`} or interact with bounty
         escrow, those actions are visible on Solana explorers (e.g. Solscan) and analytics sites (e.g. Dexscreener).
-        The official ${TOKEN_SYMBOL} contract address is{" "}
+        The official {`$${TOKEN_SYMBOL}`} contract address is{" "}
         <code className="break-all rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">{TOKEN_CA}</code>.
         Always verify any address through official channels before interacting.
       </P>
@@ -161,8 +161,8 @@ export default function PrivacyContent() {
       <P>
         We may update this Privacy Policy. The &ldquo;Last updated&rdquo; date will change accordingly. Material updates
         may also be announced on{" "}
-        <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
-          X @{TWITTER_HANDLE}
+        <a href={OFFICIAL_SITE_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
+          GLORIA.FINANCE
         </a>
         .
       </P>
@@ -170,8 +170,8 @@ export default function PrivacyContent() {
       <H2>14. Contact</H2>
       <P>
         Privacy questions:{" "}
-        <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
-          {TWITTER_URL}
+        <a href={OFFICIAL_SITE_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
+          GLORIA.FINANCE
         </a>
         .
       </P>

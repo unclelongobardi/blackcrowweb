@@ -1,2 +1,2 @@
--- VALORE — minimal seed (no fake users, posts, or bounties).
+-- GLORIA — minimal seed (no fake users, posts, or bounties).
 -- Real users and content are created through the app.

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">GLORIA geometric G mark</title>
+  <defs>
+    <linearGradient id="gloria-blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2368ff"/>
+      <stop offset="0.52" stop-color="#1652f0"/>
+      <stop offset="1" stop-color="#08296f"/>
+    </linearGradient>
+  </defs>
+  <path
+    d="M370 160 323 113H193l-76 76v134l76 76h135l71-71v-72H269v64h65l-33 32h-81l-55-55v-82l55-55h76l31 31Z"
+    fill="none"
+    stroke="url(#gloria-blue)"
+    stroke-width="48"
+    stroke-linecap="square"
+    stroke-linejoin="miter"
+  />
+  <path d="m179 105 28-68 49 43 49-43 28 68-77-24Z" fill="url(#gloria-blue)"/>
+</svg>

@@ -36,8 +36,8 @@ const NAV = [
 
 const FEED = [
   {
-    name: "ValoreTrader",
-    handle: "@insider_valore",
+    name: "GloriaTrader",
+    handle: "@insider_gloria",
     time: "2m",
     sentiment: "Bullish",
     bull: true,

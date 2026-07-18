@@ -365,8 +365,8 @@ export function IconDexscreener({ className }: { className?: string }) {
   );
 }
 
-/** Reputation / VALORE score */
-export function IconValore(props: SVGProps<SVGSVGElement>) {
+/** Reputation / GLORIA score */
+export function IconGloria(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden {...props}>
       <path d="M6 7 L12 17 L18 7 H15.5 L12 13 L8.5 7 H6 Z" fill="currentColor" />
@@ -399,7 +399,7 @@ export function IconRank(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Anonymous operator — VALORE angular frame */
+/** Anonymous operator — GLORIA angular frame */
 export function IconOperator(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} strokeWidth={1.5} {...props}>

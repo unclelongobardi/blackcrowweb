@@ -1,9 +1,9 @@
-# VALORE
+# GLORIA
 
 Light-mode social coordination layer for prediction-market operators on Solana.
 
 - **Stack:** Next.js 16, Privy (Solana wallets), Neon Postgres
-- **Token:** `$VALORE` (CA: `DxbU8EpEjHm1AWyzPtAXw3FGoGGo4PbNeJcmtaFQpump`)
+- **Token:** `$GLORIA` (CA: `DxbU8EpEjHm1AWyzPtAXw3FGoGGo4PbNeJcmtaFQpump`)
 - **Theme:** White + Polymarket blue (`#1652F0`)
 
 ## Develop
@@ -19,11 +19,11 @@ npm run dev
 npm run build
 ```
 
-Favicon assets are generated in `prebuild` from `public/images/valore-favicon-source.png`.
+Logo and favicon assets are generated in `prebuild` from `public/images/gloria-logo-source.svg`.
 
 ## Official operator
 
-- Codename: `valore_official`
-- Cabal slug: `valore-official`
+- Codename: `gloria_official`
+- Cabal slug: `gloria-official`
 
-Apply DB migration `supabase/migrations/023_valore_live_rebrand.sql` after deploy.
+Apply DB migration `supabase/migrations/025_gloria_rebrand.sql` after deploy.

@@ -71,7 +71,7 @@ export default function CabalDetailPage() {
     );
   }
 
-  const isOfficial = cabal.slug === "valore-official";
+  const isOfficial = cabal.slug === "gloria-official";
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-6">
@@ -79,7 +79,7 @@ export default function CabalDetailPage() {
       <div className={`mt-4 rounded-2xl p-6 ${isOfficial ? "border border-bull/30 bg-gradient-to-br from-bull/10 via-surface/40 to-surface/20" : "glass"}`}>
         {isOfficial && (
           <span className="mb-3 inline-flex items-center rounded-full bg-bull/15 px-2.5 py-0.5 text-[9px] font-bold tracking-[0.14em] text-bull">
-            OFFICIAL VALORE CABAL
+            OFFICIAL GLORIA CABAL
           </span>
         )}
         <div className="flex items-center gap-4">

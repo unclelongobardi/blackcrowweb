@@ -1,4 +1,4 @@
-export const GUEST_MODE_STORAGE_KEY = "valore_guest_mode";
+export const GUEST_MODE_STORAGE_KEY = "gloria_guest_mode";
 
 /** App entry with guest flag — sets guest mode on first load. */
 export const GUEST_APP_HREF = "/app?guest=1";

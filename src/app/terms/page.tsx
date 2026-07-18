@@ -3,9 +3,9 @@ import LegalLayout from "@/components/legal/LegalLayout";
 import TermsContent from "@/components/legal/TermsContent";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — VALORE",
+  title: "Terms of Service — GLORIA",
   description:
-    "Terms of Service for VALORE: wallet access, bounties, Home feed, VALORE score, cabals, and $VALORE token.",
+    "Terms of Service for GLORIA: wallet access, bounties, Home feed, GLORIA score, cabals, and $GLORIA token.",
 };
 
 const UPDATED = "July 1, 2026";

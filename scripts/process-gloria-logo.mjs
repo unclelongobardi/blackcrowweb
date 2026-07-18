@@ -7,9 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const images = path.join(root, "public", "images");
 
-const source = path.join(images, "valore-logo-source.png");
+const source = path.join(images, "gloria-logo-source.svg");
 if (!fs.existsSync(source)) {
-  console.error("Missing public/images/valore-logo-source.png — add the official VALORE logo PNG.");
+  console.error("Missing public/images/gloria-logo-source.svg — add the official GLORIA logo SVG.");
   process.exit(1);
 }
 
@@ -24,8 +24,8 @@ async function writeLogo(outPath, size) {
 }
 
 // UI mark + favicon source — transparent only, no canvas padding
-await writeLogo(path.join(images, "valore-logo.png"), 512);
-await writeLogo(path.join(images, "valore-favicon-source.png"), 512);
+await writeLogo(path.join(images, "gloria-logo.png"), 512);
+await writeLogo(path.join(images, "gloria-favicon-source.png"), 512);
 
-console.log("wrote public/images/valore-logo.png");
-console.log("wrote public/images/valore-favicon-source.png");
+console.log("wrote public/images/gloria-logo.png");
+console.log("wrote public/images/gloria-favicon-source.png");

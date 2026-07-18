@@ -22,19 +22,19 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://valore.network"),
-  title: "VALORE — Manipulate Markets. Earn Rewards. Start Your Cabal.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://gloria.finance"),
+  title: "GLORIA — Manipulate Markets. Earn Rewards. Start Your Cabal.",
   description:
-    "VALORE is a social layer for prediction-market operators — coordinate plays, fund bounties in SOL, and rank on the leaderboard. Anonymous, on Solana.",
+    "GLORIA is a social layer for prediction-market operators — coordinate plays, fund bounties in SOL, and rank on the leaderboard. Anonymous, on Solana.",
   openGraph: {
-    title: "VALORE",
+    title: "GLORIA",
     description: "Manipulate markets. Earn rewards. Start your cabal.",
     type: "website",
-    images: [{ url: "/images/valore-logo.png", width: 512, height: 512, alt: "VALORE" }],
+    images: [{ url: "/images/gloria-logo.png", width: 512, height: 512, alt: "GLORIA" }],
   },
   twitter: {
     card: "summary",
-    images: ["/images/valore-logo.png"],
+    images: ["/images/gloria-logo.png"],
   },
 };
 

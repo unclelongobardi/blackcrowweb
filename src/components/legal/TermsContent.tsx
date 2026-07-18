@@ -1,4 +1,4 @@
-import { TOKEN_CA, TOKEN_SYMBOL, TWITTER_HANDLE, TWITTER_URL } from "@/lib/links";
+import { OFFICIAL_SITE_URL, TOKEN_CA, TOKEN_SYMBOL } from "@/lib/links";
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -26,18 +26,18 @@ export default function TermsContent() {
   return (
     <>
       <P>
-        These Terms of Service (&ldquo;Terms&rdquo;) govern access to VALORE — the website, authenticated app
+        These Terms of Service (&ldquo;Terms&rdquo;) govern access to GLORIA — the website, authenticated app
         (&ldquo;Home&rdquo; at <code className="font-mono text-[12px] text-foreground/80">/app</code>), and
-        related services operated under the VALORE brand. By connecting a wallet or using the platform, you agree to
+        related services operated under the GLORIA brand. By connecting a wallet or using the platform, you agree to
         these Terms. If you do not agree, do not use the service.
       </P>
 
-      <H2>1. What VALORE is</H2>
+      <H2>1. What GLORIA is</H2>
       <P>
-        VALORE is a Solana-native coordination layer for prediction-market operators. The platform provides market
+        GLORIA is a Solana-native coordination layer for prediction-market operators. The platform provides market
         intelligence (including thin-book rankings sourced from third-party APIs), a public Home feed, SOL-funded
-        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;VALORE score&rdquo;), and related
-        social features. VALORE does not operate a centralized exchange, custody user funds beyond programmatic
+        bounties with escrow, cabals for group coordination, off-chain reputation (&ldquo;GLORIA score&rdquo;), and related
+        social features. GLORIA does not operate a centralized exchange, custody user funds beyond programmatic
         bounty escrow flows you explicitly authorize, or guarantee any market outcome.
       </P>
 
@@ -79,15 +79,15 @@ export default function TermsContent() {
         discussion). Leaders may approve private join requests.
       </P>
       <P>
-        <strong className="text-foreground">VALORE score</strong> — off-chain reputation points
-        (&ldquo;influence&rdquo;) earned through documented platform activity. VALORE score is not currency, does not
-        represent equity, and is separate from the ${TOKEN_SYMBOL} token.
+        <strong className="text-foreground">GLORIA score</strong> — off-chain reputation points
+        (&ldquo;influence&rdquo;) earned through documented platform activity. GLORIA score is not currency, does not
+        represent equity, and is separate from the {`$${TOKEN_SYMBOL}`} token.
       </P>
 
-      <H2>5. ${TOKEN_SYMBOL} token</H2>
+      <H2>5. {`$${TOKEN_SYMBOL}`} token</H2>
       <P>
         The project may launch or reference a Solana SPL token ticker{" "}
-        <strong className="text-foreground">${TOKEN_SYMBOL}</strong>. The official contract address (&ldquo;CA&rdquo;) is{" "}
+        <strong className="text-foreground">{`$${TOKEN_SYMBOL}`}</strong>. The official contract address (&ldquo;CA&rdquo;) is{" "}
         <code className="break-all rounded bg-black/[0.04] px-1.5 py-0.5 font-mono text-[12px]">{TOKEN_CA}</code>.
         Unless we publish a separate, signed token utility statement:
       </P>
@@ -97,7 +97,7 @@ export default function TermsContent() {
           "Token ownership does not grant governance over user bounties, escrow, or third-party markets.",
           "Token value can go to zero; only interact with contracts you have verified on-chain.",
           "Nothing on this site constitutes an offer to sell or solicitation to buy tokens in any jurisdiction where unlawful.",
-          `Team allocation, liquidity, and launch details will be disclosed through official channels (e.g. X @${TWITTER_HANDLE}) when applicable.`,
+          `Team allocation, liquidity, and launch details will be disclosed through ${OFFICIAL_SITE_URL} when applicable.`,
         ]}
       />
 
@@ -115,12 +115,12 @@ export default function TermsContent() {
           "Fraud, stolen funds, money laundering, or sanctions evasion.",
           "Harassment, doxing, threats, or posting others' private information without consent.",
           "Spam, bot abuse, exploit attempts on our APIs or smart-contract flows.",
-          "Misrepresenting bounty proof, impersonating valore_official, or phishing wallet signatures.",
+          "Misrepresenting bounty proof, impersonating gloria_official, or phishing wallet signatures.",
           "Scraping or reselling platform data at scale without written permission.",
         ]}
       />
       <P>
-        We may suspend or terminate access, remove content, or withhold VALORE score for violations — without refund of
+        We may suspend or terminate access, remove content, or withhold GLORIA score for violations — without refund of
         off-chain status and without liability for on-chain assets already transferred.
       </P>
 
@@ -128,7 +128,7 @@ export default function TermsContent() {
       <P>
         Bounty deposits and payouts use Solana transactions you sign. Escrow is operated server-side per published flows.
         Smart-contract, RPC, or indexer failures can delay or prevent settlement. Disputes between creators and helpers
-        are primarily between those parties; VALORE is not an arbiter of off-chain work quality except where we
+        are primarily between those parties; GLORIA is not an arbiter of off-chain work quality except where we
         intervene for abuse or legal compliance.
       </P>
 
@@ -141,7 +141,7 @@ export default function TermsContent() {
 
       <H2>10. Intellectual property</H2>
       <P>
-        VALORE branding, UI, and original content are owned by the project or licensors. You retain rights to content
+        GLORIA branding, UI, and original content are owned by the project or licensors. You retain rights to content
         you post but grant us a non-exclusive license to display, store, and distribute it within the service for
         operation and promotion of the platform.
       </P>
@@ -155,7 +155,7 @@ export default function TermsContent() {
 
       <H2>12. Limitation of liability</H2>
       <P>
-        TO THE MAXIMUM EXTENT PERMITTED BY LAW, VALORE AND ITS OPERATORS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL,
+        TO THE MAXIMUM EXTENT PERMITTED BY LAW, GLORIA AND ITS OPERATORS WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL,
         SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, DATA, GOODWILL, OR DIGITAL ASSETS, ARISING
         FROM YOUR USE OF THE SERVICE — INCLUDING WALLET COMPROMISE, MARKET LOSSES, OR TOKEN PRICE CHANGES — EVEN IF
         ADVISED OF THE POSSIBILITY. OUR AGGREGATE LIABILITY FOR ANY CLAIM RELATING TO THE SERVICE IS LIMITED TO THE
@@ -173,8 +173,8 @@ export default function TermsContent() {
       <H2>14. Contact</H2>
       <P>
         Legal and support inquiries:{" "}
-        <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
-          @{TWITTER_HANDLE} on X
+        <a href={OFFICIAL_SITE_URL} target="_blank" rel="noopener noreferrer" className="text-bull hover:underline">
+          GLORIA.FINANCE
         </a>
         . No separate contact form is provided.
       </P>

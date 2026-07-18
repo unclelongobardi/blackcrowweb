@@ -48,13 +48,13 @@ export default function ProfilePage() {
       <div className="mx-auto max-w-lg p-6">
         <GuestLoginPrompt
           title="Your profile lives on-chain"
-          message="Connect a Solana wallet to set your codename, avatar, and start earning VALORE score on bounties."
+          message="Connect a Solana wallet to set your codename, avatar, and start earning GLORIA score on bounties."
         />
       </div>
     );
   }
   const p = me.profile;
-  const verified = p.is_verified || p.codename === "valore_official";
+  const verified = p.is_verified || p.codename === "gloria_official";
 
   async function uploadAvatar(file: File) {
     setUploading(true);
@@ -171,7 +171,7 @@ export default function ProfilePage() {
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
           {[
-            { label: "VALORE", value: p.influence.toLocaleString() },
+            { label: "GLORIA", value: p.influence.toLocaleString() },
             { label: "Rank", value: `#${me.stats.rank}` },
             { label: "Bounties", value: String(me.stats.bounties_posted) },
             { label: "Completed", value: String(me.stats.bounties_done) },

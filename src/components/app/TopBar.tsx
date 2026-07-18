@@ -46,7 +46,7 @@ export default function TopBar() {
     if (query.trim()) router.push(`/app/search?q=${encodeURIComponent(query.trim())}`);
   }
 
-  const verified = me?.profile.is_verified || me?.profile.codename === "valore_official";
+  const verified = me?.profile.is_verified || me?.profile.codename === "gloria_official";
   const displayName = isGuest ? "Guest" : me?.profile.display_name || me?.profile.codename || "anon";
   const handle = isGuest ? "guest" : me?.profile.codename ?? "anon";
 

@@ -118,7 +118,7 @@ function MessagesContent() {
                   avatarUrl={c.other?.avatar_url}
                   label={c.other?.codename}
                   size={40}
-                  verified={c.other?.is_verified || c.other?.codename === "valore_official"}
+                  verified={c.other?.is_verified || c.other?.codename === "gloria_official"}
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-semibold">{c.other?.codename ?? "…"}</p>

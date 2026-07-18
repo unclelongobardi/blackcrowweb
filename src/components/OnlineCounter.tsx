@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 
 function getSessionId(): string {
   try {
-    let id = sessionStorage.getItem("bc_sid");
+    let id = sessionStorage.getItem("gloria_sid") ?? sessionStorage.getItem("bc_sid");
     if (!id) {
       id = Math.random().toString(36).slice(2) + Date.now().toString(36);
-      sessionStorage.setItem("bc_sid", id);
     }
+    sessionStorage.setItem("gloria_sid", id);
+    sessionStorage.removeItem("bc_sid");
     return id;
   } catch {
     return "anon-" + Math.random().toString(36).slice(2);

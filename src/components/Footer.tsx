@@ -12,17 +12,21 @@ import { uiBtnPrimary } from "@/lib/uiClasses";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const SOCIALS = [
-  {
-    label: "X (Twitter)",
-    href: TWITTER_URL,
-    render: () => <IconTwitterX className="h-[18px] w-[18px]" />,
-  },
+  ...(TWITTER_URL
+    ? [
+        {
+          label: "X (Twitter)",
+          href: TWITTER_URL,
+          render: () => <IconTwitterX className="h-[18px] w-[18px]" />,
+        },
+      ]
+    : []),
   {
     label: "Dexscreener",
     href: DEXSCREENER_URL,
     render: () => <IconDexscreener className="h-[18px] w-[18px] rounded-sm" />,
   },
-] as const;
+];
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -92,7 +96,7 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 sm:flex-row">
           <p className="text-[11px] tracking-[0.12em] text-faint">
-            © 2026 VALORE. ALL RIGHTS RESERVED.
+            © 2026 GLORIA. ALL RIGHTS RESERVED.
           </p>
           <div className="flex items-center gap-7 text-[11px] font-medium tracking-[0.12em] text-faint">
             <Link href="/terms" className="transition-colors hover:text-foreground">

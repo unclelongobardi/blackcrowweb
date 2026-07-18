@@ -3,8 +3,9 @@ import path from "node:path";
 import sharp from "sharp";
 
 const root = process.cwd();
-const input = path.join(root, "public/images/valore-hero-illustration-source.png");
-const output = path.join(root, "public/images/valore-hero-illustration.png");
+const input = path.join(root, "public/images/gloria-hero-illustration-source.png");
+const logo = path.join(root, "public/images/gloria-logo-source.svg");
+const output = path.join(root, "public/images/gloria-hero-illustration.png");
 
 if (!fs.existsSync(input)) {
   console.log("skip: no hero illustration source");
@@ -42,10 +43,30 @@ for (let i = 0; i < data.length; i += 4) {
   }
 }
 
+const centerSize = Math.round(Math.min(info.width, info.height) * 0.29);
+const markSize = Math.round(centerSize * 0.7);
+const centerLeft = Math.round((info.width - centerSize) / 2);
+const centerTop = Math.round((info.height - centerSize) / 2);
+const mark = await sharp(logo).resize(markSize, markSize, { fit: "contain" }).png().toBuffer();
+const medallion = Buffer.from(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="${centerSize}" height="${centerSize}">
+    <circle cx="${centerSize / 2}" cy="${centerSize / 2}" r="${centerSize / 2 - 6}"
+      fill="#ffffff" stroke="#1652f0" stroke-width="3"/>
+  </svg>
+`);
+
 await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } })
+  .composite([
+    { input: medallion, left: centerLeft, top: centerTop },
+    {
+      input: mark,
+      left: Math.round((info.width - markSize) / 2),
+      top: Math.round((info.height - markSize) / 2),
+    },
+  ])
   .trim({ threshold: 12 })
   .extend({ top: 24, right: 24, bottom: 24, left: 24, background: TRANSPARENT })
   .png({ compressionLevel: 9, adaptiveFiltering: true })
   .toFile(output);
 
-console.log("wrote public/images/valore-hero-illustration.png");
+console.log("wrote public/images/gloria-hero-illustration.png");

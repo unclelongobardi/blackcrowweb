@@ -14,7 +14,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   // Fail open during local dev if env is missing, so the marketing page still renders.
   if (!APP_ID) {
     if (process.env.NODE_ENV !== "production") {
-      console.warn("[VALORE] NEXT_PUBLIC_PRIVY_APP_ID is not set — auth disabled.");
+      console.warn("[GLORIA] NEXT_PUBLIC_PRIVY_APP_ID is not set — auth disabled.");
     }
     return <>{children}</>;
   }

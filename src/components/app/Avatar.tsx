@@ -19,7 +19,7 @@ export default function Avatar({
 }) {
   const s = seed || label || "crow";
   const src = avatarImageUrl(s, avatarUrl);
-  const official = s === "valore_official" || s === "valore";
+  const official = s === "gloria_official" || s === "gloria";
   const imageClass = official
     ? "bg-white object-contain p-1"
     : avatarUrl

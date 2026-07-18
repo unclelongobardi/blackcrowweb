@@ -22,15 +22,17 @@ export default function DocsHeader() {
         <div className="flex items-center gap-2 sm:gap-3">
           <TokenCaChip className="hidden shrink-0 md:flex" />
 
-          <a
-            href={TWITTER_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="X (Twitter)"
-            className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted hover:text-foreground sm:flex"
-          >
-            <IconTwitterX className="h-4 w-4" />
-          </a>
+          {TWITTER_URL && (
+            <a
+              href={TWITTER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X (Twitter)"
+              className="ui-nav hidden h-9 w-9 items-center justify-center rounded-lg border border-line text-muted hover:text-foreground sm:flex"
+            >
+              <IconTwitterX className="h-4 w-4" />
+            </a>
+          )}
 
           <Link
             href="/"

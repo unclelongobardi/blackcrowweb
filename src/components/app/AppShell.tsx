@@ -114,7 +114,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           Open platform access
         </p>
         <h1 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-          EXPLORE VALORE
+          EXPLORE GLORIA
         </h1>
         <p className="mt-3 max-w-md text-sm text-muted">
           Browse markets, bounties, cabals, and the feed as a guest — no wallet, no signup. Connect when you&apos;re
@@ -138,7 +138,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             LOG IN
           </button>
         </div>
-        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn VALORE score.</p>
+        <p className="mt-4 text-[11px] text-faint">Guest access is browse-only — connect to post, vote, and earn GLORIA score.</p>
         <div className="mt-6 w-full max-w-md">
           <TokenCaChip variant="panel" />
         </div>

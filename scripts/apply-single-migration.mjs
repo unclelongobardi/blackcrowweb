@@ -1,5 +1,5 @@
 // Applies one migration file without running schema bootstrap or seed.
-// Usage: node scripts/apply-single-migration.mjs 022_current_vlre_bounties.sql
+// Usage: node scripts/apply-single-migration.mjs 025_gloria_rebrand.sql
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import pg from "pg";

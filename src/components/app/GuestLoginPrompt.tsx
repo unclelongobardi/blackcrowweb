@@ -6,7 +6,7 @@ import { IconArrow } from "@/components/icons";
 
 export default function GuestLoginPrompt({
   title = "Connect to participate",
-  message = "You're browsing as a guest. Connect a Solana wallet to post, vote, create bounties, and earn VALORE score.",
+  message = "You're browsing as a guest. Connect a Solana wallet to post, vote, create bounties, and earn GLORIA score.",
   compact = false,
 }: {
   title?: string;
