@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Privacy Policy for GLORIA: wallet data, profiles, Home feed, bounties, and $GLORIA token interactions.",
 };
 
-const UPDATED = "July 1, 2026";
+const UPDATED = "July 18, 2026";
 
 export default function PrivacyPage() {
   return (

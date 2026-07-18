@@ -71,11 +71,7 @@ const FEED = [
 ];
 
 const FALLBACK_MARKETS = [
-  { name: "BTC above $100K", sub: "This month?", val: "63%", up: true },
-  { name: "Ethereum above $4K", sub: "2026?", val: "41%", up: false },
-  { name: "Solana above $200", sub: "2026?", val: "28%", up: false },
-  { name: "BlackRock launches", sub: "new ETF this year?", val: "72%", up: true },
-  { name: "US in recession", sub: "by Q4 2026?", val: "66%", up: true },
+  { name: "Live market feed unavailable", sub: "Reconnect to Polymarket to refresh", val: "—", up: false },
 ];
 
 export default function Dashboard({ markets = [] }: { markets?: Market[] }) {

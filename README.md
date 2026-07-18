@@ -26,4 +26,4 @@ Logo and favicon assets are generated in `prebuild` from `public/images/gloria-l
 - Codename: `gloria_official`
 - Cabal slug: `gloria-official`
 
-Apply DB migration `supabase/migrations/025_gloria_rebrand.sql` after deploy.
+Apply database migrations through `supabase/migrations/026_current_data_integrity.sql` after deploy.

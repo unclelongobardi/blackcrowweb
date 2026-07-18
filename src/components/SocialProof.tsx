@@ -7,15 +7,7 @@ import type { Market } from "@/lib/types";
 type Ticker = { name: string; val: string; up: boolean };
 
 const FALLBACK: Ticker[] = [
-  { name: "BTC > $100K", val: "63%", up: true },
-  { name: "ETH > $4K", val: "41%", up: false },
-  { name: "SOL > $200", val: "28%", up: false },
-  { name: "FED RATE CUT", val: "42%", up: false },
-  { name: "BLACKROCK ETF", val: "72%", up: true },
-  { name: "US RECESSION", val: "66%", up: true },
-  { name: "NVDA EARNINGS BEAT", val: "57%", up: true },
-  { name: "GOV SHUTDOWN", val: "34%", up: false },
-  { name: "ALTSEASON 2026", val: "49%", up: false },
+  { name: "LIVE POLYMARKET FEED UNAVAILABLE", val: "RETRY SOON", up: false },
 ];
 
 function Row({ tickers }: { tickers: Ticker[] }) {

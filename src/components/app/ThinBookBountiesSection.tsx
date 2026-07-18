@@ -82,6 +82,9 @@ export default function ThinBookBountiesSection({
   if (!thinBook.length) return null;
 
   const poolLamports = sumLamports(thinBook.map((b) => b.reward_sol_lamports));
+  const rewards = thinBook.map((b) => Number(BigInt(b.reward_sol_lamports)) / 1e9);
+  const minReward = Math.min(...rewards);
+  const maxReward = Math.max(...rewards);
 
   return (
     <section id="thin-book-bounties" className="scroll-mt-24">
@@ -99,7 +102,7 @@ export default function ThinBookBountiesSection({
 
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface/30 px-4 py-3 sm:px-5">
           <p className="max-w-xl text-[13px] leading-relaxed text-muted">
-            Rewards from 0.3 to 1.25 SOL. Pick a lane, execute the task, submit proof when the market
+            Rewards from {minReward} to {maxReward} SOL. Pick a lane, execute the task, submit proof when the market
             resolves or your op lands.
           </p>
           <div className="text-right">

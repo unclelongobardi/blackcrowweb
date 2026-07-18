@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Terms of Service for GLORIA: wallet access, bounties, Home feed, GLORIA score, cabals, and $GLORIA token.",
 };
 
-const UPDATED = "July 1, 2026";
+const UPDATED = "July 18, 2026";
 
 export default function TermsPage() {
   return (

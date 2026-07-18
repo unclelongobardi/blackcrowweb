@@ -117,7 +117,7 @@ export async function fetchWorldCupMatchMarkets(): Promise<Market[]> {
     }
   }
 
-  return dedupeMarkets(markets).sort((a, b) => {
+  return dedupeMarkets(markets).filter(isLive).sort((a, b) => {
     const da = a.end_date ?? "";
     const db = b.end_date ?? "";
     return da.localeCompare(db) || a.question.localeCompare(b.question);
@@ -155,6 +155,10 @@ function mapMarket(m: GammaMarket): Market | null {
 }
 
 function isLive(m: Market): boolean {
+  if (m.end_date) {
+    const endTime = Date.parse(m.end_date);
+    if (Number.isFinite(endTime) && endTime <= Date.now()) return false;
+  }
   if (m.yes_price == null) return true;
   return m.yes_price > 0.01 && m.yes_price < 0.99;
 }
@@ -436,7 +440,7 @@ export function annotateExploitability(markets: Market[]): Market[] {
   return markets.map((m) => ({
     ...m,
     exploit_score: exploitScore(m),
-    liquidity_tier: liquidityTier(m.volume ?? 0),
+    liquidity_tier: liquidityTier(m.liquidity ?? m.volume ?? 0),
   }));
 }
 
