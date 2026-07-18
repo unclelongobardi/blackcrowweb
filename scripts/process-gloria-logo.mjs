@@ -7,9 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const images = path.join(root, "public", "images");
 
-const source = path.join(images, "gloria-logo-source.svg");
+const source = path.join(images, "gloria-logo-source.png");
 if (!fs.existsSync(source)) {
-  console.error("Missing public/images/gloria-logo-source.svg — add the official GLORIA logo SVG.");
+  console.error("Missing public/images/gloria-logo-source.png — add the official transparent GLORIA logo PNG.");
   process.exit(1);
 }
 

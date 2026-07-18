@@ -19,7 +19,7 @@ npm run dev
 npm run build
 ```
 
-Logo and favicon assets are generated in `prebuild` from `public/images/gloria-logo-source.svg`.
+Logo and favicon assets are generated in `prebuild` from `public/images/gloria-logo-source.png`.
 
 ## Official operator
 

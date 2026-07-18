@@ -40,8 +40,8 @@ function HeroIllustration() {
         <Image
           src={GLORIA_HERO_ILLUSTRATION_SRC}
           alt="Prediction markets network — YES / NO decisions, charts, and operators"
-          width={640}
-          height={640}
+          width={1536}
+          height={1024}
           priority
           className="mx-auto h-auto w-full max-w-[min(92vw,560px)] object-contain drop-shadow-[0_28px_56px_rgba(22,82,240,0.12)] lg:max-w-[min(44vw,620px)]"
         />

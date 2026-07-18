@@ -10,7 +10,7 @@ const root = path.join(__dirname, "..");
 const candidates = [
   path.join(root, "public", "images", "gloria-favicon-source.png"),
   path.join(root, "public", "images", "gloria-logo.png"),
-  path.join(root, "public", "images", "gloria-logo-source.svg"),
+  path.join(root, "public", "images", "gloria-logo-source.png"),
 ];
 
 const source = candidates.find((p) => fs.existsSync(p));
